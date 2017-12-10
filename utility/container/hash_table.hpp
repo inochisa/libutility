@@ -1,0 +1,1771 @@
+
+#ifndef __UTILITY_CONTAINER_HASH_TABLE__
+#define __UTILITY_CONTAINER_HASH_TABLE__
+
+#include<utility/config/utility_config.hpp>
+#include<utility/algorithm/algorithm_auxiliary.hpp>
+#include<utility/algorithm/hash.hpp>
+#include<utility/algorithm/swap.hpp>
+#include<utility/algorithm/move.hpp>
+#include<utility/algorithm/forward.hpp>
+#include<utility/algorithm/max.hpp>
+#include<utility/algorithm/lower_bound.hpp>
+#include<utility/algorithm/is_permutation.hpp>
+#include<utility/container/initializer_list.hpp>
+#include<utility/container/container_helper.hpp>
+#include<utility/container/pair.hpp>
+#include<utility/container/vector.hpp>
+#include<utility/container/impl/pair_value.hpp>
+#include<utility/trait/type/releations/is_same.hpp>
+#include<utility/trait/type/features/is_nothrow_swappable.hpp>
+#include<utility/trait/miscellaneous/pointer_traits.hpp>
+#include<utility/memory/allocator.hpp>
+#include<utility/memory/allocator_traits.hpp>
+#include<utility/memory/unique_ptr.hpp>
+#include<utility/iterator/iterator_tag.hpp>
+#include<utility/iterator/distance.hpp>
+
+namespace utility
+{
+  namespace container
+  {
+    namespace __hash_length
+    {
+      const utility::size_t __prime_list[28] =
+      {
+        53UL,         97UL,           193UL,          389UL,
+        769UL,        1543UL,         3079UL,         6151UL,
+        12289UL,      24593UL,        49157UL,        98317UL,
+        196613UL,     393241UL,       786433UL,       1572869UL,
+        3145739UL,    6291469UL,      12582917UL,     25165843UL,
+        50331653UL,   100663319UL,    201326611UL,    402653189UL,
+        805306457UL,  1610612741UL,   3221225473UL,   4294967291UL
+      };
+
+      inline utility::size_t __next_prime(utility::size_t __n) noexcept
+      {
+        const utility::size_t* __pos =
+          utility::algorithm::lower_bound(
+            __prime_list, __prime_list+28, __n
+          );
+        return __pos == __prime_list+28 ? 4294967291UL : *__pos;
+      }
+    }
+
+    template
+    <
+      typename _Key,
+      typename _Value = _Key,
+      typename _Key_Value_Container = utility::container::pair<const _Key, _Value>,
+      typename _Hash = utility::algorithm::hash<_Key>,
+      typename _Key_eq = utility::algorithm::equal_to<void>,
+      typename _Alloc = utility::memory::allocator<_Key_Value_Container>
+    >
+    class hash_table
+    {
+      private:
+        template
+        <
+          typename __Key,
+          typename __Value,
+          typename __Key_Value_Container
+        >
+        struct __hash_table_node
+        {
+          public:
+            typedef __Key                 __key_type;
+            typedef __Value               __mapped_type;
+            typedef __Key_Value_Container __data_type;
+          public:
+            typedef __hash_table_node<__Key, __Value, __Key_Value_Container>
+              __node_type;
+            typedef __hash_table_node<__Key, __Value, __Key_Value_Container>*
+              __link_type;
+
+          __link_type   __next;
+          __data_type* __data;
+        };
+
+        template
+        <
+          typename __Key,
+          typename __Value,
+          typename __Key_Value_Container,
+          typename __Container
+        >
+        class __hash_table_iterator
+        {
+          private:
+            template<typename, typename, typename, typename, typename, typename>
+            friend class hash_table;
+            template<typename, typename, typename, typename>
+            friend class __hash_table_const_iterator;
+
+          public:
+            typedef utility::iterator::forward_iterator_tag
+              iterator_category;
+            typedef __Key                   key_type;
+            typedef __Value                 mapped_type;
+            typedef __Key_Value_Container   value_type;
+            typedef __Container             container_type;
+            typedef value_type&             reference;
+            typedef typename
+              utility::trait::miscellaneous::pointer_traits<value_type*>::pointer
+              pointer;
+            typedef typename
+              utility::trait::miscellaneous::pointer_traits<value_type*>::difference_type
+              difference_type;
+
+          public:
+            typedef __hash_table_iterator<__Key, __Value, __Key_Value_Container, __Container> self;
+
+          private:
+            typedef __hash_table_node<__Key, __Value, __Key_Value_Container> __node_type;
+            typedef __hash_table_node<__Key, __Value, __Key_Value_Container>* __link_type;
+            typedef __Container*    __container_link;
+
+          private:
+            __link_type      __ptr;
+            __container_link __container_ptr;
+
+          public:
+            inline __hash_table_iterator() noexcept:
+              __ptr(nullptr), __container_ptr(nullptr)
+            { }
+            inline explicit __hash_table_iterator(__link_type __link, __container_link __con_link) noexcept:
+              __ptr(__link), __container_ptr(__con_link)
+            { }
+
+            inline ~__hash_table_iterator()
+            { }
+
+          public:
+            self& operator=(const self& __oit)
+            {
+              if(&__oit != this)
+              {
+                this->__ptr = __oit.__ptr;
+                this->__container_ptr = __oit.__container_ptr;
+              }
+              return *this;
+            }
+
+          public:
+            reference operator*() const
+            { return *(this->__ptr->__data);}
+            pointer operator->() const
+            { return this->__ptr->__data;}
+
+          public:
+            self& operator++() noexcept
+            {
+              __link_type __old = this->__ptr;
+              this->__ptr = this->__ptr->__next;
+              if(this->__ptr == nullptr)
+              {
+                typename __Container::size_type __pos =
+                  this->__container_ptr->key_hash(get_key(*(__old->__data)), this->__container_ptr->bucket_size())+1;
+                for(;
+                  this->__ptr == nullptr &&
+                    __pos < this->__container_ptr->bucket_size();
+                  ++__pos
+                )
+                { this->__ptr = this->__container_ptr->__bucket[__pos];}
+              }
+              return *this;
+            }
+            self operator++(int) noexcept
+            {
+              self __tmp(*this);
+              this->operator++();
+              return __tmp;
+            }
+
+          public:
+            bool operator==(const self& __o) const noexcept
+            {
+              return this->__ptr == __o.__ptr &&
+                     this->__container_ptr == __o.__container_ptr;
+            }
+            bool operator!=(const self& __o) const noexcept
+            {
+              return this->__ptr != __o.__ptr ||
+                     this->__container_ptr != __o.__container_ptr;
+            }
+        };
+        template
+        <
+          typename __Key,
+          typename __Value,
+          typename __Key_Value_Container,
+          typename __Container
+        >
+        class __hash_table_const_iterator
+        {
+          private:
+            template<typename, typename, typename, typename, typename, typename>
+            friend class hash_table;
+
+          public:
+            typedef utility::iterator::forward_iterator_tag
+              iterator_category;
+            typedef __Key                   key_type;
+            typedef __Value                 mapped_type;
+            typedef __Key_Value_Container   value_type;
+            typedef __Container             container_type;
+            typedef const value_type        const_value_type;
+            typedef const value_type&       reference;
+            typedef typename
+              utility::trait::miscellaneous::pointer_traits<const_value_type*>::pointer
+              pointer;
+            typedef typename
+              utility::trait::miscellaneous::pointer_traits<const_value_type*>::difference_type
+              difference_type;
+
+          public:
+            typedef __hash_table_const_iterator<__Key, __Value, __Key_Value_Container, __Container> self;
+
+          private:
+            typedef __hash_table_node<__Key, __Value, __Key_Value_Container> __node_type;
+            typedef __hash_table_node<__Key, __Value, __Key_Value_Container>* __link_type;
+            typedef __Container*    __container_link;
+
+          private:
+            __link_type      __ptr;
+            __container_link __container_ptr;
+
+          public:
+            inline __hash_table_const_iterator() noexcept:
+              __ptr(nullptr), __container_ptr(nullptr)
+            { }
+            inline explicit __hash_table_const_iterator(
+              __link_type __link, __container_link __con_link
+            ) noexcept:
+              __ptr(__link), __container_ptr(__con_link)
+            { }
+            inline __hash_table_const_iterator(
+              const __hash_table_iterator<__Key, __Value, __Key_Value_Container, __Container>& __it
+            ) noexcept:
+              __ptr(__it.__ptr), __container_ptr(__it.__container_ptr)
+            { }
+
+            inline ~__hash_table_const_iterator()
+            { }
+
+          public:
+            self& operator=(const self& __oit)
+            {
+              if(&__oit != this)
+              {
+                this->__ptr = __oit.__ptr;
+                this->__container_ptr = __oit.__container_ptr;
+              }
+              return *this;
+            }
+
+          public:
+            reference operator*() const
+            { return *(this->__ptr->__data);}
+            pointer operator->() const
+            { return this->__ptr->__data;}
+
+          public:
+            self& operator++() noexcept
+            {
+              __link_type __old = this->__ptr;
+              this->__ptr = this->__ptr->__next;
+              if(this->__ptr == nullptr)
+              {
+                typename __Container::size_type __pos =
+                  this->__container_ptr->key_hash(get_key(*(__old->__data)), this->__container_ptr->bucket_size())+1;
+                for(;
+                  this->__ptr == nullptr &&
+                    __pos < this->__container_ptr->bucket_size();
+                  ++__pos
+                )
+                { this->__ptr = this->__container_ptr->__bucket[__pos];}
+              }
+              return *this;
+            }
+            self operator++(int) noexcept
+            {
+              self __tmp(*this);
+              this->operator++();
+              return __tmp;
+            }
+
+          public:
+            bool operator==(const self& __o) const noexcept
+            {
+              return this->__ptr == __o.__ptr &&
+                     this->__container_ptr == __o.__container_ptr;
+            }
+            bool operator!=(const self& __o) const noexcept
+            {
+              return this->__ptr != __o.__ptr ||
+                     this->__container_ptr != __o.__container_ptr;
+            }
+        };
+
+        template
+        <
+          typename __Key,
+          typename __Value,
+          typename __Key_Value_Container,
+          typename __Container
+        >
+        class __hash_table_local_iterator
+        {
+          private:
+            template<typename, typename, typename, typename, typename, typename>
+            friend class hash_table;
+            template<typename, typename, typename, typename>
+            friend class __hash_table_const_local_iterator;
+
+          public:
+            typedef utility::iterator::forward_iterator_tag
+              iterator_category;
+            typedef __Key                             key_type;
+            typedef __Value                           mapped_type;
+            typedef __Key_Value_Container             value_type;
+            typedef __Container                       container_type;
+            typedef typename __Container::size_type   size_type;
+            typedef value_type&                       reference;
+            typedef typename
+              utility::trait::miscellaneous::pointer_traits<value_type*>::pointer
+              pointer;
+            typedef typename
+              utility::trait::miscellaneous::pointer_traits<value_type*>::difference_type
+              difference_type;
+
+          public:
+            typedef __hash_table_local_iterator<__Key, __Value, __Key_Value_Container, __Container> self;
+
+          private:
+            typedef __hash_table_node<__Key, __Value, __Key_Value_Container> __node_type;
+            typedef __hash_table_node<__Key, __Value, __Key_Value_Container>* __link_type;
+            typedef __Container*    __container_link;
+
+          private:
+            __link_type      __ptr;
+            size_type        __bucket_num;
+            __container_link __container_ptr;
+
+          public:
+            inline __hash_table_local_iterator() noexcept:
+              __ptr(nullptr)
+            { }
+            inline explicit __hash_table_local_iterator(
+              __link_type __link, size_type __num,
+              __container_link __con_link
+            ) noexcept:
+              __ptr(__link), __bucket_num(__num),
+              __container_ptr(__con_link)
+            { }
+
+            inline ~__hash_table_local_iterator()
+            { }
+
+          public:
+            self& operator=(const self& __oit)
+            {
+              if(&__oit != this)
+              {
+                this->__ptr = __oit.__ptr;
+                this->__bucket_num = __oit.__bucket_num;
+                this->__container_ptr = __oit.__container_ptr;
+              }
+              return *this;
+            }
+
+          public:
+            reference operator*() const
+            { return *(this->__ptr->__data);}
+            pointer operator->() const
+            { return this->__ptr->__data;}
+
+          public:
+            self& operator++() noexcept
+            {
+              this->__ptr = this->__ptr->__next;
+              return *this;
+            }
+            self operator++(int) noexcept
+            {
+              self __tmp(*this);
+              this->operator++();
+              return __tmp;
+            }
+
+          public:
+            bool operator==(const self& __o) const noexcept
+            {
+              return this->__ptr == __o.__ptr &&
+                     this->__bucket_num == __o.__bucket_num &&
+                     this->__container_ptr == __o.__container_ptr;
+            }
+            bool operator!=(const self& __o) const noexcept
+            {
+              return this->__ptr != __o.__ptr ||
+                     this->__bucket_num != __o.__bucket_num ||
+                     this->__container_ptr != __o.__container_ptr;
+            }
+
+        };
+
+        template
+        <
+          typename __Key,
+          typename __Value,
+          typename __Key_Value_Container,
+          typename __Container
+        >
+        class __hash_table_const_local_iterator
+        {
+          private:
+            template<typename, typename, typename, typename, typename, typename>
+            friend class hash_table;
+
+          public:
+            typedef utility::iterator::forward_iterator_tag
+              iterator_category;
+            typedef __Key                             key_type;
+            typedef __Value                           mapped_type;
+            typedef __Key_Value_Container             value_type;
+            typedef const value_type                  const_value_type;
+            typedef __Container                       container_type;
+            typedef typename __Container::size_type   size_type;
+            typedef const value_type&                 reference;
+            typedef typename
+              utility::trait::miscellaneous::pointer_traits<const_value_type*>::pointer
+              pointer;
+            typedef typename
+              utility::trait::miscellaneous::pointer_traits<const_value_type*>::difference_type
+              difference_type;
+
+          public:
+            typedef __hash_table_const_local_iterator<__Key, __Value, __Key_Value_Container, __Container> self;
+
+          private:
+            typedef __hash_table_node<__Key, __Value, __Key_Value_Container> __node_type;
+            typedef __hash_table_node<__Key, __Value, __Key_Value_Container>* __link_type;
+            typedef __Container*    __container_link;
+
+          private:
+            __link_type      __ptr;
+            size_type        __bucket_num;
+            __container_link __container_ptr;
+
+          public:
+            inline __hash_table_const_local_iterator() noexcept:
+              __ptr(nullptr)
+            { }
+            inline explicit __hash_table_const_local_iterator(
+              __link_type __link, size_type __num,
+              __container_link __con_link
+            ) noexcept:
+              __ptr(__link), __bucket_num(__num),
+              __container_ptr(__con_link)
+            { }
+            inline __hash_table_const_local_iterator(
+              const __hash_table_local_iterator<__Key, __Value, __Key_Value_Container, __Container>& __it
+            ) noexcept:
+              __ptr(__it.__ptr), __bucket_num(__it.__bucket_num),
+              __container_ptr(__it.__container_ptr)
+            { }
+            inline ~__hash_table_const_local_iterator()
+            { }
+
+          public:
+            self& operator=(const self& __oit)
+            {
+              if(&__oit != this)
+              {
+                this->__ptr = __oit.__ptr;
+                this->__bucket_num = __oit.__bucket_num;
+                this->__container_ptr = __oit.__container_ptr;
+              }
+              return *this;
+            }
+
+          public:
+            reference operator*() const
+            { return *(this->__ptr->__data);}
+            pointer operator->() const
+            { return this->__ptr->__data;}
+
+          public:
+            self& operator++() noexcept
+            {
+              this->__ptr = this->__ptr->__next;
+              return *this;
+            }
+            self operator++(int) noexcept
+            {
+              self __tmp(*this);
+              this->operator++();
+              return __tmp;
+            }
+
+          public:
+            bool operator==(const self& __o) const noexcept
+            {
+              return this->__ptr == __o.__ptr &&
+                     this->__bucket_num == __o.__bucket_num &&
+                     this->__container_ptr == __o.__container_ptr;
+            }
+            bool operator!=(const self& __o) const noexcept
+            {
+              return this->__ptr != __o.__ptr ||
+                     this->__bucket_num != __o.__bucket_num ||
+                     this->__container_ptr != __o.__container_ptr;
+            }
+
+        };
+
+      public:
+        typedef __hash_table_node<_Key, _Value, _Key_Value_Container>
+          __node_type;
+        typedef __node_type* __link_type;
+        typedef utility::memory::allocator<__node_type>
+          __node_allocator_type;
+        typedef utility::memory::allocator_traits<__node_allocator_type>
+          __node_allocator_traits_type;
+        typedef
+          hash_table<_Key, _Value, _Key_Value_Container, _Hash, _Key_eq, _Alloc>
+          __self_type;
+
+      public:
+        typedef _Key                  key_type;
+        typedef _Value                mapped_type;
+        typedef _Key_Value_Container  value_type;
+        typedef _Hash                 hasher;
+        typedef _Key_eq               key_equal;
+        typedef utility::size_t     size_type;
+        typedef utility::ptrdiff_t  difference_type;
+        typedef value_type&           reference;
+        typedef const value_type&     const_reference;
+        typedef _Alloc                allocator_type;
+
+      private:
+        typedef utility::memory::unique_ptr<value_type>
+          __value_container;
+        typedef utility::memory::unique_ptr<__node_type>
+          __node_container;
+        typedef utility::container::vector<__link_type>
+          __bucket_container;
+
+      public:
+        typedef utility::memory::allocator_traits<allocator_type>
+          allocator_traits_type;
+
+      public:
+        typedef typename allocator_traits_type::pointer pointer;
+        typedef typename allocator_traits_type::const_pointer const_pointer;
+
+      public:
+        typedef
+          __hash_table_iterator<key_type, mapped_type, value_type, __self_type>
+          iterator;
+        typedef
+          __hash_table_const_iterator<key_type, mapped_type, value_type, __self_type>
+          const_iterator;
+        typedef
+          __hash_table_local_iterator<key_type, mapped_type, value_type, __self_type>
+          local_iterator;
+        typedef
+          __hash_table_const_local_iterator<key_type, mapped_type, value_type, __self_type>
+          const_local_iterator;
+
+      public: // assert:
+        static_assert(::utility::trait::type::releations::is_same<
+          value_type, typename allocator_type::value_type>::value,
+          "the allocator's alloc type must be the same as value type");
+
+      private:
+        float                     __load_factor;
+        __bucket_container        __bucket;
+        size_type                 __size;
+        hasher                    __hasher;
+        key_equal                 __key_eq;
+        allocator_type            __allocator;
+        __node_allocator_type     __node_allocator;
+
+      public:
+        template<typename _Key_Eq = _Key_eq, typename _Hasher = _Hash,
+        typename
+        utility::trait::type::miscellaneous::enable_if<
+          utility::trait::type::features::is_default_constructible<_Key_Eq>::value &&
+          utility::trait::type::features::is_default_constructible<_Hasher>::value,
+          bool
+          >::type = true
+        >
+        explicit hash_table():
+          __load_factor(1.0f), __bucket(97UL), __size(0U),
+          __hasher(), __key_eq(), __allocator(),
+          __node_allocator()
+        { }
+        template<typename _Key_Eq = _Key_eq, typename _Hasher = _Hash,
+        typename
+        utility::trait::type::miscellaneous::enable_if<
+          utility::trait::type::features::is_copy_constructible<_Key_Eq>::value &&
+          utility::trait::type::features::is_copy_constructible<_Hasher>::value,
+          bool
+          >::type = true
+        >
+        explicit hash_table(
+          size_type __count, const hasher& __ha,
+          const key_equal& __equal,
+          const allocator_type& __alloc = allocator_type()
+        ):__load_factor(1.0f),
+          __bucket(__hash_length::__next_prime(__count)),
+          __size(0U),
+          __hasher(__ha), __key_eq(__equal),
+          __allocator(__alloc), __node_allocator()
+        { }
+        template<typename _Key_Eq = _Key_eq, typename _Hasher = _Hash,
+        typename
+        utility::trait::type::miscellaneous::enable_if<
+          utility::trait::type::features::is_copy_constructible<_Key_Eq>::value &&
+          utility::trait::type::features::is_copy_constructible<_Hasher>::value &&
+          utility::trait::type::features::is_default_constructible<_Key_Eq>::value,
+          bool
+          >::type = true
+        >
+        explicit hash_table(
+          size_type __count, const hasher& __ha,
+          const allocator_type& __alloc = allocator_type()
+        ):__load_factor(1.0f),
+          __bucket(__hash_length::__next_prime(__count)),
+          __size(0U),
+          __hasher(__ha), __key_eq(),
+          __allocator(__alloc), __node_allocator()
+        { }
+        template<typename _Key_Eq = _Key_eq, typename _Hasher = _Hash,
+        typename
+        utility::trait::type::miscellaneous::enable_if<
+          utility::trait::type::features::is_copy_constructible<_Key_Eq>::value &&
+          utility::trait::type::features::is_copy_constructible<_Hasher>::value &&
+          utility::trait::type::features::is_default_constructible<_Key_Eq>::value &&
+          utility::trait::type::features::is_default_constructible<_Hasher>::value,
+          bool
+          >::type = true
+        >
+        explicit hash_table(
+          size_type __count,
+          const allocator_type& __alloc = allocator_type()
+        ):__load_factor(1.0f),
+          __bucket(__hash_length::__next_prime(__count)),
+          __size(0U),
+          __hasher(), __key_eq(),
+          __allocator(__alloc), __node_allocator()
+        { }
+
+        explicit hash_table(const allocator_type& __alloc):
+          __load_factor(1.0f), __bucket(97UL), __size(0U),
+          __hasher(), __key_eq(), __allocator(__alloc),
+          __node_allocator()
+        { }
+
+        template<typename _InputIterator,
+        typename _Key_Eq = _Key_eq, typename _Hasher = _Hash,
+        typename
+        utility::trait::type::miscellaneous::enable_if<
+            is_iterator<_InputIterator>::value,
+            bool
+          >::type = true,
+        typename
+        utility::trait::type::miscellaneous::enable_if<
+          utility::trait::type::features::is_copy_constructible<_Key_Eq>::value &&
+          utility::trait::type::features::is_copy_constructible<_Hasher>::value,
+          bool
+          >::type = true
+        >
+        hash_table(
+          _InputIterator __first, _InputIterator __last,
+          size_type __count, const hasher& __ha,
+          const key_equal& __equal,
+          const allocator_type& __alloc = allocator_type()
+        ):__load_factor(1.0f),
+          __bucket(),
+          __size(0U),
+          __hasher(__ha),
+          __key_eq(__equal),
+          __allocator(__alloc),
+          __node_allocator()
+        {
+          const size_type __bucket_size =
+            utility::algorithm::max<size_type>(
+              __hash_length::__next_prime(
+                utility::iterator::distance(__first, __last)
+              ),
+              __hash_length::__next_prime(__count)
+            );
+          this->__bucket.resize(__bucket_size);
+          for(; __first != __last;)
+          { __insert_equal(__allocate_node(this, *__first++), this);}
+        }
+        template<typename _InputIterator,
+        typename _Key_Eq = _Key_eq, typename _Hasher = _Hash,
+        typename
+        utility::trait::type::miscellaneous::enable_if<
+            is_iterator<_InputIterator>::value,
+            bool
+          >::type = true,
+        typename
+        utility::trait::type::miscellaneous::enable_if<
+          utility::trait::type::features::is_copy_constructible<_Key_Eq>::value &&
+          utility::trait::type::features::is_copy_constructible<_Hasher>::value &&
+          utility::trait::type::features::is_default_constructible<_Key_Eq>::value &&
+          utility::trait::type::features::is_default_constructible<_Hasher>::value,
+          bool
+          >::type = true
+        >
+        hash_table(
+          _InputIterator __first, _InputIterator __last,
+          size_type __count = 97UL,
+          const allocator_type& __alloc = allocator_type()
+        ): hash_table(__first, __last, __count, hasher(), key_equal(), __alloc)
+        { }
+        template<typename _InputIterator,
+        typename _Key_Eq = _Key_eq, typename _Hasher = _Hash,
+        typename
+        utility::trait::type::miscellaneous::enable_if<
+            is_iterator<_InputIterator>::value,
+            bool
+          >::type = true,
+        typename
+        utility::trait::type::miscellaneous::enable_if<
+          utility::trait::type::features::is_copy_constructible<_Key_Eq>::value &&
+          utility::trait::type::features::is_copy_constructible<_Hasher>::value &&
+          utility::trait::type::features::is_default_constructible<_Key_Eq>::value,
+          bool
+          >::type = true
+        >
+        hash_table(
+          _InputIterator __first, _InputIterator __last,
+          size_type __count, const hasher& __ha,
+          const allocator_type& __alloc = allocator_type()
+        ): hash_table(__first, __last, __count, __ha, key_equal(), __alloc)
+        { }
+
+
+        hash_table(const hash_table& __other):
+          __load_factor(__other.__load_factor),
+          __bucket(__other.__bucket.size()),
+          __size(__other.__size),
+          __hasher(__other.__hasher),
+          __key_eq(__other.__key_eq),
+          __allocator(__other.__allocator),
+          __node_allocator()
+        {
+          const size_type __bucket_size = __other.__bucket.size();
+
+          for(size_type __i = 0; __i < __bucket_size; ++__i)
+          {
+            if(__other.__bucket[__i] != nullptr)
+            {
+              this->__bucket[__i] = __allocate_node_chain(
+                __other.begin(__i), __other.end(__i), this
+              ).first;
+            }
+          }
+        }
+        hash_table(
+          const hash_table& __other, const allocator_type& __alloc
+        ):__load_factor(__other.__load_factor),
+          __bucket(__other.__bucket.size()),
+          __size(__other.__size),
+          __hasher(__other.__hasher),
+          __key_eq(__other.__key_eq),
+          __allocator(__alloc),
+          __node_allocator()
+        {
+          const size_type __bucket_size = __other.__bucket.size();
+
+          for(size_type __i = 0; __i < __bucket_size; ++__i)
+          {
+            if(__other.__bucket[__i] != nullptr)
+            {
+              this->__bucket[__i] = __allocate_node_chain(
+                __other.begin(__i), __other.end(__i), this
+              ).first;
+            }
+          }
+        }
+        hash_table(hash_table&& __other):
+          __load_factor(__other.__load_factor),
+          __bucket(::utility::algorithm::move(__other.__bucket)),
+          __size(__other.__size),
+          __hasher(::utility::algorithm::move(__other.__hasher)),
+          __key_eq(::utility::algorithm::move(__other.__key_eq)),
+          __allocator(::utility::algorithm::move(__other.__allocator)),
+          __node_allocator()
+        { }
+        hash_table(
+          hash_table&& __other, const allocator_type& __alloc
+        ):__load_factor(__other.__load_factor),
+          __bucket(::utility::algorithm::move(__other.__bucket)),
+          __size(__other.__size),
+          __hasher(::utility::algorithm::move(__other.__hasher)),
+          __key_eq(::utility::algorithm::move(__other.__key_eq)),
+          __allocator(__alloc),
+          __node_allocator()
+        { }
+        template<typename _Key_Eq = _Key_eq, typename _Hasher = _Hash,
+        typename
+        utility::trait::type::miscellaneous::enable_if<
+          utility::trait::type::features::is_copy_constructible<_Key_Eq>::value &&
+          utility::trait::type::features::is_copy_constructible<_Hasher>::value,
+          bool
+          >::type = true
+        >
+        hash_table(
+          initializer_list<value_type> __initlist,
+          size_type __count, const hasher& __ha,
+          const key_equal __equal,
+          const allocator_type& __alloc = allocator_type()
+        ):__load_factor(1.0f), __bucket(), __size(0), __hasher(__ha),
+          __key_eq(__equal), __allocator(__alloc),
+          __node_allocator()
+        {
+          typedef typename initializer_list<value_type>::const_iterator
+            __iterator;
+          const size_type __bucket_size =
+            utility::algorithm::max<size_type>(
+              __hash_length::__next_prime(__initlist.size()),
+              __hash_length::__next_prime(__count)
+            );
+          this->__bucket.resize(__bucket_size);
+          for(__iterator __first = __initlist.begin(),
+            __last = __initlist.end(); __first != __last;)
+          { __insert_equal(__allocate_node(this, *__first++), this);}
+        }
+        template<typename _Key_Eq = _Key_eq, typename _Hasher = _Hash,
+        typename
+        utility::trait::type::miscellaneous::enable_if<
+          utility::trait::type::features::is_copy_constructible<_Key_Eq>::value &&
+          utility::trait::type::features::is_copy_constructible<_Hasher>::value &&
+          utility::trait::type::features::is_default_constructible<_Key_Eq>::value &&
+          utility::trait::type::features::is_default_constructible<_Hasher>::value,
+          bool
+          >::type = true
+        >
+        hash_table(
+          initializer_list<value_type> __initlist,
+          size_type __count = 97UL,
+          const allocator_type& __alloc = allocator_type()
+        ):hash_table(
+          __initlist, __count, hasher(), key_equal(), __alloc
+        )
+        { }
+        template<typename _Key_Eq = _Key_eq, typename _Hasher = _Hash,
+        typename
+        utility::trait::type::miscellaneous::enable_if<
+          utility::trait::type::features::is_copy_constructible<_Key_Eq>::value &&
+          utility::trait::type::features::is_copy_constructible<_Hasher>::value &&
+          utility::trait::type::features::is_default_constructible<_Key_Eq>::value,
+          bool
+          >::type = true
+        >
+        hash_table(
+          initializer_list<value_type> __initlist,
+          size_type __count, const hasher& __ha,
+          const allocator_type& __alloc = allocator_type()
+        ):hash_table(
+          __initlist, __count, __ha, key_equal(), __alloc
+        )
+        { }
+
+        ~hash_table()
+        {
+          this->clear();
+        }
+
+      public:
+        hash_table& operator=(const hash_table& __other)
+        {
+          if(&__other != this)
+          {
+
+            this->__load_factor = __other.__load_factor;
+            this->__hasher = __other.__hasher;
+            this->__key_eq = __other.__key_eq;
+            this->__allocator = __other.__allocator;
+            this->__node_allocator = __other.__node_allocator;
+
+            const size_type __bucket_size = __other.__bucket.size();
+            __bucket_container __tmp(__bucket_size);
+
+            __UTILITY_TRY_BEGIN
+              for(size_type __i = 0; __i < __bucket_size; ++__i)
+              {
+                if(__other.__bucket[__i] != nullptr)
+                {
+                  __tmp[__i] = __allocate_node_chain(
+                    __other.begin(__i), __other.end(__i), this
+                  ).first;
+                }
+              }
+              this->clear();
+              this->__bucket.swap(__tmp);
+              this->__size = __other.__size;
+            __UTILITY_TRY_END
+            __UTILITY_CATCH(...)
+            __UTILITY_CATCH_UNWIND(
+              for(size_type __now = 0; __now < __tmp.size(); ++__now)
+              {
+                if(__tmp[__now] != nullptr)
+                {
+                  __link_type __use = __tmp[__now];
+                  __tmp[__now] = nullptr;
+                  __deallocate_node_chain(__use, this);
+                }
+              }
+            );
+          }
+          return *this;
+        }
+        hash_table& operator=(hash_table&& __other)
+        {
+          if(&__other != this)
+          {
+            this->__load_factor = __other.__load_factor;
+            this->__bucket.swap(__other.__bucket);
+            this->__size = __other.__size;
+            this->__hasher =
+              utility::algorithm::move(__other.__hasher);
+            this->__key_eq =
+              utility::algorithm::move(__other.__key_eq);
+            this->__allocator =
+              utility::algorithm::move(__other.__allocator);
+            this->__node_allocator =
+              utility::algorithm::move(__other.__node_allocator);
+          }
+          return *this;
+        }
+        hash_table& operator=(initializer_list<value_type> __initlist)
+        {
+          typedef typename initializer_list<value_type>::const_iterator
+            __iterator;
+          const size_type __bucket_size =
+            utility::algorithm::max<size_type>(
+              __hash_length::__next_prime(__initlist.size()),
+              __hash_length::__next_prime(this->bucket_size())
+            );
+          __bucket_container __tmp(__bucket_size);
+          __link_type __ins;
+          __UTILITY_TRY_BEGIN
+            for(__iterator __first = __initlist.begin(),
+              __last = __initlist.end(); __first != __last; ++__first)
+            {
+              __ins = __allocate_node(this, *__first);
+              const size_type __pos =
+                this->key_hash(__get_key(*(__ins->__data)), __bucket_size);
+              __link_type __link = __tmp[__pos];
+              for(__link_type __i = __link; __i != nullptr; __i = __i->__next)
+              {
+                if(this->__key_eq(
+                  __get_key(*(__i->__data)), __get_key(*(__ins->__data))
+                ))
+                {
+                  __ins->__next = __i->__next;
+                  __i->__next = __ins;
+                  goto __next_value;
+                }
+              }
+              __ins->__next = __link;
+              __tmp[__pos] = __ins;
+              __next_value:;
+            }
+            this->clear();
+            this->__bucket.swap(__tmp);
+            this->__size = __initlist.size();
+          __UTILITY_TRY_END
+          __UTILITY_CATCH(...)
+          __UTILITY_CATCH_UNWIND(
+            for(size_type __now = 0; __now < __tmp.size(); ++__now)
+            {
+              if(__tmp[__now] != nullptr)
+              {
+                __link_type __use = __tmp[__now];
+                __tmp[__now] = nullptr;
+                __deallocate_node_chain(__use, this);
+              }
+            }
+          );
+          return *this;
+        }
+
+      public:
+        inline size_type size() const noexcept
+        { return this->__size;}
+        inline size_type bucket_size() const noexcept
+        { return this->__bucket.size();}
+
+      public:
+        inline iterator begin() noexcept
+        {
+          for(
+            typename __bucket_container::iterator __it = this->__bucket.begin(),
+            __end = this->__bucket.end(); __it != __end; ++__it
+          )
+          {
+            if(*__it != nullptr)
+            { return iterator(*__it, this);}
+          }
+          return iterator(nullptr, this);
+        }
+        inline const_iterator begin() const noexcept
+        {
+          for(
+            typename __bucket_container::const_iterator __it = this->__bucket.begin(),
+            __end = this->__bucket.end(); __it != __end; ++__it
+          )
+          {
+            if(*__it != nullptr)
+            {
+              return const_iterator(
+                const_cast<__link_type>(*__it),
+                const_cast<__self_type*>(this)
+              );
+            }
+          }
+          return const_iterator(nullptr, const_cast<__self_type*>(this));
+        }
+        inline const_iterator cbegin() const noexcept
+        {
+          for(
+            typename __bucket_container::const_iterator __it = this->__bucket.begin(),
+            __end = this->__bucket.end(); __it != __end; ++__it
+          )
+          {
+            if(*__it != nullptr)
+            {
+              return const_iterator(
+                const_cast<__link_type>(*__it),
+                const_cast<__self_type*>(this)
+              );
+            }
+          }
+          return const_iterator(nullptr, const_cast<__self_type*>(this));
+        }
+        inline iterator end() noexcept
+        { return iterator(nullptr, this);}
+        inline const_iterator end() const noexcept
+        { return iterator(nullptr, const_cast<__self_type*>(this));}
+        inline const_iterator cend() const noexcept
+        { return iterator(nullptr, const_cast<__self_type*>(this));}
+
+      public:
+        inline local_iterator begin(size_type __pos) noexcept
+        { return local_iterator(this->__bucket[__pos], __pos, this);}
+        inline const_local_iterator begin(size_type __pos) const noexcept
+        {
+          return const_local_iterator(
+            this->__bucket[__pos], __pos, const_cast<__self_type*>(this)
+          );
+        }
+        inline const_local_iterator cbegin(size_type __pos) const noexcept
+        {
+          return const_local_iterator(
+            this->__bucket[__pos], __pos, const_cast<__self_type*>(this)
+          );
+        }
+        inline local_iterator end(size_type __pos) noexcept
+        { return local_iterator(nullptr, __pos, this);}
+        inline const_local_iterator end(size_type __pos) const noexcept
+        {
+          return const_local_iterator(
+            nullptr, __pos, const_cast<__self_type*>(this)
+          );
+        }
+        inline const_local_iterator cend(size_type __pos) const noexcept
+        {
+          return const_local_iterator(
+            nullptr, __pos, const_cast<__self_type*>(this)
+          );
+        }
+        inline size_type bucket(const key_type& __key) const
+        { return this->key_hash(__key, this->bucket_size());}
+
+      public:
+        inline utility::container::pair<iterator, bool>
+        insert_unique(const value_type& __val)
+        {
+          if(this->is_overload(1U))
+          { this->resize(this->size() + 1);}
+          return __insert_unique(__allocate_node(this, __val), this);
+        }
+        inline utility::container::pair<iterator, bool>
+        insert_unique(value_type&& __val)
+        {
+          if(this->is_overload(1U))
+          { this->resize(this->size() + 1);}
+          return __insert_unique(
+            __allocate_node(this, utility::algorithm::move(__val)), this
+          );
+        }
+        inline iterator insert_equal(const value_type& __val)
+        {
+          if(this->is_overload(1U))
+          { this->resize(this->size() + 1);}
+          return __insert_equal(__allocate_node(this, __val), this);
+        }
+        inline iterator insert_equal(value_type&& __val)
+        {
+          if(this->is_overload(1U))
+          { this->resize(this->size() + 1);}
+          return __insert_equal(
+            __allocate_node(this, utility::algorithm::move(__val)), this
+          );
+        }
+        template<typename _InputIterator>
+        inline size_type insert_unique(
+          _InputIterator __first, _InputIterator __last
+        )
+        {
+          if(__first == __last)
+          { return 0U;}
+          if(this->is_overload(::utility::iterator::distance(__first, __last)))
+          { this->resize(::utility::iterator::distance(__first, __last));}
+          size_type __success = 0;
+          for(; __first != __last; ++__first)
+          {
+            if(__insert_unique(__allocate_node(this, *__first), this).second)
+            { ++__success;}
+          }
+          return __success;
+        }
+        template<typename _InputIterator>
+        inline void insert_equal(
+          _InputIterator __first, _InputIterator __last
+        )
+        {
+          if(__first == __last)
+          { return;}
+          if(this->is_overload(::utility::iterator::distance(__first, __last)))
+          { this->resize(::utility::iterator::distance(__first, __last));}
+          for(; __first != __last; ++__first)
+          { __insert_equal(__allocate_node(this, *__first), this);}
+        }
+        template<typename... _Args>
+        inline utility::container::pair<iterator, bool>
+        emplace_unique(_Args&&... __args)
+        {
+          if(this->is_overload(1U))
+          { this->resize(this->size() + 1);}
+          return __insert_unique(
+            __allocate_node(this, utility::algorithm::forward<_Args>(__args)...),
+            this
+          );
+        }
+        template<typename... _Args>
+        inline iterator emplace_equal(_Args&&... __args)
+        {
+          if(this->is_overload(1U))
+          { this->resize(this->size() + 1);}
+          return __insert_equal(
+            __allocate_node(this, utility::algorithm::forward<_Args>(__args)...),
+            this
+          );
+        }
+
+      public:
+        iterator find(const key_type& __key)
+        {
+          const size_type __num = this->key_hash(__key, this->bucket_size());
+          __link_type __pos = this->__bucket[__num];
+          for(; __pos != nullptr; __pos = __pos->__next)
+          {
+            if(this->__key_eq(__get_key(*(__pos->__data)), __key))
+            { return iterator(__pos, this);}
+          }
+          return iterator(nullptr, this);
+        }
+        const_iterator find(const key_type& __key) const
+        {
+          const size_type __num = this->key_hash(__key, this->bucket_size());
+          const __node_type* __pos = this->__bucket[__num];
+          for(; __pos != nullptr; __pos = __pos->__next)
+          {
+            if(this->__key_eq(__get_key(*(__pos->__data)), __key))
+            { return const_iterator(__pos, this);}
+          }
+          return const_iterator(nullptr, this);
+        }
+        size_type count(const key_type& __key) const
+        {
+          const size_type __num = this->key_hash(__key, this->bucket_size());
+          const __node_type* __pos = this->__bucket[__num];
+          size_type __count = 0U;
+          for(; __pos != nullptr; __pos = __pos->__next)
+          {
+            if(this->__key_eq(__get_key(*(__pos->__data)), __key))
+            { break;}
+          }
+          for(; __pos != nullptr; __pos = __pos->__next)
+          {
+            if(!this->__key_eq(__get_key(*(__pos->__data)), __key))
+            { break;}
+            ++__count;
+          }
+          return __count;
+        }
+        utility::container::pair<iterator, iterator>
+        equal_range(const key_type& __key)
+        {
+          typedef utility::container::pair<iterator, iterator>
+            __result_container;
+          const size_type __num = this->key_hash(__key, this->bucket_size());
+          for(
+            __link_type __bpos = this->__bucket[__num];
+            __bpos != nullptr; __bpos = __bpos->__next
+          )
+          {
+            if(this->__key_eq(__get_key(*(__bpos->__data)), __key))
+            {
+              for(
+                __link_type __epos = __bpos->__next;
+                __epos != nullptr; __epos = __epos->__next
+              )
+              {
+                if(!(this->__key_eq(__get_key(*(__epos->__data)), __key)))
+                {
+                  return __result_container(
+                    iterator(__bpos, this), iterator(__epos, this)
+                  );
+                }
+              }
+              for(
+                size_type __i = __num +1 ; __i < this->__bucket.size(); ++__i
+              )
+              {
+                if(this->__bucket[__i] != nullptr)
+                {
+                  return __result_container(
+                    iterator(__bpos, this),
+                    iterator(this->__bucket[__i], this)
+                  );
+                }
+              }
+              return __result_container(
+                iterator(__bpos, this), iterator(nullptr, this)
+              );
+            }
+          }
+          return __result_container(
+            iterator(nullptr, this), iterator(nullptr, this)
+          );
+        }
+        utility::container::pair<const_iterator, const_iterator>
+        equal_range(const key_type& __key) const
+        {
+          typedef utility::container::pair<const_iterator, const_iterator>
+            __result_container;
+          const size_type __num = this->key_hash(__key, this->bucket_size());
+          for(
+            const __node_type* __bpos = this->__bucket[__num];
+            __bpos != nullptr; __bpos = __bpos->__next
+          )
+          {
+            if(this->__key_eq(__get_key(*(__bpos->__data)), __key))
+            {
+              for(
+                const __node_type* __epos = __bpos->__next;
+                __epos != nullptr; __epos = __epos->__next
+              )
+              {
+                if(!(this->__key_eq(__get_key(*(__epos->__data)), __key)))
+                {
+                  return __result_container(
+                    iterator(__bpos, this), iterator(__epos, this)
+                  );
+                }
+              }
+              for(
+                size_type __i = __num +1 ; __i < this->__bucket.size(); ++__i
+              )
+              {
+                if(this->__bucket[__i] != nullptr)
+                {
+                  return __result_container(
+                    iterator(__bpos, this),
+                    iterator(this->__bucket[__i], this)
+                  );
+                }
+              }
+              return __result_container(
+                iterator(__bpos, this), iterator(nullptr, this)
+              );
+            }
+          }
+          return __result_container(
+            iterator(nullptr, this), iterator(nullptr, this)
+          );
+        }
+
+      public:
+        size_type erase(const key_type& __key)
+        {
+          const size_type __num = this->key_hash(__key, this->size());
+          __link_type __pos = this->__bucket[__num];
+          size_type __erased = 0U;
+          if(__pos != nullptr)
+          {
+            __link_type __bpos = __pos;
+            __link_type __epos = __pos->__next;
+            for(; __epos != nullptr; __epos = __bpos->__next)
+            {
+              if(this->__key_eq(__get_key(*(__epos->__data)), __key))
+              {
+                __bpos->__next = __epos->__next;
+                __deallocate_node(__epos, this);
+                ++__erased;
+                --(this->__size);
+              }
+              else
+              { __bpos = __epos;}
+            }
+            if(this->__key_eq(__get_key(*(__pos->__data)), __key))
+            {
+              this->__bucket[__num] = __pos->__next;
+              __deallocate_node(__pos, this);
+              ++__erased;
+              --(this->__size);
+            }
+          }
+          return __erased;
+        }
+        iterator erase(const_iterator __pos)
+        {
+          if(__pos.__ptr == nullptr)
+          { return iterator(nullptr, this);}
+          __link_type __tpos = __pos.__ptr;
+          const size_type __num =
+            this->key_hash(__get_key(*(__tpos->__data)), this->bucket_size());
+          __link_type __spos = this->__bucket[__num];
+
+          if(__spos == __tpos)
+          {
+            this->__bucket[__num] = __spos->__next;
+            __tpos = __tpos->__next;
+            __deallocate_node(__spos, this);
+            --(this->__size);
+            return iterator(__tpos, this);
+          }
+
+          for(; __spos->__next != __tpos; __spos = __spos->__next)
+          { }
+          __spos->__next = __tpos->__next;
+          __deallocate_node(__tpos, this);
+          return iterator(__spos, this).operator++();
+        }
+        iterator erase(const_iterator __first, const_iterator __last)
+        {
+          if(__first == __last)
+          { return iterator(__last.__ptr, __last.__container_ptr);}
+          if(__last.__ptr == nullptr)
+          { return this->erase_from(__first);}
+          __link_type __bpos = __first.__ptr;
+          __link_type __epos = __last.__ptr;
+          const size_type __bnum =
+            this->key_hash(__get_key(*(__bpos->__data)), this->bucket_size());
+          const size_type __enum =
+            this->key_hash(__get_key(*(__epos->__data)), this->bucket_size());
+          __link_type __pos = this->__bucket[__bnum];
+          if(__bnum == __enum)
+          {
+            if(__bpos == __pos)
+            { this->__bucket[__bnum] = __epos;}
+            __erase_node_chain(__bpos, __epos, this);
+          }
+          else
+          {
+            if(__bpos == __pos)
+            { this->__bucket[__bnum] = nullptr;}
+            else
+            {
+              for(; __pos->__next != __bpos; __pos = __pos->__next)
+              { }
+              __pos->__next = nullptr;
+            }
+            __erase_node_chain(__bpos, nullptr, this);
+            for(size_type __i = __bnum + 1; __i < __enum; ++__i)
+            {
+              if(this->__bucket[__i] != nullptr)
+              {
+                __erase_node_chain(this->__bucket[__i], nullptr, this);
+                this->__bucket[__i] = nullptr;
+              }
+            }
+            __erase_node_chain(this->__bucket[__enum], __epos, this);
+            this->__bucket[__enum] = __epos;
+          }
+          return iterator(__epos, this);
+        }
+
+      public:
+        inline hasher hash_function() const
+        { return this->__hasher;}
+        inline key_equal key_eq() const
+        { return this->__key_eq;}
+
+      public:
+        inline bool empty() const noexcept
+        { return this->size() == 0UL;}
+        void clear()
+        {
+          for(
+            typename __bucket_container::iterator __it = this->__bucket.begin(),
+              __eit = this->__bucket.end(); __it != __eit; ++__it
+          )
+          {
+            if((*__it) != nullptr)
+            {
+              __deallocate_node_chain(*__it, this);
+              *__it = nullptr;
+            }
+          }
+          this->__size = 0U;
+          return;
+        }
+        void swap(hash_table& __o) noexcept(
+          utility::trait::type::features::is_nothrow_swappable<hasher>::value &&
+          utility::trait::type::features::is_nothrow_swappable<key_equal>::value
+        )
+        {
+          using utility::algorithm::swap;
+          swap(this->__key_eq,      __o.__key_eq      );
+          swap(this->__hasher,      __o.__hasher      );
+          swap(this->__bucket,      __o.__bucket      );
+          swap(this->__size,        __o.__size        );
+          swap(this->__load_factor, __o.__load_factor );
+        }
+
+      public:
+        float max_load_factor() const noexcept
+        { return this->__load_factor;}
+        void max_load_factor(float __fac) noexcept
+        { this->__load_factor = __fac;}
+        float load_factor() const noexcept
+        {
+          return static_cast<double>(this->size()) / this->__bucket.size();
+        }
+
+      __utility_private:
+        UTILITY_ALWAYS_INLINE
+        inline size_type key_hash(const key_type& __key, size_type __s) const
+        { return (this->__hasher)(__key) % __s;}
+        iterator erase_from(const_iterator __pos)
+        {
+          __link_type __tpos = __pos.__ptr;
+          const size_type __num =
+            this->key_hash(__get_key(*(__tpos->__data)), this->bucket_size());
+          __link_type __link = this->__bucket[__num];
+          const size_type __bsize = this->bucket_size();
+          if(__link == __tpos)
+          {
+            __erase_node_chain(__tpos, nullptr, this);
+            this->__bucket[__num] = nullptr;
+          }
+          else
+          {
+            for(; __link->__next != __tpos; __link = __link->__next)
+            { }
+            __link->__next = nullptr;
+            __erase_node_chain(__tpos, nullptr, this);
+          }
+          for(size_type __i = __num+1; __i != __bsize; ++__i)
+          {
+            if(this->__bucket[__i] != nullptr)
+            {
+              __erase_node_chain(this->__bucket[__i], nullptr, this);
+              this->__bucket[__i] = nullptr;
+            }
+          }
+          return iterator(nullptr, this);
+        }
+
+      private:
+        bool is_overload(size_type __add)
+        {
+          return ((static_cast<double>(this->size() + __add) / this->__bucket.size()) > this->__load_factor);
+        }
+        void resize(size_type __need_size)
+        {
+          const size_type __old_size = this->__bucket.size();
+          const size_type __new_size =
+            __hash_length::__next_prime(__need_size);
+          __bucket_container __tmp(
+            __new_size, nullptr, this->__bucket.get_allocator()
+          );
+          __UTILITY_TRY_BEGIN
+            for(size_type __now = 0U; __now < __old_size; ++__now)
+            {
+              __link_type __link = this->__bucket[__now];
+              for(;__link != nullptr;)
+              {
+                size_type __pos =
+                  this->key_hash(__get_key(*(__link->__data)), __new_size);
+                this->__bucket[__now] = __link->__next;
+                __link->__next = __tmp[__pos];
+                __tmp[__pos] = __link;
+                __link = this->__bucket[__now];
+              }
+            }
+            this->__bucket.swap(__tmp);
+          __UTILITY_TRY_END
+          __UTILITY_CATCH(...)
+          __UTILITY_CATCH_UNWIND(
+            for(size_type __now = 0; __now < __tmp.size(); ++__now)
+            {
+              if(__tmp[__now] != nullptr)
+              {
+                __link_type __use = __tmp[__now];
+                __tmp[__now] = nullptr;
+                __deallocate_node_chain(__use, this);
+              }
+            }
+          );
+        }
+
+      private:
+        static utility::container::pair<iterator, bool>
+        __insert_unique(
+          __link_type __ins, hash_table* __this
+        )
+        {
+          const size_type __pos =
+            __this->key_hash(__get_key(*(__ins->__data)), __this->bucket_size());
+          __link_type __link = __this->__bucket[__pos];
+
+          // Search whether the key *(__ins->__data) exists.
+          for(__link_type __i = __link; __i != nullptr; __i = __i->__next)
+          {
+            if(__this->__key_eq(
+              __get_key(*(__i->__data)), __get_key(*(__ins->__data))
+            ))
+            {
+              __deallocate_node(__ins, __this);
+              return utility::container::pair<iterator, bool>(
+                iterator(__i, __this), false
+              );
+            }
+          }
+
+          // The chain has no node which key is *(__ins->__data),
+          // insert the node at the begin of the bucket
+          __ins->__next = __link;
+          __this->__bucket[__pos] = __ins;
+          ++(__this->__size);
+
+          return utility::container::pair<iterator, bool>(
+            iterator(__ins, __this), true
+          );
+        }
+
+
+        static iterator __insert_equal(
+          __link_type __ins, hash_table* __this
+        )
+        {
+          const size_type __pos =
+            __this->key_hash(__get_key(*(__ins->__data)), __this->bucket_size());
+          __link_type __link = __this->__bucket[__pos];
+
+          // Search the insert pos
+          for(__link_type __i = __link; __i != nullptr; __i = __i->__next)
+          {
+            if(__this->__key_eq(
+              __get_key(*(__i->__data)), __get_key(*(__ins->__data))
+            ))
+            {
+              __ins->__next = __i->__next;
+              __i->__next = __ins;
+              ++(__this->__size);
+              return iterator(__ins, __this);
+            }
+          }
+
+          // The chain has no node which key is *(__ins->__data)
+          // insert the node at the begin of the bucket
+          __ins->__next = __link;
+          __this->__bucket[__pos] = __ins;
+          ++(__this->__size);
+
+          return iterator(__ins, __this);
+        }
+
+      private:
+        template<typename... _Args>
+        static inline __link_type __allocate_node(
+          hash_table* __this, _Args&&... __args
+        )
+        {
+          __node_container __node(
+            __node_allocator_traits_type::allocate(__this->__node_allocator)
+          );
+          __value_container __valc(
+            allocator_traits_type::allocate(__this->__allocator)
+          );
+          allocator_traits_type::construct(
+            __this->__allocator, __valc.get(),
+            utility::algorithm::forward<_Args>(__args)...
+          );
+          __link_type __link = __node.release();
+          __link->__data = __valc.release();
+          return __link;
+        }
+        template<typename _InputIterator>
+        static utility::container::pair<__link_type, __link_type>
+        __allocate_node_chain(
+          _InputIterator __first, _InputIterator __last,
+          hash_table* __this
+        )
+        {
+          __node_container __node(
+            __node_allocator_traits_type::allocate(__this->__node_allocator)
+          );
+          __value_container __valc(
+            allocator_traits_type::allocate(__this->__allocator)
+          );
+          allocator_traits_type::construct(
+            __this->__allocator, __valc.get(), *__first++
+          );
+          __link_type __epos = __node.release();
+          __epos->__data = __valc.release();
+          __epos->__next = nullptr;
+          __link_type __bpos = __epos;
+          __UTILITY_TRY_BEGIN
+            for(; __first != __last;)
+            {
+              __node.reset(
+                __node_allocator_traits_type::allocate(__this->__node_allocator)
+              );
+              __valc.reset(
+                allocator_traits_type::allocate(__this->__allocator)
+              );
+              allocator_traits_type::construct(
+                __this->__allocator, __valc.get(), *__first++
+              );
+              __epos->__next = __node.release();
+              __epos = __epos->__next;
+              __epos->__next = nullptr;
+              __epos->__data = __valc.release();
+            }
+          __UTILITY_TRY_END
+          __UTILITY_CATCH(...)
+          __UTILITY_CATCH_UNWIND(
+            for(; __bpos != nullptr; __bpos = __epos)
+            {
+              __epos = __bpos->__next;
+              __deallocate_node(__bpos, __this);
+            }
+          );
+          return utility::container::pair<__link_type, __link_type>(
+            __bpos, __epos
+          );
+        }
+
+      private:
+        static inline void __deallocate_node(
+          __link_type __root, hash_table* __this
+        )
+        {
+          allocator_traits_type::deallocate(
+            __this->__allocator, __root->__data
+          );
+          __node_allocator_traits_type::deallocate(
+            __this->__node_allocator, __root
+          );
+          return;
+        }
+        static void __deallocate_node_chain(
+          __link_type __tmp, hash_table* __this
+        )
+        {
+          if(__tmp->__next != nullptr)
+          { __deallocate_node_chain(__tmp->__next, __this);}
+          __deallocate_node(__tmp, __this);
+          return;
+        }
+        static void __erase_node_chain(
+          __link_type __bpos, __link_type __epos,
+          hash_table* __this
+        ) // erase_chain
+        {
+          __link_type __pos = __bpos;
+          for(; __pos != __epos;)
+          {
+            __pos = __bpos->__next;
+            __deallocate_node(__bpos, __this);
+            --(__this->__size);
+            __bpos = __pos;
+          }
+        }
+
+      private:
+        UTILITY_ALWAYS_INLINE
+        static inline const key_type& __get_key(const value_type& __con)
+        {
+          using utility::container::get_key;
+          return get_key(__con);
+        }
+        UTILITY_ALWAYS_INLINE
+        static inline const mapped_type& __get_value(const value_type& __con)
+        {
+          using utility::container::get_value;
+          return get_value(__con);
+        }
+    };
+
+    template<
+      typename _Key, typename _Value,
+      typename _Key_Value_Container, typename _Hash,
+      typename _Key_eq,typename _Alloc
+    >
+    bool operator==(
+      const hash_table<_Key, _Value, _Key_Value_Container, _Hash, _Key_eq, _Alloc>& __x,
+      const hash_table<_Key, _Value, _Key_Value_Container, _Hash, _Key_eq, _Alloc>& __y
+    )
+    {
+      return utility::algorithm::is_permutation(
+        __x.begin(), __x.end(), __y.begin(), __y.end()
+      );
+    }
+    template<
+      typename _Key, typename _Value,
+      typename _Key_Value_Container, typename _Hash,
+      typename _Key_eq,typename _Alloc
+    >
+    bool operator!=(
+      const hash_table<_Key, _Value, _Key_Value_Container, _Hash, _Key_eq, _Alloc>& __x,
+      const hash_table<_Key, _Value, _Key_Value_Container, _Hash, _Key_eq, _Alloc>& __y
+    )
+    { return !(__x == __y);}
+  }
+
+  namespace algorithm
+  {
+    template
+    <
+      typename _Key,
+      typename _Value,
+      typename _Key_Value_Container,
+      typename _Hash,
+      typename _Key_eq,
+      typename _Alloc
+    >
+    void swap(
+      utility::container::hash_table<_Key, _Value,
+        _Key_Value_Container, _Hash, _Key_eq, _Alloc>& __x,
+      utility::container::hash_table<_Key, _Value,
+        _Key_Value_Container, _Hash, _Key_eq, _Alloc>& __y
+    ) noexcept(__x.swap(__y))
+    { __x.swap(__y);}
+
+  }
+}
+
+#endif // ! __UTILITY_CONTAINER_HASH_TABLE__

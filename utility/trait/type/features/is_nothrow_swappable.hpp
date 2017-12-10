@@ -1,0 +1,7 @@
+
+#ifndef __UTILITY_TRAIT_TYPE_FEATURES_IS_NOTHROW_SWAPPABLE__
+#define __UTILITY_TRAIT_TYPE_FEATURES_IS_NOTHROW_SWAPPABLE__
+
+#include<utility/trait/type/features/is_swappable.hpp>
+
+#endif // __UTILITY_TRAIT_TYPE_FEATURES_IS_NOTHROW_SWAPPABLE__

@@ -1,0 +1,10 @@
+
+#ifndef ___UTILITY__MEMORY__EXTRA__
+#define ___UTILITY__MEMORY__EXTRA__
+
+#ifdef UTILITY_MEMORY_HAS_EXTRA
+
+
+#endif // ! UTILITY_MEMORY_HAS_EXTRA
+
+#endif // ! ___UTILITY__MEMORY__EXTRA__

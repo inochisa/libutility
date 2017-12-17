@@ -6,6 +6,7 @@
 #include<utility/memory/addressof.hpp>
 #include<utility/trait/type/categories/is_arithmetic.hpp>
 #include<utility/trait/type/categories/is_pointer.hpp>
+#include<utility/trait/type/property/is_pod.hpp>
 #include<utility/iterator/iterator_traits.hpp>
 #include<utility/sstd/new.hpp>
 #include<utility/sstd/cstring.hpp>

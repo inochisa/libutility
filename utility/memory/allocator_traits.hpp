@@ -9,8 +9,8 @@
 #include<utility/trait/trait_helper.hpp>
 #include<utility/trait/type/releations/is_same.hpp>
 #include<utility/trait/type/features/is_constructible.hpp>
+#include<utility/trait/type/features/is_trivially_destructible.hpp>
 #include<utility/trait/type/property/is_empty.hpp>
-#include<utility/trait/type/property/is_pod.hpp>
 #include<utility/trait/type/miscellaneous/change_sign.hpp>
 #include<utility/trait/miscellaneous/pointer_traits.hpp>
 #include<utility/sstd/new.hpp>
@@ -349,7 +349,7 @@ namespace utility
             -> decltype(__alloc.allocate(__n, __ptr),
             ::utility::trait::true_type());
           template<typename __T, typename __Size, typename __Ptr>
-          static auto __test(__T&& __alloc, __Size&& __n, __Ptr&& __ptr)
+          static auto __test(const __T& __alloc, __Size&& __n, __Ptr&& __ptr)
             -> ::utility::trait::false_type;
 
         public:
@@ -443,7 +443,9 @@ namespace utility
 
       template<typename _Allocator, typename _Ptr,
         bool = __alloc_has_destroy_test<_Allocator, _Ptr>::value,
-        bool = ::utility::trait::type::property::is_pod<_Ptr>::value>
+        bool =
+          ::utility::trait::type::features::is_trivially_destructible<_Ptr>::value
+      >
       struct __alloc_destroy
       {
         static inline void __aux(_Allocator& __alloc, _Ptr* __ptr)

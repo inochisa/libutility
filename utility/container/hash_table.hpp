@@ -6,6 +6,7 @@
 #include<utility/algorithm/algorithm_auxiliary.hpp>
 #include<utility/algorithm/hash.hpp>
 #include<utility/algorithm/swap.hpp>
+#include<utility/algorithm/possible_swap.hpp>
 #include<utility/algorithm/move.hpp>
 #include<utility/algorithm/forward.hpp>
 #include<utility/algorithm/max.hpp>
@@ -18,6 +19,7 @@
 #include<utility/container/impl/pair_value.hpp>
 #include<utility/trait/type/releations/is_same.hpp>
 #include<utility/trait/type/features/is_nothrow_swappable.hpp>
+#include<utility/trait/type/features/is_nothrow_possible_swappable.hpp>
 #include<utility/trait/miscellaneous/pointer_traits.hpp>
 #include<utility/memory/allocator.hpp>
 #include<utility/memory/allocator_traits.hpp>
@@ -1430,6 +1432,8 @@ namespace utility
           this->__size = 0U;
           return;
         }
+
+      public:
         void swap(hash_table& __o) noexcept(
           utility::trait::type::features::is_nothrow_swappable<hasher>::value &&
           utility::trait::type::features::is_nothrow_swappable<key_equal>::value
@@ -1441,6 +1445,20 @@ namespace utility
           swap(this->__bucket,      __o.__bucket      );
           swap(this->__size,        __o.__size        );
           swap(this->__load_factor, __o.__load_factor );
+        }
+        void possible_swap(hash_table& __o) noexcept(
+          utility::trait::type::features::is_nothrow_possible_swappable<hasher>::value &&
+          utility::trait::type::features::is_nothrow_possible_swappable<key_equal>::value &&
+          utility::trait::type::features::is_nothrow_possible_swappable<allocator_type>::value
+        )
+        {
+          using utility::algorithm::possible_swap;
+          possible_swap(this->__key_eq,      __o.__key_eq      );
+          possible_swap(this->__hasher,      __o.__hasher      );
+          possible_swap(this->__bucket,      __o.__bucket      );
+          possible_swap(this->__size,        __o.__size        );
+          possible_swap(this->__load_factor, __o.__load_factor );
+          possible_swap(this->__allocator,   __o.__allocator   );
         }
 
       public:
@@ -1762,8 +1780,24 @@ namespace utility
         _Key_Value_Container, _Hash, _Key_eq, _Alloc>& __x,
       utility::container::hash_table<_Key, _Value,
         _Key_Value_Container, _Hash, _Key_eq, _Alloc>& __y
-    ) noexcept(__x.swap(__y))
+    ) noexcept(noexcept(__x.swap(__y)))
     { __x.swap(__y);}
+    template
+    <
+      typename _Key,
+      typename _Value,
+      typename _Key_Value_Container,
+      typename _Hash,
+      typename _Key_eq,
+      typename _Alloc
+    >
+    void possible_swap(
+      utility::container::hash_table<_Key, _Value,
+        _Key_Value_Container, _Hash, _Key_eq, _Alloc>& __x,
+      utility::container::hash_table<_Key, _Value,
+        _Key_Value_Container, _Hash, _Key_eq, _Alloc>& __y
+    ) noexcept(noexcept(__x.possible_swap(__y)))
+    { __x.possible_swap(__y);}
 
   }
 }

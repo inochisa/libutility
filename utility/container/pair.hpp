@@ -5,6 +5,7 @@
 #include<utility/config/utility_config.hpp>
 #include<utility/algorithm/forward.hpp>
 #include<utility/algorithm/swap.hpp>
+#include<utility/algorithm/possible_swap.hpp>
 #include<utility/trait/type/transform/decay.hpp>
 #include<utility/trait/type/releations/is_convertible.hpp>
 #include<utility/trait/type/features/is_constructible.hpp>
@@ -16,7 +17,9 @@
 #include<utility/trait/type/features/is_move_assignable.hpp>
 #include<utility/trait/type/features/is_nothrow_move_assignable.hpp>
 #include<utility/trait/type/features/is_swappable.hpp>
+#include<utility/trait/type/features/is_possible_swappable.hpp>
 #include<utility/trait/type/features/is_nothrow_swappable.hpp>
+#include<utility/trait/type/features/is_nothrow_possible_swappable.hpp>
 #include<utility/trait/type/miscellaneous/enable_if.hpp>
 
 namespace utility
@@ -232,6 +235,20 @@ namespace utility
           swap(this->first,   __other.first);
           swap(this->second,  __other.second);
         }
+        template<typename _U1 = _T1, typename _U2 = _T2,
+          typename utility::trait::type::miscellaneous::enable_if<
+            utility::trait::type::features::is_possible_swappable<_U1>::value &&
+            utility::trait::type::features::is_possible_swappable<_U2>::value,
+          bool>::type = true
+        >
+        void possible_swap(pair& __other) noexcept(
+          utility::trait::type::features::is_nothrow_possible_swappable<_T1>::value &&
+          utility::trait::type::features::is_nothrow_possible_swappable<_T2>::value)
+        {
+          using utility::algorithm::possible_swap;
+          possible_swap(this->first,   __other.first);
+          possible_swap(this->second,  __other.second);
+        }
     };
 
     template<typename _T1, typename _T2>
@@ -319,6 +336,12 @@ namespace utility
       ::utility::container::pair<_T1, _T2>& __b
     ) noexcept(noexcept(__a.swap(__b)))
     { __a.swap(__b);}
+    template<typename _T1, typename _T2>
+    void possible_swap(
+      ::utility::container::pair<_T1, _T2>& __a,
+      ::utility::container::pair<_T1, _T2>& __b
+    ) noexcept(noexcept(__a.possible_swap(__b)))
+    { __a.possible_swap(__b);}
   }
 
 }

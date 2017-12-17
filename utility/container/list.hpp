@@ -5,6 +5,7 @@
 #include<utility/config/utility_config.hpp>
 #include<utility/algorithm/algorithm_auxiliary.hpp>
 #include<utility/algorithm/swap.hpp>
+#include<utility/algorithm/possible_swap.hpp>
 #include<utility/algorithm/move.hpp>
 #include<utility/algorithm/equal.hpp>
 #include<utility/algorithm/lexicographical_compare.hpp>
@@ -16,6 +17,7 @@
 #include<utility/memory/unique_ptr.hpp>
 #include<utility/memory/basic_deallocator.hpp>
 #include<utility/trait/type/releations/is_same.hpp>
+#include<utility/trait/type/features/is_nothrow_possible_swappable.hpp>
 #include<utility/trait/type/miscellaneous/enable_if.hpp>
 #include<utility/trait/miscellaneous/pointer_traits.hpp>
 #include<utility/iterator/iterator_tag.hpp>
@@ -711,6 +713,16 @@ namespace utility
         {
           using utility::algorithm::swap;
           swap(this->__base, __other.__base);
+          swap(this->__size, __other.__size);
+        }
+        void possible_swap(list& __other) noexcept(
+          utility::trait::type::features::is_nothrow_possible_swappable<allocator_type>::value
+        )
+        {
+          using utility::algorithm::possible_swap;
+          possible_swap(this->__base,      __other.__base     );
+          possible_swap(this->__size,      __other.__size     );
+          possible_swap(this->__allocator, __other.__allocator);
         }
 
       public:
@@ -1137,6 +1149,14 @@ namespace utility
     ) noexcept(noexcept(__x.swap(__y)))
     {
       __x.swap(__y);
+    }
+    template<typename _T, typename _Alloc>
+    inline void possible_swap(
+      ::utility::container::list<_T, _Alloc>& __x,
+      ::utility::container::list<_T, _Alloc>& __y
+    ) noexcept(noexcept(__x.possible_swap(__y)))
+    {
+      __x.possible_swap(__y);
     }
   }
 }

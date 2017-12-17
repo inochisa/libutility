@@ -4,6 +4,7 @@
 
 #include<utility/config/utility_config.hpp>
 #include<utility/algorithm/swap.hpp>
+#include<utility/algorithm/possible_swap.hpp>
 #include<utility/algorithm/algorithm_auxiliary.hpp>
 #include<utility/algorithm/move.hpp>
 #include<utility/algorithm/forward.hpp>
@@ -15,7 +16,9 @@
 #include<utility/container/pair.hpp>
 #include<utility/trait/type/releations/is_same.hpp>
 #include<utility/trait/type/features/is_swappable.hpp>
+#include<utility/trait/type/features/is_possible_swappable.hpp>
 #include<utility/trait/type/features/is_nothrow_swappable.hpp>
+#include<utility/trait/type/features/is_nothrow_possible_swappable.hpp>
 #include<utility/trait/type/features/is_default_constructible.hpp>
 #include<utility/trait/type/features/is_copy_constructible.hpp>
 #include<utility/trait/type/miscellaneous/enable_if.hpp>
@@ -782,6 +785,24 @@ namespace utility
           swap(this->__compare, __other.__compare);
           return;
         }
+        template<
+          typename _Key_Compare = key_compare,
+          typename utility::trait::type::miscellaneous::enable_if<
+            utility::trait::type::features::is_possible_swappable<key_compare>::value &&
+            utility::trait::type::features::is_possible_swappable<allocator_type>::value,
+          bool>::type = true
+        >
+        void possible_swap(white_black_tree& __other) noexcept(
+          utility::trait::type::features::is_nothrow_possible_swappable<key_compare>::value
+        )
+        {
+          using utility::algorithm::possible_swap;
+          possible_swap(this->__allocator, __other.__allocator);
+          possible_swap(this->__head,      __other.__head     );
+          possible_swap(this->__size,      __other.__size     );
+          possible_swap(this->__compare,   __other.__compare  );
+          return;
+        }
 
       private:
         void force_clear()
@@ -1370,6 +1391,21 @@ namespace utility
     ) noexcept(noexcept(__x.swap(__y)))
     {
       __x.swap(__y);
+    }
+    template<
+      typename _Key, typename _Value, typename _Compare,
+      typename _Key_Value_Container, typename _Alloc,
+      typename utility::trait::type::miscellaneous::enable_if<
+        utility::trait::type::features::is_possible_swappable<_Compare>::value &&
+        utility::trait::type::features::is_possible_swappable<_Alloc>::value,
+      bool>::type = true
+    >
+    void possible_swap(
+      ::utility::container::white_black_tree<_Key, _Value, _Compare, _Key_Value_Container, _Alloc>& __x,
+      ::utility::container::white_black_tree<_Key, _Value, _Compare, _Key_Value_Container, _Alloc>& __y
+    ) noexcept(noexcept(__x.possible_swap(__y)))
+    {
+      __x.possible_swap(__y);
     }
   }
 }

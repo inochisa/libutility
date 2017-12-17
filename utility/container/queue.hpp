@@ -5,6 +5,7 @@
 #include<utility/config/utility_config.hpp>
 #include<utility/algorithm/move.hpp>
 #include<utility/algorithm/swap.hpp>
+#include<utility/algorithm/possible_swap.hpp>
 #include<utility/container/initializer_list.hpp>
 #include<utility/container/list.hpp>
 #include<utility/trait/type/releations/is_same.hpp>
@@ -14,6 +15,7 @@
 #include<utility/trait/type/features/is_nothrow_move_constructible.hpp>
 #include<utility/trait/type/features/is_nothrow_move_assignable.hpp>
 #include<utility/trait/type/features/is_nothrow_swappable.hpp>
+#include<utility/trait/type/features/is_nothrow_possible_swappable.hpp>
 
 namespace utility
 {
@@ -121,6 +123,13 @@ namespace utility
           using utility::algorithm::swap;
           swap(this->__container, __other.__container);
         }
+        void possible_swap(queue& __other) noexcept(
+          utility::trait::type::features::is_nothrow_possible_swappable<container_type>::value
+        )
+        {
+          using utility::algorithm::possible_swap;
+          possible_swap(this->__container, __other.__container);
+        }
 
       private:
         template<typename _U, typename _C>
@@ -176,6 +185,12 @@ namespace utility
       ::utility::container::queue<_T, _Container>& __y
     ) noexcept(noexcept(__x.swap(__y)))
     { __x.swap(__y);}
+    template<typename _T, typename _Container>
+    void possible_swap(
+      ::utility::container::queue<_T, _Container>& __x,
+      ::utility::container::queue<_T, _Container>& __y
+    ) noexcept(noexcept(__x.possible_swap(__y)))
+    { __x.possible_swap(__y);}
   }
 
 }

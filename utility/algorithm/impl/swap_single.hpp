@@ -26,6 +26,7 @@ namespace utility
      * \exception this function is \b noexcept when
      *            \c is_nothrow_move_constructible<_T> &&
      *            \c is_nothrow_move_assignable<_T> is \b true
+     * \related utility::algorithm::possible_swap
      */
     template<typename _T>
     inline

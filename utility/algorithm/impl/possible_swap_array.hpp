@@ -10,6 +10,21 @@ namespace utility
 {
   namespace algorithm
   {
+    /**
+     * \brief Exchange values of two array
+     *
+     * Swaps the arrays \a __a and \a __b
+     * Copy if necessary.
+     *
+     * \param __a,__b the arrays to be swapped
+     * \note This overload does not participate in
+     *       overload resolution unless \c
+     *       is_possible_swappable_with<_T> is \b true
+     * \exception This function is noexcept
+     *            when \c is_nothrow_possible_swappable_with<_T>
+     *            is \b true
+     * \related utility::algorithm::swap
+     */
     template<typename _T, ::utility::size_t __size>
     inline
     typename ::utility::trait::type::miscellaneous::enable_if<

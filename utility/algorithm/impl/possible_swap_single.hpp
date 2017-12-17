@@ -117,6 +117,31 @@ namespace utility
       };
     }
 
+    /**
+     * \brief Exchange values of two objects
+     *
+     * Swaps the values \a __a and \a __b.
+     * Copy if necessary.
+     *
+     * \param __a,__b the values to be swapped
+     * \note This function is vaild when one of the following condition
+     *       is \b satisfied:<br/>
+     *       1. The object has member function \c possible_swap.<br/>
+     *       2. The object has member function \c swap.<br/>
+     *       3. The object can move construct and move assign.<br/>
+     *       4. The object can copy construct and copy assign.<br/>
+     * The condition order is 1 > 2 > 3 > 4.
+     *
+     * \exception This function is \b noexcept when
+     *            (let _T is the object type)
+     *       1. The member function \c possible_swap is \b noexcept.<br/>
+     *       2. The object member function \c swap is \b noexcept.<br/>
+     *       3. \c is_nothrow_move_constructible<_T> &&
+     *          \c is_nothrow_move_assignable<_T> is \b true.<br/>
+     *       4. \c is_nothrow_copy_constructible<_T> &&
+     *          \c is_nothrow_copy_assignable<_T> is \b true.<br/>
+     * \related utility::algorithm::swap
+     */
     template<typename _T>
     typename ::utility::trait::type::miscellaneous::enable_if<
       __possible_swap_impl::__has_possible_swap_test<_T>::value ||

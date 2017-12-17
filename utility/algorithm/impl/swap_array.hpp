@@ -18,9 +18,10 @@ namespace utility
      * \param __a,__b the arrays to be swapped
      * \note This overload does not participate in
      *       overload resolution unless \c
-     *       is_swappable_v<_T> is \b true
+     *       is_swappable<_T> is \b true
      * \exception This function is noexcept
      *            when \c is_nothrow_swappable_with<_T> is \b true
+     * \related utility::algorithm::possible_swap
      */
     template<typename _T, ::utility::size_t __size>
     inline

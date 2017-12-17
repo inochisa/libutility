@@ -48,11 +48,12 @@ namespace utility
                 (sizeof(char) == sizeof(__type1)) &&
                 (sizeof(char) == sizeof(__type2));
           };
-
           template<typename _T, typename _U>
-          struct __is_swappable_with_helper<_T, _U, false> :
-            public ::utility::trait::false_type
-          { };
+          struct __is_swappable_with_helper<_T, _U, false>
+          {
+            public:
+              constexpr static bool value = false;
+          };
 
           template<typename _T, typename _U,
             bool = __is_swappable_with_helper<_T, _U>::value>
@@ -67,16 +68,14 @@ namespace utility
                 ::utility::trait::type::special::declval<_T>()));
           };
           template<typename _T, typename _U>
-          struct __is_nothrow_swappable_with_helper<_T, _U, false> :
-            public ::utility::trait::false_type
-          { };
+          struct __is_nothrow_swappable_with_helper<_T, _U, false>
+          { constexpr static bool value = false;};
         }
         template<typename _T, typename _U>
         struct is_swappable_with : public
           ::utility::trait::integral_constant<bool,
             __swappable_impl::__is_swappable_with_helper<_T, _U>::value>
         { };
-
         template<typename _T>
         struct is_swappable : public
           ::utility::trait::type::miscellaneous::conditional
@@ -96,7 +95,6 @@ namespace utility
           ::utility::trait::integral_constant<bool,
             __swappable_impl::__is_nothrow_swappable_with_helper<_T, _U>::value>
         { };
-
         template<typename _T>
         struct is_nothrow_swappable : public
           ::utility::trait::type::miscellaneous::conditional

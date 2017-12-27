@@ -11,7 +11,7 @@
 
 // GNU Complier
 #elif defined(__GNUC__)
-#define __UTILITY_USE_CLANG__
+#define __UTILITY_USE_GCC__
 
 # include<utility/config/compiler/gcc.hpp>
 

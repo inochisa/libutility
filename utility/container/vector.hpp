@@ -2,6 +2,12 @@
 #ifndef __UTILITY_CONTAINER_VECTOR__
 #define __UTILITY_CONTAINER_VECTOR__
 
+/**
+ * \file vector.hpp
+ * \author Inochi Amaoto
+ *
+ */
+
 #include<utility/config/utility_config.hpp>
 #include<utility/algorithm/swap.hpp>
 #include<utility/algorithm/possible_swap.hpp>
@@ -11,7 +17,6 @@
 #include<utility/algorithm/equal.hpp>
 #include<utility/algorithm/lexicographical_compare.hpp>
 #include<utility/container/container_helper.hpp>
-#include<utility/container/initializer_list.hpp>
 #include<utility/memory/allocator.hpp>
 #include<utility/memory/allocator_traits.hpp>
 #include<utility/memory/uninitialized_copy.hpp>

@@ -2,6 +2,12 @@
 #ifndef __UTILITY_CONTAINER_WHITE_BLACK_TREE__
 #define __UTILITY_CONTAINER_WHITE_BLACK_TREE__
 
+/**
+ * \file white_black_tree.hpp
+ * \author Inochi Amaoto
+ *
+ */
+
 #include<utility/config/utility_config.hpp>
 #include<utility/algorithm/swap.hpp>
 #include<utility/algorithm/possible_swap.hpp>
@@ -10,7 +16,6 @@
 #include<utility/algorithm/forward.hpp>
 #include<utility/algorithm/equal.hpp>
 #include<utility/algorithm/lexicographical_compare.hpp>
-#include<utility/container/initializer_list.hpp>
 #include<utility/container/container_helper.hpp>
 #include<utility/container/impl/pair_value.hpp>
 #include<utility/container/pair.hpp>
@@ -772,7 +777,7 @@ namespace utility
         template<
           typename _Key_Compare = key_compare,
           typename utility::trait::type::miscellaneous::enable_if<
-            utility::trait::type::features::is_swappable<key_compare>::value,
+            utility::trait::type::features::is_swappable<_Key_Compare>::value,
           bool>::type = true
         >
         void swap(white_black_tree& __other) noexcept(
@@ -786,10 +791,10 @@ namespace utility
           return;
         }
         template<
-          typename _Key_Compare = key_compare,
+          typename _Key_Compare = key_compare, typename _Alloc = allocator_type
           typename utility::trait::type::miscellaneous::enable_if<
-            utility::trait::type::features::is_possible_swappable<key_compare>::value &&
-            utility::trait::type::features::is_possible_swappable<allocator_type>::value,
+            utility::trait::type::features::is_possible_swappable<_Key_Compare>::value &&
+            utility::trait::type::features::is_possible_swappable<_Alloc>::value,
           bool>::type = true
         >
         void possible_swap(white_black_tree& __other) noexcept(

@@ -2,7 +2,14 @@
 #ifndef __UTILITY_CONTAINER_INITIALIZER_LIST__
 #define __UTILITY_CONTAINER_INITIALIZER_LIST__
 
+/**
+ * \file initializer_list.hpp
+ * \author Inochi Amaoto
+ *
+ */
+
 #include<utility/config/utility_config.hpp>
+#include<utility/container/container_helper.hpp>
 #include<initializer_list>
 
 namespace utility

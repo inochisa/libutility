@@ -2,10 +2,17 @@
 #ifndef __UTILITY_CONTAINER_PAIR__
 #define __UTILITY_CONTAINER_PAIR__
 
+/**
+ * \file pair.hpp
+ * \author Inochi Amaoto
+ *
+ */
+
 #include<utility/config/utility_config.hpp>
 #include<utility/algorithm/forward.hpp>
 #include<utility/algorithm/swap.hpp>
 #include<utility/algorithm/possible_swap.hpp>
+#include<utility/container/container_helper.hpp>
 #include<utility/trait/type/transform/decay.hpp>
 #include<utility/trait/type/releations/is_convertible.hpp>
 #include<utility/trait/type/features/is_constructible.hpp>

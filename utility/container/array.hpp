@@ -2,8 +2,14 @@
 #ifndef __UTILITY_CONTAINER_ARRAY__
 #define __UTILITY_CONTAINER_ARRAY__
 
+/**
+ * \file array.hpp
+ * \author Inochi Amaoto
+ *
+ */
+
 #include<utility/config/utility_config.hpp>
-#include<utility/container/initializer_list.hpp>
+#include<utility/container/container_helper.hpp>
 #include<utility/iterator/reverse_iterator.hpp>
 
 namespace utility

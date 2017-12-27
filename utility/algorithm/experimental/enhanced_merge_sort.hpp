@@ -32,32 +32,23 @@ namespace utility
           _RandomAccessIterator __b =
             __first + ::utility::iterator::distance(__first, __last) / 2+1;
           _RandomAccessIterator __y = __b;
-          _RandomAccessIterator __ctr = __b;
           while(__x < __b)
           {
-            if(__ctr < __last && __compare(*(__ctr+1), *__ctr))
-            {
-              ::utility::algorithm::swap(*(__ctr+1), *__ctr);
-              ++__ctr;
-            }
-            if(__ctr >= __last || !__compare(*(__ctr+1), *__ctr))
-            { __ctr = __b;}
-
-            if(__b > __last && __ctr == __b)
+            if(__b > __last)
             {
               if(__a > __x)
               {
                 if(__b == __a+1 && __a > __y)
-                { __ctr = __b = __a; __a = __y;}
+                { __b = __a; __a = __y;}
                 else
-                { __ctr = __b = __y; __a = __x;}
+                { __b = __y; __a = __x;}
               }
               else
               { break;}
             }
             if(__x == __y)
             {
-              if(__a == __x && __ctr == __b)
+              if(__a == __x)
               { __y = __b;}
               else
               { __y = __a;}
@@ -65,7 +56,7 @@ namespace utility
 
             if(__compare(*__b, *__a))
             {
-              if(__a > __y && __b > __a+1 && __ctr == __b)
+              if(__a > __y && __b > __a+1)
               {
                 ::utility::algorithm::swap(*__a, *__b);
                 ::utility::algorithm::swap(*__a, *__x);
@@ -75,23 +66,17 @@ namespace utility
               {
                 ::utility::algorithm::swap(*__x, *__b);
                 __a = __b; ++__b; ++__x;
-                if(__ctr+1 == __b)
-                { ++__ctr;}
               }
               else if(__a+1 == __b)
               {
                 ::utility::algorithm::swap(*__b, *__x);
                 ::utility::algorithm::swap(*__b, *__a);
                 ++__b; ++__x; ++__a;
-                if(__ctr+1 == __b)
-                { ++__ctr;}
               }
-              else if(__a ==__y && __x < __y && __ctr == __b)
+              else if(__a ==__y && __x < __y)
               {
                 ::utility::algorithm::swap(*__x, *__b);
                 ++__b; ++__x;
-                if(__ctr+1 == __b)
-                { ++__ctr;}
               }
             }
             else

@@ -2,13 +2,13 @@
 #ifndef __UTILITY_DETAIL_STANDARD_LIBRARY_MEMORY__
 #define __UTILITY_DETAIL_STANDARD_LIBRARY_MEMORY__
 
-#include<utility/config/utility_config.hpp>
-
 /*!
-* \file memory.hpp
-* \author Inochi Amaoto
-*
-*/
+ * \file memory.hpp
+ * \author Inochi Amaoto
+ *
+ */
+
+#include<utility/config/utility_config.hpp>
 
 namespace utility
 {

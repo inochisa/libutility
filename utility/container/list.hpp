@@ -2,6 +2,12 @@
 #ifndef __UTILITY_CONTAINER_LIST__
 #define __UTILITY_CONTAINER_LIST__
 
+/**
+ * \file list.hpp
+ * \author Inochi Amaoto
+ *
+ */
+
 #include<utility/config/utility_config.hpp>
 #include<utility/algorithm/algorithm_auxiliary.hpp>
 #include<utility/algorithm/swap.hpp>
@@ -10,7 +16,6 @@
 #include<utility/algorithm/equal.hpp>
 #include<utility/algorithm/lexicographical_compare.hpp>
 #include<utility/container/container_helper.hpp>
-#include<utility/container/initializer_list.hpp>
 #include<utility/container/pair.hpp>
 #include<utility/memory/allocator.hpp>
 #include<utility/memory/allocator_traits.hpp>
@@ -901,8 +906,8 @@ namespace utility
           __base->__prev = __base->__next = nullptr;
           __node_allocator_traits_type::deallocate(this->__node_allocator, __base);
         }
-        UTILITY_ALWAYS_INLINE
         template<typename... _Args>
+        UTILITY_ALWAYS_INLINE
         inline __link_type __allocate_node(_Args&&... __args)
         {
           __node_container __node(

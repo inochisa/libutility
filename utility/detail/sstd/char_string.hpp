@@ -2,13 +2,13 @@
 #ifndef __UTILITY_DETAIL_STANDARD_LIBRARY_CHAR_STRING__
 #define __UTILITY_DETAIL_STANDARD_LIBRARY_CHAR_STRING__
 
-#include<utility/config/utility_config.hpp>
-
 /**
-* \file char_string.hpp
-*
-*
-*/
+ * \file char_string.hpp
+ * \author Inochi Amaoto
+ *
+ */
+
+#include<utility/config/utility_config.hpp>
 
 namespace utility
 {
@@ -16,7 +16,7 @@ namespace utility
   {
     namespace sstd
     {
-      namespace char_string
+      namespace charS
       {
         // Helper
         /*!
@@ -39,7 +39,7 @@ namespace utility
         /*!
         * \overload inline const char* strend(const char* __str) noexcept
         *
-        * const version
+        * const version of the \c strend
         *
         */
         inline const char* strend(const char* __str) noexcept
@@ -53,7 +53,7 @@ namespace utility
         }
 
         /*!
-        * \brief find the end of a string(help function)
+        * \brief find the length of a string(help function)
         *
         * find the '\0' of a string
         *
@@ -64,7 +64,7 @@ namespace utility
         {
           return
             __str == nullptr ? -1 :
-            utility::detail::sstd::char_string::strend(__str) - __str;
+            utility::detail::sstd::charS::strend(__str) - __str;
         }
 
         // Copying
@@ -80,11 +80,11 @@ namespace utility
         *                      where the content is to be copied.
         * \param[in] __source      C string to be copied.
         * \return \a __destination is returned.
-        * \see utility::detail::sstd::char_string::stpcpy
-        * \see utility::detail::sstd::char_string::strncpy
-        * \see utility::detail::sstd::char_string::stpncpy
+        * \see utility::detail::sstd::charS::stpcpy
+        * \see utility::detail::sstd::charS::strncpy
+        * \see utility::detail::sstd::charS::stpncpy
         */
-        char* strcpy(char* __destination, const char* __source) noexcept
+        inline char* strcpy(char* __destination, const char* __source) noexcept
         {
           if(__destination != nullptr && __source != nullptr)
           {
@@ -108,9 +108,9 @@ namespace utility
         *                      where the content is to be copied.
         * \param[in] __source      C string to be copied.
         * \return the end of \a __destination is returned.
-        * \see utility::detail::sstd::char_string::strcpy
-        * \see utility::detail::sstd::char_string::strncpy
-        * \see utility::detail::sstd::char_string::stpncpy
+        * \see utility::detail::sstd::charS::strcpy
+        * \see utility::detail::sstd::charS::strncpy
+        * \see utility::detail::sstd::charS::stpncpy
         */
         inline char* stpcpy(char* __destination, const char* __source) noexcept
         {
@@ -120,7 +120,7 @@ namespace utility
             { *__destination++ = *__source++;}
             *__destination = '\0';
           }
-          return utility::detail::sstd::char_string::strend(__destination);
+          return __destination;
         }
 
         /*!
@@ -138,11 +138,11 @@ namespace utility
         * \param[in] __source      C string to be copied.
         * \param[in] __size        Maximum number of characters to be copied from source.
         * \return \a __destination is returned.
-        * \see utility::detail::sstd::char_string::strcpy
-        * \see utility::detail::sstd::char_string::stpcpy
-        * \see utility::detail::sstd::char_string::stpncpy
+        * \see utility::detail::sstd::charS::strcpy
+        * \see utility::detail::sstd::charS::stpcpy
+        * \see utility::detail::sstd::charS::stpncpy
         */
-        char* strncpy(char* __destination, const char* __source,
+        inline char* strncpy(char* __destination, const char* __source,
           ::utility::size_t __size
         ) noexcept
         {
@@ -171,11 +171,11 @@ namespace utility
         * \param[in] __source      C string to be copied.
         * \param[in] __size        Maximum number of characters to be copied from source.
         * \return the end of \a __destination is returned.
-        * \see utility::detail::sstd::char_string::strcpy
-        * \see utility::detail::sstd::char_string::stpcpy
-        * \see utility::detail::sstd::char_string::strncpy
+        * \see utility::detail::sstd::charS::strcpy
+        * \see utility::detail::sstd::charS::stpcpy
+        * \see utility::detail::sstd::charS::strncpy
         */
-        char* stpncpy(char* __destination, const char* __source,
+        inline char* stpncpy(char* __destination, const char* __source,
           ::utility::size_t __size
         ) noexcept
         {
@@ -185,10 +185,11 @@ namespace utility
             { *__destination++ = *__source++;}
             *__destination = '\0';
           }
-          return utility::detail::sstd::char_string::strend(__destination);
+          return __destination;
         }
 
         // Concatenation
+
         /*!
         * \brief Concatenate strings
         *
@@ -205,16 +206,16 @@ namespace utility
         *                      to contain the concatenated resulting string.
         * \param[in] __source      C string to be appended.
         * \return \a __destination is returned.
-        * \see utility::detail::sstd::char_string::stpcat
-        * \see utility::detail::sstd::char_string::strncat
-        * \see utility::detail::sstd::char_string::stpncat
+        * \see utility::detail::sstd::charS::stpcat
+        * \see utility::detail::sstd::charS::strncat
+        * \see utility::detail::sstd::charS::stpncat
         */
-        char* strcat(char* __destination, const char* __source) noexcept
+        inline char* strcat(char* __destination, const char* __source) noexcept
         {
           if(__destination != nullptr && __source != nullptr)
           {
             char* __dest =
-              ::utility::detail::sstd::char_string::strend(__destination);
+              ::utility::detail::sstd::charS::strend(__destination);
             while(*__source != '\0')
             { *__dest++ = *__source++;}
             *__dest = '\0';
@@ -238,21 +239,21 @@ namespace utility
         *                      to contain the concatenated resulting string.
         * \param[in] __source      C string to be appended.
         * \return the end of \a __destination is returned.
-        * \see utility::detail::sstd::char_string::strcat
-        * \see utility::detail::sstd::char_string::strncat
-        * \see utility::detail::sstd::char_string::stpncat
+        * \see utility::detail::sstd::charS::strcat
+        * \see utility::detail::sstd::charS::strncat
+        * \see utility::detail::sstd::charS::stpncat
         */
-        char* stpcat(char* __destination, const char* __source) noexcept
+        inline char* stpcat(char* __destination, const char* __source) noexcept
         {
           if(__destination != nullptr && __source != nullptr)
           {
             __destination =
-              utility::detail::sstd::char_string::strend(__destination);
+              utility::detail::sstd::charS::strend(__destination);
             while(*__source != '\0')
             { *__destination++ = *__source++;}
             *__destination = '\0';
           }
-          return utility::detail::sstd::char_string::strend(__destination);
+          return __destination;
         }
 
         /*!
@@ -270,18 +271,18 @@ namespace utility
         * \param[in] __source  C string to be appended.
         * \param[in] __size    Maximum number of characters to be appended.
         * \return \a __destination is returned.
-        * \see utility::detail::sstd::char_string::strcat
-        * \see utility::detail::sstd::char_string::stpcat
-        * \see utility::detail::sstd::char_string::stpncat
+        * \see utility::detail::sstd::charS::strcat
+        * \see utility::detail::sstd::charS::stpcat
+        * \see utility::detail::sstd::charS::stpncat
         */
-        char* strncat(char* __destination, const char* __source,
+        inline char* strncat(char* __destination, const char* __source,
           ::utility::size_t __size
         ) noexcept
         {
           if(__size && __destination != nullptr && __source != nullptr)
           {
             char* __dest =
-              utility::detail::sstd::char_string::strend(__destination);
+              utility::detail::sstd::charS::strend(__destination);
             while(__size-- && *__source != '\0')
             { *__dest++ = *__source++;}
             *__dest = '\0';
@@ -304,23 +305,23 @@ namespace utility
         * \param[in] __source  C string to be appended.
         * \param[in] __size    Maximum number of characters to be appended.
         * \return the end of \a __destination is returned.
-        * \see utility::detail::sstd::char_string::strcat
-        * \see utility::detail::sstd::char_string::stpcat
-        * \see utility::detail::sstd::char_string::strncat
+        * \see utility::detail::sstd::charS::strcat
+        * \see utility::detail::sstd::charS::stpcat
+        * \see utility::detail::sstd::charS::strncat
         */
-        char* stpncat(char* __destination, const char* __source,
+        inline char* stpncat(char* __destination, const char* __source,
           ::utility::size_t __size
         ) noexcept
         {
           if(__size && __destination != nullptr && __source != nullptr)
           {
             __destination =
-              utility::detail::sstd::char_string::strend(__destination);
+              utility::detail::sstd::charS::strend(__destination);
             while(__size-- && *__source != '\0')
             { *__destination++ = *__source++;}
             *__destination = '\0';
           }
-          return utility::detail::sstd::char_string::strend(__destination);
+          return __destination;
         }
 
         // Comparison
@@ -359,9 +360,9 @@ namespace utility
         *     <td>the first character that does not match has a greater value
         *         in \a __comp1 than in \a __comp2</td>
         *   </tr>
-        * \see utility::detail::sstd::char_string::strcmp
+        * \see utility::detail::sstd::charS::strcmp
         */
-        int strncmp(const char* __comp1, const char* __comp2,
+        inline int strncmp(const char* __comp1, const char* __comp2,
           ::utility::size_t __size
         ) noexcept
         {
@@ -409,18 +410,18 @@ namespace utility
         *     <td>the first character that does not match has a greater value
         *         in \a __comp1 than in \a __comp2</td>
         *   </tr>
-        * \see utility::detail::sstd::char_string::strncmp
+        * \see utility::detail::sstd::charS::strncmp
         */
-        int strcmp(const char* __comp1, const char* __comp2) noexcept
+        inline int strcmp(const char* __comp1, const char* __comp2) noexcept
         {
           if(__comp1 != nullptr && __comp2 != nullptr)
           {
             ::utility::ptrdiff_t __size1 =
-              utility::detail::sstd::char_string::strlen(__comp1);
+              utility::detail::sstd::charS::strlen(__comp1);
             ::utility::ptrdiff_t __size2 =
-              utility::detail::sstd::char_string::strlen(__comp2);
+              utility::detail::sstd::charS::strlen(__comp2);
             ::utility::ptrdiff_t __size = __size1 < __size2 ? __size1 : __size2;
-            return utility::detail::sstd::char_string::strncmp(
+            return utility::detail::sstd::charS::strncmp(
               __comp1, __comp2, __size
             );
           }
@@ -442,16 +443,16 @@ namespace utility
         * \return A pointer to the first occurrence of character in \a __str.<br/>
         *         If the character is not found,
         *         the function returns a null pointer.
-        * \see utility::detail::sstd::char_string::strrchr(
+        * \see utility::detail::sstd::charS::strrchr(
         *       char* __str, char __char)
-        * \see utility::detail::sstd::char_string::strcspn
-        * \see utility::detail::sstd::char_string::strpbrk(
+        * \see utility::detail::sstd::charS::strcspn
+        * \see utility::detail::sstd::charS::strpbrk(
         *       char* __source, const char* __pattern)
-        * \see utility::detail::sstd::char_string::strspn
-        * \see utility::detail::sstd::char_string::strstr(
+        * \see utility::detail::sstd::charS::strspn
+        * \see utility::detail::sstd::charS::strstr(
         *       const char* __source, const char* __pattern)
         */
-        char* strchr(char* __str, char __char) noexcept
+        inline char* strchr(char* __str, char __char) noexcept
         {
           if(__str != nullptr)
           {
@@ -466,12 +467,12 @@ namespace utility
           return nullptr;
         }
         /*!
-        * \overload const char* strchr(const char* __str, char __char) noexcept
+        * \overload inline const char* strchr(const char* __str, char __char) noexcept
         *
         * const version
         *
         */
-        const char* strchr(const char* __str, char __char) noexcept
+        inline const char* strchr(const char* __str, char __char) noexcept
         {
           if(__str != nullptr)
           {
@@ -500,21 +501,21 @@ namespace utility
         * A pointer to the last occurrence of character in \a __str.<br/>
         * If the \a __char is not found,
         * the function returns a null pointer.<br/>
-        * \see utility::detail::sstd::char_string::strchr(
+        * \see utility::detail::sstd::charS::strchr(
         *       char* __str, char __char)
-        * \see utility::detail::sstd::char_string::strcspn
-        * \see utility::detail::sstd::char_string::strpbrk(
+        * \see utility::detail::sstd::charS::strcspn
+        * \see utility::detail::sstd::charS::strpbrk(
         *       char* __source, const char* __pattern)
-        * \see utility::detail::sstd::char_string::strspn
-        * \see utility::detail::sstd::char_string::strstr(
+        * \see utility::detail::sstd::charS::strspn
+        * \see utility::detail::sstd::charS::strstr(
         *       const char* __source, const char* __pattern)
         */
-        char* strrchr(char* __str, char __char) noexcept
+        inline char* strrchr(char* __str, char __char) noexcept
         {
           if(__str != nullptr)
           {
             char* __end =
-              ::utility::detail::sstd::char_string::strend(__str);
+              ::utility::detail::sstd::charS::strend(__str);
             while(__end >= __str)
             {
               if(*__end-- == __char)
@@ -524,17 +525,17 @@ namespace utility
           return nullptr;
         }
         /*!
-        * \overload const char* strrchr(const char* __str, char __char) noexcept
+        * \overload inline const char* strrchr(const char* __str, char __char) noexcept
         *
-        * const version
+        * const version of strrchr
         *
         */
-        const char* strrchr(const char* __str, char __char) noexcept
+        inline const char* strrchr(const char* __str, char __char) noexcept
         {
           if(__str != nullptr)
           {
             const char* __end =
-              ::utility::detail::sstd::char_string::strend(__str);
+              ::utility::detail::sstd::charS::strend(__str);
             while(__end >= __str)
             {
               if(*__end-- == __char)
@@ -563,17 +564,17 @@ namespace utility
         *         \a __pattern.<br/>
         *         This is the length of \a __source if none of
         *         the characters in \a __pattern are found in \a __source.
-        * \see utility::detail::sstd::char_string::strchr(
+        * \see utility::detail::sstd::charS::strchr(
         *       char* __str, char __char)
-        * \see utility::detail::sstd::char_string::strrchr(
+        * \see utility::detail::sstd::charS::strrchr(
         *       char* __str, char __char)
-        * \see utility::detail::sstd::char_string::strpbrk(
+        * \see utility::detail::sstd::charS::strpbrk(
         *       char* __source, const char* __pattern)
-        * \see utility::detail::sstd::char_string::strspn
-        * \see utility::detail::sstd::char_string::strstr(
+        * \see utility::detail::sstd::charS::strspn
+        * \see utility::detail::sstd::charS::strstr(
         *       const char* __source, const char* __pattern)
         */
-        ::utility::size_t strcspn(const char* __source, const char* __pattern) noexcept
+        inline ::utility::size_t strcspn(const char* __source, const char* __pattern) noexcept
         {
           if(__source != nullptr && __pattern != nullptr)
           {
@@ -610,16 +611,16 @@ namespace utility
         * is found in \a __source before the terminating null-character.<br/>
         * If none of the characters of \a __pattern is present
         * in \a __source, a null pointer is returned.
-        * \see utility::detail::sstd::char_string::strchr(
+        * \see utility::detail::sstd::charS::strchr(
         *       char* __str, char __char)
-        * \see utility::detail::sstd::char_string::strrchr(
+        * \see utility::detail::sstd::charS::strrchr(
         *       char* __str, char __char)
-        * \see utility::detail::sstd::char_string::strcspn
-        * \see utility::detail::sstd::char_string::strspn
-        * \see utility::detail::sstd::char_string::strstr(
+        * \see utility::detail::sstd::charS::strcspn
+        * \see utility::detail::sstd::charS::strspn
+        * \see utility::detail::sstd::charS::strstr(
         *       const char* __source, const char* __pattern)
         */
-        char* strpbrk(char* __source, const char* __pattern) noexcept
+        inline char* strpbrk(char* __source, const char* __pattern) noexcept
         {
           if(__source != nullptr && __pattern != nullptr)
           {
@@ -640,10 +641,10 @@ namespace utility
         * \overload const char* strpbrk(const char* __source,
         *             const char* __pattern) noexcept
         *
-        * const version
+        * const version of \c strpbrk
         *
         */
-        const char* strpbrk(const char* __source, const char* __pattern) noexcept
+        inline const char* strpbrk(const char* __source, const char* __pattern) noexcept
         {
           if(__source != nullptr && __pattern != nullptr)
           {
@@ -677,17 +678,17 @@ namespace utility
         *         \a __pattern, the function returns the length of the entire
         *         \a __source string, and if the first character in
         *         \a __source is not in \a __pattern, the function returns zero.
-        * \see utility::detail::sstd::char_string::strchr(
+        * \see utility::detail::sstd::charS::strchr(
         *       char* __str, char __char)
-        * \see utility::detail::sstd::char_string::strrchr(
+        * \see utility::detail::sstd::charS::strrchr(
         *       char* __str, char __char)
-        * \see utility::detail::sstd::char_string::strcspn
-        * \see utility::detail::sstd::char_string::strpbrk(
+        * \see utility::detail::sstd::charS::strcspn
+        * \see utility::detail::sstd::charS::strpbrk(
         *       char* __source, const char* __pattern)
-        * \see utility::detail::sstd::char_string::strstr(
+        * \see utility::detail::sstd::charS::strstr(
         *       const char* __source, const char* __pattern)
         */
-        ::utility::size_t strspn(const char* __source, const char* __pattern) noexcept
+        inline ::utility::size_t strspn(const char* __source, const char* __pattern) noexcept
         {
           ::utility::size_t __i = 0;
           if(__source != nullptr && __pattern != nullptr)
@@ -722,30 +723,30 @@ namespace utility
         *         of the entire sequence of characters specified in
         *         \a __pattern, or a null pointer if the sequence
         *         is not present in \a __source.
-        * \see utility::detail::sstd::char_string::strchr(
+        * \see utility::detail::sstd::charS::strchr(
         *       char* __str, char __char)
-        * \see utility::detail::sstd::char_string::strrchr(
+        * \see utility::detail::sstd::charS::strrchr(
         *       char* __str, char __char)
-        * \see utility::detail::sstd::char_string::strcspn
-        * \see utility::detail::sstd::char_string::strpbrk(
+        * \see utility::detail::sstd::charS::strcspn
+        * \see utility::detail::sstd::charS::strpbrk(
         *       char* __source, const char* __pattern)
-        * \see utility::detail::sstd::char_string::strspn
+        * \see utility::detail::sstd::charS::strspn
         */
-        char* strstr(char* __source, const char* __pattern) noexcept
+        inline char* strstr(char* __source, const char* __pattern) noexcept
         {
           if(__source != nullptr && __pattern != nullptr)
           {
             ::utility::ptrdiff_t __slen =
-              ::utility::detail::sstd::char_string::strlen(__source);
+              ::utility::detail::sstd::charS::strlen(__source);
             ::utility::ptrdiff_t __plen =
-              ::utility::detail::sstd::char_string::strlen(__pattern);
+              ::utility::detail::sstd::charS::strlen(__pattern);
             if(__slen < __plen)
             { return nullptr;}
             ::utility::ptrdiff_t __len = __slen - __plen+1;
             while(__len--)
             {
               if((*__source == * __pattern) &&
-                    ::utility::detail::sstd::char_string::strncmp(
+                    ::utility::detail::sstd::charS::strncmp(
                       __source, __pattern, __plen
                     ) == 0)
               { return __source;}
@@ -761,21 +762,21 @@ namespace utility
         * const version
         *
         */
-        const char* strstr(const char* __source, const char* __pattern) noexcept
+        inline const char* strstr(const char* __source, const char* __pattern) noexcept
         {
           if(__source != nullptr && __pattern != nullptr)
           {
             ::utility::size_t __slen =
-              ::utility::detail::sstd::char_string::strlen(__source);
+              ::utility::detail::sstd::charS::strlen(__source);
             ::utility::size_t __plen =
-              ::utility::detail::sstd::char_string::strlen(__pattern);
+              ::utility::detail::sstd::charS::strlen(__pattern);
             if(__slen < __plen)
             { return nullptr;}
             ::utility::size_t __len = __slen - __plen+1;
             while(__len--)
             {
               if((*__source == * __pattern) &&
-                    ::utility::detail::sstd::char_string::strncmp(
+                    ::utility::detail::sstd::charS::strncmp(
                       __source, __pattern, __plen
                     ) == 0)
               { return __source;}

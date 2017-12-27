@@ -2,6 +2,12 @@
 #ifndef __UTILITY_CONTAINER_HASH_TABLE__
 #define __UTILITY_CONTAINER_HASH_TABLE__
 
+/**
+ * \file hash_table.hpp
+ * \author Inochi Amaoto
+ *
+ */
+
 #include<utility/config/utility_config.hpp>
 #include<utility/algorithm/algorithm_auxiliary.hpp>
 #include<utility/algorithm/hash.hpp>
@@ -12,7 +18,6 @@
 #include<utility/algorithm/max.hpp>
 #include<utility/algorithm/lower_bound.hpp>
 #include<utility/algorithm/is_permutation.hpp>
-#include<utility/container/initializer_list.hpp>
 #include<utility/container/container_helper.hpp>
 #include<utility/container/pair.hpp>
 #include<utility/container/vector.hpp>

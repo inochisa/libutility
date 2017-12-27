@@ -2,11 +2,17 @@
 #ifndef __UTILITY_CONTAINER_STACK__
 #define __UTILITY_CONTAINER_STACK__
 
+/**
+ * \file stack.hpp
+ * \author Inochi Amaoto
+ *
+ */
+
 #include<utility/config/utility_config.hpp>
 #include<utility/algorithm/move.hpp>
 #include<utility/algorithm/swap.hpp>
 #include<utility/algorithm/possible_swap.hpp>
-#include<utility/container/initializer_list.hpp>
+#include<utility/container/container_helper.hpp>
 #include<utility/container/list.hpp>
 #include<utility/trait/type/releations/is_same.hpp>
 #include<utility/trait/type/features/is_nothrow_default_constructible.hpp>

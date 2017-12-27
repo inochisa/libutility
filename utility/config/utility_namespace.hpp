@@ -59,7 +59,7 @@ namespace utility
       /*!
       * \brief The char string library for sstd
       */
-      namespace char_string
+      namespace charS
       { }
     }
   }

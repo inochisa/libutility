@@ -5,9 +5,7 @@
 #include<utility/trait/trait_helper.hpp>
 #include<utility/trait/config/trait_config.hpp>
 
-#ifndef __UTILITY_NO_CPP14__
-
-# if __utility_has_is_final
+#if !defined(__UTILITY_NO_CPP14__) && __utility_has_is_final
 
 # include<utility/trait/config/trait_config.hpp>
 
@@ -31,7 +29,9 @@ namespace utility
   }
 }
 
-# else // __utility_has_is_final
+#include<utility/trait/config/trait_undef.hpp>
+
+#else // __UTILITY_NO_CPP14__ && __utility_has_is_final
 
 namespace utility
 {
@@ -43,7 +43,7 @@ namespace utility
       {
         // is_final
         template<typename _T>
-        struct is_final : public ::utility::trait::unsupport_trait
+        struct is_final : public ::utility::trait::unsupport_trait<true>
         { };
 
       }
@@ -51,10 +51,8 @@ namespace utility
   }
 }
 
-# endif // ! __utility_has_is_final
 
-#endif // ! __UTILITY_NO_CPP14__
+#endif // ! __UTILITY_NO_CPP14__ && __utility_has_is_final
 
-#include<utility/trait/config/trait_undef.hpp>
 
 #endif // __UTILITY_TRAIT_TYPE_PROPERTY_IS_FINAL__

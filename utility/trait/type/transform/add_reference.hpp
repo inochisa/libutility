@@ -44,9 +44,11 @@ namespace utility
         }
         template<typename _T>
         struct add_rvalue_reference
-        { typedef typename
+        {
+          typedef typename
             __add_rvalue_reference_impl::
-              __add_rvalue_reference_helper<_T>::type type;};
+              __add_rvalue_reference_helper<_T>::type type;
+        };
 
       }
     }

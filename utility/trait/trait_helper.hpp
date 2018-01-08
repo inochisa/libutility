@@ -5,6 +5,16 @@
 #include<utility/config/utility_config.hpp>
 #include<utility/trait/integral_constant.hpp>
 
+// Forward declaration
+namespace utility
+{
+  namespace functional
+  {
+    template<typename _T>
+    class reference_wrapper;
+  }
+}
+
 namespace utility
 {
   namespace trait
@@ -28,9 +38,10 @@ namespace utility
     * @warning this tag does not inherit from integral_constant,
     *          it's a independent class
     */
+    template<bool _Default = false>
     struct unsupport_trait
     {
-      constexpr static bool value = false;
+      constexpr static bool value = _Default;
       typedef bool value_type;
       typedef unsupport_trait type;
       constexpr operator value_type() const noexcept
@@ -200,20 +211,12 @@ namespace utility
         ~__none()=delete;
       };
 
-      typedef __type_pair<signed char,
-              __type_pair<signed short,
-              __type_pair<signed int,
-              __type_pair<signed long,
-              __type_pair<signed long long,
-              __none>>>>>
-              __signed_type;
-      typedef __type_pair<signed char,
-              __type_pair<signed short,
-              __type_pair<signed int,
-              __type_pair<signed long,
-              __type_pair<signed long long,
-              __none>>>>>
-              __signed_type;
+      template<typename _T, typename _U>
+      struct __wrapper
+      { typedef _T type;};
+      template<typename _T, typename _U>
+      struct __wrapper<_T, utility::functional::reference_wrapper<_U>>
+      { typedef _U& type;};
 
     }
   }

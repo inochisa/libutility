@@ -4,6 +4,7 @@
 
 #include<utility/trait/trait_helper.hpp>
 #include<utility/trait/type/transform/remove_cv.hpp>
+#include<utility/trait/type/categories/is_function.hpp>
 
 namespace utility
 {
@@ -22,15 +23,16 @@ namespace utility
           { };
           template<typename _T, class _Inn>
           struct __is_member_function_pointer_test<_T _Inn::*> :
-            public is_function<_T>
+            public utility::trait::integral_constant<bool,
+              utility::trait::type::categories::is_function<_T>::value>
           { };
         }
         template<typename _T>
         struct is_member_function_pointer :
           public __is_member_function_pointer_impl::
             __is_member_function_pointer_test<
-              typename
-                ::utility::trait::type::transform::remove_cv<_T>::type>
+              typename ::utility::trait::type::transform::remove_cv<_T>::type
+            >::type
         { };
 
       }

@@ -44,7 +44,7 @@ namespace utility
         namespace __is_union_impl
         {
           template<typename _T>
-          struct __is_union_test : pulic ::utility::trait::unsupport_trait
+          struct __is_union_test : pulic ::utility::trait::unsupport_trait<false>
           { };
         }
         template<typename _T>

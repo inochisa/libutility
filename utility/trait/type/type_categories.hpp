@@ -3,6 +3,7 @@
 #define __UTILITY_TRAIT_TYPE_CATEGORIES__
 
 #include<utility/trait/type/categories/is_void.hpp>
+#include<utility/trait/type/categories/is_null_pointer.hpp>
 #include<utility/trait/type/categories/is_array.hpp>
 #include<utility/trait/type/categories/is_class.hpp>
 #include<utility/trait/type/categories/is_enum.hpp>

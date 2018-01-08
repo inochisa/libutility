@@ -45,7 +45,7 @@ namespace utility
         */
         template<typename _T>
         struct has_virtual_destructor :
-          public ::utility::trait::unsupport_trait
+          public ::utility::trait::unsupport_trait<false>
         { };
 
       }

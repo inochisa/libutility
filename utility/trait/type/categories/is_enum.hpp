@@ -82,7 +82,7 @@ namespace utility
       {
         // is_enum
         template<typename _T>
-        struct is_enum : pulic ::utility::trait::unsupport_trait
+        struct is_enum : pulic ::utility::trait::unsupport_trait<false>
         { };
 
       }

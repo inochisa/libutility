@@ -995,6 +995,10 @@ namespace utility
         }
 
       public:
+        allocator_type get_allocator() const
+        { return this->__allocator;}
+
+      public:
         inline size_type size() const noexcept
         { return this->__size;}
         inline size_type bucket_size() const noexcept
@@ -1158,35 +1162,40 @@ namespace utility
           );
         }
 
-        template<typename _InputIterator>
-        inline size_type insert_unique(
-          _InputIterator __first, _InputIterator __last
-        )
-        {
-          if(__first == __last)
-          { return 0U;}
-          if(this->is_overload(::utility::iterator::distance(__first, __last)))
-          { this->resize(::utility::iterator::distance(__first, __last));}
-          size_type __success = 0;
-          for(; __first != __last; ++__first)
-          {
-            if(__insert_unique(__allocate_node(this, *__first), this).second)
-            { ++__success;}
-          }
-          return __success;
-        }
-        template<typename _InputIterator>
-        inline void insert_equal(
-          _InputIterator __first, _InputIterator __last
-        )
-        {
-          if(__first == __last)
-          { return;}
-          if(this->is_overload(::utility::iterator::distance(__first, __last)))
-          { this->resize(::utility::iterator::distance(__first, __last));}
-          for(; __first != __last; ++__first)
-          { __insert_equal(__allocate_node(this, *__first), this);}
-        }
+        /**
+         * \todo design policy for insert sequence<br/>
+         * insert_unique(iterator __f, iterator __last)<br/>
+         * insert_equal(iterator __f, iterator __last)<br/>
+         */
+        // template<typename _InputIterator>
+        // inline size_type insert_unique(
+        //   _InputIterator __first, _InputIterator __last
+        // )
+        // {
+        //   if(__first == __last)
+        //   { return 0U;}
+        //   if(this->is_overload(::utility::iterator::distance(__first, __last)))
+        //   { this->resize(::utility::iterator::distance(__first, __last));}
+        //   size_type __success = 0;
+        //   for(; __first != __last; ++__first)
+        //   {
+        //     if(__insert_unique(__allocate_node(this, *__first), this).second)
+        //     { ++__success;}
+        //   }
+        //   return __success;
+        // }
+        // template<typename _InputIterator>
+        // inline void insert_equal(
+        //   _InputIterator __first, _InputIterator __last
+        // )
+        // {
+        //   if(__first == __last)
+        //   { return;}
+        //   if(this->is_overload(::utility::iterator::distance(__first, __last)))
+        //   { this->resize(::utility::iterator::distance(__first, __last));}
+        //   for(; __first != __last; ++__first)
+        //   { __insert_equal(__allocate_node(this, *__first), this);}
+        // }
 
       public:
         template<typename... _Args>
@@ -1500,10 +1509,12 @@ namespace utility
       public:
         void swap(hash_table& __o) noexcept(
           utility::trait::type::features::is_nothrow_swappable<hasher>::value &&
-          utility::trait::type::features::is_nothrow_swappable<key_equal>::value
+          utility::trait::type::features::is_nothrow_swappable<key_equal>::value &&
+          utility::trait::type::features::is_nothrow_swappable<allocator_type>::value
         )
         {
           using utility::algorithm::swap;
+          swap(this->__allocator,   __o.__allocator   );
           swap(this->__key_eq,      __o.__key_eq      );
           swap(this->__hasher,      __o.__hasher      );
           swap(this->__bucket,      __o.__bucket      );

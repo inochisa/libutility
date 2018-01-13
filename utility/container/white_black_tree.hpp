@@ -584,6 +584,10 @@ namespace utility
         }
 
       public:
+        allocator_type get_allocator() const
+        { return this->__allocator;}
+
+      public:
         iterator begin() noexcept
         { return iterator(this->__head->__left);}
         const_iterator begin() const noexcept
@@ -596,6 +600,20 @@ namespace utility
         { return const_iterator(this->__head);}
         const_iterator cend() const noexcept
         { return const_iterator(this->__head);}
+
+      public:
+        reverse_iterator rbegin() noexcept
+        { return reverse_iterator(this->end());}
+        const_reverse_iterator rbegin() const noexcept
+        { return const_reverse_iterator(this->end());}
+        const_reverse_iterator crbegin() const noexcept
+        { return const_reverse_iterator(this->end());}
+        reverse_iterator rend() noexcept
+        { return reverse_iterator(this->begin());}
+        const_reverse_iterator rend() const noexcept
+        { return const_reverse_iterator(this->begin());}
+        const_reverse_iterator crend() const noexcept
+        { return const_reverse_iterator(this->begin());}
 
       public:
         bool empty() const noexcept
@@ -620,21 +638,6 @@ namespace utility
         }
         const_reference maxmum() const
         { return __get_value(*(this->__head->__right->__data));}
-
-
-      public:
-        reverse_iterator rbegin() noexcept
-        { return reverse_iterator(this->end());}
-        const_reverse_iterator rbegin() const noexcept
-        { return const_reverse_iterator(this->end());}
-        const_reverse_iterator crbegin() const noexcept
-        { return const_reverse_iterator(this->end());}
-        reverse_iterator rend() noexcept
-        { return reverse_iterator(this->begin());}
-        const_reverse_iterator rend() const noexcept
-        { return const_reverse_iterator(this->begin());}
-        const_reverse_iterator crend() const noexcept
-        { return const_reverse_iterator(this->begin());}
 
       public:
         utility::container::pair<iterator, bool>
@@ -685,6 +688,13 @@ namespace utility
             __allocate_node(this, utility::algorithm::move(__val)), this
           );
         }
+
+        /**
+         * \todo design policy for insert sequence<br/>
+         * insert_unique(iterator __f, iterator __last)<br/>
+         * insert_equal(iterator __f, iterator __last)<br/>
+         */
+
 
       public:
         template<typename... _Args>
@@ -827,13 +837,15 @@ namespace utility
           bool>::type = true
         >
         void swap(white_black_tree& __other) noexcept(
-          utility::trait::type::features::is_nothrow_swappable<key_compare>::value
+          utility::trait::type::features::is_nothrow_swappable<key_compare>::value &&
+          utility::trait::type::features::is_nothrow_swappable<allocator_type>::value
         )
         {
           using utility::algorithm::swap;
-          swap(this->__head, __other.__head);
-          swap(this->__size, __other.__size);
-          swap(this->__compare, __other.__compare);
+          swap(this->__allocator, __other.__allocator);
+          swap(this->__head,      __other.__head);
+          swap(this->__size,      __other.__size);
+          swap(this->__compare,   __other.__compare);
           return;
         }
         template<

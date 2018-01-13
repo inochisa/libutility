@@ -19,6 +19,7 @@
 #include<utility/container/container_helper.hpp>
 #include<utility/container/impl/pair_value.hpp>
 #include<utility/container/pair.hpp>
+#include<utility/container/compressed_pair.hpp>
 #include<utility/trait/type/releations/is_same.hpp>
 #include<utility/trait/type/features/is_swappable.hpp>
 #include<utility/trait/type/features/is_possible_swappable.hpp>
@@ -168,9 +169,6 @@ namespace utility
               __ptr(__link)
             { }
 
-            inline ~__white_black_tree_iterator()
-            { }
-
           public:
             self& operator=(const self& __oit)
             {
@@ -260,16 +258,10 @@ namespace utility
             inline explicit __white_black_tree_const_iterator(__link_type __link) noexcept:
               __ptr(__link)
             { }
-            inline __white_black_tree_const_iterator(self __it) noexcept:
-              __ptr(__it.__ptr)
-            { }
             inline __white_black_tree_const_iterator(
               const __white_black_tree_iterator<__Key, __Value, __Key_Value_Container>& __it
             ) noexcept:
               __ptr(__it.__ptr)
-            { }
-
-            inline ~__white_black_tree_const_iterator()
             { }
 
           public:
@@ -655,11 +647,41 @@ namespace utility
             __allocate_node(this, utility::algorithm::move(__val)), this
           );
         }
+        iterator insert_unique(
+          const_iterator __hint, const value_type& __val
+        )
+        {
+          return __insert_unique(
+            __hint.__ptr ,__allocate_node(this, __val), this
+          );
+        }
+        iterator insert_unique(const_iterator __hint, value_type&& __val)
+        {
+          return __insert_unique(
+            __hint.__ptr,
+            __allocate_node(this, utility::algorithm::move(__val)), this
+          );
+        }
         iterator insert_equal(const value_type& __val)
         { return __insert_equal(__allocate_node(this, __val), this);}
         iterator insert_equal(value_type&& __val)
         {
           return __insert_equal(
+            __allocate_node(this, utility::algorithm::move(__val)), this
+          );
+        }
+        iterator insert_equal(
+          const_iterator __hint, const value_type& __val
+        )
+        {
+          return __insert_equal(
+            __hint.__ptr ,__allocate_node(this, __val), this
+          );
+        }
+        iterator insert_equal(const_iterator __hint, value_type&& __val)
+        {
+          return __insert_equal(
+            __hint.__ptr,
             __allocate_node(this, utility::algorithm::move(__val)), this
           );
         }
@@ -679,6 +701,30 @@ namespace utility
         iterator emplace_equal(_Args&&... __args)
         {
           return __insert_equal(
+            __allocate_node(
+              this, utility::algorithm::forward<_Args>(__args)...
+            ), this
+          );
+        }
+        template<typename... _Args>
+        iterator emplace_unique_hint(
+          const_iterator __hint, _Args&&... __args
+        )
+        {
+          return __insert_unique(
+            __hint.__ptr,
+            __allocate_node(
+              this, utility::algorithm::forward<_Args>(__args)...
+            ), this
+          );
+        }
+        template<typename... _Args>
+        iterator emplace_equal_hint(
+          const_iterator __hint, _Args&&... __args
+        )
+        {
+          return __insert_equal(
+            __hint.__ptr,
             __allocate_node(
               this, utility::algorithm::forward<_Args>(__args)...
             ), this
@@ -791,10 +837,10 @@ namespace utility
           return;
         }
         template<
-          typename _Key_Compare = key_compare, typename _Alloc = allocator_type
+          typename _Key_Compare = key_compare, typename __Alloc = allocator_type,
           typename utility::trait::type::miscellaneous::enable_if<
             utility::trait::type::features::is_possible_swappable<_Key_Compare>::value &&
-            utility::trait::type::features::is_possible_swappable<_Alloc>::value,
+            utility::trait::type::features::is_possible_swappable<__Alloc>::value,
           bool>::type = true
         >
         void possible_swap(white_black_tree& __other) noexcept(
@@ -846,7 +892,7 @@ namespace utility
           );
           return;
         }
-        void __wb_tree_copy(__link_type& __root, const __link_type __o)
+        void __wb_tree_copy(__link_type& __root, const __node_type* __o)
         {
           __root = __allocate_node(this, *(__o->__data));
           __root->__color   = __o->__color;
@@ -945,6 +991,40 @@ namespace utility
           __deallocate_node(__ins, __this);
           return utility::container::pair<iterator, bool>(__tmp, false);
         }
+        static iterator __insert_unique(
+          __link_type __pos, __link_type __ins,
+          white_black_tree* __this
+        ) noexcept
+        {
+          // The first node.
+          if(__pos == __this->__head->__left)
+          {
+            if(__this->__size > 0 && __this->__compare(
+              __get_key(*(__ins->__data)), __get_key(*(__pos->__data))
+            ))
+            { return __insert(__pos, __pos, __ins, __this);}
+            return __insert_unique(__ins, __this).first;
+          }
+          // The last node.
+          if(__pos == __this->__head)
+          {
+            if(__this->__compare(
+              __get_key(*(__this->__head->__right->__data)), __get_key(*(__ins->__data))
+            ))
+            { return __insert(nullptr, __this->__head->__right, __ins, __this);}
+            return __insert_unique(__ins, __this).first;
+          }
+
+          __link_type __before = __node_type::__link_prev(__pos);
+          if(__this->__compare(__get_key(*(__before->__data)), __get_key(*(__ins->__data))) &&
+             __this->__compare(__get_key(*(__ins->__data)), __get_key(*(__pos->__data))))
+          {
+            if(__before->__right == nullptr)
+            { return __insert(nullptr, __before, __ins, __this);}
+            return __insert(__pos, __pos, __ins, __this);
+          }
+          return __insert_unique(__ins, __this).first;
+        }
 
         static iterator __insert_equal(
           __link_type __ins, white_black_tree* __this
@@ -961,6 +1041,42 @@ namespace utility
           }
           return __insert(__pos, __header, __ins, __this);
         }
+        static iterator __insert_equal(
+          __link_type __pos, __link_type __ins,
+          white_black_tree* __this
+        ) noexcept
+        {
+          // The first node.
+          if(__pos == __this->__head->__left)
+          {
+            if(__this->__size > 0 && !(__this->__compare(
+              __get_key(*(__pos->__data)), __get_key(*(__ins->__data))
+            )))
+            { return __insert(__pos, __pos, __ins, __this);}
+            return __insert_equal(__ins, __this);
+          }
+          // The last node.
+          if(__pos == __this->__head)
+          {
+            if(!(__this->__compare(
+              __get_key(*(__ins->__data)), __get_key(*(__this->__head->__right->__data))
+            )))
+            { return __insert(nullptr, __this->__head->__right, __ins, __this);}
+            return __insert_equal(__ins, __this);
+          }
+
+          __link_type __before = __node_type::__link_prev(__pos);
+          if(!(__this->__compare(__get_key(*(__ins->__data)), __get_key(*(__before->__data)))) &&
+             !(__this->__compare(__get_key(*(__pos->__data)), __get_key(*(__ins->__data)))))
+          {
+            if(__before->__right == nullptr)
+            { return __insert(nullptr, __before, __ins, __this);}
+            return __insert(__pos, __pos, __ins, __this);
+          }
+          return __insert_equal(__ins, __this);
+        }
+
+
         static inline iterator __insert(
           __link_type __x, __link_type __y,
           __link_type __z, white_black_tree* __this

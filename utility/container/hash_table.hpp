@@ -31,6 +31,7 @@
 #include<utility/memory/unique_ptr.hpp>
 #include<utility/iterator/iterator_tag.hpp>
 #include<utility/iterator/distance.hpp>
+#include<utility/miscellaneous/ignore_unused.hpp>
 
 namespace utility
 {
@@ -1116,6 +1117,47 @@ namespace utility
             __allocate_node(this, utility::algorithm::move(__val)), this
           );
         }
+        iterator insert_unique(
+          const_iterator __hint, const value_type& __val
+        )
+        {
+          ::utility::miscellaneous::ignore_unused(__hint);
+          if(this->is_overload(1U))
+          { this->resize(this->size() + 1);}
+          return __insert_unique(__allocate_node(this, __val), this).first;
+        }
+        iterator insert_unique(
+          const_iterator __hint, value_type&& __val
+        )
+        {
+          ::utility::miscellaneous::ignore_unused(__hint);
+          if(this->is_overload(1U))
+          { this->resize(this->size() + 1);}
+          return __insert_unique(
+            __allocate_node(this, utility::algorithm::move(__val)), this
+          ).first;
+        }
+        inline iterator insert_equal(
+          const_iterator __hint, const value_type& __val
+        )
+        {
+          ::utility::miscellaneous::ignore_unused(__hint);
+          if(this->is_overload(1U))
+          { this->resize(this->size() + 1);}
+          return __insert_equal(__allocate_node(this, __val), this);
+        }
+        inline iterator insert_equal(
+          const_iterator __hint, value_type&& __val
+        )
+        {
+          ::utility::miscellaneous::ignore_unused(__hint);
+          if(this->is_overload(1U))
+          { this->resize(this->size() + 1);}
+          return __insert_equal(
+            __allocate_node(this, utility::algorithm::move(__val)), this
+          );
+        }
+
         template<typename _InputIterator>
         inline size_type insert_unique(
           _InputIterator __first, _InputIterator __last
@@ -1145,6 +1187,8 @@ namespace utility
           for(; __first != __last; ++__first)
           { __insert_equal(__allocate_node(this, *__first), this);}
         }
+
+      public:
         template<typename... _Args>
         inline utility::container::pair<iterator, bool>
         emplace_unique(_Args&&... __args)
@@ -1159,6 +1203,32 @@ namespace utility
         template<typename... _Args>
         inline iterator emplace_equal(_Args&&... __args)
         {
+          if(this->is_overload(1U))
+          { this->resize(this->size() + 1);}
+          return __insert_equal(
+            __allocate_node(this, utility::algorithm::forward<_Args>(__args)...),
+            this
+          );
+        }
+        template<typename... _Args>
+        inline iterator emplace_unique_hint(
+          const_iterator __hint, _Args&&... __args
+        )
+        {
+          ::utility::miscellaneous::ignore_unused(__hint);
+          if(this->is_overload(1U))
+          { this->resize(this->size() + 1);}
+          return __insert_unique(
+            __allocate_node(this, utility::algorithm::forward<_Args>(__args)...),
+            this
+          ).first;
+        }
+        template<typename... _Args>
+        inline iterator emplace_equal_hint(
+          const_iterator __hint, _Args&&... __args
+        )
+        {
+          ::utility::miscellaneous::ignore_unused(__hint);
           if(this->is_overload(1U))
           { this->resize(this->size() + 1);}
           return __insert_equal(

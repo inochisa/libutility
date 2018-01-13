@@ -143,9 +143,6 @@ namespace utility
               __ptr(__link), __container_ptr(__con_link)
             { }
 
-            inline ~__hash_table_iterator()
-            { }
-
           public:
             self& operator=(const self& __oit)
             {
@@ -254,9 +251,6 @@ namespace utility
               const __hash_table_iterator<__Key, __Value, __Key_Value_Container, __Container>& __it
             ) noexcept:
               __ptr(__it.__ptr), __container_ptr(__it.__container_ptr)
-            { }
-
-            inline ~__hash_table_const_iterator()
             { }
 
           public:
@@ -370,9 +364,6 @@ namespace utility
               __container_ptr(__con_link)
             { }
 
-            inline ~__hash_table_local_iterator()
-            { }
-
           public:
             self& operator=(const self& __oit)
             {
@@ -479,8 +470,6 @@ namespace utility
             ) noexcept:
               __ptr(__it.__ptr), __bucket_num(__it.__bucket_num),
               __container_ptr(__it.__container_ptr)
-            { }
-            inline ~__hash_table_const_local_iterator()
             { }
 
           public:

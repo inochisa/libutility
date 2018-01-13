@@ -78,9 +78,6 @@ namespace utility
               __ptr(__tptr)
             { }
 
-            inline ~__vector_iterator()
-            { }
-
           public:
             inline self& operator=(const self& __other)
             {
@@ -191,8 +188,6 @@ namespace utility
               const __vector_iterator<value_type>& __other
             ) noexcept:
               __ptr(__other.__ptr)
-            { }
-            ~__vector_const_iterator()
             { }
 
           public:

@@ -21,10 +21,11 @@
 #include<utility/trait/type/features/is_implicit_constructible.hpp>
 #include<utility/trait/type/features/is_assignable.hpp>
 #include<utility/trait/type/features/is_copy_assignable.hpp>
-#include<utility/trait/type/features/is_move_assignable.hpp>
-#include<utility/trait/type/features/is_nothrow_move_assignable.hpp>
 #include<utility/trait/type/features/is_swappable.hpp>
 #include<utility/trait/type/features/is_possible_swappable.hpp>
+#include<utility/trait/type/features/is_nothrow_constructible.hpp>
+#include<utility/trait/type/features/is_nothrow_default_constructible.hpp>
+#include<utility/trait/type/features/is_nothrow_move_assignable.hpp>
 #include<utility/trait/type/features/is_nothrow_swappable.hpp>
 #include<utility/trait/type/features/is_nothrow_possible_swappable.hpp>
 #include<utility/trait/type/miscellaneous/enable_if.hpp>
@@ -57,7 +58,10 @@ namespace utility
               (::utility::trait::type::features::is_implicit_constructible<_U1>::value &&
                utility::trait::type::features::is_implicit_constructible<_U2>::value),
               bool>::type = true>
-        constexpr pair():first(), second()
+        constexpr pair() noexcept(
+          utility::trait::type::features::is_nothrow_default_constructible<_T1>::value &&
+          utility::trait::type::features::is_nothrow_default_constructible<_T2>::value
+        ):first(), second()
         { }
 
         template<typename _U1 = _T1, typename _U2 = _T2,
@@ -68,7 +72,10 @@ namespace utility
             !(::utility::trait::type::features::is_implicit_constructible<_U1>::value &&
               utility::trait::type::features::is_implicit_constructible<_U2>::value),
             bool>::type = false>
-        explicit constexpr pair():first(), second()
+        explicit constexpr pair() noexcept(
+          utility::trait::type::features::is_nothrow_default_constructible<_T1>::value &&
+          utility::trait::type::features::is_nothrow_default_constructible<_T2>::value
+        ):first(), second()
         { }
 
         template<typename _U1 = _T1, typename _U2 = _T2,
@@ -80,20 +87,24 @@ namespace utility
              utility::trait::type::releations::is_convertible<const _U2&, _U2>::value),
             bool
           >::type = true>
-        constexpr pair(const _T1& __first, const _T2& __second):
-          first(__first), second(__second)
+        constexpr pair(const _T1& __first, const _T2& __second) noexcept(
+          utility::trait::type::features::is_nothrow_copy_constructible<_T1>::value &&
+          utility::trait::type::features::is_nothrow_copy_constructible<_T2>::value
+        ):first(__first), second(__second)
         { }
 
         template<typename _U1 = _T1, typename _U2 = _T2,
         typename
           utility::trait::type::miscellaneous::enable_if<
-            utility::trait::type::features::is_default_constructible<_U1>::value &&
-            utility::trait::type::features::is_default_constructible<_U2>::value &&
-            !(::utility::trait::type::releations::is_convertible<const _U1&, _U1>::value &&
+            utility::trait::type::features::is_copy_constructible<_U1>::value &&
+            utility::trait::type::features::is_copy_constructible<_U2>::value &&
+            !(utility::trait::type::releations::is_convertible<const _U1&, _U1>::value &&
               utility::trait::type::releations::is_convertible<const _U2&, _U2>::value),
             bool>::type = false>
-        explicit constexpr pair(const _T1& __first, const _T2& __second):
-          first(__first), second(__second)
+        explicit constexpr pair(const _T1& __first, const _T2& __second) noexcept(
+          utility::trait::type::features::is_nothrow_copy_constructible<_T1>::value &&
+          utility::trait::type::features::is_nothrow_copy_constructible<_T2>::value
+        ):first(__first), second(__second)
         { }
 
         template<typename _U1, typename _U2,
@@ -104,8 +115,10 @@ namespace utility
           (::utility::trait::type::releations::is_convertible<_U1&&, _T1>::value &&
            utility::trait::type::releations::is_convertible<_U2&&, _T2>::value),
           bool>::type = true>
-        constexpr pair(_U1&& __tfirst, _U2&& __tsecond):
-          first(::utility::algorithm::forward<_U1>(__tfirst)),
+        constexpr pair(_U1&& __tfirst, _U2&& __tsecond) noexcept(
+          utility::trait::type::features::is_nothrow_constructible<_T1, _U1&&>::value &&
+          utility::trait::type::features::is_nothrow_constructible<_T2, _U2&&>::value
+        ):first(::utility::algorithm::forward<_U1>(__tfirst)),
           second(::utility::algorithm::forward<_U2>(__tsecond))
         { }
 
@@ -117,8 +130,10 @@ namespace utility
           !(::utility::trait::type::releations::is_convertible<_U1&&, _T1>::value &&
             utility::trait::type::releations::is_convertible<_U2&&, _T2>::value),
           bool>::type = false>
-        explicit constexpr pair(_U1&& __tfirst, _U2&& __tsecond):
-          first(::utility::algorithm::forward<_U1>(__tfirst)),
+        explicit constexpr pair(_U1&& __tfirst, _U2&& __tsecond) noexcept(
+          utility::trait::type::features::is_nothrow_constructible<_T1, _U1&&>::value &&
+          utility::trait::type::features::is_nothrow_constructible<_T2, _U2&&>::value
+        ):first(::utility::algorithm::forward<_U1>(__tfirst)),
           second(::utility::algorithm::forward<_U2>(__tsecond))
         { }
 
@@ -130,8 +145,10 @@ namespace utility
           (::utility::trait::type::releations::is_convertible<const _U1&, _T1>::value &&
            utility::trait::type::releations::is_convertible<const _U2&, _T2>::value),
           bool>::type = true>
-        constexpr pair(const pair<_U1, _U2>& __tpair):
-          first(__tpair.first), second(__tpair.second)
+        constexpr pair(const pair<_U1, _U2>& __tpair) noexcept(
+          utility::trait::type::features::is_nothrow_constructible<_T1, const _U1&>::value &&
+          utility::trait::type::features::is_nothrow_constructible<_T2, const _U2&>::value
+        ):first(__tpair.first), second(__tpair.second)
         { }
 
         template<typename _U1, typename _U2,
@@ -142,8 +159,10 @@ namespace utility
           !(::utility::trait::type::releations::is_convertible<const _U1&, _T1>::value &&
             utility::trait::type::releations::is_convertible<const _U2&, _T2>::value),
           bool>::type = false>
-        explicit constexpr pair(const pair<_U1, _U2>& __tpair):
-          first(__tpair.first), second(__tpair.second)
+        explicit constexpr pair(const pair<_U1, _U2>& __tpair) noexcept(
+          utility::trait::type::features::is_nothrow_constructible<_T1, const _U1&>::value &&
+          utility::trait::type::features::is_nothrow_constructible<_T2, const _U2&>::value
+        ):first(__tpair.first), second(__tpair.second)
         { }
 
         template<typename _U1, typename _U2,
@@ -154,8 +173,10 @@ namespace utility
           (::utility::trait::type::releations::is_convertible<_U1&&, _T1>::value &&
            utility::trait::type::releations::is_convertible<_U2&&, _T2>::value),
           bool>::type = true>
-        constexpr pair(pair<_U1, _U2>&& __tpair):
-          first(::utility::algorithm::forward<_U1>(__tpair.first)),
+        constexpr pair(pair<_U1, _U2>&& __tpair) noexcept(
+          utility::trait::type::features::is_nothrow_constructible<_T1, _U1&&>::value &&
+          utility::trait::type::features::is_nothrow_constructible<_T2,  _U2&&>::value
+        ):first(::utility::algorithm::forward<_U1>(__tpair.first)),
           second(::utility::algorithm::forward<_U1>(__tpair.second))
         { }
 
@@ -167,8 +188,10 @@ namespace utility
           !(::utility::trait::type::releations::is_convertible<_U1&&, _T1>::value &&
             utility::trait::type::releations::is_convertible<_U2&&, _T2>::value),
           bool>::type = true>
-        explicit constexpr pair(pair<_U1, _U2>&& __tpair):
-          first(::utility::algorithm::forward(__tpair.first)),
+        explicit constexpr pair(pair<_U1, _U2>&& __tpair) noexcept(
+          utility::trait::type::features::is_nothrow_constructible<_T1, _U1&&>::value &&
+          utility::trait::type::features::is_nothrow_constructible<_T2,  _U2&&>::value
+        ):first(::utility::algorithm::forward(__tpair.first)),
           second(::utility::algorithm::forward(__tpair.second))
         { }
 

@@ -95,8 +95,6 @@ namespace utility
             inline explicit __list_iterator(__link_type __link) noexcept:
               __ptr(__link)
             { }
-            ~__list_iterator()
-            { }
 
           public:
             self& operator=(const self& __other)
@@ -180,10 +178,6 @@ namespace utility
               { }
               inline __list_const_iterator(const __list_iterator<__Value>& __it) noexcept:
                 __ptr(__it.__ptr)
-              { }
-
-              inline
-              ~__list_const_iterator()
               { }
 
             public:

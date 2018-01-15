@@ -176,7 +176,7 @@ namespace utility
             _RandomAccessIterator __part_pos =
               __intro_igedge_partition(
                 __first, __last,
-                __intro_median(__first, __midpos, __last, __compare), __compare
+                __intro_median(__first, __midpos, __last-1, __compare), __compare
               );
             __intro_sort_loop(__part_pos, __last, --__dep_lim, __compare);
             __last = __part_pos;

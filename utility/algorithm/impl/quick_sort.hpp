@@ -159,10 +159,10 @@ namespace utility
             _RandomAccessIterator __part_pos =
               __qsort_partition(
                 __first, __last,
-                __qsort_median(__first, __midpos, __last, __compare), __compare
+                __qsort_median(__first, __midpos, __last-1, __compare), __compare
               );
             __qsort_loop(__first, __part_pos, __compare);
-            __qsort_loop(__part_pos+1, __last, __compare);
+            __qsort_loop(__part_pos, __last, __compare);
           }
         }
       }

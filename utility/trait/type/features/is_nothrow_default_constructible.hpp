@@ -16,7 +16,7 @@ namespace utility
         // is_nothrow_default_constructible
         template<typename _T>
         struct is_nothrow_default_constructible :
-          public ::utility::trait::type::features::is_nothrow_constructible<_T>
+          public utility::trait::type::features::is_nothrow_constructible<_T>
         { };
 
       }

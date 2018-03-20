@@ -44,7 +44,7 @@ namespace utility
     )
     {
       typedef typename
-        ::utility::iterator::iterator_traits<_ForwardIterator>::value_type
+        utility::iterator::iterator_traits<_ForwardIterator>::value_type
         __value_type;
 #ifdef __UTILITY_USE_EXCEPTION
       _ForwardIterator __epos = __result;
@@ -52,8 +52,8 @@ namespace utility
       __UTILITY_TRY_BEGIN
         for(; __first != __last; (void)++__first, ++__result)
         {
-          ::new (static_cast<void*>(::utility::memory::addressof(*__result)))
-          __value_type(::utility::algorithm::move(*__first));
+          ::new (static_cast<void*>(utility::memory::addressof(*__result)))
+          __value_type(utility::algorithm::move(*__first));
         }
       __UTILITY_TRY_END
       __UTILITY_CATCH(...)
@@ -71,7 +71,7 @@ namespace utility
     )
     {
       typedef typename
-        ::utility::iterator::iterator_traits<_BidirIterator2>::value_type
+        utility::iterator::iterator_traits<_BidirIterator2>::value_type
         __value_type;
 #ifdef __UTILITY_USE_EXCEPTION
       _BidirIterator2 __epos = __result;
@@ -79,8 +79,8 @@ namespace utility
       __UTILITY_TRY_BEGIN
         for(; __first != __last;)
         {
-          ::new (static_cast<void*>(::utility::memory::addressof(*--__result)))
-          __value_type(::utility::algorithm::move(*--__last));
+          ::new (static_cast<void*>(utility::memory::addressof(*--__result)))
+          __value_type(utility::algorithm::move(*--__last));
         }
       __UTILITY_TRY_END
       __UTILITY_CATCH(...)

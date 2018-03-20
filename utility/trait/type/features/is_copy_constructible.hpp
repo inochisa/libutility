@@ -18,10 +18,10 @@ namespace utility
         // is_copy_constructible
         template<typename _T>
         struct is_copy_constructible : public
-          ::utility::trait::type::features::is_constructible<_T,
-          typename ::utility::trait::type::transform::add_lvalue_reference<
+          utility::trait::type::features::is_constructible<_T,
+          typename utility::trait::type::transform::add_lvalue_reference<
             typename
-            ::utility::trait::type::transform::add_const<_T>::type
+            utility::trait::type::transform::add_const<_T>::type
           >::type>
         { };
 

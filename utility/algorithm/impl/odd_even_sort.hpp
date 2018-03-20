@@ -15,7 +15,7 @@ namespace utility
 
     namespace detail
     {
-      using ::utility::algorithm::sort_tag::odd_even_sort_tag;
+      using utility::algorithm::sort_tag::odd_even_sort_tag;
       template<typename _RandomAccessIterator, typename _Compare>
       void __sort(
         _RandomAccessIterator __first, _RandomAccessIterator __last,
@@ -25,7 +25,7 @@ namespace utility
         using utility::algorithm::swap;
 #ifdef UTILITY_DEBUG
         static_assert(
-          ::utility::iterator::is_random_access_iterator<_RandomAccessIterator>::value,
+          utility::iterator::is_random_access_iterator<_RandomAccessIterator>::value,
           "odd even sort  need at least random access iterator."
         );
 #endif // ! UTILITY_DEBUG

@@ -18,8 +18,8 @@ namespace utility
       template
       <
         typename _Iterator,
-        bool = ::utility::iterator::is_vaild_iterator_type<
-          _Iterator, ::utility::iterator::bidirectional_iterator_tag
+        bool = utility::iterator::is_vaild_iterator_type<
+          _Iterator, utility::iterator::bidirectional_iterator_tag
         >::value
       >
       struct __rotate
@@ -35,14 +35,14 @@ namespace utility
           _ForwardIterator __tit = __mid;
           for(;__tit != __last;)
           {
-            ::utility::algorithm::iter_swap(__first++, __tit++);
+            utility::algorithm::iter_swap(__first++, __tit++);
             if(__first == __mid)
             { __mid = __tit;}
           }
           _ForwardIterator __res = __first;
           for(__tit = __mid; __tit != __last;)
           {
-            ::utility::algorithm::iter_swap(__first++, __tit++);
+            utility::algorithm::iter_swap(__first++, __tit++);
             if(__first == __mid)
             { __mid = __tit;}
             else if(__tit == __last)
@@ -62,11 +62,11 @@ namespace utility
         {
           if(__first == __mid)
           { return __last;}
-          ::utility::algorithm::reverse(__first, __mid);
-          ::utility::algorithm::reverse(__mid, __last);
-          ::utility::algorithm::reverse(__first, __last);
-          return ::utility::iterator::next(
-            __first, ::utility::iterator::distance(__mid, __last)
+          utility::algorithm::reverse(__first, __mid);
+          utility::algorithm::reverse(__mid, __last);
+          utility::algorithm::reverse(__first, __last);
+          return utility::iterator::next(
+            __first, utility::iterator::distance(__mid, __last)
           );
         }
       };
@@ -95,7 +95,7 @@ namespace utility
     )
     {
       return
-        ::utility::algorithm::detail::__rotate<_ForwardIterator>::__aux(
+        utility::algorithm::detail::__rotate<_ForwardIterator>::__aux(
           __first, __mid, __last
         );
     }

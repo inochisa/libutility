@@ -20,12 +20,12 @@ namespace utility
 
     }
 
-    unsigned short CRC16(const void* __pos, ::utility::size_t __len) noexcept
+    unsigned short CRC16(const void* __pos, utility::size_t __len) noexcept
     {
       unsigned short __res = 0U;
       unsigned short __table_value;
       const unsigned char* __ptr = static_cast<const unsigned char*>(__pos);
-      for(::utility::size_t __i = 0; __i < __len; ++__i, ++__ptr)
+      for(utility::size_t __i = 0; __i < __len; ++__i, ++__ptr)
       {
         __table_value = CRC_table::CRC16_TABLE[__res & 0xfU];
         __res = (__res >> 4) & 0x0fffU;
@@ -43,12 +43,12 @@ namespace utility
 
     unsigned short CRC16(
       unsigned short __pre_crc,
-      const void* __pos, ::utility::size_t __len
+      const void* __pos, utility::size_t __len
     ) noexcept
     {
       unsigned short __table_value;
       const unsigned char* __ptr = static_cast<const unsigned char*>(__pos);
-      for(::utility::size_t __i = 0; __i < __len; ++__i, ++__ptr)
+      for(utility::size_t __i = 0; __i < __len; ++__i, ++__ptr)
       {
         __table_value = CRC_table::CRC16_TABLE[__pre_crc & 0xfU];
         __pre_crc = (__pre_crc >> 4) & 0x0fffU;

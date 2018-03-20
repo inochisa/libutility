@@ -50,10 +50,10 @@ namespace utility
     {
       using utility::algorithm::swap;
       typedef typename
-        ::utility::iterator::iterator_traits<_RandomAccessIterator>::difference_type
+        utility::iterator::iterator_traits<_RandomAccessIterator>::difference_type
         __difference_type;
       typedef typename
-        ::utility::trait::type::transform::add_lvalue_reference<_Compare>::type
+        utility::trait::type::transform::add_lvalue_reference<_Compare>::type
         __comp_ref;
 
       __difference_type __len = __last - __first;
@@ -73,9 +73,9 @@ namespace utility
     )
     {
       typedef typename
-        ::utility::iterator::iterator_traits<_RandomAccessIterator>::value_type
+        utility::iterator::iterator_traits<_RandomAccessIterator>::value_type
         __value_type;
-      ::utility::algorithm::make_heap(__first, __last, ::utility::algorithm::less<__value_type>());
+      utility::algorithm::make_heap(__first, __last, utility::algorithm::less<__value_type>());
     }
   }
 }

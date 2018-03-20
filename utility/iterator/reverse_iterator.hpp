@@ -66,13 +66,13 @@ namespace utility
         }
         __UTILITY_CPP14_CONSTEXPR__
         inline pointer operator->() const
-        { return ::utility::memory::addressof(this->operator*());}
+        { return utility::memory::addressof(this->operator*());}
 
       public:
         __UTILITY_CPP14_CONSTEXPR__
         inline reverse_iterator& operator++()
         {
-          // using ::utility::trait::type::releations::is_convertible;
+          // using utility::trait::type::releations::is_convertible;
           // static_assert(is_convertible<iterator_category,
           //   bidirectional_iterator_tag>::value,
           //   "Need the iterator support backward.");
@@ -82,7 +82,7 @@ namespace utility
         __UTILITY_CPP14_CONSTEXPR__
         inline reverse_iterator operator++(int) const
         {
-          // using ::utility::trait::type::releations::is_convertible;
+          // using utility::trait::type::releations::is_convertible;
           // static_assert(is_convertible<iterator_category,
           //   bidirectional_iterator_tag>::value,
           //   "Need the iterator support backward.");
@@ -106,7 +106,7 @@ namespace utility
         __UTILITY_CPP14_CONSTEXPR__
         inline reverse_iterator operator+(difference_type __len) const
         {
-          // using ::utility::trait::type::releations::is_convertible;
+          // using utility::trait::type::releations::is_convertible;
           // static_assert(is_convertible<iterator_category,
           //   random_access_iterator_tag>::value,
           //   "Need the iterator support random access.");
@@ -115,7 +115,7 @@ namespace utility
         __UTILITY_CPP14_CONSTEXPR__
         inline reverse_iterator operator-(difference_type __len) const
         {
-          // using ::utility::trait::type::releations::is_convertible;
+          // using utility::trait::type::releations::is_convertible;
           // static_assert(is_convertible<iterator_category,
           //   random_access_iterator_tag>::value,
           //   "Need the iterator support random access.");
@@ -124,7 +124,7 @@ namespace utility
         __UTILITY_CPP14_CONSTEXPR__
         inline reverse_iterator& operator+=(difference_type __len)
         {
-          // using ::utility::trait::type::releations::is_convertible;
+          // using utility::trait::type::releations::is_convertible;
           // static_assert(is_convertible<iterator_category,
           //   random_access_iterator_tag>::value,
           //   "Need the iterator support random access.");
@@ -134,7 +134,7 @@ namespace utility
         __UTILITY_CPP14_CONSTEXPR__
         inline reverse_iterator& operator-=(difference_type __len)
         {
-          // using ::utility::trait::type::releations::is_convertible;
+          // using utility::trait::type::releations::is_convertible;
           // static_assert(is_convertible<iterator_category,
           //   random_access_iterator_tag>::value,
           //   "Need the iterator support random access.");
@@ -144,7 +144,7 @@ namespace utility
         __UTILITY_CPP14_CONSTEXPR__
         inline reference operator[](difference_type __len) const
         {
-          // using ::utility::trait::type::releations::is_convertible;
+          // using utility::trait::type::releations::is_convertible;
           // static_assert(is_convertible<iterator_category,
           //   random_access_iterator_tag>::value,
           //   "Need the iterator support random access.");

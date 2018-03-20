@@ -3,7 +3,7 @@
 #define __UTILITY_CONTAINER_CYCLE_ARRAY__
 
 #include<utility/config/utility_config.hpp>
-#include<utility/container/initializer_list.hpp>
+#include<utility/container/container_helper.hpp>
 #include<utility/trait/miscellaneous/pointer_traits.hpp>
 #include<utility/iterator/iterator_tag.hpp>
 #include<utility/iterator/iterator_traits.hpp>

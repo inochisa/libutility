@@ -28,35 +28,35 @@ namespace utility
 
           template<class _T, class... _Args>
           struct __is_nothrow_constructible_helper<true, false, _T, _Args...> :
-            public ::utility::trait::integral_constant<bool,
-              noexcept(_T(::utility::trait::type::special::declval<_Args>()...))>
+            public utility::trait::integral_constant<bool,
+              noexcept(_T(utility::trait::type::special::declval<_Args>()...))>
           { };
           template<class _T, class... _Args>
           struct __is_nothrow_constructible_helper<true, true, _T, _Args...> :
-            public ::utility::trait::integral_constant<bool,
-              noexcept(__is_nothrow_constructible_test<_T>(::utility::trait::type::special::declval<_Args>()...))>
+            public utility::trait::integral_constant<bool,
+              noexcept(__is_nothrow_constructible_test<_T>(utility::trait::type::special::declval<_Args>()...))>
           { };
           template<class _T, class... _Args>
           struct __is_nothrow_constructible_helper<false, true, _T, _Args...> :
-            public ::utility::trait::false_type
+            public utility::trait::false_type
           { };
           template<class _T, class... _Args>
           struct __is_nothrow_constructible_helper<false, false, _T, _Args...> :
-            public ::utility::trait::false_type
+            public utility::trait::false_type
           { };
         }
         template<class _T, class... _Args>
         struct is_nothrow_constructible : public
           __is_nothrow_constructible_impl::__is_nothrow_constructible_helper<
-            ::utility::trait::type::features::is_constructible<_T, _Args...>::value,
-            ::utility::trait::type::categories::is_reference<_T>::value,
+            utility::trait::type::features::is_constructible<_T, _Args...>::value,
+            utility::trait::type::categories::is_reference<_T>::value,
             _T, _Args...>
         { };
-        template<class _T, ::utility::trait::size_t __Size>
+        template<class _T, utility::trait::size_t __Size>
         struct is_nothrow_constructible<_T[__Size]> : public
           __is_nothrow_constructible_impl::__is_nothrow_constructible_helper<
-            ::utility::trait::type::features::is_constructible<_T>::value,
-            ::utility::trait::type::categories::is_reference<_T>::value,
+            utility::trait::type::features::is_constructible<_T>::value,
+            utility::trait::type::categories::is_reference<_T>::value,
             _T>
         { };
 

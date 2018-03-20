@@ -29,24 +29,24 @@ namespace utility
           void __is_convertible_test_conv(_T);
           template<typename _F, typename _T, typename = void>
           struct __is_convertible_test :
-            public ::utility::trait::false_type
+            public utility::trait::false_type
           { };
           template<typename _F, typename _T>
           struct __is_convertible_test<_F, _T,
             decltype(__is_convertible_test_conv<_T>
-              (::utility::trait::type::special::declval<_F>()))>:
-            public ::utility::trait::true_type
+              (utility::trait::type::special::declval<_F>()))>:
+            public utility::trait::true_type
           { };
 
           template
           <
             typename _T,
             bool _is_array =
-              ::utility::trait::type::categories::is_array<_T>::value,
+              utility::trait::type::categories::is_array<_T>::value,
             bool _is_function =
-              ::utility::trait::type::categories::is_function<_T>::value,
+              utility::trait::type::categories::is_function<_T>::value,
             bool _is_void =
-              ::utility::trait::type::categories::is_void<_T>::value
+              utility::trait::type::categories::is_void<_T>::value
           >
           struct __is_convertible_type_test
           { enum { value = 0};};
@@ -63,16 +63,16 @@ namespace utility
           // @special
           template<typename _T, unsigned int =
             __is_convertible_type_test<typename
-              ::utility::trait::type::transform::remove_cv<_T>::type
+              utility::trait::type::transform::remove_cv<_T>::type
                 >::value>
           struct __is_convertible_check
           {
-            constexpr static ::utility::trait::size_t __size = 0;
+            constexpr static utility::trait::size_t __size = 0;
           };
           template<typename _T>
           struct __is_convertible_check<_T, 0>
           {
-            constexpr static ::utility::trait::size_t __size = sizeof(_T);
+            constexpr static utility::trait::size_t __size = sizeof(_T);
           };
 
           template
@@ -85,73 +85,73 @@ namespace utility
               __is_convertible_type_test<_T2>::value
           >
           struct __is_convertible_helper :
-            public ::utility::trait::integral_constant<bool,
+            public utility::trait::integral_constant<bool,
               __is_convertible_test<_T1, _T2>::value &&
-              !(!::utility::trait::type::categories::is_function<_T1>::value  &&
-                !::utility::trait::type::categories::is_reference<_T1>::value &&
-                ::utility::trait::type::categories::is_reference<_T2>::value &&
-                (!::utility::trait::type::property::is_const<typename
-                  ::utility::trait::type::transform::remove_reference<_T2
+              !(!utility::trait::type::categories::is_function<_T1>::value  &&
+                !utility::trait::type::categories::is_reference<_T1>::value &&
+                utility::trait::type::categories::is_reference<_T2>::value &&
+                (!utility::trait::type::property::is_const<typename
+                  utility::trait::type::transform::remove_reference<_T2
                   >::type>::value ||
-                  ::utility::trait::type::property::is_volatile<typename
-                  ::utility::trait::type::transform::remove_reference<_T2
+                  utility::trait::type::property::is_volatile<typename
+                  utility::trait::type::transform::remove_reference<_T2
                   >::type>::value) &&
-                (::utility::trait::type::releations::is_same<typename
-                  ::utility::trait::type::transform::remove_cv<_T1>::type,
-                  typename ::utility::trait::type::transform::remove_cv<
-                  typename ::utility::trait::type::transform::remove_reference<_T2
+                (utility::trait::type::releations::is_same<typename
+                  utility::trait::type::transform::remove_cv<_T1>::type,
+                  typename utility::trait::type::transform::remove_cv<
+                  typename utility::trait::type::transform::remove_reference<_T2
                   >::type>::type>::value ||
-                 ::utility::trait::type::releations::is_base_of<typename
-                  ::utility::trait::type::transform::remove_reference<_T2
+                 utility::trait::type::releations::is_base_of<typename
+                  utility::trait::type::transform::remove_reference<_T2
                   >::type, _T1>::value))>
           { };
           template<typename _T1, typename _T2>
           struct __is_convertible_helper<_T1, _T2, 0, 1> :
-            public ::utility::trait::false_type
+            public utility::trait::false_type
           { };
           template<typename _T1, typename _T2>
           struct __is_convertible_helper<_T1, _T2, 0, 2> :
-            public ::utility::trait::false_type
+            public utility::trait::false_type
           { };
           template<typename _T1, typename _T2>
           struct __is_convertible_helper<_T1, _T2, 0, 3> :
-            public ::utility::trait::false_type
+            public utility::trait::false_type
           { };
           template<typename _T1, typename _T2>
           struct __is_convertible_helper<_T1, _T2, 1, 1> :
-            public ::utility::trait::false_type
+            public utility::trait::false_type
           { };
           template<typename _T1, typename _T2>
           struct __is_convertible_helper<_T1, _T2, 1, 2> :
-            public ::utility::trait::false_type
+            public utility::trait::false_type
           { };
           template<typename _T1, typename _T2>
           struct __is_convertible_helper<_T1, _T2, 1, 3> :
-            public ::utility::trait::false_type
+            public utility::trait::false_type
           { };
           template<typename _T1, typename _T2>
           struct __is_convertible_helper<_T1, _T2, 2, 1> :
-            public ::utility::trait::false_type
+            public utility::trait::false_type
           { };
           template<typename _T1, typename _T2>
           struct __is_convertible_helper<_T1, _T2, 2, 2> :
-            public ::utility::trait::false_type
+            public utility::trait::false_type
           { };
           template<typename _T1, typename _T2>
           struct __is_convertible_helper<_T1, _T2, 2, 3> :
-            public ::utility::trait::false_type
+            public utility::trait::false_type
           { };
           template<typename _T1, typename _T2>
           struct __is_convertible_helper<_T1, _T2, 3, 1> :
-            public ::utility::trait::false_type
+            public utility::trait::false_type
           { };
           template<typename _T1, typename _T2>
           struct __is_convertible_helper<_T1, _T2, 3, 2> :
-            public ::utility::trait::false_type
+            public utility::trait::false_type
           { };
           template<typename _T1, typename _T2>
           struct __is_convertible_helper<_T1, _T2, 3, 3> :
-            public ::utility::trait::true_type
+            public utility::trait::true_type
           { };
         }
         template<typename _F, typename _T>

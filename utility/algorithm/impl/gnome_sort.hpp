@@ -16,7 +16,7 @@ namespace utility
 
     namespace detail
     {
-      using ::utility::algorithm::sort_tag::gnome_sort_tag;
+      using utility::algorithm::sort_tag::gnome_sort_tag;
       template<typename _BidirectionalIterator, typename _Compare>
       void __sort(
         _BidirectionalIterator __first, _BidirectionalIterator __last,
@@ -26,17 +26,17 @@ namespace utility
         using utility::algorithm::swap;
 #ifdef UTILITY_DEBUG
         static_assert(
-          ::utility::iterator::is_bidirectional_iterator<_BidirectionalIterator>::value,
+          utility::iterator::is_bidirectional_iterator<_BidirectionalIterator>::value,
           "gnome sort need at least bidirectional iterator."
         );
 #endif // ! UTILITY_DEBUG
         for(_BidirectionalIterator __pos = __first; __pos != __last;)
         {
-          if(__pos == __first || !__compare(*__pos, *::utility::iterator::prev(__pos)))
+          if(__pos == __first || !__compare(*__pos, *utility::iterator::prev(__pos)))
           { ++__pos;}
           else
           {
-            swap(*__pos, *::utility::iterator::prev(__pos));
+            swap(*__pos, *utility::iterator::prev(__pos));
             --__pos;
           }
         }

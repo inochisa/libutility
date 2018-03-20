@@ -17,9 +17,9 @@ namespace utility
         // is_copyable
         template<typename _T>
         struct is_copyable :
-          public ::utility::trait::integral_constant<bool,
-            ::utility::trait::type::features::is_copy_constructible<_T>::value &&
-            ::utility::trait::type::features::is_copy_assignable<_T>::value>
+          public utility::trait::integral_constant<bool,
+            utility::trait::type::features::is_copy_constructible<_T>::value &&
+            utility::trait::type::features::is_copy_assignable<_T>::value>
         { };
       }
     }

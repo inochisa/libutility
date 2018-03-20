@@ -18,7 +18,7 @@ namespace utility
         // is_fundamental
         template<typename _T>
         struct is_fundamental :
-          public ::utility::trait::integral_constant<bool,
+          public utility::trait::integral_constant<bool,
             is_void<_T>::value       ||
             is_arithmetic<_T>::value ||
             is_null_pointer<_T>::value>

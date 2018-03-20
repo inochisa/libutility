@@ -501,16 +501,16 @@ namespace utility
   {
     template<typename _Key, typename _Compare, typename _Alloc>
     void swap(
-      ::utility::container::set<_Key, _Compare, _Alloc>& __x,
-      ::utility::container::set<_Key, _Compare, _Alloc>& __y
+      utility::container::set<_Key, _Compare, _Alloc>& __x,
+      utility::container::set<_Key, _Compare, _Alloc>& __y
     ) noexcept(noexcept(__x.swap(__y)))
     {
       __x.swap(__y);
     }
     template<typename _Key, typename _Compare, typename _Alloc>
     void possible_swap(
-      ::utility::container::set<_Key, _Compare, _Alloc>& __x,
-      ::utility::container::set<_Key, _Compare, _Alloc>& __y
+      utility::container::set<_Key, _Compare, _Alloc>& __x,
+      utility::container::set<_Key, _Compare, _Alloc>& __y
     ) noexcept(noexcept(__x.possible_swap(__y)))
     {
       __x.possible_swap(__y);

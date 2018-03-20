@@ -17,9 +17,9 @@ namespace utility
         // is_nothrow_copyable
         template<typename _T>
         struct is_nothrow_copyable :
-          public ::utility::trait::integral_constant<bool,
-            ::utility::trait::type::features::is_nothrow_copy_constructible<_T>::value &&
-            ::utility::trait::type::features::is_nothrow_copy_assignable<_T>::value>
+          public utility::trait::integral_constant<bool,
+            utility::trait::type::features::is_nothrow_copy_constructible<_T>::value &&
+            utility::trait::type::features::is_nothrow_copy_assignable<_T>::value>
         { };
       }
     }

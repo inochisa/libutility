@@ -47,7 +47,7 @@ namespace utility
       for(;;)
       {
         _ForwardIterator1 __tit =
-          ::utility::algorithm::search(
+          utility::algorithm::search(
             __first, __last, __ffirst, __flast, __pred
           );
         if(__tit == __last)
@@ -78,7 +78,7 @@ namespace utility
       for(;;)
       {
         _ForwardIterator1 __tit =
-          ::utility::algorithm::search(
+          utility::algorithm::search(
             __first, __last, __ffirst, __flast
           );
         if(__tit == __last)

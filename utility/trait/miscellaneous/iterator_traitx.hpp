@@ -10,7 +10,7 @@ namespace utility
   {
     namespace miscellaneous
     {
-      using ::utility::iterator::iterator_traits;
+      using utility::iterator::iterator_traits;
     }
   }
 }

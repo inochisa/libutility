@@ -22,7 +22,7 @@ namespace utility
 
     namespace detail
     {
-      using ::utility::algorithm::sort_tag::comb_sort_tag;
+      using utility::algorithm::sort_tag::comb_sort_tag;
       template<typename _RandomAccessIterator, typename _Compare>
       void __sort(
         _RandomAccessIterator __first, _RandomAccessIterator __last,
@@ -32,13 +32,13 @@ namespace utility
         using utility::algorithm::swap;
 #ifdef UTILITY_DEBUG
         static_assert(
-          ::utility::iterator::is_random_access_iterator<_RandomAccessIterator>::value,
+          utility::iterator::is_random_access_iterator<_RandomAccessIterator>::value,
           "comb sort need at least random access iterator."
         );
 #endif // ! UTILITY_DEBUG
-        using ::utility::algorithm::sort_setting::__comb_shrink_factor;
+        using utility::algorithm::sort_setting::__comb_shrink_factor;
         typedef typename
-          ::utility::iterator::iterator_traits<_RandomAccessIterator>::difference_type
+          utility::iterator::iterator_traits<_RandomAccessIterator>::difference_type
           __difference_type;
         __difference_type __len = __last - __first;
         bool __unsorted = true;

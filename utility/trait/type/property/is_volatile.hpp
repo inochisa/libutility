@@ -15,11 +15,11 @@ namespace utility
         // is_volatile
         template<typename _T>
         struct is_volatile :
-          public ::utility::trait::false_type
+          public utility::trait::false_type
         { };
         template<typename _T>
         struct is_volatile<_T volatile> :
-          public ::utility::trait::true_type
+          public utility::trait::true_type
         { };
 
       }

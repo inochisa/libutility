@@ -20,11 +20,11 @@ namespace utility
     template<typename _ForwardIterator1, typename _ForwardIterator2>
     inline void iter_swap(_ForwardIterator1 __ita, _ForwardIterator2 __itb)
       noexcept(noexcept(swap(
-            *::utility::trait::type::special::declval<_ForwardIterator1>(),
-            *::utility::trait::type::special::declval<_ForwardIterator2>()
+            *utility::trait::type::special::declval<_ForwardIterator1>(),
+            *utility::trait::type::special::declval<_ForwardIterator2>()
       )))
     {
-      using ::utility::algorithm::swap;
+      using utility::algorithm::swap;
       swap(*__ita, *__itb);
     }
   }

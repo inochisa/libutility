@@ -22,7 +22,7 @@ void sort_test(utility::size_t __size = 10000)
   vector<int> rec;
 
   for(size_t __i = 0; __i < __size; ++__i)
-  { rec.push_back(rand());}
+  { rec.push_back((rand()&1?1:-1) * rand());}
 
   sort<_Tag>(rec.begin(), rec.end());
 

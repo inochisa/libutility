@@ -21,8 +21,8 @@ namespace utility
         // is_trivially_destructible
         template<typename _T>
         struct is_trivially_destructible : public
-          ::utility::trait::integral_constant<bool,
-            ::utility::trait::type::features::is_destructible<_T>::value
+          utility::trait::integral_constant<bool,
+            utility::trait::type::features::is_destructible<_T>::value
             && __utility_has_trivial_destructor(_T)>
         { };
 
@@ -50,20 +50,20 @@ namespace utility
         {
           template<typename _T>
           struct __is_trivially_destructible_helper : public
-            ::utility::trait::integral_constant<bool,
-              ::utility::trait::type::categories::is_scalar<_T>::value ||
-              ::utility::trait::type::categories::is_reference<_T>::value>
+            utility::trait::integral_constant<bool,
+              utility::trait::type::categories::is_scalar<_T>::value ||
+              utility::trait::type::categories::is_reference<_T>::value>
           { };
         }
         template<typename _T>
         struct is_trivially_destructible : public
           __is_trivially_destructible_impl::__is_trivially_destructible_helper<
             typename
-            ::utility::trait::type::transform::remove_all_extents<_T>::type>
+            utility::trait::type::transform::remove_all_extents<_T>::type>
         { };
         template<typename _T>
         struct is_trivially_destructible<_T[]> :
-          public ::utility::trait::false_type
+          public utility::trait::false_type
         { };
 
       }

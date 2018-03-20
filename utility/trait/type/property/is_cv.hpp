@@ -17,11 +17,11 @@ namespace utility
         // is_cv
         template<typename _T>
         struct is_cv :
-          public ::utility::trait::false_type
+          public utility::trait::false_type
         { };
         template<typename _T>
         struct is_cv<_T const volatile> :
-          public ::utility::trait::true_type
+          public utility::trait::true_type
         { };
 
       }

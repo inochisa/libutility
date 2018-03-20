@@ -49,7 +49,7 @@ namespace utility
         template<typename __U = _T,
         typename utility::trait::type::miscellaneous::enable_if<
           utility::trait::type::features::is_default_constructible<__U>::value &&
-          (::utility::trait::type::features::is_implicit_constructible<__U>::value),
+          (utility::trait::type::features::is_implicit_constructible<__U>::value),
           bool
         >::type = true>
         constexpr compressed_index() noexcept(
@@ -59,7 +59,7 @@ namespace utility
         template<typename __U = _T,
           typename utility::trait::type::miscellaneous::enable_if<
             utility::trait::type::features::is_default_constructible<__U>::value &&
-            !(::utility::trait::type::features::is_implicit_constructible<__U>::value),
+            !(utility::trait::type::features::is_implicit_constructible<__U>::value),
             bool
           >::type = true>
         constexpr explicit compressed_index() noexcept(
@@ -70,7 +70,7 @@ namespace utility
         template<typename _U,
         typename utility::trait::type::miscellaneous::enable_if<
           utility::trait::type::features::is_constructible<_T, const _U&>::value &&
-          (::utility::trait::type::releations::is_convertible<const _U&, _T>::value),
+          (utility::trait::type::releations::is_convertible<const _U&, _T>::value),
           bool
         >::type = true>
         constexpr compressed_index(const _T& __value) noexcept(
@@ -80,7 +80,7 @@ namespace utility
         template<typename _U,
         typename utility::trait::type::miscellaneous::enable_if<
           utility::trait::type::features::is_constructible<_T, const _U&>::value &&
-          !(::utility::trait::type::releations::is_convertible<const _U&, _T>::value),
+          !(utility::trait::type::releations::is_convertible<const _U&, _T>::value),
           bool
         >::type = true>
         constexpr explicit compressed_index(const _U& __value) noexcept(
@@ -91,7 +91,7 @@ namespace utility
         template<typename _U,
         typename utility::trait::type::miscellaneous::enable_if<
           utility::trait::type::features::is_constructible<_T, _U&&>::value &&
-          (::utility::trait::type::releations::is_convertible<_U&&, _T>::value),
+          (utility::trait::type::releations::is_convertible<_U&&, _T>::value),
           bool
         >::type = true>
         constexpr compressed_index(_U&& __value) noexcept(
@@ -101,7 +101,7 @@ namespace utility
         template<typename _U,
         typename utility::trait::type::miscellaneous::enable_if<
           utility::trait::type::features::is_constructible<_T, _U&&>::value &&
-          !(::utility::trait::type::releations::is_convertible<_U&&, _T>::value),
+          !(utility::trait::type::releations::is_convertible<_U&&, _T>::value),
           bool
         >::type = true>
         constexpr explicit compressed_index(_U&& __value) noexcept(
@@ -218,9 +218,9 @@ namespace utility
       public:
         template<typename _U,
         typename utility::trait::type::miscellaneous::enable_if<
-          utility::trait::type::features::is_constructible<_T, compressed_index>::value &&
-          !utility::trait::type::releations::is_same<_T, _U>::value &&
-          (::utility::trait::type::releations::is_convertible<_U&&, _T>::value),
+          utility::trait::type::features::is_constructible<_T, _U&&>::value &&
+          // !utility::trait::type::releations::is_same<_T, _U>::value &&
+          (utility::trait::type::releations::is_convertible<_U&&, _T>::value),
           bool
         >::type = true>
         constexpr compressed_index(_U&& __value) noexcept(
@@ -229,9 +229,9 @@ namespace utility
         { }
         template<typename _U,
         typename utility::trait::type::miscellaneous::enable_if<
-          utility::trait::type::features::is_constructible<_T, compressed_index>::value &&
-          !utility::trait::type::releations::is_same<_T, _U>::value &&
-          !(::utility::trait::type::releations::is_convertible<_U&&, _T>::value),
+          utility::trait::type::features::is_constructible<_T, _U&&>::value &&
+          // !utility::trait::type::releations::is_same<_T, _U>::value &&
+          !(utility::trait::type::releations::is_convertible<_U&&, _T>::value),
           bool
         >::type = true>
         constexpr explicit compressed_index(_U&& __value) noexcept(

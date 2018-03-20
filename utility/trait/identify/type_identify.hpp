@@ -14,7 +14,7 @@ namespace utility
       template<typename _T>
       class type_identification
       {
-        // using namespace ::utility::trait::type::features;
+        // using namespace utility::trait::type::features;
         public:
           typedef _T            type;
           typedef const _T      const_type;
@@ -30,10 +30,10 @@ namespace utility
         public:
 
           using has_trivial_default_constructor =
-          ::utility::trait::type::features::is_trivially_default_constructible<_T>;
+          utility::trait::type::features::is_trivially_default_constructible<_T>;
           template<typename... _Args>
           using has_constructor =
-          ::utility::trait::type::features::is_constructible<_T, _Args...>;
+          utility::trait::type::features::is_constructible<_T, _Args...>;
 
       };
     }

@@ -34,7 +34,7 @@ namespace utility
     {
       return lexicographical_compare(
         __first1, __last1, __first2, __last2,
-        ::utility::algorithm::less<void>()
+        utility::algorithm::less<void>()
       );
     }
   }

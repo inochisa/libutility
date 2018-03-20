@@ -14,9 +14,9 @@ namespace utility
   }
 }
 
-void* operator new(::utility::size_t __size, void* __ptr)
+void* operator new(utility::size_t __size, void* __ptr)
 { return __ptr;}
-void* operator new[](::utility::size_t __size, void* __ptr)
+void* operator new[](utility::size_t __size, void* __ptr)
 { return __ptr;}
 
 #endif // ! __UTILITY_MEMORY_NEW__

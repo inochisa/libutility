@@ -430,8 +430,8 @@ namespace utility
       typename _Compare, typename _Alloc
     >
     void swap(
-      ::utility::container::map<_Key, _Value, _Compare, _Alloc>& __x,
-      ::utility::container::map<_Key, _Value, _Compare, _Alloc>& __y
+      utility::container::map<_Key, _Value, _Compare, _Alloc>& __x,
+      utility::container::map<_Key, _Value, _Compare, _Alloc>& __y
     ) noexcept(noexcept(__x.swap(__y)))
     {
       __x.swap(__y);
@@ -441,8 +441,8 @@ namespace utility
       typename _Compare, typename _Alloc
     >
     void possible_swap(
-      ::utility::container::map<_Key, _Value, _Compare, _Alloc>& __x,
-      ::utility::container::map<_Key, _Value, _Compare, _Alloc>& __y
+      utility::container::map<_Key, _Value, _Compare, _Alloc>& __x,
+      utility::container::map<_Key, _Value, _Compare, _Alloc>& __y
     ) noexcept(noexcept(__x.possible_swap(__y)))
     {
       __x.possible_swap(__y);

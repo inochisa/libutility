@@ -84,21 +84,21 @@ namespace utility
 
           public:
             UTILITY_ALWAYS_INLINE
-            static inline __node_link __minimum(__node_link __link)
+            static inline __node_link __minimum(__node_link __link) noexcept
             {
               while(__link->__left != nullptr)
               { __link = __link->__left;}
               return __link;
             }
             UTILITY_ALWAYS_INLINE
-            static inline __node_link __maxmum(__node_link __link)
+            static inline __node_link __maxmum(__node_link __link) noexcept
             {
               while(__link->__left != nullptr)
               { __link = __link->__left;}
               return __link;
             }
             UTILITY_ALWAYS_INLINE
-            static inline __node_link __link_next(__node_link __link)
+            static inline __node_link __link_next(__node_link __link) noexcept
             {
               if(__link->__right != nullptr)
               { return __minimum(__link->__right);}
@@ -110,7 +110,7 @@ namespace utility
               return __link;
             }
             UTILITY_ALWAYS_INLINE
-            static inline __node_link __link_prev(__node_link __link)
+            static inline __node_link __link_prev(__node_link __link) noexcept
             {
               if(!__link->__color && __link->__parent->__parent == __link)
               { return __link->__right;}
@@ -170,7 +170,7 @@ namespace utility
             { }
 
           public:
-            self& operator=(const self& __oit)
+            self& operator=(const self& __oit) noexcept
             {
               if(&__oit != this)
               { this->__ptr = __oit.__ptr;}
@@ -178,9 +178,9 @@ namespace utility
             }
 
           public:
-            reference operator*() const
+            reference operator*() const noexcept
             { return *(this->__ptr->__data);}
-            pointer operator->() const
+            pointer operator->() const noexcept
             { return this->__ptr->__data;}
 
           public:
@@ -265,7 +265,15 @@ namespace utility
             { }
 
           public:
-            self& operator=(const self& __oit)
+            self& operator=(const self& __oit) noexcept
+            {
+              if(&__oit != this)
+              { this->__ptr = __oit.__ptr;}
+              return *this;
+            }
+            self& operator=(
+               const __white_black_tree_iterator<__Key, __Value, __Key_Value_Container>& __oit
+            ) noexcept
             {
               if(&__oit != this)
               { this->__ptr = __oit.__ptr;}
@@ -273,9 +281,9 @@ namespace utility
             }
 
           public:
-            reference operator*() const
+            reference operator*() const noexcept
             { return *(this->__ptr->__data);}
-            pointer operator->() const
+            pointer operator->() const noexcept
             { return this->__ptr->__data;}
 
           public:
@@ -326,8 +334,8 @@ namespace utility
         typedef _Value                mapped_type;
         typedef _Key_Value_Container  value_type;
         typedef _Compare              key_compare;
-        typedef utility::size_t     size_type;
-        typedef utility::ptrdiff_t  difference_type;
+        typedef utility::size_t       size_type;
+        typedef utility::ptrdiff_t    difference_type;
         typedef value_type&           reference;
         typedef const value_type&     const_reference;
         typedef _Alloc                allocator_type;
@@ -357,7 +365,7 @@ namespace utility
           utility::iterator::reverse_iterator<const_iterator> const_reverse_iterator;
 
       public: // assert:
-        static_assert(::utility::trait::type::releations::is_same<
+        static_assert(utility::trait::type::releations::is_same<
           value_type, typename allocator_type::value_type>::value,
           "the allocator's alloc type must be the same as value type");
 
@@ -487,8 +495,8 @@ namespace utility
         white_black_tree(white_black_tree&& __o):
           __head(__o.__head),
           __size(__o.__size),
-          __compare(::utility::algorithm::move(__o.__compare)),
-          __allocator(::utility::algorithm::move(__o.__allocator)),
+          __compare(utility::algorithm::move(__o.__compare)),
+          __allocator(utility::algorithm::move(__o.__allocator)),
           __node_allocator()
         { __o.__head = nullptr;}
         white_black_tree(
@@ -496,7 +504,7 @@ namespace utility
           const allocator_type& __alloc
         ): __head(__o.__head),
            __size(__o.__size),
-           __compare(::utility::algorithm::move(__o.__compare)),
+           __compare(utility::algorithm::move(__o.__compare)),
            __allocator(__alloc),
            __node_allocator()
         { __o.__head = nullptr;}
@@ -776,44 +784,56 @@ namespace utility
         inline utility::container::pair<iterator, iterator>
         equal_range(const key_type& __key) noexcept
         {
-          return utility::container::pair<iterator, iterator>(
+          return utility::container::pair<iterator, iterator>{
             this->lower_bound(__key), this->upper_bound(__key)
-          );
+          };
         }
         inline utility::container::pair<const_iterator, const_iterator>
         equal_range(const key_type& __key) const noexcept
         {
-          return utility::container::pair<const_iterator, const_iterator>(
+          return utility::container::pair<const_iterator, const_iterator>{
             this->lower_bound(__key), this->upper_bound(__key)
-          );
+          };
         }
 
       public:
-        inline void erase(const_iterator __pos)
+        inline iterator erase(const_iterator __pos)
         {
+          iterator __res(__pos.__ptr);
+          ++__res;
+
           __link_type __del = __erase_rebalance(
             __pos.__ptr, this->__head->__parent,
             this->__head->__left, this->__head->__right
           );
           __deallocate_node(__del, this);
           --(this->__size);
-          return;
+          return __res;
         }
-        inline void erase(const_iterator __first, const_iterator __last)
+        inline iterator erase(
+          const_iterator __first, const_iterator __last
+        )
         {
           if(__first == this->begin() && __last == this->end())
-          { this->clear();}
+          {
+            this->clear();
+            return this->end();
+          }
           else
           {
             for(;__first != __last;)
             { this->erase(__first++);}
           }
+          return iterator(__last.__ptr);
         }
-        inline void erase(const key_type& __key)
+        inline size_type erase(const key_type& __key)
         {
           utility::container::pair<const_iterator, const_iterator>  __tmp =
             this->equal_range(__key);
+          size_type __res =
+            utility::iterator::distance(__tmp.first, __tmp.second);
           this->erase(__tmp.first, __tmp.second);
+          return __res;
         }
 
       public:
@@ -1519,8 +1539,8 @@ namespace utility
       bool>::type = true
     >
     void swap(
-      ::utility::container::white_black_tree<_Key, _Value, _Compare, _Key_Value_Container, _Alloc>& __x,
-      ::utility::container::white_black_tree<_Key, _Value, _Compare, _Key_Value_Container, _Alloc>& __y
+      utility::container::white_black_tree<_Key, _Value, _Compare, _Key_Value_Container, _Alloc>& __x,
+      utility::container::white_black_tree<_Key, _Value, _Compare, _Key_Value_Container, _Alloc>& __y
     ) noexcept(noexcept(__x.swap(__y)))
     {
       __x.swap(__y);
@@ -1534,8 +1554,8 @@ namespace utility
       bool>::type = true
     >
     void possible_swap(
-      ::utility::container::white_black_tree<_Key, _Value, _Compare, _Key_Value_Container, _Alloc>& __x,
-      ::utility::container::white_black_tree<_Key, _Value, _Compare, _Key_Value_Container, _Alloc>& __y
+      utility::container::white_black_tree<_Key, _Value, _Compare, _Key_Value_Container, _Alloc>& __x,
+      utility::container::white_black_tree<_Key, _Value, _Compare, _Key_Value_Container, _Alloc>& __y
     ) noexcept(noexcept(__x.possible_swap(__y)))
     {
       __x.possible_swap(__y);

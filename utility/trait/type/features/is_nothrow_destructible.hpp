@@ -22,29 +22,29 @@ namespace utility
 
           template<typename _T>
           struct __is_nothrow_destructible_helper<false, _T> : public
-            ::utility::trait::false_type
+            utility::trait::false_type
           { };
           template<typename _T>
           struct __is_nothrow_destructible_helper<true, _T> : public
-            ::utility::trait::integral_constant<bool,
-              noexcept(::utility::trait::type::special::declval<_T>().~_T())>
+            utility::trait::integral_constant<bool,
+              noexcept(utility::trait::type::special::declval<_T>().~_T())>
           { };
         }
         template<typename _T>
         struct is_nothrow_destructible : public
           __is_nothrow_destructible_impl::__is_nothrow_destructible_helper<
-            ::utility::trait::type::features::is_destructible<_T>::value,
+            utility::trait::type::features::is_destructible<_T>::value,
             _T>
         { };
         template<typename _T>
         struct is_nothrow_destructible<_T&> :
-          public ::utility::trait::true_type
+          public utility::trait::true_type
         { };
         template<typename _T>
         struct is_nothrow_destructible<_T&&> :
-          public ::utility::trait::true_type
+          public utility::trait::true_type
         { };
-        template<typename _T, ::utility::trait::size_t _Size>
+        template<typename _T, utility::trait::size_t _Size>
         struct is_nothrow_destructible<_T[_Size]> :
           public is_nothrow_destructible<_T>
         { };

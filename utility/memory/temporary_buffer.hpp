@@ -16,15 +16,15 @@ namespace utility
     namespace detail
     {
       template<typename _T>
-      ::utility::container::pair<
-        typename ::utility::trait::type::transform::remove_cv<_T>::type*,
-        ::utility::ptrdiff_t
+      utility::container::pair<
+        typename utility::trait::type::transform::remove_cv<_T>::type*,
+        utility::ptrdiff_t
       >
-      get_temporary_buffer(::utility::ptrdiff_t __need)
+      get_temporary_buffer(utility::ptrdiff_t __need)
       {
         using utility::ptrdiff_t;
         typedef typename
-          ::utility::trait::type::transform::remove_cv<_T>::type
+          utility::trait::type::transform::remove_cv<_T>::type
           __alloc_type;
         typedef typename
           utility::trait::type::miscellaneous::make_unsigned<ptrdiff_t>::type
@@ -39,20 +39,20 @@ namespace utility
         for(; __need > 0;)
         {
           __alloc_type* __alloc_pointer = static_cast<__alloc_type*>(
-            ::operator new(__need * sizeof(_T), ::utility::sstd::nothrow)
+            ::operator new(__need * sizeof(_T), utility::sstd::nothrow)
           );
           if(__alloc_pointer != nullptr)
           {
-            return ::utility::container::pair<typename
-              ::utility::trait::type::transform::remove_cv<_T>::type*,
-              ::utility::ptrdiff_t
+            return utility::container::pair<typename
+              utility::trait::type::transform::remove_cv<_T>::type*,
+              utility::ptrdiff_t
             >(__alloc_pointer, __need);
           }
           __need /= 2;
         }
-        return ::utility::container::pair<typename
-          ::utility::trait::type::transform::remove_cv<_T>::type*,
-          ::utility::ptrdiff_t
+        return utility::container::pair<typename
+          utility::trait::type::transform::remove_cv<_T>::type*,
+          utility::ptrdiff_t
         >(nullptr, 0);
       }
       template<typename _T>
@@ -64,12 +64,12 @@ namespace utility
     {
       public:
         typedef typename
-          ::utility::trait::type::transform::remove_cv<_T>::type
+          utility::trait::type::transform::remove_cv<_T>::type
           value_type;
         typedef value_type* pointer;
         typedef value_type& reference;
-        typedef ::utility::ptrdiff_t difference_type;
-        typedef ::utility::ptrdiff_t size_type;
+        typedef utility::ptrdiff_t difference_type;
+        typedef utility::ptrdiff_t size_type;
 
       public:
         typedef pointer accessor;
@@ -84,7 +84,7 @@ namespace utility
         { }
         temporary_buffer(size_type __s):__ori_size(__s)
         {
-          ::utility::container::pair<pointer, size_type> __res =
+          utility::container::pair<pointer, size_type> __res =
             detail::get_temporary_buffer<value_type>(__s);
           this->__size = __res.second;
           this->__item = __res.first;

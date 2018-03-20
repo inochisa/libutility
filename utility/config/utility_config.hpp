@@ -31,8 +31,10 @@
 
 #ifndef __UTILITY_NO_CPP17__
 # define __UTILITY_CPP17_CONSTEXPR__ constexpr
+# define __UTILITY_CPP17_INLINE__ inline
 #else
 # define __UTILITY_CPP17_CONSTEXPR__
+# define __UTILITY_CPP17_INLINE__
 #endif // ! __UTILITY_NO_CPP17__
 
 #define UTILITY_INTERFACE       1L
@@ -45,19 +47,40 @@
 
 #include<utility/config/debug/utility_debug_config.hpp>
 
-#if !defined(__EXCEPTIONS) || !defined(__UTILITY_NO_EXCEPTION__)
+#if !defined(__EXCEPTIONS) || defined(__UTILITY_NO_EXCEPTION__)
 # define __UTILITY_NO_EXCEPTION__ true
 #endif
-
-
 
 // utility exception config
 #include<utility/config/utility_exception_config.hpp>
 
-#define utility_null nullptr
-#define Label(X)  laber_##X
-#define Jump(X)   goto laber_##X
+// utility endian config
+#ifdef __BIG_ENDIAN__
+#if __BIG_END_IAN__
+#define __UTILITY_BIG_ENDIAN__    1
+#define __UTILITY_LITTLE_ENDIAN__ 0
+#endif // ! __BIG_ENDIAN__
+#endif // ! __BIG_ENDIAN__
+#ifdef __LITTLE_ENDIAN__
+#if __LITTLE_ENDIAN__
+#define __UTILITY_BIG_ENDIAN__    0
+#define __UTILITY_LITTLE_ENDIAN__ 1
+#endif // ! __LITTLE_ENDIAN__
+#endif // ! __LITTLE_ENDIAN__
+#ifdef __BYTE_ORDER__
+#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+#define __UTILITY_BIG_ENDIAN__    0
+#define __UTILITY_LITTLE_ENDIAN__ 1
+#elif __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+#define __UTILITY_BIG_ENDIAN__    1
+#define __UTILITY_LITTLE_ENDIAN__ 0
+#endif // __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+#endif // __BYTE_ORDER__
 
+
+#define utility_null nullptr
+// #define Label(X)  laber_##X
+// #define Jump(X)   goto laber_##X
 
 // utility global type declaration
 #include<utility/config/utility_type.hpp>

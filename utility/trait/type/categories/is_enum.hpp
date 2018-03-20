@@ -20,7 +20,7 @@ namespace utility
         // is_enum
         template<typename _T>
         struct is_enum :
-          public ::utility::trait::integral_constant<bool, __utility_is_enum(_T)>
+          public utility::trait::integral_constant<bool, __utility_is_enum(_T)>
         { };
       }
     }
@@ -53,7 +53,7 @@ namespace utility
         // is_enum
         template<typename _T>
         struct is_enum :
-          public ::utility::trait::integral_constant<bool,
+          public utility::trait::integral_constant<bool,
             !is_void<_T>::value             &&
             !is_integral<_T>::value         &&
             !is_floating_point<_T>::value   &&
@@ -82,7 +82,7 @@ namespace utility
       {
         // is_enum
         template<typename _T>
-        struct is_enum : pulic ::utility::trait::unsupport_trait<false>
+        struct is_enum : pulic utility::trait::unsupport_trait<false>
         { };
 
       }

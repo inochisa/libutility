@@ -78,13 +78,13 @@ void test_construct()
   assert(test9 == list<int>({1,1,1,1,1,1,1,1,1,1}));
   assert(test10 == list<int>({1,2,3,4,5}));
 
-  list<int> test11(::utility::algorithm::move(test5));
-  list<int> test12(::utility::algorithm::move(test10), __u);
+  list<int> test11(utility::algorithm::move(test5));
+  list<int> test12(utility::algorithm::move(test10), __u);
   assert(test11 == list<int>({1,2,3,4,5}));
   assert(test12 == list<int>({1,2,3,4,5}));
 
   list<int> test13 = test11;
-  list<int> test14 = ::utility::algorithm::move(test11);
+  list<int> test14 = utility::algorithm::move(test11);
   assert(test13 == list<int>({1,2,3,4,5}));
   assert(test14 == list<int>({1,2,3,4,5}));
 

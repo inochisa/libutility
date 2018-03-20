@@ -39,7 +39,7 @@ namespace utility
         * \see utility::detail::sstd::memory::memmove
         */
         void* memcpy(void* __destination, const void* __source,
-          ::utility::size_t __size) noexcept
+          utility::size_t __size) noexcept
         {
           if(__size && __destination != nullptr && __source != nullptr)
           {
@@ -73,7 +73,7 @@ namespace utility
         * \see utility::detail::sstd::memory::memmove
         */
         void* memrcpy(void* __destination, const void* __source,
-          ::utility::size_t __size) noexcept
+          utility::size_t __size) noexcept
         {
           if(__size && __destination != nullptr && __source != nullptr)
           {
@@ -110,7 +110,7 @@ namespace utility
         * \see utility::detail::sstd::memory::memmove
         */
         void* memccpy(void* __destination, const void* __source,
-          unsigned char __val, ::utility::size_t __size) noexcept
+          unsigned char __val, utility::size_t __size) noexcept
         {
           if(__size && __destination != nullptr && __source != nullptr)
           {
@@ -146,7 +146,7 @@ namespace utility
         * \see utility::detail::sstd::memory::memmove
         */
         void* mempcpy(void* __destination, const void* __source,
-          ::utility::size_t __size) noexcept
+          utility::size_t __size) noexcept
         {
           if(__size && __destination != nullptr && __source != nullptr)
           {
@@ -186,7 +186,7 @@ namespace utility
         * \see utility::detail::sstd::memory::mempcpy
         */
         void* memmove(void* __destination, const void* __source,
-          ::utility::size_t __size) noexcept
+          utility::size_t __size) noexcept
         {
           if(__size && __destination != nullptr && __source != nullptr &&
             __destination != __source
@@ -194,13 +194,13 @@ namespace utility
           {
             if(__destination > __source)
             {
-              ::utility::detail::sstd::memory::memrcpy(
+              utility::detail::sstd::memory::memrcpy(
                 __destination, __source, __size
               );
             }
             else
             {
-              ::utility::detail::sstd::memory::memcpy(
+              utility::detail::sstd::memory::memcpy(
                 __destination, __source, __size
               );
             }
@@ -244,7 +244,7 @@ namespace utility
         *   </tr>
         */
         int memcmp(const void* __comp1, const void* __comp2,
-          ::utility::size_t __size) noexcept
+          utility::size_t __size) noexcept
         {
           if(__size && __comp1 != nullptr && __comp2 != nullptr)
           {
@@ -277,13 +277,13 @@ namespace utility
         *         in the block of memory pointed by \a __source.
         *         If the value is not found, the function returns a null pointer.
         * \see utility::detail::sstd::memory::memrchr(void* __source,
-        *       unsigned char __val, ::utility::size_t __size)
+        *       unsigned char __val, utility::size_t __size)
         * \see utility::detail::sstd::memory::memmem(
-        *       const void* __source, ::utility::size_t __srclen,
-        *       const void* __tag, ::utility::size_t __taglen)
+        *       const void* __source, utility::size_t __srclen,
+        *       const void* __tag, utility::size_t __taglen)
         */
         void* memchr(void* __source, unsigned char __val,
-          ::utility::size_t __size) noexcept
+          utility::size_t __size) noexcept
         {
           if(__size && __source != nullptr)
           {
@@ -298,13 +298,13 @@ namespace utility
         }
         /*!
         * \overload const void* memchr(const void* __source, unsigned char __val,
-        *             ::utility::size_t __size) noexcept
+        *             utility::size_t __size) noexcept
         *
         * const version
         *
         */
         const void* memchr(const void* __source, unsigned char __val,
-          ::utility::size_t __size) noexcept
+          utility::size_t __size) noexcept
         {
           if(__size && __source != nullptr)
           {
@@ -336,13 +336,13 @@ namespace utility
         *         in the block of memory pointed by \a __source.
         *         If the value is not found, the function returns a null pointer.
         * \see utility::detail::sstd::memory::memchr(void* __source,
-        *       unsigned char __val, ::utility::size_t __size)
+        *       unsigned char __val, utility::size_t __size)
         * \see utility::detail::sstd::memory::memmem(
-        *       const void* __source, ::utility::size_t __srclen,
-        *       const void* __tag, ::utility::size_t __taglen)
+        *       const void* __source, utility::size_t __srclen,
+        *       const void* __tag, utility::size_t __taglen)
         */
         void* memrchr(void* __source, unsigned char __val,
-          ::utility::size_t __size) noexcept
+          utility::size_t __size) noexcept
         {
           if(__size && __source != nullptr)
           {
@@ -358,13 +358,13 @@ namespace utility
         }
         /*!
         * \overload const void* memrchr(const void* __source, unsigned char __val,
-        *             ::utility::size_t __size) noexcept
+        *             utility::size_t __size) noexcept
         *
         * const version
         *
         */
         const void* memrchr(const void* __source, unsigned char __val,
-          ::utility::size_t __size) noexcept
+          utility::size_t __size) noexcept
         {
           if(__size && __source != nullptr)
           {
@@ -394,13 +394,13 @@ namespace utility
         *         in the block of memory pointed by \a __source.
         *         If the value is not found, the function returns a null pointer.
         * \see utility::detail::sstd::memory::memchr(void* __source,
-        *       unsigned char __val, ::utility::size_t __size)
+        *       unsigned char __val, utility::size_t __size)
         * \see utility::detail::sstd::memory::memrchr(void* __source,
-        *       unsigned char __val, ::utility::size_t __size)
+        *       unsigned char __val, utility::size_t __size)
         */
         void* memmem(
-          void* __source, ::utility::size_t __srclen,
-          const void* __tag, ::utility::size_t __taglen
+          void* __source, utility::size_t __srclen,
+          const void* __tag, utility::size_t __taglen
         ) noexcept
         {
           if(__source == nullptr || __tag == nullptr)
@@ -414,11 +414,11 @@ namespace utility
           unsigned char* __src = static_cast<unsigned char*>(__source);
           unsigned char* __endsrc = __src +(__srclen - __taglen) +1;
           if(__taglen == 1)
-          { return ::utility::detail::sstd::memory::memchr(__source, *__mem_tag, __srclen);}
+          { return utility::detail::sstd::memory::memchr(__source, *__mem_tag, __srclen);}
           while(__src < __endsrc)
           {
             if((*__src == *__mem_tag) && (
-              ::utility::detail::sstd::memory::memcmp(__src, __mem_tag, __taglen) == 0))
+              utility::detail::sstd::memory::memcmp(__src, __mem_tag, __taglen) == 0))
             { return __src;}
             ++__src;
           }
@@ -426,15 +426,15 @@ namespace utility
         }
         /*!
         * \overload const void* memmem(
-        *             const void* __source, ::utility::size_t __srclen,
-        *             const void* __tag, ::utility::size_t __taglen)
+        *             const void* __source, utility::size_t __srclen,
+        *             const void* __tag, utility::size_t __taglen)
         *
         * const version
         *
         */
         const void* memmem(
-          const void* __source, ::utility::size_t __srclen,
-          const void* __tag, ::utility::size_t __taglen
+          const void* __source, utility::size_t __srclen,
+          const void* __tag, utility::size_t __taglen
         ) noexcept
         {
           if(__source == nullptr || __tag == nullptr)
@@ -448,14 +448,14 @@ namespace utility
           const unsigned char* __endsrc = __src +(__srclen - __taglen) +1;
           if(__taglen == 1)
           {
-            return ::utility::detail::sstd::memory::memchr(
+            return utility::detail::sstd::memory::memchr(
                       __source, *__mem_tag, __srclen
                    );
           }
           while(__src < __endsrc)
           {
             if((*__src == *__mem_tag) && (
-              ::utility::detail::sstd::memory::memcmp(
+              utility::detail::sstd::memory::memcmp(
                 __src, __mem_tag, __taglen) == 0))
             { return __src;}
             ++__src;
@@ -477,7 +477,7 @@ namespace utility
         *
         */
         void* memset(void* __ptr, unsigned char __val,
-          ::utility::size_t __size) noexcept
+          utility::size_t __size) noexcept
         {
           if(__size && __ptr != nullptr)
           {

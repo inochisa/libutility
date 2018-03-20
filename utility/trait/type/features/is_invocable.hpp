@@ -1,6 +1,6 @@
 
-#ifndef __UTILITY_TRAIT_TYPE_FEATURE_IS_INVOCABLE__
-#define __UTILITY_TRAIT_TYPE_FEATURE_IS_INVOCABLE__
+#ifndef __UTILITY_TRAIT_TYPE_FEATURES_IS_INVOCABLE__
+#define __UTILITY_TRAIT_TYPE_FEATURES_IS_INVOCABLE__
 
 #include<utility/trait/trait_helper.hpp>
 #include<utility/trait/type/miscellaneous/invoke_result.hpp>
@@ -12,7 +12,7 @@ namespace utility
   {
     namespace type
     {
-      namespace feature
+      namespace features
       {
         namespace __invoke_related
         {
@@ -114,4 +114,4 @@ namespace utility
   }
 }
 
-#endif // ! __UTILITY_TRAIT_TYPE_FEATURE_IS_INVOCABLE__
+#endif // ! __UTILITY_TRAIT_TYPE_FEATURES_IS_INVOCABLE__

@@ -15,8 +15,8 @@ namespace utility
       template
       <
         typename _Iterator,
-        bool = ::utility::iterator::is_vaild_iterator_type<
-          _Iterator, ::utility::iterator::random_access_iterator_tag
+        bool = utility::iterator::is_vaild_iterator_type<
+          _Iterator, utility::iterator::random_access_iterator_tag
         >::value
       >
       struct __reverse
@@ -30,7 +30,7 @@ namespace utility
           {
             if(__first == --__last)
             { break;}
-            ::utility::algorithm::iter_swap(__first, __last);
+            utility::algorithm::iter_swap(__first, __last);
             ++__first;
           }
         }
@@ -46,7 +46,7 @@ namespace utility
           if(__first != __last)
           {
             for(;__first < --__last; ++__first)
-            { ::utility::algorithm::iter_swap(__first, __last);}
+            { utility::algorithm::iter_swap(__first, __last);}
           }
         }
       };
@@ -64,7 +64,7 @@ namespace utility
     template<typename _BidirectionalIterator>
     void reverse(_BidirectionalIterator __first, _BidirectionalIterator __last)
     {
-      ::utility::algorithm::detail::__reverse<_BidirectionalIterator>::__aux(
+      utility::algorithm::detail::__reverse<_BidirectionalIterator>::__aux(
         __first, __last
       );
     }

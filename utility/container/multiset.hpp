@@ -151,7 +151,7 @@ namespace utility
           utility::iterator::reverse_iterator<const_iterator> const_reverse_iterator;
 
       public: // assert:
-        static_assert(::utility::trait::type::releations::is_same<
+        static_assert(utility::trait::type::releations::is_same<
           value_type, typename allocator_type::value_type>::value,
           "the allocator's alloc type must be the same as value type");
 
@@ -496,16 +496,16 @@ namespace utility
   {
     template<typename _Key, typename _Compare, typename _Alloc>
     void swap(
-      ::utility::container::multiset<_Key, _Compare, _Alloc>& __x,
-      ::utility::container::multiset<_Key, _Compare, _Alloc>& __y
+      utility::container::multiset<_Key, _Compare, _Alloc>& __x,
+      utility::container::multiset<_Key, _Compare, _Alloc>& __y
     ) noexcept(noexcept(__x.swap(__y)))
     {
       __x.swap(__y);
     }
     template<typename _Key, typename _Compare, typename _Alloc>
     void possible_swap(
-      ::utility::container::multiset<_Key, _Compare, _Alloc>& __x,
-      ::utility::container::multiset<_Key, _Compare, _Alloc>& __y
+      utility::container::multiset<_Key, _Compare, _Alloc>& __x,
+      utility::container::multiset<_Key, _Compare, _Alloc>& __y
     ) noexcept(noexcept(__x.possible_swap(__y)))
     {
       __x.possible_swap(__y);

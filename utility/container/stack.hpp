@@ -60,7 +60,7 @@ namespace utility
         { }
         explicit stack(container_type&& __cont) noexcept(
           utility::trait::type::features::is_nothrow_move_constructible<container_type>::value
-        ): __container(::utility::algorithm::move(__cont))
+        ): __container(utility::algorithm::move(__cont))
         { }
         stack(const stack& __stack) noexcept(
           utility::trait::type::features::is_nothrow_copy_constructible<container_type>::value
@@ -68,7 +68,7 @@ namespace utility
         { }
         stack(stack&& __stack) noexcept(
           utility::trait::type::features::is_nothrow_move_constructible<container_type>::value
-        ): __container(::utility::algorithm::move(__stack.__container))
+        ): __container(utility::algorithm::move(__stack.__container))
         { }
 
       public:
@@ -108,7 +108,7 @@ namespace utility
         void push(const value_type& __val)
         { this->__container.push_back(__val);}
         void push(value_type&& __val)
-        { this->__container.push_back(::utility::algorithm::move(__val));}
+        { this->__container.push_back(utility::algorithm::move(__val));}
         template<typename... _Args>
         reference emplace(_Args&&... __args)
         {
@@ -187,14 +187,14 @@ namespace utility
   {
     template<typename _T, typename _Container>
     void swap(
-      ::utility::container::stack<_T, _Container>& __x,
-      ::utility::container::stack<_T, _Container>& __y
+      utility::container::stack<_T, _Container>& __x,
+      utility::container::stack<_T, _Container>& __y
     ) noexcept(noexcept(__x.swap(__y)))
     { __x.swap(__y);}
     template<typename _T, typename _Container>
     void possible_swap(
-      ::utility::container::stack<_T, _Container>& __x,
-      ::utility::container::stack<_T, _Container>& __y
+      utility::container::stack<_T, _Container>& __x,
+      utility::container::stack<_T, _Container>& __y
     ) noexcept(noexcept(__x.possible_swap(__y)))
     { __x.possible_swap(__y);}
   }

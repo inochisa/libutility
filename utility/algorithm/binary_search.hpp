@@ -37,7 +37,7 @@ namespace utility
     )
     {
       __first =
-        ::utility::algorithm::lower_bound(__first, __last, __val, __compare);
+        utility::algorithm::lower_bound(__first, __last, __val, __compare);
       return !(__first == __last) && !(__compare(__val, *__first));
     }
     /**
@@ -57,7 +57,7 @@ namespace utility
     )
     {
       __first =
-        ::utility::algorithm::lower_bound(__first, __last, __val);
+        utility::algorithm::lower_bound(__first, __last, __val);
       return !(__first == __last) && !(__val < *__first);
     }
   }

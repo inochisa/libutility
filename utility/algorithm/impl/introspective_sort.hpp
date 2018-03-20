@@ -20,7 +20,7 @@ namespace utility
 
     namespace sort_setting
     {
-      constexpr ::utility::ptrdiff_t __introspective_sort_min = 16;
+      constexpr utility::ptrdiff_t __introspective_sort_min = 16;
     }
 
     namespace detail
@@ -63,18 +63,18 @@ namespace utility
         )
         {
           typedef typename
-            ::utility::iterator::iterator_traits<_RandomAccessIterator>::value_type
+            utility::iterator::iterator_traits<_RandomAccessIterator>::value_type
             __value_type;
-          __value_type __val = ::utility::algorithm::move(*__last);
+          __value_type __val = utility::algorithm::move(*__last);
           _RandomAccessIterator __pos = __last;
           --__pos;
           for(;__compare(__val, *__pos);)
           {
-            *__last = ::utility::algorithm::move(*__pos);
+            *__last = utility::algorithm::move(*__pos);
             __last = __pos;
             --__pos;
           }
-          *__last = ::utility::algorithm::move(__val);
+          *__last = utility::algorithm::move(__val);
         }
 
         template<typename _RandomAccessIterator, typename _Compare>
@@ -94,7 +94,7 @@ namespace utility
         )
         {
           typedef typename
-            ::utility::iterator::iterator_traits<_RandomAccessIterator>::value_type
+            utility::iterator::iterator_traits<_RandomAccessIterator>::value_type
             __value_type;
           if(__last == __first)
           { return;}
@@ -102,9 +102,9 @@ namespace utility
           {
             if(__compare(*__i, *__first))
             {
-              __value_type __val = ::utility::algorithm::move(*__i);
-              ::utility::algorithm::move_backward(__first, __i, __i+1);
-              *__first = ::utility::algorithm::move(__val);
+              __value_type __val = utility::algorithm::move(*__i);
+              utility::algorithm::move_backward(__first, __i, __i+1);
+              *__first = utility::algorithm::move(__val);
             }
             else
             { __intro_igedge_linear_insert(__i, __compare);}
@@ -117,9 +117,9 @@ namespace utility
           _Compare __compare
         )
         {
-          using ::utility::algorithm::sort_setting::__introspective_sort_min;
+          using utility::algorithm::sort_setting::__introspective_sort_min;
           typedef typename
-            ::utility::iterator::iterator_traits<_RandomAccessIterator>::difference_type
+            utility::iterator::iterator_traits<_RandomAccessIterator>::difference_type
             __difference_type;
           const __difference_type __intro_len =
             static_cast<__difference_type>(__introspective_sort_min);
@@ -147,7 +147,7 @@ namespace utility
             { --__last;}
             if(!(__first < __last))
             { return __first;}
-            ::utility::algorithm::iter_swap(__first, __last);
+            utility::algorithm::iter_swap(__first, __last);
             ++__first;
           }
         }
@@ -158,9 +158,9 @@ namespace utility
           _Size __dep_lim, _Compare __compare
         )
         {
-          using ::utility::algorithm::sort_setting::__introspective_sort_min;
+          using utility::algorithm::sort_setting::__introspective_sort_min;
           typedef typename
-            ::utility::iterator::iterator_traits<_RandomAccessIterator>::difference_type
+            utility::iterator::iterator_traits<_RandomAccessIterator>::difference_type
             __difference_type;
           const __difference_type __intro_len =
             static_cast<__difference_type>(__introspective_sort_min);
@@ -169,7 +169,7 @@ namespace utility
           {
             if(__dep_lim == 0)
             {
-              ::utility::algorithm::partial_sort(__first, __last, __last, __compare);
+              utility::algorithm::partial_sort(__first, __last, __last, __compare);
               return;
             }
             _RandomAccessIterator __midpos = __first + (__last - __first) / 2;
@@ -184,7 +184,7 @@ namespace utility
         }
       }
 
-      using ::utility::algorithm::sort_tag::introspective_sort_tag;
+      using utility::algorithm::sort_tag::introspective_sort_tag;
       template<typename _RandomAccessIterator, typename _Compare>
       inline void __sort(
         _RandomAccessIterator __first, _RandomAccessIterator __last,
@@ -193,7 +193,7 @@ namespace utility
       {
 #ifdef UTILITY_DEBUG
         static_assert(
-          ::utility::iterator::is_random_access_iterator<_RandomAccessIterator>::value,
+          utility::iterator::is_random_access_iterator<_RandomAccessIterator>::value,
           "introspective sort need at least random access iterator."
         );
 #endif // ! UTILITY_DEBUG

@@ -3,6 +3,7 @@
 #define __UTILITY_CONTAINER_FORWARD_LIST__
 
 #include<utility/config/utility_config.hpp>
+#include<utility/container/container_helper.hpp>
 #include<utility/memory/allocator.hpp>
 #include<utility/memory/allocator_traits.hpp>
 #include<utility/trait/type/miscellaneous/enable_if.hpp>
@@ -217,7 +218,7 @@ namespace utility
         typedef __list_const_iterator<value_type> const_iterator;
 
       public: // assert
-        static_assert(::utility::trait::type::releations::is_same<
+        static_assert(utility::trait::type::releations::is_same<
           value_type, typename allocator_type::value_type>::value,
           "the allocator's alloc type must be the same as value type");
 

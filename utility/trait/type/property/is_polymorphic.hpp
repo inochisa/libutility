@@ -20,7 +20,7 @@ namespace utility
         // is_polymorphic
         template<typename _T>
         struct is_polymorphic :
-          public ::utility::trait::integral_constant<bool,
+          public utility::trait::integral_constant<bool,
             __utility_is_polymorphic(_T)>
         { };
 
@@ -47,17 +47,17 @@ namespace utility
         {
           template<typename _T>
           char& __is_polymorphic_test(
-            typename ::utility::trait::type::miscellaneous::enable_if<
+            typename utility::trait::type::miscellaneous::enable_if<
               sizeof(reinterpret_cast<_T*>(dynamic_cast<const volatile void*>(utility::trait::type::special::declval<_T>()))) != 0,
               int>::type
               );
           template<typename _T>
-          ::utility::trait::__impl_helper::__twochar&
+          utility::trait::__impl_helper::__twochar&
             __is_polymorphic_test(...);
         }
         template<typename _T>
         struct is_polymorphic :
-          public ::utility::trait::integral_constant<bool,
+          public utility::trait::integral_constant<bool,
             sizeof(__is_polymorphic_impl::__is_polymorphic_test<_T>(0)) == 1>
         { };
 

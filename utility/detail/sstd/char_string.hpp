@@ -10,6 +10,10 @@
 
 #include<utility/config/utility_config.hpp>
 
+#ifndef EOF
+# define EOF (-1)
+#endif // ! EOF
+
 namespace utility
 {
   namespace detail
@@ -60,7 +64,7 @@ namespace utility
         * \param[in] __str the string need to be found
         * \return a pointer to the '\0' of this string is returned
         */
-        inline ::utility::ptrdiff_t strlen(const char* __str)
+        inline utility::ptrdiff_t strlen(const char* __str)
         {
           return
             __str == nullptr ? -1 :
@@ -143,7 +147,7 @@ namespace utility
         * \see utility::detail::sstd::charS::stpncpy
         */
         inline char* strncpy(char* __destination, const char* __source,
-          ::utility::size_t __size
+          utility::size_t __size
         ) noexcept
         {
           if(__size && __destination != nullptr && __source != nullptr)
@@ -176,7 +180,7 @@ namespace utility
         * \see utility::detail::sstd::charS::strncpy
         */
         inline char* stpncpy(char* __destination, const char* __source,
-          ::utility::size_t __size
+          utility::size_t __size
         ) noexcept
         {
           if(__size && __destination != nullptr && __source != nullptr)
@@ -215,7 +219,7 @@ namespace utility
           if(__destination != nullptr && __source != nullptr)
           {
             char* __dest =
-              ::utility::detail::sstd::charS::strend(__destination);
+              utility::detail::sstd::charS::strend(__destination);
             while(*__source != '\0')
             { *__dest++ = *__source++;}
             *__dest = '\0';
@@ -276,7 +280,7 @@ namespace utility
         * \see utility::detail::sstd::charS::stpncat
         */
         inline char* strncat(char* __destination, const char* __source,
-          ::utility::size_t __size
+          utility::size_t __size
         ) noexcept
         {
           if(__size && __destination != nullptr && __source != nullptr)
@@ -310,7 +314,7 @@ namespace utility
         * \see utility::detail::sstd::charS::strncat
         */
         inline char* stpncat(char* __destination, const char* __source,
-          ::utility::size_t __size
+          utility::size_t __size
         ) noexcept
         {
           if(__size && __destination != nullptr && __source != nullptr)
@@ -363,7 +367,7 @@ namespace utility
         * \see utility::detail::sstd::charS::strcmp
         */
         inline int strncmp(const char* __comp1, const char* __comp2,
-          ::utility::size_t __size
+          utility::size_t __size
         ) noexcept
         {
           if(__size && __comp1 != nullptr && __comp2 != nullptr)
@@ -416,11 +420,11 @@ namespace utility
         {
           if(__comp1 != nullptr && __comp2 != nullptr)
           {
-            ::utility::ptrdiff_t __size1 =
+            utility::ptrdiff_t __size1 =
               utility::detail::sstd::charS::strlen(__comp1);
-            ::utility::ptrdiff_t __size2 =
+            utility::ptrdiff_t __size2 =
               utility::detail::sstd::charS::strlen(__comp2);
-            ::utility::ptrdiff_t __size = __size1 < __size2 ? __size1 : __size2;
+            utility::ptrdiff_t __size = __size1 < __size2 ? __size1 : __size2;
             return utility::detail::sstd::charS::strncmp(
               __comp1, __comp2, __size
             );
@@ -515,7 +519,7 @@ namespace utility
           if(__str != nullptr)
           {
             char* __end =
-              ::utility::detail::sstd::charS::strend(__str);
+              utility::detail::sstd::charS::strend(__str);
             while(__end >= __str)
             {
               if(*__end-- == __char)
@@ -535,7 +539,7 @@ namespace utility
           if(__str != nullptr)
           {
             const char* __end =
-              ::utility::detail::sstd::charS::strend(__str);
+              utility::detail::sstd::charS::strend(__str);
             while(__end >= __str)
             {
               if(*__end-- == __char)
@@ -574,7 +578,7 @@ namespace utility
         * \see utility::detail::sstd::charS::strstr(
         *       const char* __source, const char* __pattern)
         */
-        inline ::utility::size_t strcspn(const char* __source, const char* __pattern) noexcept
+        inline utility::size_t strcspn(const char* __source, const char* __pattern) noexcept
         {
           if(__source != nullptr && __pattern != nullptr)
           {
@@ -688,9 +692,9 @@ namespace utility
         * \see utility::detail::sstd::charS::strstr(
         *       const char* __source, const char* __pattern)
         */
-        inline ::utility::size_t strspn(const char* __source, const char* __pattern) noexcept
+        inline utility::size_t strspn(const char* __source, const char* __pattern) noexcept
         {
-          ::utility::size_t __i = 0;
+          utility::size_t __i = 0;
           if(__source != nullptr && __pattern != nullptr)
           {
             while(*__source != '\0')
@@ -736,17 +740,17 @@ namespace utility
         {
           if(__source != nullptr && __pattern != nullptr)
           {
-            ::utility::ptrdiff_t __slen =
-              ::utility::detail::sstd::charS::strlen(__source);
-            ::utility::ptrdiff_t __plen =
-              ::utility::detail::sstd::charS::strlen(__pattern);
+            utility::ptrdiff_t __slen =
+              utility::detail::sstd::charS::strlen(__source);
+            utility::ptrdiff_t __plen =
+              utility::detail::sstd::charS::strlen(__pattern);
             if(__slen < __plen)
             { return nullptr;}
-            ::utility::ptrdiff_t __len = __slen - __plen+1;
+            utility::ptrdiff_t __len = __slen - __plen+1;
             while(__len--)
             {
               if((*__source == * __pattern) &&
-                    ::utility::detail::sstd::charS::strncmp(
+                    utility::detail::sstd::charS::strncmp(
                       __source, __pattern, __plen
                     ) == 0)
               { return __source;}
@@ -766,17 +770,17 @@ namespace utility
         {
           if(__source != nullptr && __pattern != nullptr)
           {
-            ::utility::size_t __slen =
-              ::utility::detail::sstd::charS::strlen(__source);
-            ::utility::size_t __plen =
-              ::utility::detail::sstd::charS::strlen(__pattern);
+            utility::size_t __slen =
+              utility::detail::sstd::charS::strlen(__source);
+            utility::size_t __plen =
+              utility::detail::sstd::charS::strlen(__pattern);
             if(__slen < __plen)
             { return nullptr;}
-            ::utility::size_t __len = __slen - __plen+1;
+            utility::size_t __len = __slen - __plen+1;
             while(__len--)
             {
               if((*__source == * __pattern) &&
-                    ::utility::detail::sstd::charS::strncmp(
+                    utility::detail::sstd::charS::strncmp(
                       __source, __pattern, __plen
                     ) == 0)
               { return __source;}

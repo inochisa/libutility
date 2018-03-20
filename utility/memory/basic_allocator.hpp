@@ -42,18 +42,18 @@ namespace utility
 
       public:
         pointer allocate() const
-        { return ::utility::memory::default_allocate<_T>(1UL);}
+        { return utility::memory::default_allocate<_T>(1UL);}
         pointer allocate(size_type __size) const
         {
           // if(__size > this->max_size())
           // { return nullptr;}
-          return ::utility::memory::default_allocate<_T>(__size);
+          return utility::memory::default_allocate<_T>(__size);
         }
         pointer allocate(size_type __size, const void*) const
         {
           // if(__size > this->max_size())
           // { return nullptr;}
-          return ::utility::memory::default_allocate<_T>(__size);
+          return utility::memory::default_allocate<_T>(__size);
         }
         void deallocate(pointer __ptr) const
         { utility::memory::default_deallocate(__ptr);}
@@ -95,9 +95,9 @@ namespace utility
         void safe_construct(pointer __ptr, _Args&&... __args)
         {
           static_assert(
-            ::utility::trait::type::features::is_constructible<_T, _Args...>::value,
+            utility::trait::type::features::is_constructible<_T, _Args...>::value,
             "Cannot construct the pointer from these args");
-          this->construct(__ptr, ::utility::algorithm::forward<_Args>(__args)...);
+          this->construct(__ptr, utility::algorithm::forward<_Args>(__args)...);
           return;
         }
     };
@@ -144,7 +144,7 @@ namespace utility
       public:
         template<typename _T>
         _T* allocate(size_type __size) const
-        { return ::utility::memory::default_allocate<_T>(__size);}
+        { return utility::memory::default_allocate<_T>(__size);}
         template<typename _T>
         void deallocate(_T* __ptr) const
         { utility::memory::default_deallocate(__ptr);}
@@ -183,9 +183,9 @@ namespace utility
         void safe_construct(_T* __ptr, _Args&&... __args)
         {
           static_assert(
-            ::utility::trait::type::features::is_constructible<_T, _Args...>::value,
+            utility::trait::type::features::is_constructible<_T, _Args...>::value,
             "Cannot construct the pointer from these args");
-          this->construct(__ptr, ::utility::algorithm::forward<_Args>(__args)...);
+          this->construct(__ptr, utility::algorithm::forward<_Args>(__args)...);
           return;
         }
 

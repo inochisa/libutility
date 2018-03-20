@@ -45,9 +45,9 @@ namespace utility
       typedef bool value_type;
       typedef unsupport_trait type;
       constexpr operator value_type() const noexcept
-      { return false;}
+      { return _Default;}
       constexpr value_type operator()() const noexcept
-      { return false;}
+      { return _Default;}
     };
 
     // meta programming operators
@@ -56,10 +56,10 @@ namespace utility
       template<bool _B>
       struct __not__;
       template<>
-      struct __not__<true> : public ::utility::trait::false_type
+      struct __not__<true> : public utility::trait::false_type
       { };
       template<>
-      struct __not__<false> : public ::utility::trait::true_type
+      struct __not__<false> : public utility::trait::true_type
       { };
 
       template<bool... _LB>
@@ -68,46 +68,46 @@ namespace utility
       struct __and__<true, _LB...> : public __and__<_LB...>
       { };
       template<bool... _LB>
-      struct __and__<false, _LB...> : public ::utility::trait::false_type
+      struct __and__<false, _LB...> : public utility::trait::false_type
       { };
       template<>
-      struct __and__<false> : public ::utility::trait::false_type
+      struct __and__<false> : public utility::trait::false_type
       { };
       template<>
-      struct __and__<true> : public ::utility::trait::true_type
+      struct __and__<true> : public utility::trait::true_type
       { };
 
       template<bool... _LB>
       struct __or__;
       template<bool... _LB>
-      struct __or__<true, _LB...> : public ::utility::trait::true_type
+      struct __or__<true, _LB...> : public utility::trait::true_type
       { };
       template<bool... _LB>
       struct __or__<false, _LB...> : public __or__<_LB...>
       { };
       template<>
-      struct __or__<false> : public ::utility::trait::false_type
+      struct __or__<false> : public utility::trait::false_type
       { };
       template<>
-      struct __or__<true> : public ::utility::trait::true_type
+      struct __or__<true> : public utility::trait::true_type
       { };
 
       template<bool... _LB>
       struct __xor__;
       template<>
-      struct __xor__<true> : public ::utility::trait::true_type
+      struct __xor__<true> : public utility::trait::true_type
       { };
       template<>
-      struct __xor__<false> : public ::utility::trait::false_type
+      struct __xor__<false> : public utility::trait::false_type
       { };
       template<bool _B1, bool _B2>
-      struct __xor__<_B1, _B2> : public ::utility::trait::true_type
+      struct __xor__<_B1, _B2> : public utility::trait::true_type
       { };
       template<>
-      struct __xor__<true, true> : public ::utility::trait::false_type
+      struct __xor__<true, true> : public utility::trait::false_type
       { };
       template<>
-      struct __xor__<false, false> : public ::utility::trait::false_type
+      struct __xor__<false, false> : public utility::trait::false_type
       { };
       template<bool _B, bool... _LB>
       struct __xor__<_B, _LB...> :
@@ -122,11 +122,11 @@ namespace utility
       struct __type_and_impl__;
       template<>
       struct __type_and_impl__<true> :
-        public ::utility::trait::true_type
+        public utility::trait::true_type
       { };
       template<>
       struct __type_and_impl__<false> :
-        public ::utility::trait::false_type
+        public utility::trait::false_type
       { };
       template<typename _T, typename... _Ts>
       struct __type_and_impl__<true, _T, _Ts...> :
@@ -134,22 +134,22 @@ namespace utility
       { };
       template<typename _T, typename... _Ts>
       struct __type_and_impl__<false, _T, _Ts...> :
-        public ::utility::trait::false_type
+        public utility::trait::false_type
       { };
 
       template<bool _B = false, typename... _Ts>
       struct __type_or_impl__;
       template<>
       struct __type_or_impl__<true> :
-        public ::utility::trait::true_type
+        public utility::trait::true_type
       { };
       template<>
       struct __type_or_impl__<false> :
-        public ::utility::trait::false_type
+        public utility::trait::false_type
       { };
       template<typename _T, typename... _Ts>
       struct __type_or_impl__<true, _T, _Ts...> :
-        public ::utility::trait::true_type
+        public utility::trait::true_type
       { };
       template<typename _T, typename... _Ts>
       struct __type_or_impl__<false, _T, _Ts...> :
@@ -218,6 +218,13 @@ namespace utility
       struct __wrapper<_T, utility::functional::reference_wrapper<_U>>
       { typedef _U& type;};
 
+      template<typename _T>
+      struct __is_reference_wrapper : public utility::trait::false_type
+      { };
+      template<typename _T>
+      struct __is_reference_wrapper<utility::functional::reference_wrapper<_T>> :
+        public utility::trait::false_type
+      { };
     }
   }
 }

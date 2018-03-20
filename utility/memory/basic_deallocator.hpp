@@ -13,7 +13,7 @@ namespace utility
     class basic_deallocator
     {
       public:
-        typedef ::utility::memory::allocator_traits<_Alloc>
+        typedef utility::memory::allocator_traits<_Alloc>
           allocator_traits_type;
 
       public:

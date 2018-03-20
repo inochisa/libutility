@@ -28,33 +28,33 @@ inline void test_attribute()
 
   static_assert(is_same<typename white_black_tree<long, int>::key_type, long>::value, "key_type");
   static_assert(is_same<typename white_black_tree<long, int>::mapped_type, int>::value, "mapped_type");
-  static_assert(is_same<typename white_black_tree<long, int>::value_type, ::utility::container::pair<const long, int>>::value, "value_type");
-  static_assert(is_same<typename white_black_tree<long, int>::key_compare, ::utility::algorithm::less<long>>::value, "key_compare");
+  static_assert(is_same<typename white_black_tree<long, int>::value_type, utility::container::pair<const long, int>>::value, "value_type");
+  static_assert(is_same<typename white_black_tree<long, int>::key_compare, utility::algorithm::less<long>>::value, "key_compare");
   static_assert(is_same<typename white_black_tree<long, int>::size_type, decltype(sizeof('0'))>::value, "size_type");
   static_assert(is_same<typename white_black_tree<long, int>::difference_type, long>::value, "difference_type");
-  static_assert(is_same<typename white_black_tree<long, int>::reference, ::utility::container::pair<const long, int>&>::value, "reference");
-  static_assert(is_same<typename white_black_tree<long, int>::const_reference, const ::utility::container::pair<const long, int>&>::value, "const_reference");
+  static_assert(is_same<typename white_black_tree<long, int>::reference, utility::container::pair<const long, int>&>::value, "reference");
+  static_assert(is_same<typename white_black_tree<long, int>::const_reference, const utility::container::pair<const long, int>&>::value, "const_reference");
   static_assert(is_same<typename white_black_tree<long, int>::allocator_type, allocator<utility::container::pair<const long, int>>>::value, "allocator_type");
   static_assert(is_same<typename white_black_tree<long, int>::allocator_traits_type, allocator_traits<allocator<utility::container::pair<const long, int>>>>::value, "allocator_type");
-  static_assert(is_same<typename white_black_tree<long, int>::pointer, ::utility::container::pair<const long, int>*>::value, "pointer");
-  static_assert(is_same<typename white_black_tree<long, int>::const_pointer, const ::utility::container::pair<const long, int>*>::value, "const_pointer");
+  static_assert(is_same<typename white_black_tree<long, int>::pointer, utility::container::pair<const long, int>*>::value, "pointer");
+  static_assert(is_same<typename white_black_tree<long, int>::const_pointer, const utility::container::pair<const long, int>*>::value, "const_pointer");
 
   static_assert(is_same<typename iterator::iterator_category, bidirectional_iterator_tag>::value, "iterator::iterator_category");
   static_assert(is_same<typename iterator::key_type, long>::value, "iterator::key_type");
   static_assert(is_same<typename iterator::mapped_type, int>::value, "iterator::mapped_type");
-  static_assert(is_same<typename iterator::value_type, ::utility::container::pair<const long, int>>::value, "iterator::value_type");
-  static_assert(is_same<typename iterator::reference, ::utility::container::pair<const long, int>&>::value, "iterator::reference");
-  static_assert(is_same<typename iterator::pointer, ::utility::container::pair<const long, int>*>::value, "iterator::pointer");
+  static_assert(is_same<typename iterator::value_type, utility::container::pair<const long, int>>::value, "iterator::value_type");
+  static_assert(is_same<typename iterator::reference, utility::container::pair<const long, int>&>::value, "iterator::reference");
+  static_assert(is_same<typename iterator::pointer, utility::container::pair<const long, int>*>::value, "iterator::pointer");
   static_assert(is_same<typename iterator::difference_type, decltype(0L)>::value, "iterator::difference_type");
   static_assert(is_same<typename iterator::self, iterator>::value, "iterator::self");
 
   static_assert(is_same<typename const_iterator::iterator_category, bidirectional_iterator_tag>::value, "const_iterator::iterator_category");
   static_assert(is_same<typename const_iterator::key_type, long>::value, "const_iterator::key_type");
   static_assert(is_same<typename const_iterator::mapped_type, int>::value, "const_iterator::mapped_type");
-  static_assert(is_same<typename const_iterator::value_type, ::utility::container::pair<const long, int>>::value, "const_iterator::value_type");
-  static_assert(is_same<typename const_iterator::const_value_type, const ::utility::container::pair<const long, int>>::value, "const_iterator::const_value_type");
-  static_assert(is_same<typename const_iterator::reference, const ::utility::container::pair<const long, int>&>::value, "const_iterator::reference");
-  static_assert(is_same<typename const_iterator::pointer, const ::utility::container::pair<const long, int>*>::value, "const_iterator::pointer");
+  static_assert(is_same<typename const_iterator::value_type, utility::container::pair<const long, int>>::value, "const_iterator::value_type");
+  static_assert(is_same<typename const_iterator::const_value_type, const utility::container::pair<const long, int>>::value, "const_iterator::const_value_type");
+  static_assert(is_same<typename const_iterator::reference, const utility::container::pair<const long, int>&>::value, "const_iterator::reference");
+  static_assert(is_same<typename const_iterator::pointer, const utility::container::pair<const long, int>*>::value, "const_iterator::pointer");
   static_assert(is_same<typename const_iterator::difference_type, decltype(0L)>::value, "const_iterator::difference_type");
   static_assert(is_same<typename const_iterator::self, const_iterator>::value, "const_iterator::self");
 
@@ -95,16 +95,16 @@ void test_construct()
   test_type test8{{4,4},{2,2},{1,1},{3,3},{6,6},{5,5},{7,7}};
   assert(test8 == test_type({{1,1},{2,2},{3,3},{4,4},{5,5},{6,6},{7,7}}));
 
-  test_type test9(::utility::algorithm::move(test4));
+  test_type test9(utility::algorithm::move(test4));
   assert(test9 == test_type({{1,1},{2,2},{3,3},{4,4},{5,5},{6,6},{7,7}}));
-  test_type test10(::utility::algorithm::move(test5), __alloc);
+  test_type test10(utility::algorithm::move(test5), __alloc);
   assert(test10 == test_type({{1,1},{2,2},{3,3},{4,4},{5,5},{6,6},{7,7}}));
 
   test4 = {{4,4},{2,2},{1,1},{3,3},{6,6},{5,5},{7,7}};
   assert(test4 == test_type({{1,1},{2,2},{3,3},{4,4},{5,5},{6,6},{7,7}}));
   test5 = test4;
   assert(test5 == test_type({{1,1},{2,2},{3,3},{4,4},{5,5},{6,6},{7,7}}));
-  test3 = ::utility::algorithm::move(test4);
+  test3 = utility::algorithm::move(test4);
   assert(test3 == test_type({{1,1},{2,2},{3,3},{4,4},{5,5},{6,6},{7,7}}));
 
   printf("Test construct passes\n");

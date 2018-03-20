@@ -17,7 +17,7 @@ namespace utility
 
     namespace detail
     {
-      using ::utility::algorithm::sort_tag::cocktail_shaker_sort_tag;
+      using utility::algorithm::sort_tag::cocktail_shaker_sort_tag;
       template<typename _BidirectionalIterator, typename _Compare>
       void __sort(
         _BidirectionalIterator __first, _BidirectionalIterator __last,
@@ -27,7 +27,7 @@ namespace utility
         using utility::algorithm::swap;
 #ifdef UTILITY_DEBUG
         static_assert(
-          ::utility::iterator::is_bidirectional_iterator<_BidirectionalIterator>::value,
+          utility::iterator::is_bidirectional_iterator<_BidirectionalIterator>::value,
           "cocktail shaker sort need at least bidirectional iterator."
         );
 #endif // ! UTILITY_DEBUG
@@ -36,14 +36,14 @@ namespace utility
         {
           for(_BidirectionalIterator __pos = __first; __pos != __last; ++__pos)
           {
-            if(__compare(*::utility::iterator::next(__pos), *__pos))
-            { swap(*::utility::iterator::next(__pos), *__pos);}
+            if(__compare(*utility::iterator::next(__pos), *__pos))
+            { swap(*utility::iterator::next(__pos), *__pos);}
           }
           --__last;
           for(_BidirectionalIterator __pos = __last; __pos != __first; --__pos)
           {
-            if(__compare(*__pos, *::utility::iterator::prev(__pos)))
-            { swap(*__pos, *::utility::iterator::prev(__pos));}
+            if(__compare(*__pos, *utility::iterator::prev(__pos)))
+            { swap(*__pos, *utility::iterator::prev(__pos));}
           }
           ++__first;
         }

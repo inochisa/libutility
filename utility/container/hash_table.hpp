@@ -156,9 +156,9 @@ namespace utility
             }
 
           public:
-            reference operator*() const
+            reference operator*() const noexcept
             { return *(this->__ptr->__data);}
-            pointer operator->() const
+            pointer operator->() const noexcept
             { return this->__ptr->__data;}
 
           public:
@@ -255,7 +255,18 @@ namespace utility
             { }
 
           public:
-            self& operator=(const self& __oit)
+            self& operator=(const self& __oit) noexcept
+            {
+              if(&__oit != this)
+              {
+                this->__ptr = __oit.__ptr;
+                this->__container_ptr = __oit.__container_ptr;
+              }
+              return *this;
+            }
+            self& operator=(
+              const __hash_table_iterator<__Key, __Value, __Key_Value_Container, __Container>& __oit
+            ) noexcept
             {
               if(&__oit != this)
               {
@@ -266,9 +277,9 @@ namespace utility
             }
 
           public:
-            reference operator*() const
+            reference operator*() const noexcept
             { return *(this->__ptr->__data);}
-            pointer operator->() const
+            pointer operator->() const noexcept
             { return this->__ptr->__data;}
 
           public:
@@ -366,7 +377,7 @@ namespace utility
             { }
 
           public:
-            self& operator=(const self& __oit)
+            self& operator=(const self& __oit) noexcept
             {
               if(&__oit != this)
               {
@@ -378,9 +389,9 @@ namespace utility
             }
 
           public:
-            reference operator*() const
+            reference operator*() const noexcept
             { return *(this->__ptr->__data);}
-            pointer operator->() const
+            pointer operator->() const noexcept
             { return this->__ptr->__data;}
 
           public:
@@ -474,7 +485,19 @@ namespace utility
             { }
 
           public:
-            self& operator=(const self& __oit)
+            self& operator=(const self& __oit) noexcept
+            {
+              if(&__oit != this)
+              {
+                this->__ptr = __oit.__ptr;
+                this->__bucket_num = __oit.__bucket_num;
+                this->__container_ptr = __oit.__container_ptr;
+              }
+              return *this;
+            }
+            self& operator=(
+              const __hash_table_local_iterator<__Key, __Value, __Key_Value_Container, __Container>& __oit
+            ) noexcept
             {
               if(&__oit != this)
               {
@@ -486,9 +509,9 @@ namespace utility
             }
 
           public:
-            reference operator*() const
+            reference operator*() const noexcept
             { return *(this->__ptr->__data);}
-            pointer operator->() const
+            pointer operator->() const noexcept
             { return this->__ptr->__data;}
 
           public:
@@ -575,7 +598,7 @@ namespace utility
           const_local_iterator;
 
       public: // assert:
-        static_assert(::utility::trait::type::releations::is_same<
+        static_assert(utility::trait::type::releations::is_same<
           value_type, typename allocator_type::value_type>::value,
           "the allocator's alloc type must be the same as value type");
 
@@ -792,20 +815,20 @@ namespace utility
         }
         hash_table(hash_table&& __other):
           __load_factor(__other.__load_factor),
-          __bucket(::utility::algorithm::move(__other.__bucket)),
+          __bucket(utility::algorithm::move(__other.__bucket)),
           __size(__other.__size),
-          __hasher(::utility::algorithm::move(__other.__hasher)),
-          __key_eq(::utility::algorithm::move(__other.__key_eq)),
-          __allocator(::utility::algorithm::move(__other.__allocator)),
+          __hasher(utility::algorithm::move(__other.__hasher)),
+          __key_eq(utility::algorithm::move(__other.__key_eq)),
+          __allocator(utility::algorithm::move(__other.__allocator)),
           __node_allocator()
         { }
         hash_table(
           hash_table&& __other, const allocator_type& __alloc
         ):__load_factor(__other.__load_factor),
-          __bucket(::utility::algorithm::move(__other.__bucket)),
+          __bucket(utility::algorithm::move(__other.__bucket)),
           __size(__other.__size),
-          __hasher(::utility::algorithm::move(__other.__hasher)),
-          __key_eq(::utility::algorithm::move(__other.__key_eq)),
+          __hasher(utility::algorithm::move(__other.__hasher)),
+          __key_eq(utility::algorithm::move(__other.__key_eq)),
           __allocator(__alloc),
           __node_allocator()
         { }
@@ -1125,7 +1148,7 @@ namespace utility
           const_iterator __hint, const value_type& __val
         )
         {
-          ::utility::miscellaneous::ignore_unused(__hint);
+          utility::miscellaneous::ignore_unused(__hint);
           if(this->is_overload(1U))
           { this->resize(this->size() + 1);}
           return __insert_unique(__allocate_node(this, __val), this).first;
@@ -1134,7 +1157,7 @@ namespace utility
           const_iterator __hint, value_type&& __val
         )
         {
-          ::utility::miscellaneous::ignore_unused(__hint);
+          utility::miscellaneous::ignore_unused(__hint);
           if(this->is_overload(1U))
           { this->resize(this->size() + 1);}
           return __insert_unique(
@@ -1145,7 +1168,7 @@ namespace utility
           const_iterator __hint, const value_type& __val
         )
         {
-          ::utility::miscellaneous::ignore_unused(__hint);
+          utility::miscellaneous::ignore_unused(__hint);
           if(this->is_overload(1U))
           { this->resize(this->size() + 1);}
           return __insert_equal(__allocate_node(this, __val), this);
@@ -1154,7 +1177,7 @@ namespace utility
           const_iterator __hint, value_type&& __val
         )
         {
-          ::utility::miscellaneous::ignore_unused(__hint);
+          utility::miscellaneous::ignore_unused(__hint);
           if(this->is_overload(1U))
           { this->resize(this->size() + 1);}
           return __insert_equal(
@@ -1174,8 +1197,8 @@ namespace utility
         // {
         //   if(__first == __last)
         //   { return 0U;}
-        //   if(this->is_overload(::utility::iterator::distance(__first, __last)))
-        //   { this->resize(::utility::iterator::distance(__first, __last));}
+        //   if(this->is_overload(utility::iterator::distance(__first, __last)))
+        //   { this->resize(utility::iterator::distance(__first, __last));}
         //   size_type __success = 0;
         //   for(; __first != __last; ++__first)
         //   {
@@ -1191,8 +1214,8 @@ namespace utility
         // {
         //   if(__first == __last)
         //   { return;}
-        //   if(this->is_overload(::utility::iterator::distance(__first, __last)))
-        //   { this->resize(::utility::iterator::distance(__first, __last));}
+        //   if(this->is_overload(utility::iterator::distance(__first, __last)))
+        //   { this->resize(utility::iterator::distance(__first, __last));}
         //   for(; __first != __last; ++__first)
         //   { __insert_equal(__allocate_node(this, *__first), this);}
         // }
@@ -1224,7 +1247,7 @@ namespace utility
           const_iterator __hint, _Args&&... __args
         )
         {
-          ::utility::miscellaneous::ignore_unused(__hint);
+          utility::miscellaneous::ignore_unused(__hint);
           if(this->is_overload(1U))
           { this->resize(this->size() + 1);}
           return __insert_unique(
@@ -1237,7 +1260,7 @@ namespace utility
           const_iterator __hint, _Args&&... __args
         )
         {
-          ::utility::miscellaneous::ignore_unused(__hint);
+          utility::miscellaneous::ignore_unused(__hint);
           if(this->is_overload(1U))
           { this->resize(this->size() + 1);}
           return __insert_equal(

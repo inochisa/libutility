@@ -206,26 +206,30 @@ namespace utility
       // }
     }
   }
-}
 
-/*!
-* \relates utility::logic::boolean::tribool
-*/
-inline constexpr utility::logic::boolean::tribool operator"" _u_tri(unsigned long long __mark)
-{
-  using utility::logic::boolean::tribool;
-  return __mark > 1 ? tribool(tribool::indeterminate) :
-    (__mark ? tribool(true) : tribool(false));
-}
+  namespace literals
+  {
+    /*!
+    * \relates utility::logic::boolean::tribool
+    */
+    inline constexpr utility::logic::boolean::tribool operator"" _u_tri(unsigned long long __mark)
+    {
+      using utility::logic::boolean::tribool;
+      return __mark > 1 ? tribool(tribool::indeterminate) :
+        (__mark ? tribool(true) : tribool(false));
+    }
 
-/*!
-* \relates utility::logic::boolean::tribool
-*/
-inline constexpr utility::logic::boolean::tribool operator"" _u_tribool(unsigned long long __mark)
-{
-  using utility::logic::boolean::tribool;
-  return __mark > 1 ? tribool(tribool::indeterminate) :
-    (__mark ? tribool(true) : tribool(false));
+    /*!
+    * \relates utility::logic::boolean::tribool
+    */
+    inline constexpr utility::logic::boolean::tribool operator"" _u_tribool(unsigned long long __mark)
+    {
+      using utility::logic::boolean::tribool;
+      return __mark > 1 ? tribool(tribool::indeterminate) :
+        (__mark ? tribool(true) : tribool(false));
+    }
+
+  }
 }
 
 

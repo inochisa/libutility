@@ -27,8 +27,8 @@ namespace utility
     };
 
     __UTILITY_CPP17_INLINE__
-    constexpr ::utility::container::ignore_t ignore =
-      ::utility::container::ignore_t();
+    constexpr utility::container::ignore_t ignore =
+      utility::container::ignore_t();
   }
 }
 

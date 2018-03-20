@@ -29,25 +29,25 @@ namespace utility
     )
     {
       for(;__first != __last;)
-      { *(__result++) = ::utility::algorithm::move(*(__first++));}
+      { *(__result++) = utility::algorithm::move(*(__first++));}
       return __result;
     }
     template<typename _T, typename _U>
     inline
-    typename ::utility::trait::type::miscellaneous::enable_if<
-      ::utility::trait::type::releations::is_same<
+    typename utility::trait::type::miscellaneous::enable_if<
+      utility::trait::type::releations::is_same<
         typename
-        ::utility::trait::type::transform::remove_cv<_T>::type,
+        utility::trait::type::transform::remove_cv<_T>::type,
         _U>::value &&
-      ::utility::trait::type::features::is_trivially_copy_assignable<_U>::value,
+      utility::trait::type::features::is_trivially_copy_assignable<_U>::value,
       _U*>::type
     move_forward(_T* __first, _T* __last, _U* __result)
     {
-      const ::utility::size_t __len =
-        static_cast<::utility::size_t>(__last-__first);
+      const utility::size_t __len =
+        static_cast<utility::size_t>(__last-__first);
       if(__len > 0)
       {
-        ::utility::sstd::memmove(__result, __first, __len*sizeof(_U));
+        utility::sstd::memmove(__result, __first, __len*sizeof(_U));
       }
       return __result + __len;
     }

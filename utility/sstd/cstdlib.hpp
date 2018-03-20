@@ -1,6 +1,6 @@
 
-#ifndef ___UTILITY__STANDARD__LIBRARY__CSTRLIB___
-#define ___UTILITY__STANDARD__LIBRARY__CSTRLIB___
+#ifndef ___UTILITY__STANDARD__LIBRARY__CSTDLIB___
+#define ___UTILITY__STANDARD__LIBRARY__CSTDLIB___
 
 #include<utility/config/utility_config.hpp>
 #include<cstdlib>
@@ -12,7 +12,7 @@ namespace utility
     using ::std::div_t;
     using ::std::ldiv_t;
     using ::std::lldiv_t;
-    using ::utility::size_t;
+    using utility::size_t;
 
     using ::std::abort;
     using ::std::exit;
@@ -37,4 +37,4 @@ namespace utility
   }
 }
 
-#endif // ! ___UTILITY__STANDARD__LIBRARY__CSTRLIB___
+#endif // ! ___UTILITY__STANDARD__LIBRARY__CSTDLIB___

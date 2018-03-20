@@ -24,14 +24,14 @@ namespace utility
     template<typename _InputIterator, typename _T>
     inline
     typename
-    ::utility::iterator::iterator_traits<_InputIterator>::difference_type
+    utility::iterator::iterator_traits<_InputIterator>::difference_type
     count(
       _InputIterator __first, _InputIterator __last,
       const _T& __val
     )
     {
       typedef typename
-        ::utility::iterator::iterator_traits<_InputIterator>::difference_type
+        utility::iterator::iterator_traits<_InputIterator>::difference_type
         __difference_type;
       __difference_type __res = 0;
       for(; __first != __last;)

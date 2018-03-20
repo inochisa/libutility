@@ -22,18 +22,18 @@ namespace utility
 
           template<typename _To, typename _From>
           struct __is_nothrow_assignable_helper<false, _To, _From> :
-            public ::utility::trait::false_type
+            public utility::trait::false_type
           { };
           template<typename _To, typename _From>
           struct __is_nothrow_assignable_helper<true, _To, _From> :
-            public ::utility::trait::integral_constant<bool,
-              noexcept(::utility::trait::type::special::declval<_To>() = ::utility::trait::type::special::declval<_From>())>
+            public utility::trait::integral_constant<bool,
+              noexcept(utility::trait::type::special::declval<_To>() = utility::trait::type::special::declval<_From>())>
           { };
         }
         template<typename _T, typename _U>
         struct is_nothrow_assignable : public
           __is_nothrow_assignable_impl::__is_nothrow_assignable_helper<
-            ::utility::trait::type::features::is_assignable<_T, _U>::value,
+            utility::trait::type::features::is_assignable<_T, _U>::value,
             _T, _U>
         { };
 

@@ -18,7 +18,7 @@ namespace utility
         // is_pod
         template<typename _T>
         struct is_pod : public
-          ::utility::trait::integral_constant<bool, __utility_is_pod(_T)>
+          utility::trait::integral_constant<bool, __utility_is_pod(_T)>
         { };
 
       }
@@ -44,11 +44,11 @@ namespace utility
         // is_pod
         template<typename _T>
         struct is_pod : public
-          ::utility::trait::integral_constant<bool,
-            ::utility::trait::type::features::is_trivially_default_constructible<_T>::value &&
-            ::utility::trait::type::features::is_trivially_copy_constructible<_T>::value &&
-            ::utility::trait::type::features::is_trivially_copy_assignable<_T>::value &&
-            ::utility::trait::type::features::is_trivially_destructible<_T>::value>
+          utility::trait::integral_constant<bool,
+            utility::trait::type::features::is_trivially_default_constructible<_T>::value &&
+            utility::trait::type::features::is_trivially_copy_constructible<_T>::value &&
+            utility::trait::type::features::is_trivially_copy_assignable<_T>::value &&
+            utility::trait::type::features::is_trivially_destructible<_T>::value>
         { };
 
       }
@@ -67,69 +67,69 @@ namespace utility
       namespace property
       {
         template<typename _T>
-        struct is_pod<_T*> : public ::utility::trait::true_type
+        struct is_pod<_T*> : public utility::trait::true_type
         { };
         template<typename _T>
-        struct is_pod<_T* const> : public ::utility::trait::true_type
+        struct is_pod<_T* const> : public utility::trait::true_type
         { };
         template<typename _T>
-        struct is_pod<_T* volatile> : public ::utility::trait::true_type
+        struct is_pod<_T* volatile> : public utility::trait::true_type
         { };
         template<typename _T>
-        struct is_pod<_T* const volatile> : public ::utility::trait::true_type
+        struct is_pod<_T* const volatile> : public utility::trait::true_type
         { };
 
         template<>
-        struct is_pod<char> : public ::utility::trait::true_type
+        struct is_pod<char> : public utility::trait::true_type
         { };
         template<>
-        struct is_pod<signed char> : public ::utility::trait::true_type
+        struct is_pod<signed char> : public utility::trait::true_type
         { };
         template<>
-        struct is_pod<unsigned char> : public ::utility::trait::true_type
+        struct is_pod<unsigned char> : public utility::trait::true_type
         { };
         template<>
-        struct is_pod<signed short> : public ::utility::trait::true_type
+        struct is_pod<signed short> : public utility::trait::true_type
         { };
         template<>
-        struct is_pod<unsigned short> : public ::utility::trait::true_type
+        struct is_pod<unsigned short> : public utility::trait::true_type
         { };
         template<>
-        struct is_pod<signed int> : public ::utility::trait::true_type
+        struct is_pod<signed int> : public utility::trait::true_type
         { };
         template<>
-        struct is_pod<unsigned int> : public ::utility::trait::true_type
+        struct is_pod<unsigned int> : public utility::trait::true_type
         { };
         template<>
-        struct is_pod<signed long> : public ::utility::trait::true_type
+        struct is_pod<signed long> : public utility::trait::true_type
         { };
         template<>
-        struct is_pod<unsigned long> : public ::utility::trait::true_type
+        struct is_pod<unsigned long> : public utility::trait::true_type
         { };
         template<>
-        struct is_pod<signed long long> : public ::utility::trait::true_type
+        struct is_pod<signed long long> : public utility::trait::true_type
         { };
         template<>
-        struct is_pod<unsigned long long> : public ::utility::trait::true_type
+        struct is_pod<unsigned long long> : public utility::trait::true_type
         { };
         template<>
-        struct is_pod<float> : public ::utility::trait::true_type
+        struct is_pod<float> : public utility::trait::true_type
         { };
         template<>
-        struct is_pod<double> : public ::utility::trait::true_type
+        struct is_pod<double> : public utility::trait::true_type
         { };
         template<>
-        struct is_pod<long double> : public ::utility::trait::true_type
+        struct is_pod<long double> : public utility::trait::true_type
         { };
 
         template<>
-        struct is_pod<wchar_t> : public ::utility::trait::true_type
+        struct is_pod<wchar_t> : public utility::trait::true_type
         { };
         template<>
-        struct is_pod<char16_t> : public ::utility::trait::true_type
+        struct is_pod<char16_t> : public utility::trait::true_type
         { };
         template<>
-        struct is_pod<char32_t> : public ::utility::trait::true_type
+        struct is_pod<char32_t> : public utility::trait::true_type
         { };
       }
     }

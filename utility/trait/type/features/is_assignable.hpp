@@ -17,14 +17,14 @@ namespace utility
         // is_assignable
         namespace __is_assignable_impl
         {
-          using __two = ::utility::trait::__impl_helper::__twochar;
+          using __two = utility::trait::__impl_helper::__twochar;
           template<typename _T, typename _F>
           struct __is_assignable_test
           {
             private:
               template<typename _To, typename _From>
               static
-              decltype((::utility::trait::type::special::declval<_To>() = ::utility::trait::type::special::declval<_From>()),char('\0'))
+              decltype((utility::trait::type::special::declval<_To>() = utility::trait::type::special::declval<_From>()),char('\0'))
               __test(int);
               template<typename, typename>
               static __two __test(...);
@@ -33,14 +33,14 @@ namespace utility
           };
 
           template<typename _To, typename _From, bool =
-            ::utility::trait::type::categories::is_void<_To>::value ||
-            ::utility::trait::type::categories::is_void<_From>::value>
-          struct __is_assignable_helper : public ::utility::trait::false_type
+            utility::trait::type::categories::is_void<_To>::value ||
+            utility::trait::type::categories::is_void<_From>::value>
+          struct __is_assignable_helper : public utility::trait::false_type
           { };
 
           template<typename _To, typename _From>
           struct __is_assignable_helper<_To, _From, false> :
-            public ::utility::trait::integral_constant<bool,
+            public utility::trait::integral_constant<bool,
               __is_assignable_test<_To, _From>::value>
           { };
         }

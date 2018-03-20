@@ -25,6 +25,7 @@
 #include<utility/trait/type/type_trait_special.hpp>
 #include<utility/trait/type/releations/is_same.hpp>
 #include<utility/trait/type/features/is_default_constructible.hpp>
+#include<utility/trait/type/features/is_nothrow_swappable.hpp>
 #include<utility/trait/type/features/is_nothrow_possible_swappable.hpp>
 #include<utility/trait/type/miscellaneous/enable_if.hpp>
 #include<utility/trait/miscellaneous/pointer_traits.hpp>
@@ -79,7 +80,7 @@ namespace utility
             { }
 
           public:
-            inline self& operator=(const self& __other)
+            inline self& operator=(const self& __other) noexcept
             {
               if(this != &__other)
               { this->__ptr = __other.__ptr;}
@@ -87,29 +88,29 @@ namespace utility
             }
 
           public:
-            reference operator*() const
+            reference operator*() const noexcept
             { return *(this->__ptr);}
-            pointer operator->() const
+            pointer operator->() const noexcept
             { return (this->__ptr);}
 
           public:
-            self& operator++()
+            self& operator++() noexcept
             {
               ++(this->__ptr);
               return *this;
             }
-            self operator++(int)
+            self operator++(int) noexcept
             {
               self __it = *this;
               ++(this->__ptr);
               return __it;
             }
-            self& operator--()
+            self& operator--() noexcept
             {
               --(this->__ptr);
               return *this;
             }
-            self operator--(int)
+            self operator--(int) noexcept
             {
               self __it = *this;
               --(this->__ptr);
@@ -117,39 +118,39 @@ namespace utility
             }
 
           public:
-            self& operator+=(difference_type __len)
+            self& operator+=(difference_type __len) noexcept
             {
               this->__ptr += __len;
               return *this;
             }
-            self& operator-=(difference_type __len)
+            self& operator-=(difference_type __len) noexcept
             {
               this->__ptr -= __len;
               return *this;
             }
-            self operator+(difference_type __len) const
+            self operator+(difference_type __len) const noexcept
             { return self(this->__ptr + __len);}
-            self operator-(difference_type __len) const
+            self operator-(difference_type __len) const noexcept
             { return self(this->__ptr - __len);}
 
           public:
-            friend bool operator==(const self& __x, const self& __y)
+            friend bool operator==(const self& __x, const self& __y) noexcept
             { return __x.__ptr == __y.__ptr;}
-            friend bool operator!=(const self& __x, const self& __y)
+            friend bool operator!=(const self& __x, const self& __y) noexcept
             { return __x.__ptr != __y.__ptr;}
 
           public:
-            friend bool operator<(const self& __x, const self& __y)
+            friend bool operator<(const self& __x, const self& __y) noexcept
             { return __x.__ptr < __y.__ptr;}
-            friend bool operator>(const self& __x, const self& __y)
+            friend bool operator>(const self& __x, const self& __y) noexcept
             { return __x.__ptr > __y.__ptr;}
-            friend bool operator<=(const self& __x, const self& __y)
+            friend bool operator<=(const self& __x, const self& __y) noexcept
             { return __x.__ptr <= __y.__ptr;}
-            friend bool operator>=(const self& __x, const self& __y)
+            friend bool operator>=(const self& __x, const self& __y) noexcept
             { return __x.__ptr >= __y.__ptr;}
 
           public:
-            friend difference_type operator-(const self& __x, const self __y)
+            friend difference_type operator-(const self& __x, const self __y) noexcept
             { return __x.__ptr - __y.__ptr;}
 
         };
@@ -191,7 +192,15 @@ namespace utility
             { }
 
           public:
-            inline self& operator=(const self& __other)
+            inline self& operator=(const self& __other) noexcept
+            {
+              if(this != &__other)
+              { this->__ptr = __other.__ptr;}
+              return *this;
+            }
+            inline self& operator=(
+              const __vector_iterator<value_type>& __other
+            ) noexcept
             {
               if(this != &__other)
               { this->__ptr = __other.__ptr;}
@@ -199,29 +208,29 @@ namespace utility
             }
 
           public:
-            reference operator*() const
+            reference operator*() const noexcept
             { return *(this->__ptr);}
-            pointer operator->() const
+            pointer operator->() const noexcept
             { return (this->__ptr);}
 
           public:
-            self& operator++()
+            self& operator++() noexcept
             {
               ++(this->__ptr);
               return *this;
             }
-            self operator++(int)
+            self operator++(int) noexcept
             {
               self __it = *this;
               ++(this->__ptr);
               return __it;
             }
-            self& operator--()
+            self& operator--() noexcept
             {
               --(this->__ptr);
               return *this;
             }
-            self operator--(int)
+            self operator--(int) noexcept
             {
               self __it = *this;
               --(this->__ptr);
@@ -229,39 +238,39 @@ namespace utility
             }
 
           public:
-            self& operator+=(difference_type __len)
+            self& operator+=(difference_type __len) noexcept
             {
               this->__ptr += __len;
               return *this;
             }
-            self& operator-=(difference_type __len)
+            self& operator-=(difference_type __len) noexcept
             {
               this->__ptr -= __len;
               return *this;
             }
-            self operator+(difference_type __len) const
+            self operator+(difference_type __len) const noexcept
             { return self(this->__ptr + __len);}
-            self operator-(difference_type __len) const
+            self operator-(difference_type __len) const noexcept
             { return self(this->__ptr - __len);}
 
           public:
-            friend bool operator==(const self& __x, const self& __y)
+            friend bool operator==(const self& __x, const self& __y) noexcept
             { return __x.__ptr == __y.__ptr;}
-            friend bool operator!=(const self& __x, const self& __y)
+            friend bool operator!=(const self& __x, const self& __y) noexcept
             { return __x.__ptr != __y.__ptr;}
 
           public:
-            friend bool operator<(const self& __x, const self& __y)
+            friend bool operator<(const self& __x, const self& __y) noexcept
             { return __x.__ptr < __y.__ptr;}
-            friend bool operator>(const self& __x, const self& __y)
+            friend bool operator>(const self& __x, const self& __y) noexcept
             { return __x.__ptr > __y.__ptr;}
-            friend bool operator<=(const self& __x, const self& __y)
+            friend bool operator<=(const self& __x, const self& __y) noexcept
             { return __x.__ptr <= __y.__ptr;}
-            friend bool operator>=(const self& __x, const self& __y)
+            friend bool operator>=(const self& __x, const self& __y) noexcept
             { return __x.__ptr >= __y.__ptr;}
 
           public:
-            friend difference_type operator-(const self& __x, const self __y)
+            friend difference_type operator-(const self& __x, const self __y) noexcept
             { return __x.__ptr - __y.__ptr;}
 
         };
@@ -293,7 +302,7 @@ namespace utility
           const_reverse_iterator;
 
       public: // assert
-        static_assert(::utility::trait::type::releations::is_same<
+        static_assert(utility::trait::type::releations::is_same<
           value_type, typename allocator_type::value_type>::value,
           "the allocator's alloc type must be the same as value type");
 
@@ -509,8 +518,6 @@ namespace utility
       public:
         allocator_type get_allocator() const
         { return this->__allocator;}
-        void change_allocator(const allocator_type& __alloc)
-        { this->__allocator = __alloc;}
 
       public:
 
@@ -817,12 +824,15 @@ namespace utility
         }
 
       public:
-        void swap(vector& __other) noexcept
+        void swap(vector& __other) noexcept(
+          utility::trait::type::features::is_nothrow_swappable<allocator_type>::value
+        )
         {
           using utility::algorithm::swap;
-          swap(this->__begin, __other.__begin);
-          swap(this->__end, __other.__end);
-          swap(this->__mend, __other.__mend);
+          swap(this->__allocator,   __other.__allocator);
+          swap(this->__begin,       __other.__begin);
+          swap(this->__end,         __other.__end);
+          swap(this->__mend,        __other.__mend);
         }
         void possible_swap(vector& __other) noexcept(
           utility::trait::type::features::is_nothrow_possible_swappable<allocator_type>::value
@@ -895,16 +905,16 @@ namespace utility
   {
     template<typename _T, typename _Alloc>
     inline void swap(
-      ::utility::container::vector<_T, _Alloc>& __x,
-      ::utility::container::vector<_T, _Alloc>& __y
+      utility::container::vector<_T, _Alloc>& __x,
+      utility::container::vector<_T, _Alloc>& __y
     ) noexcept(noexcept(__x.swap(__y)))
     {
       __x.swap(__y);
     }
     template<typename _T, typename _Alloc>
     inline void possible_swap(
-      ::utility::container::vector<_T, _Alloc>& __x,
-      ::utility::container::vector<_T, _Alloc>& __y
+      utility::container::vector<_T, _Alloc>& __x,
+      utility::container::vector<_T, _Alloc>& __y
     ) noexcept(noexcept(__x.possible_swap(__y)))
     {
       __x.possible_swap(__y);

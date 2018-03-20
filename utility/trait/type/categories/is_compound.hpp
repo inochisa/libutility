@@ -18,7 +18,7 @@ namespace utility
         // is_compound
         template<typename _T>
         struct is_compound :
-          public ::utility::trait::integral_constant<bool,
+          public utility::trait::integral_constant<bool,
             !is_void<_T>::value       &&
             !is_arithmetic<_T>::value &&
             !is_null_pointer<_T>::value>

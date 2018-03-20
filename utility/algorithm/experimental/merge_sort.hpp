@@ -17,7 +17,7 @@ namespace utility
       void __merge_sort(_RandomAccessIterator __first, _RandomAccessIterator __last, _RandomAccessIterator __tfirst, _RandomAccessIterator __tlast, _Compare __compare)
       {
         typedef typename
-          ::utility::iterator::iterator_traits<_RandomAccessIterator>::difference_type
+          utility::iterator::iterator_traits<_RandomAccessIterator>::difference_type
           __difference_type;
         __difference_type __len = __last - __first;
         if(__len < 2)
@@ -26,8 +26,8 @@ namespace utility
         _RandomAccessIterator __tmid = __tfirst + __len / 2;
         __merge_sort(__first, __mid, __tfirst, __tmid, __compare);
         __merge_sort(__mid, __last, __tmid, __tlast, __compare);
-        ::utility::algorithm::merge(__first, __mid, __mid, __last, __tfirst, __compare);
-        ::utility::algorithm::copy(__tfirst, __tlast, __first);
+        utility::algorithm::merge(__first, __mid, __mid, __last, __tfirst, __compare);
+        utility::algorithm::copy(__tfirst, __tlast, __first);
       }
     }
     template<typename _RandomAccessIterator, typename _Compare>
@@ -39,9 +39,9 @@ namespace utility
     inline void merge_sort(_RandomAccessIterator __first, _RandomAccessIterator __last, _RandomAccessIterator __tfirst, _RandomAccessIterator __tlast)
     {
       typedef typename
-        ::utility::iterator::iterator_traits<_RandomAccessIterator>::value_type
+        utility::iterator::iterator_traits<_RandomAccessIterator>::value_type
         __value_type;
-      merge_sort(__first, __last, __tfirst, __tlast, ::utility::algorithm::less<__value_type>());
+      merge_sort(__first, __last, __tfirst, __tlast, utility::algorithm::less<__value_type>());
     }
   }
 }

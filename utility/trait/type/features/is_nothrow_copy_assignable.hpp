@@ -18,11 +18,11 @@ namespace utility
         // is_nothrow_copy_assignable
         template<typename _T>
         struct is_nothrow_copy_assignable : public
-          ::utility::trait::type::features::is_nothrow_assignable<
-            typename ::utility::trait::type::transform::add_lvalue_reference<_T>::type,
-            typename ::utility::trait::type::transform::add_lvalue_reference
+          utility::trait::type::features::is_nothrow_assignable<
+            typename utility::trait::type::transform::add_lvalue_reference<_T>::type,
+            typename utility::trait::type::transform::add_lvalue_reference
             <typename
-              ::utility::trait::type::transform::add_const<_T>::type>::type>
+              utility::trait::type::transform::add_const<_T>::type>::type>
         { };
 
       }

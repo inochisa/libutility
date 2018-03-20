@@ -20,8 +20,8 @@ namespace utility
         namespace __is_destructible_impl
         {
           template<typename _T>
-          using __int = ::utility::trait::__impl_helper::__int_type<_T>;
-          using __two = ::utility::trait::__impl_helper::__twochar;
+          using __int = utility::trait::__impl_helper::__int_type<_T>;
+          using __two = utility::trait::__impl_helper::__twochar;
 
           template<typename _T>
           struct __is_destructible_test_helper
@@ -29,7 +29,7 @@ namespace utility
             private:
               template<typename __T>
               static char __test(typename __int<
-                decltype(::utility::trait::type::special::declval<__T&>().~__T())
+                decltype(utility::trait::type::special::declval<__T&>().~__T())
                 >::type);
               template<typename __T>
               static __two __test(...);
@@ -42,14 +42,14 @@ namespace utility
 
           template<typename _T>
           struct __is_destructible_test<_T, false> : public
-            ::utility::trait::integral_constant<bool,
+            utility::trait::integral_constant<bool,
             __is_destructible_test_helper<typename
-              ::utility::trait::type::transform::remove_all_extents<_T>::type
+              utility::trait::type::transform::remove_all_extents<_T>::type
             >::value>
           { };
           template<typename _T>
           struct __is_destructible_test<_T, true> :
-            public ::utility::trait::true_type
+            public utility::trait::true_type
           { };
 
           template<typename _T, bool>
@@ -58,23 +58,23 @@ namespace utility
           template<typename _T>
           struct __is_destructible_helper<_T, false> :
             public __is_destructible_test<_T,
-              ::utility::trait::type::categories::is_reference<_T>::value>
+              utility::trait::type::categories::is_reference<_T>::value>
           { };
           template<typename _T>
           struct __is_destructible_helper<_T, true> :
-            public ::utility::trait::false_type
+            public utility::trait::false_type
           { };
         }
         template<typename _T>
         struct is_destructible : public
           __is_destructible_impl::__is_destructible_helper<_T,
-            ::utility::trait::type::categories::is_function<_T>::value>
+            utility::trait::type::categories::is_function<_T>::value>
         { };
         template<typename _T>
-        struct is_destructible<_T[]> : public ::utility::trait::false_type
+        struct is_destructible<_T[]> : public utility::trait::false_type
         { };
         template<>
-        struct is_destructible<void> : public ::utility::trait::false_type
+        struct is_destructible<void> : public utility::trait::false_type
         { };
       }
     }

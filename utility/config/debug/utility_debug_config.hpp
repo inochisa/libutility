@@ -15,6 +15,12 @@
 #define UTILITY_MEMORY_HAS_EXTRA true
 #define UTILITY_TRAIT_HAS_EXTRA true
 
+#ifndef UTILITY_NO_EXTRA_CHECK
+
+#else
+
+#endif // ! UTILITY_NO_EXTRA_CHECK
+
 #else
 
 #define __utility_private private

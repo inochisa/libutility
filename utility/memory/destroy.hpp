@@ -17,7 +17,7 @@ namespace utility
       template<typename _ForwardIterator,
         bool =
           utility::trait::type::features::is_trivially_destructible<
-            decltype(*::utility::trait::type::special::declval<_ForwardIterator>())
+            decltype(*utility::trait::type::special::declval<_ForwardIterator>())
           >::value
       >
       struct __destroy
@@ -26,8 +26,8 @@ namespace utility
         {
           for(; __first != __last; ++__first)
           {
-            ::utility::memory::destroy_at(
-              ::utility::memory::addressof(*__first)
+            utility::memory::destroy_at(
+              utility::memory::addressof(*__first)
             );
           }
         }

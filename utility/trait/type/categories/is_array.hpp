@@ -14,13 +14,13 @@ namespace utility
       {
         // is_array
         template<typename _T>
-        struct is_array : public ::utility::trait::false_type
+        struct is_array : public utility::trait::false_type
         { };
         template<typename _T>
-        struct is_array<_T[]> : public ::utility::trait::true_type
+        struct is_array<_T[]> : public utility::trait::true_type
         { };
-        template<typename _T, ::utility::trait::size_t size>
-        struct is_array<_T[size]> : public ::utility::trait::true_type
+        template<typename _T, utility::trait::size_t size>
+        struct is_array<_T[size]> : public utility::trait::true_type
         { };
 
       }

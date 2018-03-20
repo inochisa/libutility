@@ -20,9 +20,9 @@ namespace utility
         namespace __add_const_impl
         {
           template<typename _T, bool =
-            ::utility::trait::type::property::is_const<_T>::value       ||
-            ::utility::trait::type::categories::is_function<_T>::value  ||
-            ::utility::trait::type::categories::is_reference<_T>::value>
+            utility::trait::type::property::is_const<_T>::value       ||
+            utility::trait::type::categories::is_function<_T>::value  ||
+            utility::trait::type::categories::is_reference<_T>::value>
           struct __add_const_helper
           { typedef _T type;};
           template<typename _T>
@@ -38,9 +38,9 @@ namespace utility
         namespace __add_volatile_impl
         {
           template<typename _T, bool =
-            ::utility::trait::type::property::is_volatile<_T>::value    ||
-            ::utility::trait::type::categories::is_function<_T>::value  ||
-            ::utility::trait::type::categories::is_reference<_T>::value>
+            utility::trait::type::property::is_volatile<_T>::value    ||
+            utility::trait::type::categories::is_function<_T>::value  ||
+            utility::trait::type::categories::is_reference<_T>::value>
           struct __add_volatile_helper
           { typedef _T type;};
           template<typename _T>

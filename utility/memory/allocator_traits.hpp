@@ -21,7 +21,7 @@ namespace utility
   {
     namespace __alloc_traits_impl
     {
-      using __two = ::utility::trait::__impl_helper::__twochar;
+      using __two = utility::trait::__impl_helper::__twochar;
 
       template<typename _T>
       struct __alloc_pointer_test
@@ -212,7 +212,7 @@ namespace utility
       { typedef typename _Allocator::const_pointer type;};
       template<typename _T, typename _Pointer, typename _Allocator>
       struct __alloc_const_pointer<_T, _Pointer, _Allocator, false>
-      { typedef typename ::utility::trait::miscellaneous::pointer_traits<_Pointer
+      { typedef typename utility::trait::miscellaneous::pointer_traits<_Pointer
           >::template rebind<const _T> type;};
 
 
@@ -225,7 +225,7 @@ namespace utility
       { typedef typename _Allocator::void_pointer type;};
       template<typename _Allocator, typename _Pointer>
       struct __alloc_void_pointer<_Allocator, _Pointer, false>
-      { typedef typename ::utility::trait::miscellaneous::pointer_traits<_Pointer
+      { typedef typename utility::trait::miscellaneous::pointer_traits<_Pointer
         >::template rebind<void> type;};
 
       template<typename _Allocator,  typename _Pointer,
@@ -237,7 +237,7 @@ namespace utility
       { typedef typename _Allocator::const_void_pointer type;};
       template<typename _Allocator, typename _Pointer>
       struct __alloc_const_void_pointer<_Allocator, _Pointer, false>
-      { typedef typename ::utility::trait::miscellaneous::pointer_traits<_Pointer
+      { typedef typename utility::trait::miscellaneous::pointer_traits<_Pointer
         >::template rebind<const void> type;};
 
       template<typename _Pointer, typename _Allocator,
@@ -249,7 +249,7 @@ namespace utility
       { typedef typename _Allocator::difference_type type;};
       template<typename _Pointer, typename _Allocator>
       struct __alloc_difference_type<_Pointer, _Allocator, false>
-      { typedef typename ::utility::trait::miscellaneous::pointer_traits<_Pointer
+      { typedef typename utility::trait::miscellaneous::pointer_traits<_Pointer
         >::difference_type type;};
 
       template<typename _Difference, typename _Allocator,
@@ -261,7 +261,7 @@ namespace utility
       { typedef typename _Allocator::size_type type;};
       template<typename _Difference, typename _Allocator>
       struct __alloc_size_type<_Difference, _Allocator, false>
-      { typedef typename ::utility::trait::type::miscellaneous::make_unsigned<_Difference
+      { typedef typename utility::trait::type::miscellaneous::make_unsigned<_Difference
         >::type type;};
 
       template<typename _Allocator,
@@ -274,7 +274,7 @@ namespace utility
       { typedef typename _Allocator::propagate_on_container_copy_assignment type;};
       template<typename _Allocator>
       struct __alloc_propagate_on_container_copy_assignment<_Allocator, false>
-      { typedef ::utility::trait::false_type type;};
+      { typedef utility::trait::false_type type;};
 
       template<typename _Allocator,
         bool = __alloc_propagate_on_container_move_assignment_test<_Allocator
@@ -286,7 +286,7 @@ namespace utility
       { typedef typename _Allocator::propagate_on_container_move_assignment type;};
       template<typename _Allocator>
       struct __alloc_propagate_on_container_move_assignment<_Allocator, false>
-      { typedef ::utility::trait::false_type type;};
+      { typedef utility::trait::false_type type;};
 
       template<typename _Allocator,
         bool = __alloc_propagate_on_container_swap_test<_Allocator
@@ -298,7 +298,7 @@ namespace utility
       { typedef typename _Allocator::propagate_on_container_swap type;};
       template<typename _Allocator>
       struct __alloc_propagate_on_container_swap<_Allocator, false>
-      { typedef ::utility::trait::false_type type;};
+      { typedef utility::trait::false_type type;};
 
       template<typename _Allocator,
         bool = __alloc_is_always_equal_test<_Allocator>::value>
@@ -311,7 +311,7 @@ namespace utility
       struct __alloc_is_always_equal<_Allocator, false>
       {
         typedef typename
-        ::utility::trait::type::property::is_empty<_Allocator>::type type;
+        utility::trait::type::property::is_empty<_Allocator>::type type;
       };
 
       template<typename _Allocator, typename _U,
@@ -339,7 +339,7 @@ namespace utility
 
     namespace __alloc_traits_impl
     {
-      using ::utility::trait::type::special::declval;
+      using utility::trait::type::special::declval;
       template<typename _Allocator, typename _Size, typename _Const_Void_Ptr>
       struct __alloc_has_hint_test
       {
@@ -347,15 +347,15 @@ namespace utility
           template<typename __T, typename __Size, typename __Ptr>
           static auto __test(__T&& __alloc, __Size&& __n, __Ptr&& __ptr)
             -> decltype(__alloc.allocate(__n, __ptr),
-            ::utility::trait::true_type());
+            utility::trait::true_type());
           template<typename __T, typename __Size, typename __Ptr>
           static auto __test(const __T& __alloc, __Size&& __n, __Ptr&& __ptr)
-            -> ::utility::trait::false_type;
+            -> utility::trait::false_type;
 
         public:
           constexpr static bool value =
-            ::utility::trait::type::releations::is_same<
-              ::utility::trait::true_type,
+            utility::trait::type::releations::is_same<
+              utility::trait::true_type,
               decltype(__test<_Allocator, _Size, _Const_Void_Ptr>(
                 declval<_Allocator>(), declval<_Size>(),
                 declval<_Const_Void_Ptr>()))
@@ -364,15 +364,15 @@ namespace utility
 
       template<typename _Allocator, typename _Size, typename _Const_Void_Ptr>
       struct __alloc_has_hint : public
-        ::utility::trait::integral_constant<bool,
+        utility::trait::integral_constant<bool,
           __alloc_has_hint_test<_Allocator, _Size, _Const_Void_Ptr>::value>
       { };
 
       template<typename _Allocator, typename _Size, typename _Const_Void_Ptr, typename _Return>
-      _Return __allocate(_Allocator& __alloc, _Size __size,_Const_Void_Ptr __hint, ::utility::trait::true_type)
+      _Return __allocate(_Allocator& __alloc, _Size __size,_Const_Void_Ptr __hint, utility::trait::true_type)
       { return __alloc.allocate(__size, __hint);}
       template<typename _Allocator, typename _Size, typename _Const_Void_Ptr, typename _Return>
-      _Return __allocate(_Allocator& __alloc, _Size __size,_Const_Void_Ptr __hint, ::utility::trait::false_type)
+      _Return __allocate(_Allocator& __alloc, _Size __size,_Const_Void_Ptr __hint, utility::trait::false_type)
       { return __alloc.allocate(__size);}
 
 
@@ -383,15 +383,15 @@ namespace utility
           template<typename __T, typename __P, typename... __Args>
           static auto __test(__T&& __alloc, __P* __ptr, __Args&&... __args)
             ->decltype(__alloc.construct(__ptr, __args...),
-              ::utility::trait::true_type());
+              utility::trait::true_type());
           template<typename __T, typename __P, typename... __Args>
           static auto __test(const __T& __alloc, __P* __ptr, __Args&&... __args)
-            -> ::utility::trait::false_type;
+            -> utility::trait::false_type;
 
         public:
           constexpr static bool value =
-            ::utility::trait::type::releations::is_same<
-              ::utility::trait::true_type,
+            utility::trait::type::releations::is_same<
+              utility::trait::true_type,
               decltype(__test<_Allocator, _Ptr, _Args...>(
                 declval<_Allocator>(), declval<_Ptr*>(),
                 declval<_Args>()...))
@@ -400,19 +400,19 @@ namespace utility
 
       template<typename _Allocator, typename _Ptr, typename... _Args>
       struct __alloc_has_construct : public
-        ::utility::trait::integral_constant<bool,
+        utility::trait::integral_constant<bool,
           __alloc_has_construct_test<_Allocator, _Ptr, _Args...>::value>
       { };
 
       template<typename _Allocator, typename _P_T, typename... _Args>
-      void __construct(::utility::trait::true_type, _Allocator& __alloc,
+      void __construct(utility::trait::true_type, _Allocator& __alloc,
          _P_T* __ptr, _Args&&... __args)
-      { __alloc.construct(__ptr, ::utility::algorithm::forward<_Args>(__args)...);}
+      { __alloc.construct(__ptr, utility::algorithm::forward<_Args>(__args)...);}
       template<typename _Allocator, typename _P_T, typename... _Args>
-      void __construct(::utility::trait::false_type, _Allocator& __alloc,
+      void __construct(utility::trait::false_type, _Allocator& __alloc,
         _P_T* __ptr, _Args&&... __args)
       { ::new (static_cast<void*>(__ptr))
-        _P_T(::utility::algorithm::forward<_Args>(__args)...);}
+        _P_T(utility::algorithm::forward<_Args>(__args)...);}
 
       template<typename _Allocator, typename _Ptr>
       struct __alloc_has_destroy_test
@@ -421,15 +421,15 @@ namespace utility
           template<typename __T, typename __P>
           static auto __test(__T&& __alloc, __P* __ptr)
             ->decltype(__alloc.destroy(__ptr),
-              ::utility::trait::true_type());
+              utility::trait::true_type());
           template<typename __T, typename __P>
           static auto __test(const __T& __alloc, __P* __ptr)
-            -> ::utility::trait::false_type;
+            -> utility::trait::false_type;
 
         public:
           constexpr static bool value =
-            ::utility::trait::type::releations::is_same<
-              ::utility::trait::true_type,
+            utility::trait::type::releations::is_same<
+              utility::trait::true_type,
               decltype(__test<_Allocator, _Ptr>(
                 declval<_Allocator>(), declval<_Ptr*>()))
             >::value;
@@ -437,14 +437,14 @@ namespace utility
 
       template<typename _Allocator, typename _Ptr>
       struct __alloc_has_destroy : public
-        ::utility::trait::integral_constant<bool,
+        utility::trait::integral_constant<bool,
           __alloc_has_destroy_test<_Allocator, _Ptr>::value>
       { };
 
       template<typename _Allocator, typename _Ptr,
         bool = __alloc_has_destroy_test<_Allocator, _Ptr>::value,
         bool =
-          ::utility::trait::type::features::is_trivially_destructible<_Ptr>::value
+          utility::trait::type::features::is_trivially_destructible<_Ptr>::value
       >
       struct __alloc_destroy
       {
@@ -478,15 +478,15 @@ namespace utility
           template<typename __T>
           static auto __test(__T&& __alloc)
             ->decltype(__alloc.max_size(),
-              ::utility::trait::true_type());
+              utility::trait::true_type());
           template<typename __T>
           static auto __test(const __T& __alloc)
-            -> ::utility::trait::false_type;
+            -> utility::trait::false_type;
 
         public:
           constexpr static bool value =
-            ::utility::trait::type::releations::is_same<
-              ::utility::trait::true_type,
+            utility::trait::type::releations::is_same<
+              utility::trait::true_type,
               decltype(__test<_Allocator>(declval<_Allocator>()))
             >::value;
       };
@@ -512,15 +512,15 @@ namespace utility
           template<typename __T>
           static auto __test(__T&& __alloc)
             ->decltype(__alloc.select_on_container_copy_construction(),
-              ::utility::trait::true_type());
+              utility::trait::true_type());
           template<typename __T>
           static auto __test(const __T& __alloc)
-            -> ::utility::trait::false_type;
+            -> utility::trait::false_type;
 
         public:
           constexpr static bool value =
-            ::utility::trait::type::releations::is_same<
-              ::utility::trait::true_type,
+            utility::trait::type::releations::is_same<
+              utility::trait::true_type,
               decltype(__test<_Allocator>(declval<_Allocator>()))
             >::value;
       };
@@ -614,12 +614,12 @@ namespace utility
         static inline void construct(allocator_type& __alloc, _T* __ptr, _Args&&... __args)
         {
           static_assert(
-            ::utility::trait::type::features::is_constructible<_T, _Args...>::value,
+            utility::trait::type::features::is_constructible<_T, _Args...>::value,
             "The args is not vaild.");
           __alloc_traits_impl::__construct(
             __alloc_traits_impl::__alloc_has_construct<allocator_type, _T, _Args...>(),
             __alloc, __ptr,
-            ::utility::algorithm::forward<_Args>(__args)...);
+            utility::algorithm::forward<_Args>(__args)...);
         }
 
         template<typename _T>

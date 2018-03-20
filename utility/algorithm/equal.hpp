@@ -65,7 +65,7 @@ namespace utility
     {
       return equal(
         __first1, __last1, __first2,
-        ::utility::algorithm::equal_to<void>()
+        utility::algorithm::equal_to<void>()
       );
     }
     /**
@@ -124,7 +124,7 @@ namespace utility
     {
       return equal(
         __first1, __last1, __first2, __last2,
-        ::utility::algorithm::equal_to<void>()
+        utility::algorithm::equal_to<void>()
       );
     }
 

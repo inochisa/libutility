@@ -32,7 +32,7 @@ namespace utility
     template<typename _InputIterator1, typename _InputIterator2,
       typename _BinaryPredicate
     >
-    ::utility::container::pair<_InputIterator1, _InputIterator2>
+    utility::container::pair<_InputIterator1, _InputIterator2>
     mismatch(
       _InputIterator1 __first1, _InputIterator1 __last1,
       _InputIterator2 __first2, _InputIterator2 __last2,
@@ -43,10 +43,10 @@ namespace utility
          && __pred(*__first1, *__first2); ++__first1, ++__first2
       )
       { }
-      return ::utility::container::make_pair(__first1, __first2);
+      return utility::container::make_pair(__first1, __first2);
     }
     /**
-     * \overload ::utility::container::pair<_InputIterator1, _InputIterator2>
+     * \overload utility::container::pair<_InputIterator1, _InputIterator2>
      *  mismatch(
      *    _InputIterator1 __first1, _InputIterator1 __last1,
      *    _InputIterator2 __first2, _InputIterator2 __last2
@@ -56,7 +56,7 @@ namespace utility
      *
      */
     template<typename _InputIterator1, typename _InputIterator2>
-    ::utility::container::pair<_InputIterator1, _InputIterator2>
+    utility::container::pair<_InputIterator1, _InputIterator2>
     mismatch(
       _InputIterator1 __first1, _InputIterator1 __last1,
       _InputIterator2 __first2, _InputIterator2 __last2
@@ -66,7 +66,7 @@ namespace utility
          && *__first1 == *__first2; ++__first1, ++__first2
       )
       { }
-      return ::utility::container::make_pair(__first1, __first2);
+      return utility::container::make_pair(__first1, __first2);
     }
 
     /**
@@ -92,7 +92,7 @@ namespace utility
     template<typename _InputIterator1, typename _InputIterator2,
       typename _BinaryPredicate
     >
-    ::utility::container::pair<_InputIterator1, _InputIterator2>
+    utility::container::pair<_InputIterator1, _InputIterator2>
     mismatch(
       _InputIterator1 __first1, _InputIterator1 __last1,
       _InputIterator2 __first2, _BinaryPredicate __pred
@@ -102,10 +102,10 @@ namespace utility
         ++__first1, ++__first2
       )
       { }
-      return ::utility::container::make_pair(__first1, __first2);
+      return utility::container::make_pair(__first1, __first2);
     }
     /**
-     * \overload ::utility::container::pair<_InputIterator1, _InputIterator2>
+     * \overload utility::container::pair<_InputIterator1, _InputIterator2>
      *  mismatch(
      *    _InputIterator1 __first1, _InputIterator1 __last1,
      *    _InputIterator2 __first2
@@ -115,7 +115,7 @@ namespace utility
      *
      */
     template<typename _InputIterator1, typename _InputIterator2>
-    ::utility::container::pair<_InputIterator1, _InputIterator2>
+    utility::container::pair<_InputIterator1, _InputIterator2>
     mismatch(
       _InputIterator1 __first1, _InputIterator1 __last1,
       _InputIterator2 __first2
@@ -125,7 +125,7 @@ namespace utility
         ++__first1, ++__first2
       )
       { }
-      return ::utility::container::make_pair(__first1, __first2);
+      return utility::container::make_pair(__first1, __first2);
     }
   }
 }

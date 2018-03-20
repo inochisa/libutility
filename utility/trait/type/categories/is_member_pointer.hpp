@@ -18,19 +18,19 @@ namespace utility
         {
           template<typename _T>
           struct __is_member_pointer_test :
-            public ::utility::trait::false_type
+            public utility::trait::false_type
           { };
 
           template<typename _T, class _Inn>
           struct __is_member_pointer_test<_T _Inn::*> :
-            public ::utility::trait::true_type
+            public utility::trait::true_type
           { };
         }
         template<typename _T>
         struct is_member_pointer :
           public __is_member_pointer_impl::__is_member_pointer_test<
             typename
-              ::utility::trait::type::transform::remove_cv<_T>::type>
+              utility::trait::type::transform::remove_cv<_T>::type>
         { };
 
       }

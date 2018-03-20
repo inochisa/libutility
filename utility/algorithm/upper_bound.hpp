@@ -42,15 +42,15 @@ namespace utility
     {
       _ForwardIterator __it;
       typedef typename
-        ::utility::iterator::iterator_traits<_ForwardIterator>::difference_type
+        utility::iterator::iterator_traits<_ForwardIterator>::difference_type
         __difference_type;
-      __difference_type __len = ::utility::iterator::distance(__first, __last);
+      __difference_type __len = utility::iterator::distance(__first, __last);
       __difference_type __now;
       for(;__len > 0;)
       {
         __it = __first;
         __now = __len / 2;
-        ::utility::iterator::advance(__it, __now);
+        utility::iterator::advance(__it, __now);
         if(!__compare(__val, *__it))
         {
           __first = ++__it;
@@ -78,15 +78,15 @@ namespace utility
     {
       _ForwardIterator __it;
       typedef typename
-        ::utility::iterator::iterator_traits<_ForwardIterator>::difference_type
+        utility::iterator::iterator_traits<_ForwardIterator>::difference_type
         __difference_type;
-      __difference_type __len = ::utility::iterator::distance(__first, __last);
+      __difference_type __len = utility::iterator::distance(__first, __last);
       __difference_type __now;
       for(;__len > 0;)
       {
         __it = __first;
         __now = __len / 2;
-        ::utility::iterator::advance(__it, __now);
+        utility::iterator::advance(__it, __now);
         if(!(__val < *__it))
         {
           __first = ++__it;

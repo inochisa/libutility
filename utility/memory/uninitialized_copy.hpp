@@ -21,11 +21,11 @@ namespace utility
       _ForwardIterator
       __uninitialized_copy(_InputIterator __first,
         _InputIterator __last, _ForwardIterator __result,
-        ::utility::trait::false_type
+        utility::trait::false_type
       )
       {
         typedef typename
-        ::utility::iterator::iterator_traits<_ForwardIterator>::value_type
+        utility::iterator::iterator_traits<_ForwardIterator>::value_type
         __value_type;
 #ifdef __UTILITY_USE_EXCEPTION
         _ForwardIterator __epos = __result;
@@ -33,7 +33,7 @@ namespace utility
         __UTILITY_TRY_BEGIN
           for(; __first != __last; (void)++__first, ++__result)
           {
-            ::new (static_cast<void*>(::utility::memory::addressof(*__result)))
+            ::new (static_cast<void*>(utility::memory::addressof(*__result)))
             __value_type(*__first);
           }
         __UTILITY_TRY_END
@@ -50,13 +50,13 @@ namespace utility
       _ForwardIterator
       __uninitialized_copy(_InputIterator __first,
         _InputIterator __last, _ForwardIterator __result,
-        ::utility::trait::true_type
+        utility::trait::true_type
       )
       {
         typedef typename
-          ::utility::iterator::iterator_traits<_ForwardIterator>::value_type
+          utility::iterator::iterator_traits<_ForwardIterator>::value_type
           __value_type;
-        ::utility::sstd::memmove(
+        utility::sstd::memmove(
           __result, __first, (__last-__first)*sizeof(__value_type));
         return __result + (__last-__first);
       }
@@ -95,15 +95,15 @@ namespace utility
       _InputIterator __last, _ForwardIterator __result)
     {
       typedef typename
-      ::utility::iterator::iterator_traits<_ForwardIterator>::value_type
+      utility::iterator::iterator_traits<_ForwardIterator>::value_type
       __value_type;
       typedef
-        ::utility::trait::integral_constant<bool,
-          ::utility::trait::type::categories::is_pointer<_InputIterator>::value &&
-          ::utility::trait::type::categories::is_pointer<_ForwardIterator>::value &&
-          (::utility::trait::type::categories::is_arithmetic<__value_type>::value ||
-           ::utility::trait::type::categories::is_pointer<__value_type>::value ||
-           ::utility::trait::type::property::is_pod<__value_type>::value)>
+        utility::trait::integral_constant<bool,
+          utility::trait::type::categories::is_pointer<_InputIterator>::value &&
+          utility::trait::type::categories::is_pointer<_ForwardIterator>::value &&
+          (utility::trait::type::categories::is_arithmetic<__value_type>::value ||
+           utility::trait::type::categories::is_pointer<__value_type>::value ||
+           utility::trait::type::property::is_pod<__value_type>::value)>
         __identify;
       return detail::__uninitialized_copy(__first, __last, __result, __identify());
     }

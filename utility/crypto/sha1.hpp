@@ -240,14 +240,14 @@ namespace utility
     }
     void sha1(
       unsigned char __res[20],
-      const void* __mem, ::utility::size_t __len
+      const void* __mem, utility::size_t __len
     ) noexcept
     {
       detail::sha1_block __block;
 
       detail::sha1_block_init(__block);
 
-      ::utility::size_t __i;
+      utility::size_t __i;
       const unsigned char* __ptr =
         static_cast<const unsigned char*>(__mem);
 

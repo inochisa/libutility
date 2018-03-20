@@ -24,9 +24,9 @@ namespace utility
     inline void sort_heap(_RandomAccessIterator __first, _RandomAccessIterator __last)
     {
       typedef typename
-        ::utility::iterator::iterator_traits<_RandomAccessIterator>::value_type
+        utility::iterator::iterator_traits<_RandomAccessIterator>::value_type
         __value_type;
-      sort_heap(__first, __last, ::utility::algorithm::less<__value_type>());
+      sort_heap(__first, __last, utility::algorithm::less<__value_type>());
     }
   }
 }

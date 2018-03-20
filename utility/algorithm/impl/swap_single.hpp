@@ -30,21 +30,21 @@ namespace utility
      */
     template<typename _T>
     inline
-    typename ::utility::trait::type::miscellaneous::enable_if
+    typename utility::trait::type::miscellaneous::enable_if
     <
-      ::utility::trait::type::features::is_move_assignable<_T>::value &&
-      ::utility::trait::type::features::is_move_constructible<_T>::value,
+      utility::trait::type::features::is_move_assignable<_T>::value &&
+      utility::trait::type::features::is_move_constructible<_T>::value,
       void
     >::type
     swap(_T& __a, _T& __b)
       noexcept(
-        ::utility::trait::type::features::is_nothrow_move_constructible<_T>::value &&
-        ::utility::trait::type::features::is_nothrow_move_assignable<_T>::value
+        utility::trait::type::features::is_nothrow_move_constructible<_T>::value &&
+        utility::trait::type::features::is_nothrow_move_assignable<_T>::value
       )
     {
-      _T __tmp(::utility::algorithm::move(__a));
-      __a = ::utility::algorithm::move(__b);
-      __b = ::utility::algorithm::move(__tmp);
+      _T __tmp(utility::algorithm::move(__a));
+      __a = utility::algorithm::move(__b);
+      __b = utility::algorithm::move(__tmp);
     }
   }
 }

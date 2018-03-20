@@ -17,11 +17,11 @@ namespace utility
       template<
         typename _Iterator,
         bool =
-          ::utility::trait::type::property::is_pod
+          utility::trait::type::property::is_pod
           <
-            typename ::utility::iterator::iterator_traits<_Iterator>::value_type
+            typename utility::iterator::iterator_traits<_Iterator>::value_type
           >::value &&
-          ::utility::trait::type::categories::is_pointer<_Iterator>::value
+          utility::trait::type::categories::is_pointer<_Iterator>::value
       >
       struct __copy_backward
       {
@@ -46,9 +46,9 @@ namespace utility
         )
         {
           typedef typename
-            ::utility::iterator::iterator_traits<_BidirectionalIterator2>::value_type
+            utility::iterator::iterator_traits<_BidirectionalIterator2>::value_type
             __value_type;
-          ::utility::sstd::memmove(
+          utility::sstd::memmove(
             __flast - (__last - __first), __first,
             __size*sizeof(__value_type)
           );

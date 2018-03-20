@@ -20,10 +20,10 @@ namespace utility
         namespace __add_pointer_impl
         {
           template<typename _T, bool =
-          ::utility::trait::type::transform::is_referenceable<_T>::value||
-            ::utility::trait::type::releations::is_same<
+          utility::trait::type::transform::is_referenceable<_T>::value||
+            utility::trait::type::releations::is_same<
               typename
-                ::utility::trait::type::transform::remove_cv<_T>::type,
+                utility::trait::type::transform::remove_cv<_T>::type,
                   void>::value>
           struct __add_pointer_helper
           { typedef typename remove_reference<_T>::type* type;};

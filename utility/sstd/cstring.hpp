@@ -9,16 +9,24 @@
 */
 
 
-#ifndef ___UTILITY__STANDARD__LIBRARY__CSTRING___
-#define ___UTILITY__STANDARD__LIBRARY__CSTRING___
+#ifndef ___UTILITY__STANDARD__LIBRARY__CSTDING___
+#define ___UTILITY__STANDARD__LIBRARY__CSTDING___
 
 #include<utility/detail/sstd/memory.hpp>
 #include<utility/detail/sstd/char_string.hpp>
+#include<utility/detail/sstd/wchar_string.hpp>
 
 namespace utility
 {
   namespace sstd
   {
+    // Type
+    using utility::detail::sstd::charS::mbstate_t;
+    using utility::detail::sstd::charS::wint_t;
+
+    // Constant
+    using utility::detail::sstd::charS::weof;
+
     // Memory
     // Copying
     using utility::detail::sstd::memory::memcpy;
@@ -35,30 +43,50 @@ namespace utility
     // Fill
     using utility::detail::sstd::memory::memset;
 
-    // Char string
+    // CharS
+
     // Helper
-    using utility::detail::sstd::char_string::strend;
-    using utility::detail::sstd::char_string::strlen;
+    using utility::detail::sstd::charS::strend;
+    using utility::detail::sstd::charS::strlen;
+    using utility::detail::sstd::charS::wcsend;
+    using utility::detail::sstd::charS::wcslen;
     // Copying
-    using utility::detail::sstd::char_string::strcpy;
-    using utility::detail::sstd::char_string::stpcpy;
-    using utility::detail::sstd::char_string::strncpy;
-    using utility::detail::sstd::char_string::stpncpy;
+    using utility::detail::sstd::charS::strcpy;
+    using utility::detail::sstd::charS::stpcpy;
+    using utility::detail::sstd::charS::strncpy;
+    using utility::detail::sstd::charS::stpncpy;
+    using utility::detail::sstd::charS::wcscpy;
+    using utility::detail::sstd::charS::wcpcpy;
+    using utility::detail::sstd::charS::wcsncpy;
+    using utility::detail::sstd::charS::wcpncpy;
     // Concatenation
-    using utility::detail::sstd::char_string::strcat;
-    using utility::detail::sstd::char_string::stpcat;
-    using utility::detail::sstd::char_string::strncat;
-    using utility::detail::sstd::char_string::stpncat;
+    using utility::detail::sstd::charS::strcat;
+    using utility::detail::sstd::charS::stpcat;
+    using utility::detail::sstd::charS::strncat;
+    using utility::detail::sstd::charS::stpncat;
+    using utility::detail::sstd::charS::wcscat;
+    using utility::detail::sstd::charS::wcpcat;
+    using utility::detail::sstd::charS::wcsncat;
+    using utility::detail::sstd::charS::wcpncat;
     // Comparison
-    using utility::detail::sstd::char_string::strcmp;
+    using utility::detail::sstd::charS::strcmp;
+    using utility::detail::sstd::charS::strncmp;
+    using utility::detail::sstd::charS::wcscmp;
+    using utility::detail::sstd::charS::wcsncmp;
     // Searching
-    using utility::detail::sstd::char_string::strchr;
-    using utility::detail::sstd::char_string::strrchr;
-    using utility::detail::sstd::char_string::strcspn;
-    using utility::detail::sstd::char_string::strpbrk;
-    using utility::detail::sstd::char_string::strspn;
-    using utility::detail::sstd::char_string::strstr;
+    using utility::detail::sstd::charS::strchr;
+    using utility::detail::sstd::charS::strrchr;
+    using utility::detail::sstd::charS::strcspn;
+    using utility::detail::sstd::charS::strpbrk;
+    using utility::detail::sstd::charS::strspn;
+    using utility::detail::sstd::charS::strstr;
+    using utility::detail::sstd::charS::wcschr;
+    using utility::detail::sstd::charS::wcsrchr;
+    using utility::detail::sstd::charS::wcscspn;
+    using utility::detail::sstd::charS::wcspbrk;
+    using utility::detail::sstd::charS::wcsspn;
+    using utility::detail::sstd::charS::wcsstr;
   }
 }
 
-#endif // ! ___UTILITY__STANDARD__LIBRARY__CSTRING___
+#endif // ! ___UTILITY__STANDARD__LIBRARY__CSTDING___

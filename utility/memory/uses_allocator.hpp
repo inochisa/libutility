@@ -31,7 +31,7 @@ namespace utility
         bool = __has_allocator_type_test<_T>::value>
       struct __uses_allocator :
         public utility::trait::integral_constant<bool,
-          ::utility::trait::type::releations::is_convertible<_Alloc, typename _T::allocator_type>::value>
+          utility::trait::type::releations::is_convertible<_Alloc, typename _T::allocator_type>::value>
       { };
       template<typename _T, typename _Alloc>
       struct __uses_allocator<_T, _Alloc, false> :

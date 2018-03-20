@@ -15,103 +15,103 @@ namespace utility
         // is_function
         template<typename>
         struct is_function :
-          public ::utility::trait::false_type
+          public utility::trait::false_type
         { };
         template<typename _Fn, typename... _Args>
         struct is_function<_Fn(_Args...)> :
-          public ::utility::trait::true_type
+          public utility::trait::true_type
         { };
         template<typename _Fn, typename... _Args>
         struct is_function<_Fn(_Args...) &> :
-          public ::utility::trait::true_type
+          public utility::trait::true_type
         { };
         template<typename _Fn, typename... _Args>
         struct is_function<_Fn(_Args...) &&> :
-          public ::utility::trait::true_type
+          public utility::trait::true_type
         { };
         template<typename _Fn, typename... _Args>
         struct is_function<_Fn(_Args..., ...)> :
-          public ::utility::trait::true_type
+          public utility::trait::true_type
         { };
         template<typename _Fn, typename... _Args>
         struct is_function<_Fn(_Args..., ...) &> :
-          public ::utility::trait::true_type
+          public utility::trait::true_type
         { };
         template<typename _Fn, typename... _Args>
         struct is_function<_Fn(_Args..., ...) &&> :
-          public ::utility::trait::true_type
+          public utility::trait::true_type
         { };
         template<typename _Fn, typename... _Args>
         struct is_function<_Fn(_Args...) const> :
-          public ::utility::trait::true_type
+          public utility::trait::true_type
         { };
         template<typename _Fn, typename... _Args>
         struct is_function<_Fn(_Args...) const &> :
-          public ::utility::trait::true_type
+          public utility::trait::true_type
         { };
         template<typename _Fn, typename... _Args>
         struct is_function<_Fn(_Args...) const &&> :
-          public ::utility::trait::true_type
+          public utility::trait::true_type
         { };
         template<typename _Fn, typename... _Args>
         struct is_function<_Fn(_Args..., ...) const> :
-          public ::utility::trait::true_type
+          public utility::trait::true_type
         { };
         template<typename _Fn, typename... _Args>
         struct is_function<_Fn(_Args..., ...) const &> :
-          public ::utility::trait::true_type
+          public utility::trait::true_type
         { };
         template<typename _Fn, typename... _Args>
         struct is_function<_Fn(_Args..., ...) const &&> :
-          public ::utility::trait::true_type
+          public utility::trait::true_type
         { };
         template<typename _Fn, typename... _Args>
         struct is_function<_Fn(_Args...) volatile> :
-          public ::utility::trait::true_type
+          public utility::trait::true_type
         { };
         template<typename _Fn, typename... _Args>
         struct is_function<_Fn(_Args...) volatile &> :
-          public ::utility::trait::true_type
+          public utility::trait::true_type
         { };
         template<typename _Fn, typename... _Args>
         struct is_function<_Fn(_Args...) volatile &&> :
-          public ::utility::trait::true_type
+          public utility::trait::true_type
         { };
         template<typename _Fn, typename... _Args>
         struct is_function<_Fn(_Args..., ...) volatile> :
-          public ::utility::trait::true_type
+          public utility::trait::true_type
         { };
         template<typename _Fn, typename... _Args>
         struct is_function<_Fn(_Args..., ...) volatile &> :
-          public ::utility::trait::true_type
+          public utility::trait::true_type
         { };
         template<typename _Fn, typename... _Args>
         struct is_function<_Fn(_Args..., ...) volatile &&> :
-          public ::utility::trait::true_type
+          public utility::trait::true_type
         { };
         template<typename _Fn, typename... _Args>
         struct is_function<_Fn(_Args...) const volatile> :
-          public ::utility::trait::true_type
+          public utility::trait::true_type
         { };
         template<typename _Fn, typename... _Args>
         struct is_function<_Fn(_Args...) const volatile &> :
-          public ::utility::trait::true_type
+          public utility::trait::true_type
         { };
         template<typename _Fn, typename... _Args>
         struct is_function<_Fn(_Args...) const volatile &&> :
-          public ::utility::trait::true_type
+          public utility::trait::true_type
         { };
         template<typename _Fn, typename... _Args>
         struct is_function<_Fn(_Args..., ...) const volatile> :
-          public ::utility::trait::true_type
+          public utility::trait::true_type
         { };
         template<typename _Fn, typename... _Args>
         struct is_function<_Fn(_Args..., ...) const volatile &> :
-          public ::utility::trait::true_type
+          public utility::trait::true_type
         { };
         template<typename _Fn, typename... _Args>
         struct is_function<_Fn(_Args..., ...) const volatile &&> :
-          public ::utility::trait::true_type
+          public utility::trait::true_type
         { };
 
       }

@@ -17,7 +17,7 @@ namespace utility
         // common_type
         namespace __common_type_impl
         {
-          using ::utility::trait::__impl_helper::__empty;
+          using utility::trait::__impl_helper::__empty;
 
           template<typename _T, typename _U>
           struct __common_type_two_helper
@@ -25,10 +25,10 @@ namespace utility
             private:
               template<typename __T, typename __U>
               static typename
-              ::utility::trait::type::transform::decay<decltype(
+              utility::trait::type::transform::decay<decltype(
                 true ?
-                ::utility::trait::type::special::declval<__T>() :
-                ::utility::trait::type::special::declval<__U>())>
+                utility::trait::type::special::declval<__T>() :
+                utility::trait::type::special::declval<__U>())>
               __test(int);
               template<typename, typename>
               static __empty __test(...);
@@ -62,7 +62,7 @@ namespace utility
 
           template<typename _T>
           struct __common_type_helper<_T>
-          { typedef typename ::utility::trait::type::transform::decay<_T>::type type;};
+          { typedef typename utility::trait::type::transform::decay<_T>::type type;};
 
           template<typename _T, typename _U>
           struct __common_type_helper<_T, _U> : public

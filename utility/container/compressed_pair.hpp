@@ -39,7 +39,7 @@ namespace utility
             utility::trait::type::miscellaneous::enable_if<
               utility::trait::type::features::is_default_constructible<_U1>::value &&
               utility::trait::type::features::is_default_constructible<_U2>::value &&
-              (::utility::trait::type::features::is_implicit_constructible<_U1>::value &&
+              (utility::trait::type::features::is_implicit_constructible<_U1>::value &&
                utility::trait::type::features::is_implicit_constructible<_U2>::value),
               bool>::type = true>
         constexpr compressed_pair() noexcept(
@@ -53,7 +53,7 @@ namespace utility
             utility::trait::type::miscellaneous::enable_if<
               utility::trait::type::features::is_default_constructible<_U1>::value &&
               utility::trait::type::features::is_default_constructible<_U2>::value &&
-              !(::utility::trait::type::features::is_implicit_constructible<_U1>::value &&
+              !(utility::trait::type::features::is_implicit_constructible<_U1>::value &&
                utility::trait::type::features::is_implicit_constructible<_U2>::value),
               bool>::type = false>
         constexpr explicit compressed_pair() noexcept(
@@ -81,7 +81,7 @@ namespace utility
           utility::trait::type::miscellaneous::enable_if<
             utility::trait::type::features::is_copy_constructible<_U1>::value &&
             utility::trait::type::features::is_copy_constructible<_U2>::value &&
-            !(::utility::trait::type::releations::is_convertible<const _U1&, _U1>::value &&
+            !(utility::trait::type::releations::is_convertible<const _U1&, _U1>::value &&
              utility::trait::type::releations::is_convertible<const _U2&, _U2>::value),
             bool
           >::type = false>
@@ -102,8 +102,8 @@ namespace utility
         constexpr compressed_pair(_U1&& __tfirst, _U2&& __tsecond) noexcept(
           utility::trait::type::features::is_nothrow_constructible<_T1, _U1&&>::value &&
           utility::trait::type::features::is_nothrow_constructible<_T2, _U2&&>::value
-        ):first_base(::utility::algorithm::forward<_U1>(__tfirst)),
-          second_base(::utility::algorithm::forward<_U2>(__tsecond))
+        ):first_base(utility::algorithm::forward<_U1>(__tfirst)),
+          second_base(utility::algorithm::forward<_U2>(__tsecond))
         { }
         template<typename _U1, typename _U2,
         typename
@@ -116,8 +116,8 @@ namespace utility
         constexpr explicit compressed_pair(_U1&& __tfirst, _U2&& __tsecond) noexcept(
           utility::trait::type::features::is_nothrow_constructible<_T1, _U1&&>::value &&
           utility::trait::type::features::is_nothrow_constructible<_T2, _U2&&>::value
-        ):first_base(::utility::algorithm::forward<_U1>(__tfirst)),
-          second_base(::utility::algorithm::forward<_U2>(__tsecond))
+        ):first_base(utility::algorithm::forward<_U1>(__tfirst)),
+          second_base(utility::algorithm::forward<_U2>(__tsecond))
         { }
 
         template<typename _U1, typename _U2,
@@ -125,7 +125,7 @@ namespace utility
         utility::trait::type::miscellaneous::enable_if<
           utility::trait::type::features::is_constructible<_T1, const _U1&>::value &&
           utility::trait::type::features::is_constructible<_T2, const _U2&>::value &&
-          (::utility::trait::type::releations::is_convertible<const _U1&, _T1>::value &&
+          (utility::trait::type::releations::is_convertible<const _U1&, _T1>::value &&
            utility::trait::type::releations::is_convertible<const _U2&, _T2>::value),
           bool>::type = true>
         constexpr compressed_pair(
@@ -140,7 +140,7 @@ namespace utility
         utility::trait::type::miscellaneous::enable_if<
           utility::trait::type::features::is_constructible<_T1, const _U1&>::value &&
           utility::trait::type::features::is_constructible<_T2, const _U2&>::value &&
-          !(::utility::trait::type::releations::is_convertible<const _U1&, _T1>::value &&
+          !(utility::trait::type::releations::is_convertible<const _U1&, _T1>::value &&
            utility::trait::type::releations::is_convertible<const _U2&, _T2>::value),
           bool>::type = false>
         constexpr explicit compressed_pair(
@@ -156,7 +156,7 @@ namespace utility
         utility::trait::type::miscellaneous::enable_if<
           utility::trait::type::features::is_constructible<_T1, _U1&&>::value &&
           utility::trait::type::features::is_constructible<_T2, _U2&&>::value &&
-          (::utility::trait::type::releations::is_convertible<_U1&&, _T1>::value &&
+          (utility::trait::type::releations::is_convertible<_U1&&, _T1>::value &&
            utility::trait::type::releations::is_convertible<_U2&&, _T2>::value),
           bool>::type = true>
         constexpr compressed_pair(
@@ -172,7 +172,7 @@ namespace utility
         utility::trait::type::miscellaneous::enable_if<
           utility::trait::type::features::is_constructible<_T1, _U1&&>::value &&
           utility::trait::type::features::is_constructible<_T2, _U2&&>::value &&
-          !(::utility::trait::type::releations::is_convertible<_U1&&, _T1>::value &&
+          !(utility::trait::type::releations::is_convertible<_U1&&, _T1>::value &&
            utility::trait::type::releations::is_convertible<_U2&&, _T2>::value),
           bool>::type = true>
         constexpr explicit compressed_pair(
@@ -236,7 +236,7 @@ namespace utility
           typename
             utility::trait::type::miscellaneous::enable_if<
               utility::trait::type::features::is_default_constructible<_U>::value &&
-              (::utility::trait::type::features::is_implicit_constructible<_U>::value),
+              (utility::trait::type::features::is_implicit_constructible<_U>::value),
               bool>::type = true>
         constexpr compressed_pair() noexcept(
           utility::trait::type::features::is_nothrow_default_constructible<_T>::value
@@ -247,7 +247,7 @@ namespace utility
           typename
             utility::trait::type::miscellaneous::enable_if<
               utility::trait::type::features::is_default_constructible<_U>::value &&
-              !(::utility::trait::type::features::is_implicit_constructible<_U>::value),
+              !(utility::trait::type::features::is_implicit_constructible<_U>::value),
               bool>::type = false>
         constexpr explicit compressed_pair() noexcept(
           utility::trait::type::features::is_nothrow_default_constructible<_T>::value
@@ -269,7 +269,7 @@ namespace utility
         typename
           utility::trait::type::miscellaneous::enable_if<
             utility::trait::type::features::is_constructible<_U, const _U&>::value &&
-            !(::utility::trait::type::releations::is_convertible<const _U&, _U>::value),
+            !(utility::trait::type::releations::is_convertible<const _U&, _U>::value),
             bool
           >::type = false>
         constexpr explicit compressed_pair(const _T& __first, const _T& __second) noexcept(
@@ -288,8 +288,8 @@ namespace utility
         constexpr compressed_pair(_U1&& __tfirst, _U2&& __tsecond) noexcept(
           utility::trait::type::features::is_nothrow_constructible<_T, _U1&&>::value &&
           utility::trait::type::features::is_nothrow_constructible<_T, _U2&&>::value
-        ):first_base(::utility::algorithm::forward<_U1>(__tfirst)),
-          second_base(::utility::algorithm::forward<_U2>(__tsecond))
+        ):first_base(utility::algorithm::forward<_U1>(__tfirst)),
+          second_base(utility::algorithm::forward<_U2>(__tsecond))
         { }
         template<typename _U1, typename _U2,
         typename
@@ -302,8 +302,8 @@ namespace utility
         constexpr explicit compressed_pair(_U1&& __tfirst, _U2&& __tsecond) noexcept(
           utility::trait::type::features::is_nothrow_constructible<_T, _U1&&>::value &&
           utility::trait::type::features::is_nothrow_constructible<_T, _U2&&>::value
-        ):first_base(::utility::algorithm::forward<_U1>(__tfirst)),
-          second_base(::utility::algorithm::forward<_U2>(__tsecond))
+        ):first_base(utility::algorithm::forward<_U1>(__tfirst)),
+          second_base(utility::algorithm::forward<_U2>(__tsecond))
         { }
 
         template<typename _U1, typename _U2,
@@ -311,7 +311,7 @@ namespace utility
         utility::trait::type::miscellaneous::enable_if<
           utility::trait::type::features::is_constructible<_T, const _U1&>::value &&
           utility::trait::type::features::is_constructible<_T, const _U2&>::value &&
-          (::utility::trait::type::releations::is_convertible<const _U1&, _T>::value &&
+          (utility::trait::type::releations::is_convertible<const _U1&, _T>::value &&
            utility::trait::type::releations::is_convertible<const _U2&, _T>::value),
           bool>::type = true>
         constexpr compressed_pair(
@@ -326,7 +326,7 @@ namespace utility
         utility::trait::type::miscellaneous::enable_if<
           utility::trait::type::features::is_constructible<_T, const _U1&>::value &&
           utility::trait::type::features::is_constructible<_T, const _U2&>::value &&
-          !(::utility::trait::type::releations::is_convertible<const _U1&, _T>::value &&
+          !(utility::trait::type::releations::is_convertible<const _U1&, _T>::value &&
            utility::trait::type::releations::is_convertible<const _U2&, _T>::value),
           bool>::type = false>
         constexpr explicit compressed_pair(
@@ -342,7 +342,7 @@ namespace utility
         utility::trait::type::miscellaneous::enable_if<
           utility::trait::type::features::is_constructible<_T, _U1&&>::value &&
           utility::trait::type::features::is_constructible<_T, _U2&&>::value &&
-          (::utility::trait::type::releations::is_convertible<_U1&&, _T>::value &&
+          (utility::trait::type::releations::is_convertible<_U1&&, _T>::value &&
            utility::trait::type::releations::is_convertible<_U2&&, _T>::value),
           bool>::type = true>
         constexpr compressed_pair(
@@ -358,7 +358,7 @@ namespace utility
         utility::trait::type::miscellaneous::enable_if<
           utility::trait::type::features::is_constructible<_T, _U1&&>::value &&
           utility::trait::type::features::is_constructible<_T, _U2&&>::value &&
-          !(::utility::trait::type::releations::is_convertible<_U1&&, _T>::value &&
+          !(utility::trait::type::releations::is_convertible<_U1&&, _T>::value &&
            utility::trait::type::releations::is_convertible<_U2&&, _T>::value),
           bool>::type = true>
         constexpr explicit compressed_pair(

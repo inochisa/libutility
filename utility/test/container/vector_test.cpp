@@ -77,13 +77,13 @@ void vector_construct()
   assert(vec9 == vector<int>({1,1,1,1,1,1,1,1,1,1}));
   assert(vec10 == vector<int>({1,2,3,4,5}));
 
-  vector<int> vec11(::utility::algorithm::move(vec5));
-  vector<int> vec12(::utility::algorithm::move(vec10), __u);
+  vector<int> vec11(utility::algorithm::move(vec5));
+  vector<int> vec12(utility::algorithm::move(vec10), __u);
   assert(vec11 == vector<int>({1,2,3,4,5}));
   assert(vec12 == vector<int>({1,2,3,4,5}));
 
   vector<int> vec13 = vec11;
-  vector<int> vec14 = ::utility::algorithm::move(vec11);
+  vector<int> vec14 = utility::algorithm::move(vec11);
   assert(vec13 == vector<int>({1,2,3,4,5}));
   assert(vec14 == vector<int>({1,2,3,4,5}));
 

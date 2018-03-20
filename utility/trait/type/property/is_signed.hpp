@@ -16,21 +16,21 @@ namespace utility
         namespace __is_signed_impl
         {
           template<typename _T, bool =
-            ::utility::trait::type::categories::is_integral<_T>::value>
+            utility::trait::type::categories::is_integral<_T>::value>
           struct __is_signed_intger_test :
-            public ::utility::trait::bool_constant<(_T(-1) < _T(0))>
+            public utility::trait::bool_constant<(_T(-1) < _T(0))>
           { };
           template<typename _T>
           struct __is_signed_intger_test<_T, false> :
-            public ::utility::trait::true_type
+            public utility::trait::true_type
           { };
           template<typename _T, bool =
-            ::utility::trait::type::categories::is_arithmetic<_T>::value>
+            utility::trait::type::categories::is_arithmetic<_T>::value>
           struct __is_signed_test : public __is_signed_intger_test<_T>
           { };
           template<typename _T>
           struct __is_signed_test<_T, false> :
-            public ::utility::trait::false_type
+            public utility::trait::false_type
           { };
         }
         template<typename _T>

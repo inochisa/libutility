@@ -19,17 +19,17 @@ namespace utility
           template<typename _T>
           char __is_abstract_helper(_T(*)[1]);
           template<typename _T>
-          ::utility::trait::__impl_helper::__twochar
+          utility::trait::__impl_helper::__twochar
             __is_abstract_helper(...);
           template<typename _T, bool =
-            ::utility::trait::type::categories::is_class<_T>::value>
+            utility::trait::type::categories::is_class<_T>::value>
           struct __is_abstract_test :
-            public ::utility::trait::integral_constant<bool,
+            public utility::trait::integral_constant<bool,
               sizeof(__is_abstract_impl::__is_abstract_helper<_T>(0)) != 1>
           { };
           template<typename _T>
           struct __is_abstract_test<_T, false> :
-            public ::utility::trait::false_type
+            public utility::trait::false_type
           { };
         }
         template<typename _T>

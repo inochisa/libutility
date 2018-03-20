@@ -55,7 +55,7 @@ namespace utility
             utility::trait::type::miscellaneous::enable_if<
               utility::trait::type::features::is_default_constructible<_U1>::value &&
               utility::trait::type::features::is_default_constructible<_U2>::value &&
-              (::utility::trait::type::features::is_implicit_constructible<_U1>::value &&
+              (utility::trait::type::features::is_implicit_constructible<_U1>::value &&
                utility::trait::type::features::is_implicit_constructible<_U2>::value),
               bool>::type = true>
         constexpr pair() noexcept(
@@ -69,7 +69,7 @@ namespace utility
           utility::trait::type::miscellaneous::enable_if<
             utility::trait::type::features::is_default_constructible<_U1>::value &&
             utility::trait::type::features::is_default_constructible<_U2>::value &&
-            !(::utility::trait::type::features::is_implicit_constructible<_U1>::value &&
+            !(utility::trait::type::features::is_implicit_constructible<_U1>::value &&
               utility::trait::type::features::is_implicit_constructible<_U2>::value),
             bool>::type = false>
         explicit constexpr pair() noexcept(
@@ -83,7 +83,7 @@ namespace utility
           utility::trait::type::miscellaneous::enable_if<
             utility::trait::type::features::is_copy_constructible<_U1>::value &&
             utility::trait::type::features::is_copy_constructible<_U2>::value &&
-            (::utility::trait::type::releations::is_convertible<const _U1&, _U1>::value &&
+            (utility::trait::type::releations::is_convertible<const _U1&, _U1>::value &&
              utility::trait::type::releations::is_convertible<const _U2&, _U2>::value),
             bool
           >::type = true>
@@ -112,14 +112,14 @@ namespace utility
         utility::trait::type::miscellaneous::enable_if<
           utility::trait::type::features::is_constructible<_T1, _U1&&>::value &&
           utility::trait::type::features::is_constructible<_T2, _U2&&>::value &&
-          (::utility::trait::type::releations::is_convertible<_U1&&, _T1>::value &&
+          (utility::trait::type::releations::is_convertible<_U1&&, _T1>::value &&
            utility::trait::type::releations::is_convertible<_U2&&, _T2>::value),
           bool>::type = true>
         constexpr pair(_U1&& __tfirst, _U2&& __tsecond) noexcept(
           utility::trait::type::features::is_nothrow_constructible<_T1, _U1&&>::value &&
           utility::trait::type::features::is_nothrow_constructible<_T2, _U2&&>::value
-        ):first(::utility::algorithm::forward<_U1>(__tfirst)),
-          second(::utility::algorithm::forward<_U2>(__tsecond))
+        ):first(utility::algorithm::forward<_U1>(__tfirst)),
+          second(utility::algorithm::forward<_U2>(__tsecond))
         { }
 
         template<typename _U1, typename _U2,
@@ -127,14 +127,14 @@ namespace utility
         utility::trait::type::miscellaneous::enable_if<
           utility::trait::type::features::is_constructible<_T1, _U1&&>::value &&
           utility::trait::type::features::is_constructible<_T2, _U2&&>::value &&
-          !(::utility::trait::type::releations::is_convertible<_U1&&, _T1>::value &&
+          !(utility::trait::type::releations::is_convertible<_U1&&, _T1>::value &&
             utility::trait::type::releations::is_convertible<_U2&&, _T2>::value),
           bool>::type = false>
         explicit constexpr pair(_U1&& __tfirst, _U2&& __tsecond) noexcept(
           utility::trait::type::features::is_nothrow_constructible<_T1, _U1&&>::value &&
           utility::trait::type::features::is_nothrow_constructible<_T2, _U2&&>::value
-        ):first(::utility::algorithm::forward<_U1>(__tfirst)),
-          second(::utility::algorithm::forward<_U2>(__tsecond))
+        ):first(utility::algorithm::forward<_U1>(__tfirst)),
+          second(utility::algorithm::forward<_U2>(__tsecond))
         { }
 
         template<typename _U1, typename _U2,
@@ -142,7 +142,7 @@ namespace utility
         utility::trait::type::miscellaneous::enable_if<
           utility::trait::type::features::is_constructible<_T1, const _U1&>::value &&
           utility::trait::type::features::is_constructible<_T2, const _U2&>::value &&
-          (::utility::trait::type::releations::is_convertible<const _U1&, _T1>::value &&
+          (utility::trait::type::releations::is_convertible<const _U1&, _T1>::value &&
            utility::trait::type::releations::is_convertible<const _U2&, _T2>::value),
           bool>::type = true>
         constexpr pair(const pair<_U1, _U2>& __tpair) noexcept(
@@ -156,7 +156,7 @@ namespace utility
         utility::trait::type::miscellaneous::enable_if<
           utility::trait::type::features::is_constructible<_T1, const _U1&>::value &&
           utility::trait::type::features::is_constructible<_T2, const _U2&>::value &&
-          !(::utility::trait::type::releations::is_convertible<const _U1&, _T1>::value &&
+          !(utility::trait::type::releations::is_convertible<const _U1&, _T1>::value &&
             utility::trait::type::releations::is_convertible<const _U2&, _T2>::value),
           bool>::type = false>
         explicit constexpr pair(const pair<_U1, _U2>& __tpair) noexcept(
@@ -170,14 +170,14 @@ namespace utility
         utility::trait::type::miscellaneous::enable_if<
           utility::trait::type::features::is_constructible<_T1, _U1&&>::value &&
           utility::trait::type::features::is_constructible<_T2, _U2&&>::value &&
-          (::utility::trait::type::releations::is_convertible<_U1&&, _T1>::value &&
+          (utility::trait::type::releations::is_convertible<_U1&&, _T1>::value &&
            utility::trait::type::releations::is_convertible<_U2&&, _T2>::value),
           bool>::type = true>
         constexpr pair(pair<_U1, _U2>&& __tpair) noexcept(
           utility::trait::type::features::is_nothrow_constructible<_T1, _U1&&>::value &&
           utility::trait::type::features::is_nothrow_constructible<_T2,  _U2&&>::value
-        ):first(::utility::algorithm::forward<_U1>(__tpair.first)),
-          second(::utility::algorithm::forward<_U1>(__tpair.second))
+        ):first(utility::algorithm::forward<_U1>(__tpair.first)),
+          second(utility::algorithm::forward<_U1>(__tpair.second))
         { }
 
         template<typename _U1, typename _U2,
@@ -185,14 +185,14 @@ namespace utility
         utility::trait::type::miscellaneous::enable_if<
           utility::trait::type::features::is_constructible<_T1, _U1&&>::value &&
           utility::trait::type::features::is_constructible<_T2, _U2&&>::value &&
-          !(::utility::trait::type::releations::is_convertible<_U1&&, _T1>::value &&
+          !(utility::trait::type::releations::is_convertible<_U1&&, _T1>::value &&
             utility::trait::type::releations::is_convertible<_U2&&, _T2>::value),
           bool>::type = true>
         explicit constexpr pair(pair<_U1, _U2>&& __tpair) noexcept(
           utility::trait::type::features::is_nothrow_constructible<_T1, _U1&&>::value &&
           utility::trait::type::features::is_nothrow_constructible<_T2,  _U2&&>::value
-        ):first(::utility::algorithm::forward(__tpair.first)),
-          second(::utility::algorithm::forward(__tpair.second))
+        ):first(utility::algorithm::forward(__tpair.first)),
+          second(utility::algorithm::forward(__tpair.second))
         { }
 
         pair(const pair&) = default;
@@ -362,14 +362,14 @@ namespace utility
   {
     template<typename _T1, typename _T2>
     void swap(
-      ::utility::container::pair<_T1, _T2>& __a,
-      ::utility::container::pair<_T1, _T2>& __b
+      utility::container::pair<_T1, _T2>& __a,
+      utility::container::pair<_T1, _T2>& __b
     ) noexcept(noexcept(__a.swap(__b)))
     { __a.swap(__b);}
     template<typename _T1, typename _T2>
     void possible_swap(
-      ::utility::container::pair<_T1, _T2>& __a,
-      ::utility::container::pair<_T1, _T2>& __b
+      utility::container::pair<_T1, _T2>& __a,
+      utility::container::pair<_T1, _T2>& __b
     ) noexcept(noexcept(__a.possible_swap(__b)))
     { __a.possible_swap(__b);}
   }

@@ -16,7 +16,7 @@ namespace utility
         // aligned_storage
         namespace __aligned_storage_impl
         {
-          template<::utility::trait::size_t _Len>
+          template<utility::trait::size_t _Len>
           struct __aligned_storage_helper
           {
             union type
@@ -26,8 +26,8 @@ namespace utility
             };
           };
         }
-        template<::utility::trait::size_t _Len,
-          ::utility::trait::size_t _Align = __utility_alignof(
+        template<utility::trait::size_t _Len,
+          utility::trait::size_t _Align = __utility_alignof(
             typename
               __aligned_storage_impl::__aligned_storage_helper<_Len>::type
           )>

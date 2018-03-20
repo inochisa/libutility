@@ -30,7 +30,7 @@ namespace utility
           _RandomAccessIterator __x = __first;
           _RandomAccessIterator __a = __x;
           _RandomAccessIterator __b =
-            __first + ::utility::iterator::distance(__first, __last) / 2+1;
+            __first + utility::iterator::distance(__first, __last) / 2+1;
           _RandomAccessIterator __y = __b;
           while(__x < __b)
           {
@@ -58,24 +58,24 @@ namespace utility
             {
               if(__a > __y && __b > __a+1)
               {
-                ::utility::algorithm::swap(*__a, *__b);
-                ::utility::algorithm::swap(*__a, *__x);
+                utility::algorithm::swap(*__a, *__b);
+                utility::algorithm::swap(*__a, *__x);
                 ++__x; ++__a;
               }
               else if(__a == __x && __b == __y)
               {
-                ::utility::algorithm::swap(*__x, *__b);
+                utility::algorithm::swap(*__x, *__b);
                 __a = __b; ++__b; ++__x;
               }
               else if(__a+1 == __b)
               {
-                ::utility::algorithm::swap(*__b, *__x);
-                ::utility::algorithm::swap(*__b, *__a);
+                utility::algorithm::swap(*__b, *__x);
+                utility::algorithm::swap(*__b, *__a);
                 ++__b; ++__x; ++__a;
               }
               else if(__a ==__y && __x < __y)
               {
-                ::utility::algorithm::swap(*__x, *__b);
+                utility::algorithm::swap(*__x, *__b);
                 ++__b; ++__x;
               }
             }
@@ -85,12 +85,12 @@ namespace utility
               { ++__x; ++__a;}
               else if(__a+1 == __b)
               {
-                ::utility::algorithm::swap(*__x, *__a);
+                utility::algorithm::swap(*__x, *__a);
                 __a = __y; ++__x;
               }
               else if(__b > __a+1)
               {
-                ::utility::algorithm::swap(*__x, *__a);
+                utility::algorithm::swap(*__x, *__a);
                 ++__x; ++__a;
               }
             }
@@ -108,12 +108,12 @@ namespace utility
           if(__first+1 == __last)
           {
             if(__compare(*(__first+1), *__first))
-            { ::utility::algorithm::swap(*__first, *(__first+1));}
+            { utility::algorithm::swap(*__first, *(__first+1));}
             return;
           }
 
           _RandomAccessIterator __mid =
-            __first + ::utility::iterator::distance(__first, __last) / 2;
+            __first + utility::iterator::distance(__first, __last) / 2;
           __en_msort_split(__first, __mid,  __compare);
           __en_msort_split(__mid+1, __last, __compare);
 
@@ -122,7 +122,7 @@ namespace utility
         }
       }
 
-      using ::utility::algorithm::sort_tag::enhanced_merge_sort_tag;
+      using utility::algorithm::sort_tag::enhanced_merge_sort_tag;
       template<typename _RandomAccessIterator, typename _Compare>
       void __sort(
         _RandomAccessIterator __first, _RandomAccessIterator __last,
@@ -130,7 +130,7 @@ namespace utility
       )
       {
         static_assert(
-          ::utility::iterator::is_random_access_iterator<_RandomAccessIterator>::value,
+          utility::iterator::is_random_access_iterator<_RandomAccessIterator>::value,
           "enhanced merge sort need at least random access iterator."
         );
         if(__first != __last)

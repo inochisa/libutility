@@ -20,7 +20,7 @@ namespace utility
         // has_virtual_destructor
         template<typename _T>
         struct has_virtual_destructor :
-          public ::utility::trait::integral_constant<bool,
+          public utility::trait::integral_constant<bool,
             __utility_has_virtual_destructor(_T)>
         { };
 
@@ -45,7 +45,7 @@ namespace utility
         */
         template<typename _T>
         struct has_virtual_destructor :
-          public ::utility::trait::unsupport_trait<false>
+          public utility::trait::unsupport_trait<false>
         { };
 
       }

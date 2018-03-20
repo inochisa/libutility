@@ -24,8 +24,8 @@ namespace utility
 
     using std::launder;
     using std::align_val_t;
-    using std::hardware_destructive_interference_size;
-    using std::hardware_constructive_interference_size;
+    // using std::hardware_destructive_interference_size;
+    // using std::hardware_constructive_interference_size;
 
 #endif
   }

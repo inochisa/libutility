@@ -39,20 +39,20 @@ namespace utility
     template<typename _Iterator>
     inline
     typename
-    ::utility::trait::type::miscellaneous::enable_if<
-      ::utility::iterator::is_iterator<_Iterator>::value,
+    utility::trait::type::miscellaneous::enable_if<
+      utility::iterator::is_iterator<_Iterator>::value,
       typename
-      ::utility::iterator::iterator_traits<_Iterator>::difference_type
+      utility::iterator::iterator_traits<_Iterator>::difference_type
     >::type
     distance(_Iterator __first, _Iterator __last)
     {
-      typedef ::utility::trait::type::releations::is_convertible<
+      typedef utility::trait::type::releations::is_convertible<
         typename
-        ::utility::iterator::iterator_traits<_Iterator>::iterator_category,
-        ::utility::iterator::random_access_iterator_tag>
+        utility::iterator::iterator_traits<_Iterator>::iterator_category,
+        utility::iterator::random_access_iterator_tag>
         __identify;
       typedef typename
-        ::utility::iterator::iterator_traits<_Iterator>::difference_type
+        utility::iterator::iterator_traits<_Iterator>::difference_type
         __difference_type;
       return detail::__distance<__difference_type, __identify::value
         >::__aux(__first, __last);

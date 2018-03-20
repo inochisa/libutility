@@ -18,7 +18,7 @@ namespace utility
         // is_trivial
         template<typename _T>
         struct is_trivial : public
-          ::utility::trait::integral_constant<bool,
+          utility::trait::integral_constant<bool,
             __utility_is_trivial(_T)>
         { };
 
@@ -43,9 +43,9 @@ namespace utility
         // is_trivial
         template<typename _T>
         struct is_trivial : public
-          ::utility::trait::integral_constant<bool,
-            ::utility::trait::type::property::is_trivially_copyable<_T>::value &&
-            ::utility::trait::type::features::is_trivially_default_constructible<_T>::value>
+          utility::trait::integral_constant<bool,
+            utility::trait::type::property::is_trivially_copyable<_T>::value &&
+            utility::trait::type::features::is_trivially_default_constructible<_T>::value>
         { };
 
       }

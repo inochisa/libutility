@@ -16,7 +16,7 @@ namespace utility
 
     namespace detail
     {
-      using ::utility::algorithm::sort_tag::select_sort_tag;
+      using utility::algorithm::sort_tag::select_sort_tag;
       template<typename _BidirectionalIterator, typename _Compare>
       void __sort(
         _BidirectionalIterator __first, _BidirectionalIterator __last,
@@ -26,7 +26,7 @@ namespace utility
         using utility::algorithm::swap;
 #ifdef UTILITY_DEBUG
         static_assert(
-          ::utility::iterator::is_bidirectional_iterator<_BidirectionalIterator>::value,
+          utility::iterator::is_bidirectional_iterator<_BidirectionalIterator>::value,
           "select sort need at least bidirectional iterator."
         );
 #endif // ! UTILITY_DEBUG
@@ -34,7 +34,7 @@ namespace utility
         for(; !__sorted && (__last != __first); --__last)
         {
           __sorted = true;
-          _BidirectionalIterator __tpos = ::utility::iterator::prev(__last);
+          _BidirectionalIterator __tpos = utility::iterator::prev(__last);
           for(_BidirectionalIterator __tfind = __first; __tfind < __last ; ++__tfind)
           {
             if(!(__compare(*__tfind, *__tpos)))
@@ -42,7 +42,7 @@ namespace utility
             else
             { __sorted = false;}
           }
-          swap(*__tpos, *::utility::iterator::prev(__last));
+          swap(*__tpos, *utility::iterator::prev(__last));
         }
       }
 

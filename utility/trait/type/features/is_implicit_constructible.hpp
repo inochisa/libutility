@@ -17,7 +17,7 @@ namespace utility
         // is_implicit_constructible
         namespace __is_implicit_constructible
         {
-          using __two = ::utility::trait::__impl_helper::__twochar;
+          using __two = utility::trait::__impl_helper::__twochar;
 
           template<typename _T, typename... _Args>
           struct __is_implicit_constructible_test
@@ -29,7 +29,7 @@ namespace utility
               template<typename __T, typename... __Args>
               static char __test(const __T&,
                 decltype(__help<const _T&>(
-                  { ::utility::trait::type::special::declval<__Args>()...}))* = 0);
+                  { utility::trait::type::special::declval<__Args>()...}))* = 0);
 
               template<typename __T, typename... __Args>
               static __two __test(...);
@@ -37,7 +37,7 @@ namespace utility
             public:
               constexpr static bool value = sizeof(char) ==
                 sizeof(decltype(
-                  __test<_T, _Args...>(::utility::trait::type::special::declval<_T>())
+                  __test<_T, _Args...>(utility::trait::type::special::declval<_T>())
                 ));
           };
           template<bool, typename _T, typename... _Args>
@@ -45,18 +45,18 @@ namespace utility
 
           template<typename _T, typename... _Args>
           struct __is_implicit_constructible_helper<false, _T, _Args...> :
-            public ::utility::trait::false_type
+            public utility::trait::false_type
           { };
           template<typename _T, typename... _Args>
           struct __is_implicit_constructible_helper<true, _T, _Args...> :
-            public ::utility::trait::integral_constant<bool,
+            public utility::trait::integral_constant<bool,
               __is_implicit_constructible_test<_T, _Args...>::value>
           { };
         }
         template<typename _T, typename... _Args>
         struct is_implicit_constructible :
           public __is_implicit_constructible::__is_implicit_constructible_helper<
-            ::utility::trait::type::features::is_constructible<_T, _Args...>::value,
+            utility::trait::type::features::is_constructible<_T, _Args...>::value,
             _T, _Args...>
         { };
 

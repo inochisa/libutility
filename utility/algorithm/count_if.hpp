@@ -29,14 +29,14 @@ namespace utility
     template<typename _InputIterator, typename _UnaryPredicate>
     inline
     typename
-    ::utility::iterator::iterator_traits<_InputIterator>::difference_type
+    utility::iterator::iterator_traits<_InputIterator>::difference_type
     count_if(
       _InputIterator __first, _InputIterator __last,
       _UnaryPredicate __unary
     )
     {
       typedef typename
-        ::utility::iterator::iterator_traits<_InputIterator>::difference_type
+        utility::iterator::iterator_traits<_InputIterator>::difference_type
         __difference_type;
       __difference_type __res = 0;
       for(; __first != __last;)

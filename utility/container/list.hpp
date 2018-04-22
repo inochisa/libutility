@@ -194,11 +194,10 @@ namespace utility
               return *this;
             }
             self& operator=(
-              const __list_iterator<__Value, __Cache_Sg>& __other
+              const __list_iterator<__Value>& __other
             ) noexcept
             {
-              if(this != &__other)
-              { this->__ptr = __other.__ptr;}
+              this->__ptr = __other.__ptr;
               return *this;
             }
 
@@ -945,7 +944,13 @@ namespace utility
 #ifndef UTILITY_DEALLOCATE_EMPTY
           __link->__prev = __link->__next = nullptr;
 #endif // ! UTILITY_DEALLOCATE_EMPTY
-          allocator_traits_type::deallocate(this->__mis.second(), __link->__data);
+
+          if(__link->__data != nullptr)
+          {
+            allocator_traits_type::destroy(this->__mis.second(), __link->__data);
+            allocator_traits_type::deallocate(this->__mis.second(), __link->__data);
+          }
+          __node_allocator_traits_type::destroy(this->__base.second(), __link);
           __node_allocator_traits_type::deallocate(this->__base.second(), __link);
         }
         UTILITY_ALWAYS_INLINE

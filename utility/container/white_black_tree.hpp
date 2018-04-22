@@ -208,10 +208,10 @@ namespace utility
             }
 
           public:
-            inline bool operator==(const self& __o) const noexcept
-            { return this->__ptr == __o.__ptr;}
-            inline bool operator!=(const self& __o) const noexcept
-            { return this->__ptr != __o.__ptr;}
+            inline bool operator==(const self& __other) const noexcept
+            { return this->__ptr == __other.__ptr;}
+            inline bool operator!=(const self& __other) const noexcept
+            { return this->__ptr != __other.__ptr;}
         };
 
         template
@@ -275,8 +275,7 @@ namespace utility
                const __white_black_tree_iterator<__Key, __Value, __Key_Value_Container>& __oit
             ) noexcept
             {
-              if(&__oit != this)
-              { this->__ptr = __oit.__ptr;}
+              this->__ptr = __oit.__ptr;
               return *this;
             }
 
@@ -311,10 +310,10 @@ namespace utility
             }
 
           public:
-            bool operator==(const self& __o) const noexcept
-            { return this->__ptr == __o.__ptr;}
-            bool operator!=(const self& __o) const noexcept
-            { return this->__ptr != __o.__ptr;}
+            bool operator==(const self& __other) const noexcept
+            { return this->__ptr == __other.__ptr;}
+            bool operator!=(const self& __other) const noexcept
+            { return this->__ptr != __other.__ptr;}
         };
 
       private:
@@ -370,11 +369,18 @@ namespace utility
           "the allocator's alloc type must be the same as value type");
 
       private:
-        __link_type             __head;
-        size_type               __size;
-        key_compare             __compare;
-        allocator_type          __allocator;
-        __node_allocator_type   __node_allocator;
+        typedef utility::container::compressed_pair<__link_type, __node_allocator_type>   __node_pair;
+        typedef utility::container::compressed_pair<size_type, allocator_type>  __mis_type;
+
+
+      private:
+        __node_pair     __base;
+        __mis_type      __mis;
+        key_compare     __compare;
+        // __link_type             __head;
+        // size_type               __size;
+        // allocator_type          __allocator;
+        // __node_allocator_type   __node_allocator;
 
       public:
         template<typename _Comp = _Compare,
@@ -385,7 +391,9 @@ namespace utility
           >::type = true
         >
         explicit white_black_tree():
-          __size(0), __compare(), __allocator(), __node_allocator()
+          __base{nullptr, __node_allocator_type()},
+          __mis{0U, allocator_type()},
+          __compare{}
         { this->__init();}
 
         template<typename _Comp = _Compare,
@@ -398,8 +406,9 @@ namespace utility
         explicit white_black_tree(
           const key_compare& __comp,
           const allocator_type& __alloc = allocator_type()
-        ): __size(0), __compare(__comp),
-           __allocator(__alloc), __node_allocator()
+        ):__base{nullptr, __node_allocator_type()},
+          __mis{0U, __alloc},
+          __compare{__comp}
         { this->__init();}
 
         template<typename _Comp = _Compare,
@@ -410,8 +419,9 @@ namespace utility
           >::type = true
         >
         white_black_tree(const allocator_type& __alloc):
-          __size(0), __compare(),
-          __allocator(__alloc), __node_allocator()
+          __base{nullptr, __node_allocator_type()},
+          __mis{0U, __alloc},
+          __compare{}
         { this->__init();}
 
         template<typename _InputIterator, typename _Comp = _Compare,
@@ -430,8 +440,9 @@ namespace utility
           _InputIterator __first, _InputIterator __last,
           const key_compare& __comp = key_compare(),
           const allocator_type& __alloc = allocator_type()
-        ): __size(0), __compare(__comp),
-           __allocator(__alloc), __node_allocator()
+        ):__base{nullptr, __node_allocator_type()},
+          __mis{0U, __alloc},
+          __compare{__comp}
         {
           this->__init();
           for(; __first != __last;)
@@ -452,8 +463,9 @@ namespace utility
         white_black_tree(
           _InputIterator __first, _InputIterator __last,
           const allocator_type& __alloc
-        ): __size(0), __compare(),
-           __allocator(__alloc), __node_allocator()
+        ):__base{nullptr, __node_allocator_type()},
+          __mis{0U, __alloc},
+          __compare{}
         {
           this->__init();
           for(; __first != __last;)
@@ -461,60 +473,73 @@ namespace utility
         }
 
 
-        white_black_tree(const white_black_tree& __o):
-          __size(__o.__size), __compare(__o.__compare),
-          __allocator(__o.__allocator), __node_allocator()
+        white_black_tree(const white_black_tree& __other):
+          __base{nullptr, __node_allocator_type()},
+          __mis{__other.__mis.first(), __other.__mis.second()},
+          __compare{__other.__compare}
         {
           this->__init();
+          __link_type __head = this->__base.first();
+          const __node_type* __ohead = __other.__base.first();
           this->__wb_tree_copy(
-            this->__head->__parent, (__o.__head)->__parent
+            __head->__parent, __ohead->__parent
           );
-          this->__head->__parent->__parent = this->__head;
-          this->__head->__left =
-            __node_type::__minimum(this->__head->__parent);
-          this->__head->__right =
-            __node_type::__maxmum(this->__head->__parent);
+          __head->__parent->__parent = __head;
+          __head->__left = __node_type::__minimum(__head->__parent);
+          __head->__right = __node_type::__maxmum(__head->__parent);
         }
         white_black_tree(
-          const white_black_tree& __o,
+          const white_black_tree& __other,
           const allocator_type& __alloc
-        ): __size(__o.__size), __compare(__o.__compare),
-           __allocator(__alloc), __node_allocator()
+        ):__base{nullptr, __node_allocator_type()},
+          __mis{__other.__mis.first(), __alloc},
+          __compare{__other.__compare}
         {
           this->__init();
+          __link_type __head = this->__base.first();
+          const __node_type* __ohead = __other.__base.first();
           this->__wb_tree_copy(
-            this->__head->__parent, (__o.__head)->__parent
+            __head->__parent, __ohead->__parent
           );
-          this->__head->__parent->__parent = this->__head;
-          this->__head->__left =
-            __node_type::__minimum(this->__head->__parent);
-          this->__head->__right =
-            __node_type::__maxmum(this->__head->__parent);
+          __head->__parent->__parent = __head;
+          __head->__left = __node_type::__minimum(__head->__parent);
+          __head->__right = __node_type::__maxmum(__head->__parent);
         }
 
-        white_black_tree(white_black_tree&& __o):
-          __head(__o.__head),
-          __size(__o.__size),
-          __compare(utility::algorithm::move(__o.__compare)),
-          __allocator(utility::algorithm::move(__o.__allocator)),
-          __node_allocator()
-        { __o.__head = nullptr;}
+        white_black_tree(white_black_tree&& __other):
+          __base{utility::algorithm::move(__other.__base)},
+          __mis{utility::algorithm::move(__other.__mis)},
+          __compare(utility::algorithm::move(__other.__compare))
+        { __other.__base.first() = nullptr;}
         white_black_tree(
-          white_black_tree&& __o,
+          white_black_tree&& __other,
           const allocator_type& __alloc
-        ): __head(__o.__head),
-           __size(__o.__size),
-           __compare(utility::algorithm::move(__o.__compare)),
-           __allocator(__alloc),
-           __node_allocator()
-        { __o.__head = nullptr;}
+        ):__base{utility::algorithm::move(__other.__base)},
+          __mis{__other.__mis.first(), __alloc},
+          __compare(utility::algorithm::move(__other.__compare))
+        { __other.__base.first() = nullptr;}
 
         white_black_tree(
           utility::container::initializer_list<value_type> __init,
-          const key_compare& __comp = key_compare(),
+          const key_compare& __comp,
           const allocator_type& __alloc = allocator_type()
-        ):  __size(0), __compare(__comp),
-           __allocator(__alloc), __node_allocator()
+        ):__base{nullptr, __node_allocator_type()},
+          __mis{0U, __alloc},
+          __compare{__comp}
+        {
+          typedef typename
+            utility::container::initializer_list<value_type>::iterator
+            __iterator;
+          this->__init();
+          for(__iterator __it = __init.begin(), __end = __init.end(); __it != __end;)
+          { this->insert_equal(*__it++);}
+        }
+        white_black_tree(
+          utility::container::initializer_list<value_type> __init,
+          const allocator_type& __alloc = allocator_type()
+        ):__base{nullptr, __node_allocator_type()},
+          __mis{0U, __alloc},
+          __compare{}
         {
           typedef typename
             utility::container::initializer_list<value_type>::iterator
@@ -526,50 +551,43 @@ namespace utility
 
         ~white_black_tree()
         {
-          if(this->__head != nullptr)
+          if(this->__base.first() != nullptr)
           { this->force_clear();}
         }
 
       public:
-        white_black_tree& operator=(const white_black_tree& __o)
+        white_black_tree& operator=(const white_black_tree& __other)
         {
-          if(this != &__o)
+          if(this != &__other)
           {
-            this->__allocator = __o.__allocator;
-            this->__node_allocator = __o.__node_allocator;
-            this->__size = __o.__size;
-            this->__compare = __o.__compare;
-            if(this->__head == nullptr)
-            { this->__init();}
-            else
-            { this->clear();}
+            if(this->__base.first() != nullptr)
+            { this->force_clear();}
+            this->__base.second() = __other.__base.second();
+            this->__mis = __other.__mis;
+            this->__init();
+            this->__compare = __other.__compare;
+            __link_type __head = this->__base.first();
             this->__wb_tree_copy(
-              this->__head->__parent, (__o.__head)->__parent
+              __head->__parent, (__other.__base.first())->__parent
             );
-            this->__head->__parent->__parent = this->__head;
-            this->__head->__left =
-              __node_type::__minimum(this->__head->__parent);
-            this->__head->__right =
-              __node_type::__maxmum(this->__head->__parent);
+            __head->__parent->__parent = __head;
+            __head->__left = __node_type::__minimum(__head->__parent);
+            __head->__right = __node_type::__maxmum(__head->__parent);
           }
           return *this;
         }
 
-        white_black_tree& operator=(white_black_tree&& __o)
+        white_black_tree& operator=(white_black_tree&& __other)
         {
-          if(this != &__o)
+          if(this != &__other)
           {
-            this->__allocator =
-              utility::algorithm::move(__o.__allocator);
-            this->__node_allocator =
-              utility::algorithm::move(__o.__node_allocator);
-            this->__size = __o.__size;
-            this->__compare =
-              utility::algorithm::move(__o.__compare);
-            if(this->__head != nullptr)
+            if(this->__base.first() != nullptr)
             { this->force_clear();}
-            this->__head = __o.__head;
-            __o.__head = nullptr;
+            this->__base = utility::algorithm::move(__other.__base);
+            this->__mis = utility::algorithm::move(__other.__mis);
+            this->__compare =
+              utility::algorithm::move(__other.__compare);
+            __other.__base.first() = nullptr;
           }
           return *this;
         }
@@ -580,8 +598,8 @@ namespace utility
           typedef typename
             utility::container::initializer_list<value_type>::iterator
             __iterator;
-          this->__size = 0U;
-          if(this->__head == nullptr)
+          this->__mis.first() = 0U;
+          if(this->__base.first() == nullptr)
           { this->__init();}
           else
           { this->clear();}
@@ -593,21 +611,21 @@ namespace utility
 
       public:
         allocator_type get_allocator() const
-        { return this->__allocator;}
+        { return this->__mis.second();}
 
       public:
         iterator begin() noexcept
-        { return iterator(this->__head->__left);}
+        { return iterator(this->__base.first()->__left);}
         const_iterator begin() const noexcept
-        { return const_iterator(this->__head->__left);}
+        { return const_iterator(this->__base.first()->__left);}
         const_iterator cbegin() const noexcept
-        { return const_iterator(this->__head->__left);}
+        { return const_iterator(this->__base.first()->__left);}
         iterator end() noexcept
-        { return iterator(this->__head);}
+        { return iterator(this->__base.first());}
         const_iterator end() const noexcept
-        { return const_iterator(this->__head);}
+        { return const_iterator(this->__base.first());}
         const_iterator cend() const noexcept
-        { return const_iterator(this->__head);}
+        { return const_iterator(this->__base.first());}
 
       public:
         reverse_iterator rbegin() noexcept
@@ -625,37 +643,37 @@ namespace utility
 
       public:
         bool empty() const noexcept
-        { return this->__head->__parent == nullptr;}
+        { return (this->__base.first())->__parent == nullptr;}
         size_type size() const noexcept
-        { return this->__size;}
+        { return this->__mis.first();}
 
       public:
         reference minmum()
         {
           return const_cast<reference>(
-            __get_value(*(this->__head->__left->__data))
+            __get_value(*(this->__base.first()->__left->__data))
           );
         }
         const_reference minmum() const
-        { return __get_value(*(this->__head->__left->__data));}
+        { return __get_value(*(this->__base.first()->__left->__data));}
         reference maxmum()
         {
           return const_cast<reference>(
-            __get_value(*(this->__head->__right->__data))
+            __get_value(*(this->__base.first()->__right->__data))
           );
         }
         const_reference maxmum() const
-        { return __get_value(*(this->__head->__right->__data));}
+        { return __get_value(*(this->__base.first()->__right->__data));}
 
       public:
         utility::container::pair<iterator, bool>
         insert_unique(const value_type& __val)
-        { return __insert_unique(__allocate_node(this, __val), this);}
+        { return __insert_unique(this->__allocate_node(__val), this);}
         utility::container::pair<iterator, bool>
         insert_unique(value_type&& __val)
         {
           return __insert_unique(
-            __allocate_node(this, utility::algorithm::move(__val)), this
+            this->__allocate_node(utility::algorithm::move(__val)), this
           );
         }
         iterator insert_unique(
@@ -663,22 +681,22 @@ namespace utility
         )
         {
           return __insert_unique(
-            __hint.__ptr ,__allocate_node(this, __val), this
+            __hint.__ptr, this->__allocate_node(__val), this
           );
         }
         iterator insert_unique(const_iterator __hint, value_type&& __val)
         {
           return __insert_unique(
             __hint.__ptr,
-            __allocate_node(this, utility::algorithm::move(__val)), this
+            this->__allocate_node(utility::algorithm::move(__val)), this
           );
         }
         iterator insert_equal(const value_type& __val)
-        { return __insert_equal(__allocate_node(this, __val), this);}
+        { return __insert_equal(this->__allocate_node(__val), this);}
         iterator insert_equal(value_type&& __val)
         {
           return __insert_equal(
-            __allocate_node(this, utility::algorithm::move(__val)), this
+            this->__allocate_node(utility::algorithm::move(__val)), this
           );
         }
         iterator insert_equal(
@@ -686,14 +704,14 @@ namespace utility
         )
         {
           return __insert_equal(
-            __hint.__ptr ,__allocate_node(this, __val), this
+            __hint.__ptr, this->__allocate_node(__val), this
           );
         }
         iterator insert_equal(const_iterator __hint, value_type&& __val)
         {
           return __insert_equal(
             __hint.__ptr,
-            __allocate_node(this, utility::algorithm::move(__val)), this
+            this->__allocate_node(utility::algorithm::move(__val)), this
           );
         }
 
@@ -710,8 +728,8 @@ namespace utility
         emplace_unique(_Args&&... __args)
         {
           return __insert_unique(
-            __allocate_node(
-              this, utility::algorithm::forward<_Args>(__args)...
+            this->__allocate_node(
+              utility::algorithm::forward<_Args>(__args)...
             ), this
           );
         }
@@ -719,8 +737,8 @@ namespace utility
         iterator emplace_equal(_Args&&... __args)
         {
           return __insert_equal(
-            __allocate_node(
-              this, utility::algorithm::forward<_Args>(__args)...
+            this->__allocate_node(
+              utility::algorithm::forward<_Args>(__args)...
             ), this
           );
         }
@@ -731,8 +749,8 @@ namespace utility
         {
           return __insert_unique(
             __hint.__ptr,
-            __allocate_node(
-              this, utility::algorithm::forward<_Args>(__args)...
+            this->__allocate_node(
+              utility::algorithm::forward<_Args>(__args)...
             ), this
           );
         }
@@ -743,8 +761,8 @@ namespace utility
         {
           return __insert_equal(
             __hint.__ptr,
-            __allocate_node(
-              this, utility::algorithm::forward<_Args>(__args)...
+            this->__allocate_node(
+              utility::algorithm::forward<_Args>(__args)...
             ), this
           );
         }
@@ -801,13 +819,13 @@ namespace utility
         {
           iterator __res(__pos.__ptr);
           ++__res;
-
+          __link_type __head = this->__base.first();
           __link_type __del = __erase_rebalance(
-            __pos.__ptr, this->__head->__parent,
-            this->__head->__left, this->__head->__right
+            __pos.__ptr, __head->__parent,
+            __head->__left, __head->__right
           );
-          __deallocate_node(__del, this);
-          --(this->__size);
+          this->__deallocate_node(__del);
+          --(this->__mis.first());
           return __res;
         }
         inline iterator erase(
@@ -841,11 +859,12 @@ namespace utility
         {
           if(!this->empty())
           {
-            this->__node_clear(this->__head->__parent);
-            this->__size = 0U;
-            this->__head->__parent = nullptr;
-            this->__head->__left = this->__head->__right = this->__head;
-            this->__head->__color = __white;
+            __link_type __head = this->__base.first();
+            this->__tree_clear(__head->__parent);
+            this->__mis.first() = 0U;
+            __head->__parent = nullptr;
+            __head->__left = __head->__right = __head;
+            __head->__color = __white;
           }
         }
 
@@ -862,10 +881,9 @@ namespace utility
         )
         {
           using utility::algorithm::swap;
-          swap(this->__allocator, __other.__allocator);
-          swap(this->__head,      __other.__head);
-          swap(this->__size,      __other.__size);
-          swap(this->__compare,   __other.__compare);
+          swap(this->__base,    __other.__base);
+          swap(this->__mis,     __other.__mis);
+          swap(this->__compare, __other.__compare);
           return;
         }
         template<
@@ -880,10 +898,9 @@ namespace utility
         )
         {
           using utility::algorithm::possible_swap;
-          possible_swap(this->__allocator, __other.__allocator);
-          possible_swap(this->__head,      __other.__head     );
-          possible_swap(this->__size,      __other.__size     );
-          possible_swap(this->__compare,   __other.__compare  );
+          possible_swap(this->__base,    __other.__base);
+          possible_swap(this->__mis,     __other.__mis);
+          possible_swap(this->__compare, __other.__compare);
           return;
         }
 
@@ -891,53 +908,51 @@ namespace utility
         void force_clear()
         {
           this->clear();
-          this->__head->__left = this->__head->__right = nullptr;
+          __link_type __head = this->__base.first();
+          __head->__left = __head->__right = nullptr;
+          __head = nullptr;
           __node_allocator_traits_type::deallocate(
-            this->__node_allocator, this->__head
+            this->__base.second(), this->__base.first()
           );
-          this->__head = nullptr;
+          this->__base.first() = nullptr;
         }
 
       private:
         void __init()
         {
-          this->__head =
+          __link_type __tmp =
             __node_allocator_traits_type::allocate(
-              this->__node_allocator
+              this->__base.second()
             );
-          this->__head->__parent = nullptr;
-          this->__head->__color = __white;
-          this->__head->__left = this->__head->__right = this->__head;
+          __tmp->__parent = nullptr;
+          __tmp->__color = __white;
+          __tmp->__left = __tmp->__right = __tmp;
+          this->__base.first() = __tmp;
         }
-        void __node_clear(__link_type __root)
+        void __tree_clear(__link_type __root)
         {
-          allocator_traits_type::deallocate(
-            this->__allocator, __root->__data
-          );
           if(__root->__left != nullptr)
-          { this->__node_clear(__root->__left);}
+          { this->__tree_clear(__root->__left);}
           if(__root->__right != nullptr)
-          { this->__node_clear(__root->__right);}
+          { this->__tree_clear(__root->__right);}
           __root->__left = __root->__right = __root->__parent = nullptr;
-          __node_allocator_traits_type::deallocate(
-            this->__node_allocator, __root
-          );
+          this->__deallocate_node(__root);
           return;
         }
-        void __wb_tree_copy(__link_type& __root, const __node_type* __o)
+        void __wb_tree_copy(__link_type& __root, const __node_type* __other)
         {
-          __root = __allocate_node(this, *(__o->__data));
-          __root->__color   = __o->__color;
+          __root = this->__allocate_node(*(__other->__data));
+          __root->__color   = __other->__color;
           __root->__left    = nullptr;
           __root->__right   = nullptr;
-          if(__o->__left != nullptr)
+          if(__other->__left != nullptr)
           {
-            this->__wb_tree_copy(__root->__left,  __o->__left);
+            this->__wb_tree_copy(__root->__left,  __other->__left);
             __root->__left->__parent = __root;
           }
-          if(__o->__right != nullptr)
+          if(__other->__right != nullptr)
           {
-            this->__wb_tree_copy(__root->__right, __o->__right);
+            this->__wb_tree_copy(__root->__right, __other->__right);
             __root->__right->__parent = __root;
           }
           return;
@@ -948,8 +963,8 @@ namespace utility
           const white_black_tree* __this, const key_type& __key
         )
         {
-          const __node_type* __header = __this->__head;
-          const __node_type* __pos = __this->__head->__parent;
+          const __node_type* __header = __this->__base.first();
+          const __node_type* __pos = __header->__parent;
 
           for(; __pos != nullptr;)
           {
@@ -966,8 +981,8 @@ namespace utility
           const white_black_tree* __this, const key_type& __key
         )
         {
-          const __node_type* __header = __this->__head;
-          const __node_type* __pos = __this->__head->__parent;
+          const __node_type* __header = __this->__base.first();
+          const __node_type* __pos = __header->__parent;
 
           for(; __pos != nullptr;)
           {
@@ -987,8 +1002,8 @@ namespace utility
           __link_type __ins, white_black_tree* __this
         ) noexcept
         {
-          __link_type __header = __this->__head;
-          __link_type __pos = __this->__head->__parent;
+          __link_type __header = __this->__base.first();
+          __link_type __pos = __header->__parent;
           bool __comp = true;
 
           for(;__pos != nullptr;)
@@ -1020,7 +1035,7 @@ namespace utility
               __insert(__pos, __header, __ins, __this), true
             );
           }
-          __deallocate_node(__ins, __this);
+          __this->__deallocate_node(__ins);
           return utility::container::pair<iterator, bool>(__tmp, false);
         }
         static iterator __insert_unique(
@@ -1028,22 +1043,23 @@ namespace utility
           white_black_tree* __this
         ) noexcept
         {
+          __link_type __head = __this->__base.first();
           // The first node.
-          if(__pos == __this->__head->__left)
+          if(__pos == __head->__left)
           {
-            if(__this->__size > 0 && __this->__compare(
+            if(__this->__mis.first() > 0 && __this->__compare(
               __get_key(*(__ins->__data)), __get_key(*(__pos->__data))
             ))
             { return __insert(__pos, __pos, __ins, __this);}
             return __insert_unique(__ins, __this).first;
           }
           // The last node.
-          if(__pos == __this->__head)
+          if(__pos == __head)
           {
             if(__this->__compare(
-              __get_key(*(__this->__head->__right->__data)), __get_key(*(__ins->__data))
+              __get_key(*(__head->__right->__data)), __get_key(*(__ins->__data))
             ))
-            { return __insert(nullptr, __this->__head->__right, __ins, __this);}
+            { return __insert(nullptr, __head->__right, __ins, __this);}
             return __insert_unique(__ins, __this).first;
           }
 
@@ -1062,8 +1078,8 @@ namespace utility
           __link_type __ins, white_black_tree* __this
         ) noexcept
         {
-          __link_type __header = __this->__head;
-          __link_type __pos = __this->__head->__parent;
+          __link_type __header = __this->__base.first();
+          __link_type __pos = __header->__parent;
           for(; __pos != nullptr;)
           {
             __header = __pos;
@@ -1078,22 +1094,24 @@ namespace utility
           white_black_tree* __this
         ) noexcept
         {
+          __link_type __head = __this->__base.first();
+
           // The first node.
-          if(__pos == __this->__head->__left)
+          if(__pos == __head->__left)
           {
-            if(__this->__size > 0 && !(__this->__compare(
+            if(__this->__mis.first() > 0 && !(__this->__compare(
               __get_key(*(__pos->__data)), __get_key(*(__ins->__data))
             )))
             { return __insert(__pos, __pos, __ins, __this);}
             return __insert_equal(__ins, __this);
           }
           // The last node.
-          if(__pos == __this->__head)
+          if(__pos == __head)
           {
             if(!(__this->__compare(
-              __get_key(*(__ins->__data)), __get_key(*(__this->__head->__right->__data))
+              __get_key(*(__ins->__data)), __get_key(*(__head->__right->__data))
             )))
-            { return __insert(nullptr, __this->__head->__right, __ins, __this);}
+            { return __insert(nullptr, __head->__right, __ins, __this);}
             return __insert_equal(__ins, __this);
           }
 
@@ -1114,65 +1132,69 @@ namespace utility
           __link_type __z, white_black_tree* __this
         ) noexcept
         {
-          if(__y == __this->__head || __x != nullptr ||
+          __link_type __head = __this->__base.first();
+
+          if(__y == __head || __x != nullptr ||
             __this->__compare(
               __get_key(*(__z->__data)), __get_key(*(__y->__data))
             )
           )
           {
             __y->__left = __z;
-            if(__y == __this->__head)
+            if(__y == __head)
             {
-              __this->__head->__parent = __z;
-              __this->__head->__right = __z;
+              __head->__parent = __z;
+              __head->__right = __z;
             }
-            else if(__y == __this->__head->__left)
-            { __this->__head->__left = __z;}
+            else if(__y == __head->__left)
+            { __head->__left = __z;}
           }
           else
           {
             __y->__right = __z;
-            if(__y == __this->__head->__right)
-            { __this->__head->__right = __z;}
+            if(__y == __head->__right)
+            { __head->__right = __z;}
           }
           __z->__parent = __y;
           __z->__right = __z->__left = nullptr;
-          __insert_rebalance(__z, __this->__head->__parent);
-          ++(__this->__size);
+          __insert_rebalance(__z, __head->__parent);
+          ++(__this->__mis.first());
           return iterator(__z);
         }
 
       private:
         template<typename... _Args>
-        static inline __link_type __allocate_node(
-          white_black_tree* __this, _Args&&... __args
-        )
+        inline __link_type __allocate_node(_Args&&... __args)
         {
           __value_container __value_holder(
-            allocator_traits_type::allocate(__this->__allocator)
+            allocator_traits_type::allocate(this->__mis.second())
           );
           allocator_traits_type::construct(
-            __this->__allocator, __value_holder.get(),
+            this->__mis.second(), __value_holder.get(),
             utility::algorithm::forward<_Args>(__args)...
           );
           __node_container __node_holder(
-            __node_allocator_traits_type::allocate(__this->__node_allocator)
+            __node_allocator_traits_type::allocate(this->__base.second())
           );
           __node_holder->__data = __value_holder.release();
           return __node_holder.release();
         }
-        static inline void __deallocate_node(
-          __link_type __pos, white_black_tree* __this
-        )
+        inline void __deallocate_node(__link_type __pos)
         {
           if(__pos->__data != nullptr)
           {
+            allocator_traits_type::destroy(
+              this->__mis.second(), __pos->__data
+            );
             allocator_traits_type::deallocate(
-              __this->__allocator, __pos->__data
+              this->__mis.second(), __pos->__data
             );
           }
+          __node_allocator_traits_type::destroy(
+            this->__base.second(), __pos
+          );
           __node_allocator_traits_type::deallocate(
-            __this->__node_allocator, __pos
+            this->__base.second(), __pos
           );
         }
 

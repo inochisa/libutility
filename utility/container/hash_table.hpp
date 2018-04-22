@@ -20,6 +20,7 @@
 #include<utility/algorithm/is_permutation.hpp>
 #include<utility/container/container_helper.hpp>
 #include<utility/container/pair.hpp>
+#include<utility/container/compressed_pair.hpp>
 #include<utility/container/vector.hpp>
 #include<utility/container/impl/pair_value.hpp>
 #include<utility/trait/type/releations/is_same.hpp>
@@ -264,17 +265,6 @@ namespace utility
               }
               return *this;
             }
-            self& operator=(
-              const __hash_table_iterator<__Key, __Value, __Key_Value_Container, __Container>& __oit
-            ) noexcept
-            {
-              if(&__oit != this)
-              {
-                this->__ptr = __oit.__ptr;
-                this->__container_ptr = __oit.__container_ptr;
-              }
-              return *this;
-            }
 
           public:
             reference operator*() const noexcept
@@ -495,18 +485,6 @@ namespace utility
               }
               return *this;
             }
-            self& operator=(
-              const __hash_table_local_iterator<__Key, __Value, __Key_Value_Container, __Container>& __oit
-            ) noexcept
-            {
-              if(&__oit != this)
-              {
-                this->__ptr = __oit.__ptr;
-                this->__bucket_num = __oit.__bucket_num;
-                this->__container_ptr = __oit.__container_ptr;
-              }
-              return *this;
-            }
 
           public:
             reference operator*() const noexcept
@@ -603,13 +581,15 @@ namespace utility
           "the allocator's alloc type must be the same as value type");
 
       private:
-        float                     __load_factor;
+        typedef utility::container::compressed_pair<float, __node_allocator_type> __control_pair;
+        typedef utility::container::compressed_pair<size_type, allocator_type> __mis_type;
+
+      private:
         __bucket_container        __bucket;
-        size_type                 __size;
+        __mis_type                __mis;
+        __control_pair            __load_allocator;
         hasher                    __hasher;
         key_equal                 __key_eq;
-        allocator_type            __allocator;
-        __node_allocator_type     __node_allocator;
 
       public:
         template<typename _Key_Eq = _Key_eq, typename _Hasher = _Hash,
@@ -621,9 +601,9 @@ namespace utility
           >::type = true
         >
         explicit hash_table():
-          __load_factor(1.0f), __bucket(97UL), __size(0U),
-          __hasher(), __key_eq(), __allocator(),
-          __node_allocator()
+          __bucket{97UL}, __mis{0U, allocator_type{}},
+          __load_allocator{1.0f, __node_allocator_type{}},
+          __hasher(), __key_eq()
         { }
         template<typename _Key_Eq = _Key_eq, typename _Hasher = _Hash,
         typename
@@ -637,11 +617,10 @@ namespace utility
           size_type __count, const hasher& __ha,
           const key_equal& __equal,
           const allocator_type& __alloc = allocator_type()
-        ):__load_factor(1.0f),
-          __bucket(__hash_length::__next_prime(__count)),
-          __size(0U),
-          __hasher(__ha), __key_eq(__equal),
-          __allocator(__alloc), __node_allocator()
+        ):__bucket{__hash_length::__next_prime(__count)},
+          __mis{0U, __alloc},
+          __load_allocator{1.0f, __node_allocator_type{}},
+          __hasher{__ha}, __key_eq{__equal}
         { }
         template<typename _Key_Eq = _Key_eq, typename _Hasher = _Hash,
         typename
@@ -655,11 +634,10 @@ namespace utility
         explicit hash_table(
           size_type __count, const hasher& __ha,
           const allocator_type& __alloc = allocator_type()
-        ):__load_factor(1.0f),
-          __bucket(__hash_length::__next_prime(__count)),
-          __size(0U),
-          __hasher(__ha), __key_eq(),
-          __allocator(__alloc), __node_allocator()
+        ):__bucket{__hash_length::__next_prime(__count)},
+          __mis{0U, __alloc},
+          __load_allocator{1.0f, __node_allocator_type{}},
+          __hasher{__ha}, __key_eq{}
         { }
         template<typename _Key_Eq = _Key_eq, typename _Hasher = _Hash,
         typename
@@ -674,17 +652,16 @@ namespace utility
         explicit hash_table(
           size_type __count,
           const allocator_type& __alloc = allocator_type()
-        ):__load_factor(1.0f),
-          __bucket(__hash_length::__next_prime(__count)),
-          __size(0U),
-          __hasher(), __key_eq(),
-          __allocator(__alloc), __node_allocator()
+        ):__bucket{__hash_length::__next_prime(__count)},
+          __mis{0U, __alloc},
+          __load_allocator{1.0f, __node_allocator_type{}},
+          __hasher{}, __key_eq{}
         { }
 
         explicit hash_table(const allocator_type& __alloc):
-          __load_factor(1.0f), __bucket(97UL), __size(0U),
-          __hasher(), __key_eq(), __allocator(__alloc),
-          __node_allocator()
+          __bucket{97UL}, __mis{0U, __alloc},
+          __load_allocator{1.0f, __node_allocator_type{}},
+          __hasher{}, __key_eq{}
         { }
 
         template<typename _InputIterator,
@@ -706,13 +683,9 @@ namespace utility
           size_type __count, const hasher& __ha,
           const key_equal& __equal,
           const allocator_type& __alloc = allocator_type()
-        ):__load_factor(1.0f),
-          __bucket(),
-          __size(0U),
-          __hasher(__ha),
-          __key_eq(__equal),
-          __allocator(__alloc),
-          __node_allocator()
+        ):__bucket{}, __mis{0U, __alloc},
+          __load_allocator{1.0f, __node_allocator_type{}},
+          __hasher{__ha}, __key_eq{__equal}
         {
           const size_type __bucket_size =
             utility::algorithm::max<size_type>(
@@ -723,7 +696,7 @@ namespace utility
             );
           this->__bucket.resize(__bucket_size);
           for(; __first != __last;)
-          { __insert_equal(__allocate_node(this, *__first++), this);}
+          { __insert_equal(this->__allocate_node(*__first++), this);}
         }
         template<typename _InputIterator,
         typename _Key_Eq = _Key_eq, typename _Hasher = _Hash,
@@ -745,7 +718,7 @@ namespace utility
           _InputIterator __first, _InputIterator __last,
           size_type __count = 97UL,
           const allocator_type& __alloc = allocator_type()
-        ): hash_table(__first, __last, __count, hasher(), key_equal(), __alloc)
+        ): hash_table(__first, __last, __count, hasher{}, key_equal{}, __alloc)
         { }
         template<typename _InputIterator,
         typename _Key_Eq = _Key_eq, typename _Hasher = _Hash,
@@ -766,18 +739,16 @@ namespace utility
           _InputIterator __first, _InputIterator __last,
           size_type __count, const hasher& __ha,
           const allocator_type& __alloc = allocator_type()
-        ): hash_table(__first, __last, __count, __ha, key_equal(), __alloc)
+        ): hash_table(__first, __last, __count, __ha, key_equal{}, __alloc)
         { }
 
 
         hash_table(const hash_table& __other):
-          __load_factor(__other.__load_factor),
-          __bucket(__other.__bucket.size()),
-          __size(__other.__size),
-          __hasher(__other.__hasher),
-          __key_eq(__other.__key_eq),
-          __allocator(__other.__allocator),
-          __node_allocator()
+          __bucket{__other.__bucket.size()},
+          __mis{__other.__mis},
+          __load_allocator{__other.__load_allocator},
+          __hasher{__other.__hasher},
+          __key_eq{__other.__key_eq}
         {
           const size_type __bucket_size = __other.__bucket.size();
 
@@ -785,21 +756,19 @@ namespace utility
           {
             if(__other.__bucket[__i] != nullptr)
             {
-              this->__bucket[__i] = __allocate_node_chain(
-                __other.begin(__i), __other.end(__i), this
+              this->__bucket[__i] = this->__allocate_node_chain(
+                __other.begin(__i), __other.end(__i)
               ).first;
             }
           }
         }
         hash_table(
           const hash_table& __other, const allocator_type& __alloc
-        ):__load_factor(__other.__load_factor),
-          __bucket(__other.__bucket.size()),
-          __size(__other.__size),
-          __hasher(__other.__hasher),
-          __key_eq(__other.__key_eq),
-          __allocator(__alloc),
-          __node_allocator()
+        ):__bucket{__other.__bucket.size()},
+          __mis{__other.__mis.first(), __alloc},
+          __load_allocator{__other.__load_allocator},
+          __hasher{__other.__hasher},
+          __key_eq{__other.__key_eq}
         {
           const size_type __bucket_size = __other.__bucket.size();
 
@@ -807,30 +776,26 @@ namespace utility
           {
             if(__other.__bucket[__i] != nullptr)
             {
-              this->__bucket[__i] = __allocate_node_chain(
-                __other.begin(__i), __other.end(__i), this
+              this->__bucket[__i] = this->__allocate_node_chain(
+                __other.begin(__i), __other.end(__i)
               ).first;
             }
           }
         }
         hash_table(hash_table&& __other):
-          __load_factor(__other.__load_factor),
-          __bucket(utility::algorithm::move(__other.__bucket)),
-          __size(__other.__size),
-          __hasher(utility::algorithm::move(__other.__hasher)),
-          __key_eq(utility::algorithm::move(__other.__key_eq)),
-          __allocator(utility::algorithm::move(__other.__allocator)),
-          __node_allocator()
+          __bucket{utility::algorithm::move(__other.__bucket)},
+          __mis{utility::algorithm::move(__other.__mis)},
+          __load_allocator{utility::algorithm::move(__other.__load_allocator)},
+          __hasher{utility::algorithm::move(__other.__hasher)},
+          __key_eq{utility::algorithm::move(__other.__key_eq)}
         { }
         hash_table(
           hash_table&& __other, const allocator_type& __alloc
-        ):__load_factor(__other.__load_factor),
-          __bucket(utility::algorithm::move(__other.__bucket)),
-          __size(__other.__size),
-          __hasher(utility::algorithm::move(__other.__hasher)),
-          __key_eq(utility::algorithm::move(__other.__key_eq)),
-          __allocator(__alloc),
-          __node_allocator()
+        ):__bucket{utility::algorithm::move(__other.__bucket)},
+          __mis{__other.__mis.first(), __alloc},
+          __load_allocator{utility::algorithm::move(__other.__load_allocator)},
+          __hasher{utility::algorithm::move(__other.__hasher)},
+          __key_eq{utility::algorithm::move(__other.__key_eq)}
         { }
         template<typename _Key_Eq = _Key_eq, typename _Hasher = _Hash,
         typename
@@ -845,9 +810,9 @@ namespace utility
           size_type __count, const hasher& __ha,
           const key_equal __equal,
           const allocator_type& __alloc = allocator_type()
-        ):__load_factor(1.0f), __bucket(), __size(0), __hasher(__ha),
-          __key_eq(__equal), __allocator(__alloc),
-          __node_allocator()
+        ):__bucket{}, __mis{0U, __alloc},
+          __load_allocator{1.0f, __node_allocator_type{}},
+          __hasher{__ha}, __key_eq{__equal}
         {
           typedef typename initializer_list<value_type>::const_iterator
             __iterator;
@@ -859,7 +824,7 @@ namespace utility
           this->__bucket.resize(__bucket_size);
           for(__iterator __first = __initlist.begin(),
             __last = __initlist.end(); __first != __last;)
-          { __insert_equal(__allocate_node(this, *__first++), this);}
+          { __insert_equal(this->__allocate_node(*__first++), this);}
         }
         template<typename _Key_Eq = _Key_eq, typename _Hasher = _Hash,
         typename
@@ -876,7 +841,7 @@ namespace utility
           size_type __count = 97UL,
           const allocator_type& __alloc = allocator_type()
         ):hash_table(
-          __initlist, __count, hasher(), key_equal(), __alloc
+          __initlist, __count, hasher{}, key_equal{}, __alloc
         )
         { }
         template<typename _Key_Eq = _Key_eq, typename _Hasher = _Hash,
@@ -893,7 +858,7 @@ namespace utility
           size_type __count, const hasher& __ha,
           const allocator_type& __alloc = allocator_type()
         ):hash_table(
-          __initlist, __count, __ha, key_equal(), __alloc
+          __initlist, __count, __ha, key_equal{}, __alloc
         )
         { }
 
@@ -907,12 +872,9 @@ namespace utility
         {
           if(&__other != this)
           {
-
-            this->__load_factor = __other.__load_factor;
+            this->__load_allocator = __other.__load_allocator;
             this->__hasher = __other.__hasher;
             this->__key_eq = __other.__key_eq;
-            this->__allocator = __other.__allocator;
-            this->__node_allocator = __other.__node_allocator;
 
             const size_type __bucket_size = __other.__bucket.size();
             __bucket_container __tmp(__bucket_size);
@@ -922,14 +884,14 @@ namespace utility
               {
                 if(__other.__bucket[__i] != nullptr)
                 {
-                  __tmp[__i] = __allocate_node_chain(
-                    __other.begin(__i), __other.end(__i), this
+                  __tmp[__i] = this->__allocate_node_chain(
+                    __other.begin(__i), __other.end(__i)
                   ).first;
                 }
               }
               this->clear();
               this->__bucket.swap(__tmp);
-              this->__size = __other.__size;
+              this->__mis.first() = __other.__mis.first();
             __UTILITY_TRY_END
             __UTILITY_CATCH(...)
             __UTILITY_CATCH_UNWIND(
@@ -939,7 +901,7 @@ namespace utility
                 {
                   __link_type __use = __tmp[__now];
                   __tmp[__now] = nullptr;
-                  __deallocate_node_chain(__use, this);
+                  this->__deallocate_node_chain(__use);
                 }
               }
             );
@@ -950,17 +912,13 @@ namespace utility
         {
           if(&__other != this)
           {
-            this->__load_factor = __other.__load_factor;
+            this->__load_allocator = __other.__load_allocator;
             this->__bucket.swap(__other.__bucket);
-            this->__size = __other.__size;
+            this->__mis = utility::algorithm::move(__other.__mis);
             this->__hasher =
               utility::algorithm::move(__other.__hasher);
             this->__key_eq =
               utility::algorithm::move(__other.__key_eq);
-            this->__allocator =
-              utility::algorithm::move(__other.__allocator);
-            this->__node_allocator =
-              utility::algorithm::move(__other.__node_allocator);
           }
           return *this;
         }
@@ -979,7 +937,7 @@ namespace utility
             for(__iterator __first = __initlist.begin(),
               __last = __initlist.end(); __first != __last; ++__first)
             {
-              __ins = __allocate_node(this, *__first);
+              __ins = this->__allocate_node(*__first);
               const size_type __pos =
                 this->key_hash(__get_key(*(__ins->__data)), __bucket_size);
               __link_type __link = __tmp[__pos];
@@ -1000,7 +958,7 @@ namespace utility
             }
             this->clear();
             this->__bucket.swap(__tmp);
-            this->__size = __initlist.size();
+            this->__mis.first() = __initlist.size();
           __UTILITY_TRY_END
           __UTILITY_CATCH(...)
           __UTILITY_CATCH_UNWIND(
@@ -1010,7 +968,7 @@ namespace utility
               {
                 __link_type __use = __tmp[__now];
                 __tmp[__now] = nullptr;
-                __deallocate_node_chain(__use, this);
+                this->__deallocate_node_chain(__use);
               }
             }
           );
@@ -1019,11 +977,11 @@ namespace utility
 
       public:
         allocator_type get_allocator() const
-        { return this->__allocator;}
+        { return this->__mis.second();}
 
       public:
         inline size_type size() const noexcept
-        { return this->__size;}
+        { return this->__mis.first();}
         inline size_type bucket_size() const noexcept
         { return this->__bucket.size();}
 
@@ -1119,7 +1077,7 @@ namespace utility
         {
           if(this->is_overload(1U))
           { this->resize(this->size() + 1);}
-          return __insert_unique(__allocate_node(this, __val), this);
+          return __insert_unique(this->__allocate_node(__val), this);
         }
         inline utility::container::pair<iterator, bool>
         insert_unique(value_type&& __val)
@@ -1127,21 +1085,21 @@ namespace utility
           if(this->is_overload(1U))
           { this->resize(this->size() + 1);}
           return __insert_unique(
-            __allocate_node(this, utility::algorithm::move(__val)), this
+            this->__allocate_node(utility::algorithm::move(__val)), this
           );
         }
         inline iterator insert_equal(const value_type& __val)
         {
           if(this->is_overload(1U))
           { this->resize(this->size() + 1);}
-          return __insert_equal(__allocate_node(this, __val), this);
+          return __insert_equal(this->__allocate_node(__val), this);
         }
         inline iterator insert_equal(value_type&& __val)
         {
           if(this->is_overload(1U))
           { this->resize(this->size() + 1);}
           return __insert_equal(
-            __allocate_node(this, utility::algorithm::move(__val)), this
+            this->__allocate_node(utility::algorithm::move(__val)), this
           );
         }
         iterator insert_unique(
@@ -1151,7 +1109,7 @@ namespace utility
           utility::miscellaneous::ignore_unused(__hint);
           if(this->is_overload(1U))
           { this->resize(this->size() + 1);}
-          return __insert_unique(__allocate_node(this, __val), this).first;
+          return __insert_unique(this->__allocate_node(__val), this).first;
         }
         iterator insert_unique(
           const_iterator __hint, value_type&& __val
@@ -1161,7 +1119,7 @@ namespace utility
           if(this->is_overload(1U))
           { this->resize(this->size() + 1);}
           return __insert_unique(
-            __allocate_node(this, utility::algorithm::move(__val)), this
+            this->__allocate_node(utility::algorithm::move(__val)), this
           ).first;
         }
         inline iterator insert_equal(
@@ -1171,7 +1129,7 @@ namespace utility
           utility::miscellaneous::ignore_unused(__hint);
           if(this->is_overload(1U))
           { this->resize(this->size() + 1);}
-          return __insert_equal(__allocate_node(this, __val), this);
+          return __insert_equal(this->__allocate_node(__val), this);
         }
         inline iterator insert_equal(
           const_iterator __hint, value_type&& __val
@@ -1181,7 +1139,7 @@ namespace utility
           if(this->is_overload(1U))
           { this->resize(this->size() + 1);}
           return __insert_equal(
-            __allocate_node(this, utility::algorithm::move(__val)), this
+            this->__allocate_node(utility::algorithm::move(__val)), this
           );
         }
 
@@ -1190,35 +1148,35 @@ namespace utility
          * insert_unique(iterator __f, iterator __last)<br/>
          * insert_equal(iterator __f, iterator __last)<br/>
          */
-        // template<typename _InputIterator>
-        // inline size_type insert_unique(
-        //   _InputIterator __first, _InputIterator __last
-        // )
-        // {
-        //   if(__first == __last)
-        //   { return 0U;}
-        //   if(this->is_overload(utility::iterator::distance(__first, __last)))
-        //   { this->resize(utility::iterator::distance(__first, __last));}
-        //   size_type __success = 0;
-        //   for(; __first != __last; ++__first)
-        //   {
-        //     if(__insert_unique(__allocate_node(this, *__first), this).second)
-        //     { ++__success;}
-        //   }
-        //   return __success;
-        // }
-        // template<typename _InputIterator>
-        // inline void insert_equal(
-        //   _InputIterator __first, _InputIterator __last
-        // )
-        // {
-        //   if(__first == __last)
-        //   { return;}
-        //   if(this->is_overload(utility::iterator::distance(__first, __last)))
-        //   { this->resize(utility::iterator::distance(__first, __last));}
-        //   for(; __first != __last; ++__first)
-        //   { __insert_equal(__allocate_node(this, *__first), this);}
-        // }
+        template<typename _InputIterator>
+        inline size_type insert_unique(
+          _InputIterator __first, _InputIterator __last
+        )
+        {
+          if(__first == __last)
+          { return 0U;}
+          if(this->is_overload(utility::iterator::distance(__first, __last)))
+          { this->resize(utility::iterator::distance(__first, __last));}
+          size_type __success = 0;
+          for(; __first != __last; ++__first)
+          {
+            if(__insert_unique(this->__allocate_node(*__first), this).second)
+            { ++__success;}
+          }
+          return __success;
+        }
+        template<typename _InputIterator>
+        inline void insert_equal(
+          _InputIterator __first, _InputIterator __last
+        )
+        {
+          if(__first == __last)
+          { return;}
+          if(this->is_overload(utility::iterator::distance(__first, __last)))
+          { this->resize(utility::iterator::distance(__first, __last));}
+          for(; __first != __last; ++__first)
+          { __insert_equal(this->__allocate_node(*__first), this);}
+        }
 
       public:
         template<typename... _Args>
@@ -1228,7 +1186,7 @@ namespace utility
           if(this->is_overload(1U))
           { this->resize(this->size() + 1);}
           return __insert_unique(
-            __allocate_node(this, utility::algorithm::forward<_Args>(__args)...),
+            this->__allocate_node(utility::algorithm::forward<_Args>(__args)...),
             this
           );
         }
@@ -1238,7 +1196,7 @@ namespace utility
           if(this->is_overload(1U))
           { this->resize(this->size() + 1);}
           return __insert_equal(
-            __allocate_node(this, utility::algorithm::forward<_Args>(__args)...),
+            this->__allocate_node(utility::algorithm::forward<_Args>(__args)...),
             this
           );
         }
@@ -1251,7 +1209,7 @@ namespace utility
           if(this->is_overload(1U))
           { this->resize(this->size() + 1);}
           return __insert_unique(
-            __allocate_node(this, utility::algorithm::forward<_Args>(__args)...),
+            this->__allocate_node(utility::algorithm::forward<_Args>(__args)...),
             this
           ).first;
         }
@@ -1264,7 +1222,7 @@ namespace utility
           if(this->is_overload(1U))
           { this->resize(this->size() + 1);}
           return __insert_equal(
-            __allocate_node(this, utility::algorithm::forward<_Args>(__args)...),
+            this->__allocate_node(utility::algorithm::forward<_Args>(__args)...),
             this
           );
         }
@@ -1418,9 +1376,9 @@ namespace utility
               if(this->__key_eq(__get_key(*(__epos->__data)), __key))
               {
                 __bpos->__next = __epos->__next;
-                __deallocate_node(__epos, this);
+                this->__deallocate_node(__epos);
                 ++__erased;
-                --(this->__size);
+                --(this->__mis.first());
               }
               else
               { __bpos = __epos;}
@@ -1428,9 +1386,9 @@ namespace utility
             if(this->__key_eq(__get_key(*(__pos->__data)), __key))
             {
               this->__bucket[__num] = __pos->__next;
-              __deallocate_node(__pos, this);
+              this->__deallocate_node(__pos);
               ++__erased;
-              --(this->__size);
+              --(this->__mis.first());
             }
           }
           return __erased;
@@ -1448,15 +1406,15 @@ namespace utility
           {
             this->__bucket[__num] = __spos->__next;
             __tpos = __tpos->__next;
-            __deallocate_node(__spos, this);
-            --(this->__size);
+            this->__deallocate_node(__spos);
+            --(this->__mis.first());
             return iterator(__tpos, this);
           }
 
           for(; __spos->__next != __tpos; __spos = __spos->__next)
           { }
           __spos->__next = __tpos->__next;
-          __deallocate_node(__tpos, this);
+          this->__deallocate_node(__tpos);
           return iterator(__spos, this).operator++();
         }
         iterator erase(const_iterator __first, const_iterator __last)
@@ -1476,7 +1434,7 @@ namespace utility
           {
             if(__bpos == __pos)
             { this->__bucket[__bnum] = __epos;}
-            __erase_node_chain(__bpos, __epos, this);
+            this->__erase_node_chain(__bpos, __epos);
           }
           else
           {
@@ -1488,16 +1446,16 @@ namespace utility
               { }
               __pos->__next = nullptr;
             }
-            __erase_node_chain(__bpos, nullptr, this);
+            this->__erase_node_chain(__bpos, nullptr);
             for(size_type __i = __bnum + 1; __i < __enum; ++__i)
             {
               if(this->__bucket[__i] != nullptr)
               {
-                __erase_node_chain(this->__bucket[__i], nullptr, this);
+                this->__erase_node_chain(this->__bucket[__i], nullptr);
                 this->__bucket[__i] = nullptr;
               }
             }
-            __erase_node_chain(this->__bucket[__enum], __epos, this);
+            this->__erase_node_chain(this->__bucket[__enum], __epos);
             this->__bucket[__enum] = __epos;
           }
           return iterator(__epos, this);
@@ -1521,11 +1479,11 @@ namespace utility
           {
             if((*__it) != nullptr)
             {
-              __deallocate_node_chain(*__it, this);
+              this->__deallocate_node_chain(*__it);
               *__it = nullptr;
             }
           }
-          this->__size = 0U;
+          this->__mis.first() = 0U;
           return;
         }
 
@@ -1537,12 +1495,11 @@ namespace utility
         )
         {
           using utility::algorithm::swap;
-          swap(this->__allocator,   __o.__allocator   );
-          swap(this->__key_eq,      __o.__key_eq      );
-          swap(this->__hasher,      __o.__hasher      );
-          swap(this->__bucket,      __o.__bucket      );
-          swap(this->__size,        __o.__size        );
-          swap(this->__load_factor, __o.__load_factor );
+          swap(this->__load_allocator,  __o.__load_allocator);
+          swap(this->__mis,             __o.__mis);
+          swap(this->__key_eq,          __o.__key_eq);
+          swap(this->__hasher,          __o.__hasher);
+          swap(this->__bucket,          __o.__bucket);
         }
         void possible_swap(hash_table& __o) noexcept(
           utility::trait::type::features::is_nothrow_possible_swappable<hasher>::value &&
@@ -1551,19 +1508,18 @@ namespace utility
         )
         {
           using utility::algorithm::possible_swap;
-          possible_swap(this->__key_eq,      __o.__key_eq      );
-          possible_swap(this->__hasher,      __o.__hasher      );
-          possible_swap(this->__bucket,      __o.__bucket      );
-          possible_swap(this->__size,        __o.__size        );
-          possible_swap(this->__load_factor, __o.__load_factor );
-          possible_swap(this->__allocator,   __o.__allocator   );
+          possible_swap(this->__load_allocator,  __o.__load_allocator);
+          possible_swap(this->__mis,             __o.__mis);
+          possible_swap(this->__key_eq,          __o.__key_eq);
+          possible_swap(this->__hasher,          __o.__hasher);
+          possible_swap(this->__bucket,          __o.__bucket);
         }
 
       public:
         float max_load_factor() const noexcept
-        { return this->__load_factor;}
+        { return this->__load_allocator.first();}
         void max_load_factor(float __fac) noexcept
-        { this->__load_factor = __fac;}
+        { this->__load_allocator.first() = __fac;}
         float load_factor() const noexcept
         {
           return static_cast<double>(this->size()) / this->__bucket.size();
@@ -1582,7 +1538,7 @@ namespace utility
           const size_type __bsize = this->bucket_size();
           if(__link == __tpos)
           {
-            __erase_node_chain(__tpos, nullptr, this);
+            this->__erase_node_chain(__tpos, nullptr);
             this->__bucket[__num] = nullptr;
           }
           else
@@ -1590,13 +1546,13 @@ namespace utility
             for(; __link->__next != __tpos; __link = __link->__next)
             { }
             __link->__next = nullptr;
-            __erase_node_chain(__tpos, nullptr, this);
+            this->__erase_node_chain(__tpos, nullptr);
           }
           for(size_type __i = __num+1; __i != __bsize; ++__i)
           {
             if(this->__bucket[__i] != nullptr)
             {
-              __erase_node_chain(this->__bucket[__i], nullptr, this);
+              this->__erase_node_chain(this->__bucket[__i], nullptr);
               this->__bucket[__i] = nullptr;
             }
           }
@@ -1606,7 +1562,7 @@ namespace utility
       private:
         bool is_overload(size_type __add)
         {
-          return ((static_cast<double>(this->size() + __add) / this->__bucket.size()) > this->__load_factor);
+          return ((static_cast<double>(this->size() + __add) / this->__bucket.size()) > this->__load_allocator.first());
         }
         void resize(size_type __need_size)
         {
@@ -1640,7 +1596,7 @@ namespace utility
               {
                 __link_type __use = __tmp[__now];
                 __tmp[__now] = nullptr;
-                __deallocate_node_chain(__use, this);
+                this->__deallocate_node_chain(__use);
               }
             }
           );
@@ -1663,7 +1619,7 @@ namespace utility
               __get_key(*(__i->__data)), __get_key(*(__ins->__data))
             ))
             {
-              __deallocate_node(__ins, __this);
+              __this->__deallocate_node(__ins);
               return utility::container::pair<iterator, bool>(
                 iterator(__i, __this), false
               );
@@ -1674,7 +1630,7 @@ namespace utility
           // insert the node at the begin of the bucket
           __ins->__next = __link;
           __this->__bucket[__pos] = __ins;
-          ++(__this->__size);
+          ++(__this->__mis.first());
 
           return utility::container::pair<iterator, bool>(
             iterator(__ins, __this), true
@@ -1699,7 +1655,7 @@ namespace utility
             {
               __ins->__next = __i->__next;
               __i->__next = __ins;
-              ++(__this->__size);
+              ++(__this->__mis.first());
               return iterator(__ins, __this);
             }
           }
@@ -1708,25 +1664,23 @@ namespace utility
           // insert the node at the begin of the bucket
           __ins->__next = __link;
           __this->__bucket[__pos] = __ins;
-          ++(__this->__size);
+          ++(__this->__mis.first());
 
           return iterator(__ins, __this);
         }
 
       private:
         template<typename... _Args>
-        static inline __link_type __allocate_node(
-          hash_table* __this, _Args&&... __args
-        )
+        inline __link_type __allocate_node(_Args&&... __args)
         {
           __node_container __node(
-            __node_allocator_traits_type::allocate(__this->__node_allocator)
+            __node_allocator_traits_type::allocate(this->__load_allocator.second())
           );
           __value_container __valc(
-            allocator_traits_type::allocate(__this->__allocator)
+            allocator_traits_type::allocate(this->__mis.second())
           );
           allocator_traits_type::construct(
-            __this->__allocator, __valc.get(),
+            this->__mis.second(), __valc.get(),
             utility::algorithm::forward<_Args>(__args)...
           );
           __link_type __link = __node.release();
@@ -1734,20 +1688,19 @@ namespace utility
           return __link;
         }
         template<typename _InputIterator>
-        static utility::container::pair<__link_type, __link_type>
+        utility::container::pair<__link_type, __link_type>
         __allocate_node_chain(
-          _InputIterator __first, _InputIterator __last,
-          hash_table* __this
+          _InputIterator __first, _InputIterator __last
         )
         {
           __node_container __node(
-            __node_allocator_traits_type::allocate(__this->__node_allocator)
+            __node_allocator_traits_type::allocate(this->__load_allocator.second())
           );
           __value_container __valc(
-            allocator_traits_type::allocate(__this->__allocator)
+            allocator_traits_type::allocate(this->__mis.second())
           );
           allocator_traits_type::construct(
-            __this->__allocator, __valc.get(), *__first++
+            this->__mis.second(), __valc.get(), *__first++
           );
           __link_type __epos = __node.release();
           __epos->__data = __valc.release();
@@ -1757,13 +1710,13 @@ namespace utility
             for(; __first != __last;)
             {
               __node.reset(
-                __node_allocator_traits_type::allocate(__this->__node_allocator)
+                __node_allocator_traits_type::allocate(this->__load_allocator.second())
               );
               __valc.reset(
-                allocator_traits_type::allocate(__this->__allocator)
+                allocator_traits_type::allocate(this->__mis.second())
               );
               allocator_traits_type::construct(
-                __this->__allocator, __valc.get(), *__first++
+                this->__mis.second(), __valc.get(), *__first++
               );
               __epos->__next = __node.release();
               __epos = __epos->__next;
@@ -1776,7 +1729,7 @@ namespace utility
             for(; __bpos != nullptr; __bpos = __epos)
             {
               __epos = __bpos->__next;
-              __deallocate_node(__bpos, __this);
+              this->__deallocate_node(__bpos);
             }
           );
           return utility::container::pair<__link_type, __link_type>(
@@ -1785,38 +1738,42 @@ namespace utility
         }
 
       private:
-        static inline void __deallocate_node(
-          __link_type __root, hash_table* __this
-        )
+        inline void __deallocate_node(__link_type __root)
         {
-          allocator_traits_type::deallocate(
-            __this->__allocator, __root->__data
+          if(__root->__data != nullptr)
+          {
+            allocator_traits_type::destroy(
+              this->__mis.second(), __root->__data
+            );
+            allocator_traits_type::deallocate(
+              this->__mis.second(), __root->__data
+            );
+          }
+          __node_allocator_traits_type::destroy(
+            this->__load_allocator.second(), __root
           );
           __node_allocator_traits_type::deallocate(
-            __this->__node_allocator, __root
+            this->__load_allocator.second(), __root
           );
           return;
         }
-        static void __deallocate_node_chain(
-          __link_type __tmp, hash_table* __this
-        )
+        inline void __deallocate_node_chain(__link_type __tmp)
         {
           if(__tmp->__next != nullptr)
-          { __deallocate_node_chain(__tmp->__next, __this);}
-          __deallocate_node(__tmp, __this);
+          { this->__deallocate_node_chain(__tmp->__next);}
+          this->__deallocate_node(__tmp);
           return;
         }
-        static void __erase_node_chain(
-          __link_type __bpos, __link_type __epos,
-          hash_table* __this
+        inline void __erase_node_chain(
+          __link_type __bpos, __link_type __epos
         ) // erase_chain
         {
           __link_type __pos = __bpos;
           for(; __pos != __epos;)
           {
             __pos = __bpos->__next;
-            __deallocate_node(__bpos, __this);
-            --(__this->__size);
+            this->__deallocate_node(__bpos);
+            --(this->__mis.first());
             __bpos = __pos;
           }
         }

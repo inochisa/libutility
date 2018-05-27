@@ -14,10 +14,10 @@ namespace utility
       {
         // is_const
         template<typename _T>
-        struct is_const : public utility::trait::false_type
+        struct is_const : public trait::false_type
         { };
         template<typename _T>
-        struct is_const<_T const> : public utility::trait::true_type
+        struct is_const<_T const> : public trait::true_type
         { };
 
       }

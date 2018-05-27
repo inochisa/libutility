@@ -40,7 +40,7 @@ namespace utility
   {
     namespace __hash_length
     {
-      const utility::size_t __prime_list[28] =
+      const size_t __prime_list[28] =
       {
         53UL,         97UL,           193UL,          389UL,
         769UL,        1543UL,         3079UL,         6151UL,
@@ -51,10 +51,10 @@ namespace utility
         805306457UL,  1610612741UL,   3221225473UL,   4294967291UL
       };
 
-      inline utility::size_t __next_prime(utility::size_t __n) noexcept
+      inline size_t __next_prime(size_t __n) noexcept
       {
-        const utility::size_t* __pos =
-          utility::algorithm::lower_bound(
+        const size_t* __pos =
+          algorithm::lower_bound(
             __prime_list, __prime_list+28, __n
           );
         return __pos == __prime_list+28 ? 4294967291UL : *__pos;
@@ -65,10 +65,10 @@ namespace utility
     <
       typename _Key,
       typename _Value = _Key,
-      typename _Key_Value_Container = utility::container::pair<const _Key, _Value>,
-      typename _Hash = utility::algorithm::hash<_Key>,
-      typename _Key_eq = utility::algorithm::equal_to<void>,
-      typename _Alloc = utility::memory::allocator<_Key_Value_Container>
+      typename _Key_Value_Container = container::pair<const _Key, _Value>,
+      typename _Hash = algorithm::hash<_Key>,
+      typename _Key_eq = algorithm::equal_to<void>,
+      typename _Alloc = memory::allocator<_Key_Value_Container>
     >
     class hash_table
     {
@@ -111,7 +111,7 @@ namespace utility
             friend class __hash_table_const_iterator;
 
           public:
-            typedef utility::iterator::forward_iterator_tag
+            typedef iterator::forward_iterator_tag
               iterator_category;
             typedef __Key                   key_type;
             typedef __Value                 mapped_type;
@@ -119,10 +119,10 @@ namespace utility
             typedef __Container             container_type;
             typedef value_type&             reference;
             typedef typename
-              utility::trait::miscellaneous::pointer_traits<value_type*>::pointer
+              trait::miscellaneous::pointer_traits<value_type*>::pointer
               pointer;
             typedef typename
-              utility::trait::miscellaneous::pointer_traits<value_type*>::difference_type
+              trait::miscellaneous::pointer_traits<value_type*>::difference_type
               difference_type;
 
           public:
@@ -213,7 +213,7 @@ namespace utility
             friend class hash_table;
 
           public:
-            typedef utility::iterator::forward_iterator_tag
+            typedef iterator::forward_iterator_tag
               iterator_category;
             typedef __Key                   key_type;
             typedef __Value                 mapped_type;
@@ -222,10 +222,10 @@ namespace utility
             typedef const value_type        const_value_type;
             typedef const value_type&       reference;
             typedef typename
-              utility::trait::miscellaneous::pointer_traits<const_value_type*>::pointer
+              trait::miscellaneous::pointer_traits<const_value_type*>::pointer
               pointer;
             typedef typename
-              utility::trait::miscellaneous::pointer_traits<const_value_type*>::difference_type
+              trait::miscellaneous::pointer_traits<const_value_type*>::difference_type
               difference_type;
 
           public:
@@ -326,7 +326,7 @@ namespace utility
             friend class __hash_table_const_local_iterator;
 
           public:
-            typedef utility::iterator::forward_iterator_tag
+            typedef iterator::forward_iterator_tag
               iterator_category;
             typedef __Key                             key_type;
             typedef __Value                           mapped_type;
@@ -335,10 +335,10 @@ namespace utility
             typedef typename __Container::size_type   size_type;
             typedef value_type&                       reference;
             typedef typename
-              utility::trait::miscellaneous::pointer_traits<value_type*>::pointer
+              trait::miscellaneous::pointer_traits<value_type*>::pointer
               pointer;
             typedef typename
-              utility::trait::miscellaneous::pointer_traits<value_type*>::difference_type
+              trait::miscellaneous::pointer_traits<value_type*>::difference_type
               difference_type;
 
           public:
@@ -427,7 +427,7 @@ namespace utility
             friend class hash_table;
 
           public:
-            typedef utility::iterator::forward_iterator_tag
+            typedef iterator::forward_iterator_tag
               iterator_category;
             typedef __Key                             key_type;
             typedef __Value                           mapped_type;
@@ -437,10 +437,10 @@ namespace utility
             typedef typename __Container::size_type   size_type;
             typedef const value_type&                 reference;
             typedef typename
-              utility::trait::miscellaneous::pointer_traits<const_value_type*>::pointer
+              trait::miscellaneous::pointer_traits<const_value_type*>::pointer
               pointer;
             typedef typename
-              utility::trait::miscellaneous::pointer_traits<const_value_type*>::difference_type
+              trait::miscellaneous::pointer_traits<const_value_type*>::difference_type
               difference_type;
 
           public:
@@ -525,9 +525,9 @@ namespace utility
         typedef __hash_table_node<_Key, _Value, _Key_Value_Container>
           __node_type;
         typedef __node_type* __link_type;
-        typedef utility::memory::allocator<__node_type>
+        typedef memory::allocator<__node_type>
           __node_allocator_type;
-        typedef utility::memory::allocator_traits<__node_allocator_type>
+        typedef memory::allocator_traits<__node_allocator_type>
           __node_allocator_traits_type;
         typedef
           hash_table<_Key, _Value, _Key_Value_Container, _Hash, _Key_eq, _Alloc>
@@ -539,22 +539,22 @@ namespace utility
         typedef _Key_Value_Container  value_type;
         typedef _Hash                 hasher;
         typedef _Key_eq               key_equal;
-        typedef utility::size_t     size_type;
-        typedef utility::ptrdiff_t  difference_type;
+        typedef size_t     size_type;
+        typedef ptrdiff_t  difference_type;
         typedef value_type&           reference;
         typedef const value_type&     const_reference;
         typedef _Alloc                allocator_type;
 
       private:
-        typedef utility::memory::unique_ptr<value_type>
+        typedef memory::unique_ptr<value_type>
           __value_container;
-        typedef utility::memory::unique_ptr<__node_type>
+        typedef memory::unique_ptr<__node_type>
           __node_container;
-        typedef utility::container::vector<__link_type>
+        typedef container::vector<__link_type>
           __bucket_container;
 
       public:
-        typedef utility::memory::allocator_traits<allocator_type>
+        typedef memory::allocator_traits<allocator_type>
           allocator_traits_type;
 
       public:
@@ -576,13 +576,13 @@ namespace utility
           const_local_iterator;
 
       public: // assert:
-        static_assert(utility::trait::type::releations::is_same<
+        static_assert(trait::type::releations::is_same<
           value_type, typename allocator_type::value_type>::value,
           "the allocator's alloc type must be the same as value type");
 
       private:
-        typedef utility::container::compressed_pair<float, __node_allocator_type> __control_pair;
-        typedef utility::container::compressed_pair<size_type, allocator_type> __mis_type;
+        typedef container::compressed_pair<float, __node_allocator_type> __control_pair;
+        typedef container::compressed_pair<size_type, allocator_type> __mis_type;
 
       private:
         __bucket_container        __bucket;
@@ -594,9 +594,9 @@ namespace utility
       public:
         template<typename _Key_Eq = _Key_eq, typename _Hasher = _Hash,
         typename
-        utility::trait::type::miscellaneous::enable_if<
-          utility::trait::type::features::is_default_constructible<_Key_Eq>::value &&
-          utility::trait::type::features::is_default_constructible<_Hasher>::value,
+        trait::type::miscellaneous::enable_if<
+          trait::type::features::is_default_constructible<_Key_Eq>::value &&
+          trait::type::features::is_default_constructible<_Hasher>::value,
           bool
           >::type = true
         >
@@ -607,9 +607,9 @@ namespace utility
         { }
         template<typename _Key_Eq = _Key_eq, typename _Hasher = _Hash,
         typename
-        utility::trait::type::miscellaneous::enable_if<
-          utility::trait::type::features::is_copy_constructible<_Key_Eq>::value &&
-          utility::trait::type::features::is_copy_constructible<_Hasher>::value,
+        trait::type::miscellaneous::enable_if<
+          trait::type::features::is_copy_constructible<_Key_Eq>::value &&
+          trait::type::features::is_copy_constructible<_Hasher>::value,
           bool
           >::type = true
         >
@@ -624,10 +624,10 @@ namespace utility
         { }
         template<typename _Key_Eq = _Key_eq, typename _Hasher = _Hash,
         typename
-        utility::trait::type::miscellaneous::enable_if<
-          utility::trait::type::features::is_copy_constructible<_Key_Eq>::value &&
-          utility::trait::type::features::is_copy_constructible<_Hasher>::value &&
-          utility::trait::type::features::is_default_constructible<_Key_Eq>::value,
+        trait::type::miscellaneous::enable_if<
+          trait::type::features::is_copy_constructible<_Key_Eq>::value &&
+          trait::type::features::is_copy_constructible<_Hasher>::value &&
+          trait::type::features::is_default_constructible<_Key_Eq>::value,
           bool
           >::type = true
         >
@@ -641,11 +641,11 @@ namespace utility
         { }
         template<typename _Key_Eq = _Key_eq, typename _Hasher = _Hash,
         typename
-        utility::trait::type::miscellaneous::enable_if<
-          utility::trait::type::features::is_copy_constructible<_Key_Eq>::value &&
-          utility::trait::type::features::is_copy_constructible<_Hasher>::value &&
-          utility::trait::type::features::is_default_constructible<_Key_Eq>::value &&
-          utility::trait::type::features::is_default_constructible<_Hasher>::value,
+        trait::type::miscellaneous::enable_if<
+          trait::type::features::is_copy_constructible<_Key_Eq>::value &&
+          trait::type::features::is_copy_constructible<_Hasher>::value &&
+          trait::type::features::is_default_constructible<_Key_Eq>::value &&
+          trait::type::features::is_default_constructible<_Hasher>::value,
           bool
           >::type = true
         >
@@ -667,14 +667,14 @@ namespace utility
         template<typename _InputIterator,
         typename _Key_Eq = _Key_eq, typename _Hasher = _Hash,
         typename
-        utility::trait::type::miscellaneous::enable_if<
+        trait::type::miscellaneous::enable_if<
             is_iterator<_InputIterator>::value,
             bool
           >::type = true,
         typename
-        utility::trait::type::miscellaneous::enable_if<
-          utility::trait::type::features::is_copy_constructible<_Key_Eq>::value &&
-          utility::trait::type::features::is_copy_constructible<_Hasher>::value,
+        trait::type::miscellaneous::enable_if<
+          trait::type::features::is_copy_constructible<_Key_Eq>::value &&
+          trait::type::features::is_copy_constructible<_Hasher>::value,
           bool
           >::type = true
         >
@@ -688,9 +688,9 @@ namespace utility
           __hasher{__ha}, __key_eq{__equal}
         {
           const size_type __bucket_size =
-            utility::algorithm::max<size_type>(
+            algorithm::max<size_type>(
               __hash_length::__next_prime(
-                utility::iterator::distance(__first, __last)
+                iterator::distance(__first, __last)
               ),
               __hash_length::__next_prime(__count)
             );
@@ -701,16 +701,16 @@ namespace utility
         template<typename _InputIterator,
         typename _Key_Eq = _Key_eq, typename _Hasher = _Hash,
         typename
-        utility::trait::type::miscellaneous::enable_if<
+        trait::type::miscellaneous::enable_if<
             is_iterator<_InputIterator>::value,
             bool
           >::type = true,
         typename
-        utility::trait::type::miscellaneous::enable_if<
-          utility::trait::type::features::is_copy_constructible<_Key_Eq>::value &&
-          utility::trait::type::features::is_copy_constructible<_Hasher>::value &&
-          utility::trait::type::features::is_default_constructible<_Key_Eq>::value &&
-          utility::trait::type::features::is_default_constructible<_Hasher>::value,
+        trait::type::miscellaneous::enable_if<
+          trait::type::features::is_copy_constructible<_Key_Eq>::value &&
+          trait::type::features::is_copy_constructible<_Hasher>::value &&
+          trait::type::features::is_default_constructible<_Key_Eq>::value &&
+          trait::type::features::is_default_constructible<_Hasher>::value,
           bool
           >::type = true
         >
@@ -723,15 +723,15 @@ namespace utility
         template<typename _InputIterator,
         typename _Key_Eq = _Key_eq, typename _Hasher = _Hash,
         typename
-        utility::trait::type::miscellaneous::enable_if<
+        trait::type::miscellaneous::enable_if<
             is_iterator<_InputIterator>::value,
             bool
           >::type = true,
         typename
-        utility::trait::type::miscellaneous::enable_if<
-          utility::trait::type::features::is_copy_constructible<_Key_Eq>::value &&
-          utility::trait::type::features::is_copy_constructible<_Hasher>::value &&
-          utility::trait::type::features::is_default_constructible<_Key_Eq>::value,
+        trait::type::miscellaneous::enable_if<
+          trait::type::features::is_copy_constructible<_Key_Eq>::value &&
+          trait::type::features::is_copy_constructible<_Hasher>::value &&
+          trait::type::features::is_default_constructible<_Key_Eq>::value,
           bool
           >::type = true
         >
@@ -783,25 +783,25 @@ namespace utility
           }
         }
         hash_table(hash_table&& __other):
-          __bucket{utility::algorithm::move(__other.__bucket)},
-          __mis{utility::algorithm::move(__other.__mis)},
-          __load_allocator{utility::algorithm::move(__other.__load_allocator)},
-          __hasher{utility::algorithm::move(__other.__hasher)},
-          __key_eq{utility::algorithm::move(__other.__key_eq)}
+          __bucket{algorithm::move(__other.__bucket)},
+          __mis{algorithm::move(__other.__mis)},
+          __load_allocator{algorithm::move(__other.__load_allocator)},
+          __hasher{algorithm::move(__other.__hasher)},
+          __key_eq{algorithm::move(__other.__key_eq)}
         { }
         hash_table(
           hash_table&& __other, const allocator_type& __alloc
-        ):__bucket{utility::algorithm::move(__other.__bucket)},
+        ):__bucket{algorithm::move(__other.__bucket)},
           __mis{__other.__mis.first(), __alloc},
-          __load_allocator{utility::algorithm::move(__other.__load_allocator)},
-          __hasher{utility::algorithm::move(__other.__hasher)},
-          __key_eq{utility::algorithm::move(__other.__key_eq)}
+          __load_allocator{algorithm::move(__other.__load_allocator)},
+          __hasher{algorithm::move(__other.__hasher)},
+          __key_eq{algorithm::move(__other.__key_eq)}
         { }
         template<typename _Key_Eq = _Key_eq, typename _Hasher = _Hash,
         typename
-        utility::trait::type::miscellaneous::enable_if<
-          utility::trait::type::features::is_copy_constructible<_Key_Eq>::value &&
-          utility::trait::type::features::is_copy_constructible<_Hasher>::value,
+        trait::type::miscellaneous::enable_if<
+          trait::type::features::is_copy_constructible<_Key_Eq>::value &&
+          trait::type::features::is_copy_constructible<_Hasher>::value,
           bool
           >::type = true
         >
@@ -817,7 +817,7 @@ namespace utility
           typedef typename initializer_list<value_type>::const_iterator
             __iterator;
           const size_type __bucket_size =
-            utility::algorithm::max<size_type>(
+            algorithm::max<size_type>(
               __hash_length::__next_prime(__initlist.size()),
               __hash_length::__next_prime(__count)
             );
@@ -828,11 +828,11 @@ namespace utility
         }
         template<typename _Key_Eq = _Key_eq, typename _Hasher = _Hash,
         typename
-        utility::trait::type::miscellaneous::enable_if<
-          utility::trait::type::features::is_copy_constructible<_Key_Eq>::value &&
-          utility::trait::type::features::is_copy_constructible<_Hasher>::value &&
-          utility::trait::type::features::is_default_constructible<_Key_Eq>::value &&
-          utility::trait::type::features::is_default_constructible<_Hasher>::value,
+        trait::type::miscellaneous::enable_if<
+          trait::type::features::is_copy_constructible<_Key_Eq>::value &&
+          trait::type::features::is_copy_constructible<_Hasher>::value &&
+          trait::type::features::is_default_constructible<_Key_Eq>::value &&
+          trait::type::features::is_default_constructible<_Hasher>::value,
           bool
           >::type = true
         >
@@ -846,10 +846,10 @@ namespace utility
         { }
         template<typename _Key_Eq = _Key_eq, typename _Hasher = _Hash,
         typename
-        utility::trait::type::miscellaneous::enable_if<
-          utility::trait::type::features::is_copy_constructible<_Key_Eq>::value &&
-          utility::trait::type::features::is_copy_constructible<_Hasher>::value &&
-          utility::trait::type::features::is_default_constructible<_Key_Eq>::value,
+        trait::type::miscellaneous::enable_if<
+          trait::type::features::is_copy_constructible<_Key_Eq>::value &&
+          trait::type::features::is_copy_constructible<_Hasher>::value &&
+          trait::type::features::is_default_constructible<_Key_Eq>::value,
           bool
           >::type = true
         >
@@ -914,11 +914,11 @@ namespace utility
           {
             this->__load_allocator = __other.__load_allocator;
             this->__bucket.swap(__other.__bucket);
-            this->__mis = utility::algorithm::move(__other.__mis);
+            this->__mis = algorithm::move(__other.__mis);
             this->__hasher =
-              utility::algorithm::move(__other.__hasher);
+              algorithm::move(__other.__hasher);
             this->__key_eq =
-              utility::algorithm::move(__other.__key_eq);
+              algorithm::move(__other.__key_eq);
           }
           return *this;
         }
@@ -927,7 +927,7 @@ namespace utility
           typedef typename initializer_list<value_type>::const_iterator
             __iterator;
           const size_type __bucket_size =
-            utility::algorithm::max<size_type>(
+            algorithm::max<size_type>(
               __hash_length::__next_prime(__initlist.size()),
               __hash_length::__next_prime(this->bucket_size())
             );
@@ -1072,20 +1072,20 @@ namespace utility
         { return this->key_hash(__key, this->bucket_size());}
 
       public:
-        inline utility::container::pair<iterator, bool>
+        inline container::pair<iterator, bool>
         insert_unique(const value_type& __val)
         {
           if(this->is_overload(1U))
           { this->resize(this->size() + 1);}
           return __insert_unique(this->__allocate_node(__val), this);
         }
-        inline utility::container::pair<iterator, bool>
+        inline container::pair<iterator, bool>
         insert_unique(value_type&& __val)
         {
           if(this->is_overload(1U))
           { this->resize(this->size() + 1);}
           return __insert_unique(
-            this->__allocate_node(utility::algorithm::move(__val)), this
+            this->__allocate_node(algorithm::move(__val)), this
           );
         }
         inline iterator insert_equal(const value_type& __val)
@@ -1099,14 +1099,14 @@ namespace utility
           if(this->is_overload(1U))
           { this->resize(this->size() + 1);}
           return __insert_equal(
-            this->__allocate_node(utility::algorithm::move(__val)), this
+            this->__allocate_node(algorithm::move(__val)), this
           );
         }
         iterator insert_unique(
           const_iterator __hint, const value_type& __val
         )
         {
-          utility::miscellaneous::ignore_unused(__hint);
+          miscellaneous::ignore_unused(__hint);
           if(this->is_overload(1U))
           { this->resize(this->size() + 1);}
           return __insert_unique(this->__allocate_node(__val), this).first;
@@ -1115,18 +1115,18 @@ namespace utility
           const_iterator __hint, value_type&& __val
         )
         {
-          utility::miscellaneous::ignore_unused(__hint);
+          miscellaneous::ignore_unused(__hint);
           if(this->is_overload(1U))
           { this->resize(this->size() + 1);}
           return __insert_unique(
-            this->__allocate_node(utility::algorithm::move(__val)), this
+            this->__allocate_node(algorithm::move(__val)), this
           ).first;
         }
         inline iterator insert_equal(
           const_iterator __hint, const value_type& __val
         )
         {
-          utility::miscellaneous::ignore_unused(__hint);
+          miscellaneous::ignore_unused(__hint);
           if(this->is_overload(1U))
           { this->resize(this->size() + 1);}
           return __insert_equal(this->__allocate_node(__val), this);
@@ -1135,11 +1135,11 @@ namespace utility
           const_iterator __hint, value_type&& __val
         )
         {
-          utility::miscellaneous::ignore_unused(__hint);
+          miscellaneous::ignore_unused(__hint);
           if(this->is_overload(1U))
           { this->resize(this->size() + 1);}
           return __insert_equal(
-            this->__allocate_node(utility::algorithm::move(__val)), this
+            this->__allocate_node(algorithm::move(__val)), this
           );
         }
 
@@ -1155,8 +1155,8 @@ namespace utility
         {
           if(__first == __last)
           { return 0U;}
-          if(this->is_overload(utility::iterator::distance(__first, __last)))
-          { this->resize(utility::iterator::distance(__first, __last));}
+          if(this->is_overload(iterator::distance(__first, __last)))
+          { this->resize(iterator::distance(__first, __last));}
           size_type __success = 0;
           for(; __first != __last; ++__first)
           {
@@ -1172,21 +1172,21 @@ namespace utility
         {
           if(__first == __last)
           { return;}
-          if(this->is_overload(utility::iterator::distance(__first, __last)))
-          { this->resize(utility::iterator::distance(__first, __last));}
+          if(this->is_overload(iterator::distance(__first, __last)))
+          { this->resize(iterator::distance(__first, __last));}
           for(; __first != __last; ++__first)
           { __insert_equal(this->__allocate_node(*__first), this);}
         }
 
       public:
         template<typename... _Args>
-        inline utility::container::pair<iterator, bool>
+        inline container::pair<iterator, bool>
         emplace_unique(_Args&&... __args)
         {
           if(this->is_overload(1U))
           { this->resize(this->size() + 1);}
           return __insert_unique(
-            this->__allocate_node(utility::algorithm::forward<_Args>(__args)...),
+            this->__allocate_node(algorithm::forward<_Args>(__args)...),
             this
           );
         }
@@ -1196,7 +1196,7 @@ namespace utility
           if(this->is_overload(1U))
           { this->resize(this->size() + 1);}
           return __insert_equal(
-            this->__allocate_node(utility::algorithm::forward<_Args>(__args)...),
+            this->__allocate_node(algorithm::forward<_Args>(__args)...),
             this
           );
         }
@@ -1205,11 +1205,11 @@ namespace utility
           const_iterator __hint, _Args&&... __args
         )
         {
-          utility::miscellaneous::ignore_unused(__hint);
+          miscellaneous::ignore_unused(__hint);
           if(this->is_overload(1U))
           { this->resize(this->size() + 1);}
           return __insert_unique(
-            this->__allocate_node(utility::algorithm::forward<_Args>(__args)...),
+            this->__allocate_node(algorithm::forward<_Args>(__args)...),
             this
           ).first;
         }
@@ -1218,11 +1218,11 @@ namespace utility
           const_iterator __hint, _Args&&... __args
         )
         {
-          utility::miscellaneous::ignore_unused(__hint);
+          miscellaneous::ignore_unused(__hint);
           if(this->is_overload(1U))
           { this->resize(this->size() + 1);}
           return __insert_equal(
-            this->__allocate_node(utility::algorithm::forward<_Args>(__args)...),
+            this->__allocate_node(algorithm::forward<_Args>(__args)...),
             this
           );
         }
@@ -1268,10 +1268,10 @@ namespace utility
           }
           return __count;
         }
-        utility::container::pair<iterator, iterator>
+        container::pair<iterator, iterator>
         equal_range(const key_type& __key)
         {
-          typedef utility::container::pair<iterator, iterator>
+          typedef container::pair<iterator, iterator>
             __result_container;
           const size_type __num = this->key_hash(__key, this->bucket_size());
           for(
@@ -1314,10 +1314,10 @@ namespace utility
             iterator(nullptr, this), iterator(nullptr, this)
           );
         }
-        utility::container::pair<const_iterator, const_iterator>
+        container::pair<const_iterator, const_iterator>
         equal_range(const key_type& __key) const
         {
-          typedef utility::container::pair<const_iterator, const_iterator>
+          typedef container::pair<const_iterator, const_iterator>
             __result_container;
           const size_type __num = this->key_hash(__key, this->bucket_size());
           for(
@@ -1489,12 +1489,12 @@ namespace utility
 
       public:
         void swap(hash_table& __o) noexcept(
-          utility::trait::type::features::is_nothrow_swappable<hasher>::value &&
-          utility::trait::type::features::is_nothrow_swappable<key_equal>::value &&
-          utility::trait::type::features::is_nothrow_swappable<allocator_type>::value
+          trait::type::features::is_nothrow_swappable<hasher>::value &&
+          trait::type::features::is_nothrow_swappable<key_equal>::value &&
+          trait::type::features::is_nothrow_swappable<allocator_type>::value
         )
         {
-          using utility::algorithm::swap;
+          using algorithm::swap;
           swap(this->__load_allocator,  __o.__load_allocator);
           swap(this->__mis,             __o.__mis);
           swap(this->__key_eq,          __o.__key_eq);
@@ -1502,12 +1502,12 @@ namespace utility
           swap(this->__bucket,          __o.__bucket);
         }
         void possible_swap(hash_table& __o) noexcept(
-          utility::trait::type::features::is_nothrow_possible_swappable<hasher>::value &&
-          utility::trait::type::features::is_nothrow_possible_swappable<key_equal>::value &&
-          utility::trait::type::features::is_nothrow_possible_swappable<allocator_type>::value
+          trait::type::features::is_nothrow_possible_swappable<hasher>::value &&
+          trait::type::features::is_nothrow_possible_swappable<key_equal>::value &&
+          trait::type::features::is_nothrow_possible_swappable<allocator_type>::value
         )
         {
-          using utility::algorithm::possible_swap;
+          using algorithm::possible_swap;
           possible_swap(this->__load_allocator,  __o.__load_allocator);
           possible_swap(this->__mis,             __o.__mis);
           possible_swap(this->__key_eq,          __o.__key_eq);
@@ -1603,7 +1603,7 @@ namespace utility
         }
 
       private:
-        static utility::container::pair<iterator, bool>
+        static container::pair<iterator, bool>
         __insert_unique(
           __link_type __ins, hash_table* __this
         )
@@ -1620,7 +1620,7 @@ namespace utility
             ))
             {
               __this->__deallocate_node(__ins);
-              return utility::container::pair<iterator, bool>(
+              return container::pair<iterator, bool>(
                 iterator(__i, __this), false
               );
             }
@@ -1632,7 +1632,7 @@ namespace utility
           __this->__bucket[__pos] = __ins;
           ++(__this->__mis.first());
 
-          return utility::container::pair<iterator, bool>(
+          return container::pair<iterator, bool>(
             iterator(__ins, __this), true
           );
         }
@@ -1681,14 +1681,14 @@ namespace utility
           );
           allocator_traits_type::construct(
             this->__mis.second(), __valc.get(),
-            utility::algorithm::forward<_Args>(__args)...
+            algorithm::forward<_Args>(__args)...
           );
           __link_type __link = __node.release();
           __link->__data = __valc.release();
           return __link;
         }
         template<typename _InputIterator>
-        utility::container::pair<__link_type, __link_type>
+        container::pair<__link_type, __link_type>
         __allocate_node_chain(
           _InputIterator __first, _InputIterator __last
         )
@@ -1732,7 +1732,7 @@ namespace utility
               this->__deallocate_node(__bpos);
             }
           );
-          return utility::container::pair<__link_type, __link_type>(
+          return container::pair<__link_type, __link_type>(
             __bpos, __epos
           );
         }
@@ -1782,13 +1782,13 @@ namespace utility
         UTILITY_ALWAYS_INLINE
         static inline const key_type& __get_key(const value_type& __con)
         {
-          using utility::container::get_key;
+          using container::get_key;
           return get_key(__con);
         }
         UTILITY_ALWAYS_INLINE
         static inline const mapped_type& __get_value(const value_type& __con)
         {
-          using utility::container::get_value;
+          using container::get_value;
           return get_value(__con);
         }
     };
@@ -1803,7 +1803,7 @@ namespace utility
       const hash_table<_Key, _Value, _Key_Value_Container, _Hash, _Key_eq, _Alloc>& __y
     )
     {
-      return utility::algorithm::is_permutation(
+      return algorithm::is_permutation(
         __x.begin(), __x.end(), __y.begin(), __y.end()
       );
     }
@@ -1831,9 +1831,9 @@ namespace utility
       typename _Alloc
     >
     void swap(
-      utility::container::hash_table<_Key, _Value,
+      container::hash_table<_Key, _Value,
         _Key_Value_Container, _Hash, _Key_eq, _Alloc>& __x,
-      utility::container::hash_table<_Key, _Value,
+      container::hash_table<_Key, _Value,
         _Key_Value_Container, _Hash, _Key_eq, _Alloc>& __y
     ) noexcept(noexcept(__x.swap(__y)))
     { __x.swap(__y);}
@@ -1847,9 +1847,9 @@ namespace utility
       typename _Alloc
     >
     void possible_swap(
-      utility::container::hash_table<_Key, _Value,
+      container::hash_table<_Key, _Value,
         _Key_Value_Container, _Hash, _Key_eq, _Alloc>& __x,
-      utility::container::hash_table<_Key, _Value,
+      container::hash_table<_Key, _Value,
         _Key_Value_Container, _Hash, _Key_eq, _Alloc>& __y
     ) noexcept(noexcept(__x.possible_swap(__y)))
     { __x.possible_swap(__y);}

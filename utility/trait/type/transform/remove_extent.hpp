@@ -19,7 +19,7 @@ namespace utility
         template<typename _T>
         struct remove_extent<_T[]>
         { typedef _T type;};
-        template<typename _T, utility::trait::size_t _size>
+        template<typename _T, trait::size_t _size>
         struct remove_extent<_T[_size]>
         { typedef _T type;};
 

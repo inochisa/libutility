@@ -17,9 +17,9 @@ namespace utility
         // is_moveable
         template<typename _T>
         struct is_moveable :
-          public utility::trait::integral_constant<bool,
-            utility::trait::type::features::is_move_constructible<_T>::value &&
-            utility::trait::type::features::is_move_assignable<_T>::value>
+          public trait::integral_constant<bool,
+            trait::type::features::is_move_constructible<_T>::value &&
+            trait::type::features::is_move_assignable<_T>::value>
         { };
       }
     }

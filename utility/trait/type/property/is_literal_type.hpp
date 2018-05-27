@@ -18,11 +18,11 @@ namespace utility
         // is_literal_type
         template<typename _T>
         struct is_literal_type : public
-          utility::trait::integral_constant<bool,
-            utility::trait::type::categories::is_scalar<typename
-              utility::trait::type::transform::remove_all_extents<_T>::type>::value ||
-            utility::trait::type::categories::is_reference<typename
-              utility::trait::type::transform::remove_all_extents<_T>::type>::value>
+          trait::integral_constant<bool,
+            trait::type::categories::is_scalar<typename
+              trait::type::transform::remove_all_extents<_T>::type>::value ||
+            trait::type::categories::is_reference<typename
+              trait::type::transform::remove_all_extents<_T>::type>::value>
         { };
       }
     }

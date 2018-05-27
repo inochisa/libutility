@@ -32,7 +32,7 @@ namespace utility
   namespace memory
   {
     template<typename _T>
-    inline _T* default_allocate(utility::size_t __size)
+    inline _T* default_allocate(size_t __size)
     { return  static_cast<_T*>(::operator new(__size* sizeof(_T)));}
     template<typename _T>
     inline void default_deallocate(_T* __buffer)
@@ -48,8 +48,8 @@ namespace utility
         typedef _T& reference;
         typedef const _T& const_reference;
         typedef _T&& __rreference;
-        typedef utility::size_t size_type;
-        typedef utility::ptrdiff_t difference_type;
+        typedef size_t size_type;
+        typedef ptrdiff_t difference_type;
 
       public:
         template<typename _U>
@@ -58,29 +58,29 @@ namespace utility
 
       public:
         pointer allocate() const
-        { return utility::memory::default_allocate<_T>(1UL);}
+        { return memory::default_allocate<_T>(1UL);}
         pointer allocate(size_type __size) const
         {
           // if(__size > this->max_size())
           // { return nullptr;}
-          return utility::memory::default_allocate<_T>(__size);
+          return memory::default_allocate<_T>(__size);
         }
         pointer allocate(size_type __size, const void*) const
         {
           // if(__size > this->max_size())
           // { return nullptr;}
-          return utility::memory::default_allocate<_T>(__size);
+          return memory::default_allocate<_T>(__size);
         }
         void deallocate(pointer __ptr) const
-        { utility::memory::default_deallocate(__ptr);}
-        void deallocate(pointer __ptr, utility::size_t __len) const
-        { utility::memory::default_deallocate(__ptr);}
+        { memory::default_deallocate(__ptr);}
+        void deallocate(pointer __ptr, size_t __len) const
+        { memory::default_deallocate(__ptr);}
 
       public:
         pointer address(reference __ref) const
-        { return utility::memory::addressof(__ref);}
+        { return memory::addressof(__ref);}
         const_pointer address(const_reference __ref) const
-        { return utility::memory::addressof(__ref);}
+        { return memory::addressof(__ref);}
 
       public:
         size_type max_size() const
@@ -91,7 +91,7 @@ namespace utility
         void construct(pointer __ptr, _Args&&... __args)
         {
           ::new(static_cast<void*>(__ptr))
-          value_type(utility::algorithm::forward<_Args>(__args)...);
+          value_type(algorithm::forward<_Args>(__args)...);
         }
         void destroy(pointer __ptr)
         { __ptr->~_T();}
@@ -111,9 +111,9 @@ namespace utility
         void safe_construct(pointer __ptr, _Args&&... __args)
         {
           static_assert(
-            utility::trait::type::features::is_constructible<_T, _Args...>::value,
+            trait::type::features::is_constructible<_T, _Args...>::value,
             "Cannot construct the pointer from these args");
-          this->construct(__ptr, utility::algorithm::forward<_Args>(__args)...);
+          this->construct(__ptr, algorithm::forward<_Args>(__args)...);
           return;
         }
     };
@@ -150,8 +150,8 @@ namespace utility
     class basic_global_allocator
     {
       public:
-        typedef utility::size_t size_type;
-        typedef utility::ptrdiff_t difference_type;
+        typedef size_t size_type;
+        typedef ptrdiff_t difference_type;
 
       public:
         struct rebind
@@ -160,25 +160,25 @@ namespace utility
       public:
         template<typename _T>
         _T* allocate(size_type __size) const
-        { return utility::memory::default_allocate<_T>(__size);}
+        { return memory::default_allocate<_T>(__size);}
         template<typename _T>
         void deallocate(_T* __ptr) const
-        { utility::memory::default_deallocate(__ptr);}
+        { memory::default_deallocate(__ptr);}
 
       public:
         template<typename _T>
         _T* address(_T& __ref) const
-        { return utility::memory::addressof(__ref);}
+        { return memory::addressof(__ref);}
         template<typename _T>
         const _T* address(const _T& __ref) const
-        { return utility::memory::addressof(__ref);}
+        { return memory::addressof(__ref);}
 
       public:
         template<typename _T, typename... _Args>
         void construct(_T* __ptr, _Args&&... __args)
         {
           ::new(static_cast<void*>(__ptr))
-          _T(utility::algorithm::forward<_Args>(__args)...);
+          _T(algorithm::forward<_Args>(__args)...);
         }
         template<typename _T>
         void destroy(_T* __ptr)
@@ -199,9 +199,9 @@ namespace utility
         void safe_construct(_T* __ptr, _Args&&... __args)
         {
           static_assert(
-            utility::trait::type::features::is_constructible<_T, _Args...>::value,
+            trait::type::features::is_constructible<_T, _Args...>::value,
             "Cannot construct the pointer from these args");
-          this->construct(__ptr, utility::algorithm::forward<_Args>(__args)...);
+          this->construct(__ptr, algorithm::forward<_Args>(__args)...);
           return;
         }
 

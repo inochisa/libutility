@@ -75,10 +75,10 @@ namespace utility
     )
     { return static_cast<streamoff>(__x) != static_cast<streamoff>(__y);}
 
-    typedef fpos<utility::sstd::mbstate_t> streampos;
-    typedef fpos<utility::sstd::mbstate_t> wstreampos;
-    typedef fpos<utility::sstd::mbstate_t> u16streampos;
-    typedef fpos<utility::sstd::mbstate_t> u32streampos;
+    typedef fpos<sstd::mbstate_t> streampos;
+    typedef fpos<sstd::mbstate_t> wstreampos;
+    typedef fpos<sstd::mbstate_t> u16streampos;
+    typedef fpos<sstd::mbstate_t> u32streampos;
   }
 }
 

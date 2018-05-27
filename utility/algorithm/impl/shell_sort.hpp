@@ -17,25 +17,25 @@ namespace utility
 
     namespace detail
     {
-      using utility::algorithm::sort_tag::shell_sort_tag;
+      using algorithm::sort_tag::shell_sort_tag;
       template<typename _RandomAccessIterator, typename _Compare>
       void __sort(
         _RandomAccessIterator __first, _RandomAccessIterator __last,
         _Compare __compare, shell_sort_tag /*sort_tag*/
       )
       {
-        using utility::algorithm::swap;
+        using algorithm::swap;
 #ifdef UTILITY_DEBUG
         static_assert(
-          utility::iterator::is_random_access_iterator<_RandomAccessIterator>::value,
+          iterator::is_random_access_iterator<_RandomAccessIterator>::value,
           "shell sort need at least random access iterator."
         );
 #endif // ! UTILITY_DEBUG
         typedef typename
-          utility::iterator::iterator_traits<_RandomAccessIterator>::difference_type
+          iterator::iterator_traits<_RandomAccessIterator>::difference_type
           __difference_type;
 
-        __difference_type __size = utility::iterator::distance(__first,__last);
+        __difference_type __size = iterator::distance(__first,__last);
 
         for(__difference_type __step = __size / 2; __step > 0; __step = __step / 2)
         {

@@ -11,9 +11,9 @@ namespace utility
   {
     template<typename _T>
     struct is_unsupport_trait :
-      public utility::trait::integral_constant<bool,
-        utility::trait::type::releations::is_base_of<unsupport_trait<false>, _T>::value ||
-        utility::trait::type::releations::is_base_of<unsupport_trait<true>, _T>::value>
+      public trait::integral_constant<bool,
+        trait::type::releations::is_base_of<unsupport_trait<false>, _T>::value ||
+        trait::type::releations::is_base_of<unsupport_trait<true>, _T>::value>
     { };
   }
 }

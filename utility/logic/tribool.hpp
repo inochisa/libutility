@@ -14,7 +14,7 @@ namespace utility
       * \brief the indeterminate tag
       *
       * the stuct is on the behalf of the indeterminate value
-      * \see utility::logic::boolean::tribool
+      * \see logic::boolean::tribool
       */
       struct indeterminate_tag
       {
@@ -22,7 +22,7 @@ namespace utility
       };
 
       /*!
-      * \relates utility::logic::boolean::tribool
+      * \relates logic::boolean::tribool
       * a helper variable
       */
       constexpr indeterminate_tag unknown;
@@ -113,7 +113,7 @@ namespace utility
       };
 
       /*!
-      * \relates utility::logic::boolean::tribool
+      * \relates logic::boolean::tribool
       *
       * show whether the boolean value is indeterminate
       */
@@ -121,7 +121,7 @@ namespace utility
       { return __tb.is_indeterminate();}
 
       /*!
-      * \relates utility::logic::boolean::tribool
+      * \relates logic::boolean::tribool
       *
       *show whether the boolean value is determinate
       */
@@ -210,21 +210,21 @@ namespace utility
   namespace literals
   {
     /*!
-    * \relates utility::logic::boolean::tribool
+    * \relates logic::boolean::tribool
     */
-    inline constexpr utility::logic::boolean::tribool operator"" _u_tri(unsigned long long __mark)
+    inline constexpr logic::boolean::tribool operator"" _u_tri(unsigned long long __mark)
     {
-      using utility::logic::boolean::tribool;
+      using logic::boolean::tribool;
       return __mark > 1 ? tribool(tribool::indeterminate) :
         (__mark ? tribool(true) : tribool(false));
     }
 
     /*!
-    * \relates utility::logic::boolean::tribool
+    * \relates logic::boolean::tribool
     */
-    inline constexpr utility::logic::boolean::tribool operator"" _u_tribool(unsigned long long __mark)
+    inline constexpr logic::boolean::tribool operator"" _u_tribool(unsigned long long __mark)
     {
-      using utility::logic::boolean::tribool;
+      using logic::boolean::tribool;
       return __mark > 1 ? tribool(tribool::indeterminate) :
         (__mark ? tribool(true) : tribool(false));
     }

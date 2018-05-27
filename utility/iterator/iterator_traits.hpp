@@ -50,8 +50,8 @@ namespace utility
     {
       typedef contiguous_iterator_tag iterator_category;
       typedef typename
-        utility::trait::type::transform::remove_const<_T>::type value_type;
-      typedef utility::ptrdiff_t difference_type;
+        trait::type::transform::remove_const<_T>::type value_type;
+      typedef ptrdiff_t difference_type;
       typedef _T* pointer;
       typedef _T& reference;
     };
@@ -60,8 +60,8 @@ namespace utility
     {
       typedef contiguous_iterator_tag iterator_category;
       typedef typename
-        utility::trait::type::transform::remove_const<_T>::type value_type;
-      typedef utility::ptrdiff_t difference_type;
+        trait::type::transform::remove_const<_T>::type value_type;
+      typedef ptrdiff_t difference_type;
       typedef const _T* pointer;
       typedef const _T& reference;
     };
@@ -72,13 +72,13 @@ namespace utility
     * This is the \b iterator_traits implementation used.
     *
     * \tparam _T the type to detect whether is an iterator type
-    * \see utility::iterator::iterator_traits
+    * \see iterator::iterator_traits
     */
     template<typename _T>
     using is_iterator =
-      utility::trait::integral_constant<bool,
-        utility::iterator::__trait_impl::__has_iterator_category_tag<
-          utility::iterator::iterator_traits<_T>
+      trait::integral_constant<bool,
+        iterator::__trait_impl::__has_iterator_category_tag<
+          iterator::iterator_traits<_T>
         >::value
       >;
 
@@ -89,14 +89,14 @@ namespace utility
     * \tparam _TargetIteratorTag   the request iterator type tag
     * \note   Use this when is_iterator is true_type, otherwise the
     *         behavior is undefined.
-    * \see utility::iterator::is_iterator
+    * \see iterator::is_iterator
     */
     template<typename _InputIterator, typename _TargetIteratorTag>
     using is_vaild_iterator_type =
-      utility::trait::integral_constant<bool,
-        utility::trait::type::releations::is_convertible<
+      trait::integral_constant<bool,
+        trait::type::releations::is_convertible<
           typename
-          utility::iterator::iterator_traits<_InputIterator>::iterator_category,
+          iterator::iterator_traits<_InputIterator>::iterator_category,
           _TargetIteratorTag
         >::value
       >;
@@ -113,21 +113,21 @@ namespace utility
     * \tparam _TargetIterator   the request iterator
     * \note   Use this when is_iterator is true_type, otherwise the
     *         behavior is undefined.
-    * \see utility::iterator::is_iterator
-    * \see utility::iterator::is_vaild_iterator_type
+    * \see iterator::is_iterator
+    * \see iterator::is_vaild_iterator_type
     */
     template<typename _InputIterator, typename _TargetIterator>
     using is_vaild_iterator =
-      utility::trait::integral_constant<bool,
+      trait::integral_constant<bool,
         is_vaild_iterator_type<
           _InputIterator,
           typename
-          utility::iterator::iterator_traits<_TargetIterator>::iterator_category
+          iterator::iterator_traits<_TargetIterator>::iterator_category
         >::value &&
-        utility::trait::type::releations::is_convertible<
+        trait::type::releations::is_convertible<
           typename
-          utility::iterator::iterator_traits<_InputIterator>::value_type, typename
-          utility::iterator::iterator_traits<_TargetIterator>::value_type
+          iterator::iterator_traits<_InputIterator>::value_type, typename
+          iterator::iterator_traits<_TargetIterator>::value_type
         >::value
       >;
 

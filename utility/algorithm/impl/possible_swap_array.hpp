@@ -23,19 +23,19 @@ namespace utility
      * \exception This function is noexcept
      *            when \c is_nothrow_possible_swappable_with<_T>
      *            is \b true
-     * \related utility::algorithm::swap
+     * \related algorithm::swap
      */
-    template<typename _T, utility::size_t __size>
+    template<typename _T, size_t __size>
     inline
-    typename utility::trait::type::miscellaneous::enable_if<
-      utility::trait::type::features::is_possible_swappable_with<_T&, _T&>::value,
+    typename trait::type::miscellaneous::enable_if<
+      trait::type::features::is_possible_swappable_with<_T&, _T&>::value,
       void
     >::type
     possible_swap(_T(&__a)[__size], _T(&__b)[__size]) noexcept(
-      utility::trait::type::features::is_nothrow_possible_swappable_with<_T&, _T&>::value
+      trait::type::features::is_nothrow_possible_swappable_with<_T&, _T&>::value
     )
     {
-      for(utility::size_t __i = 0; __i < __size; ++__i)
+      for(size_t __i = 0; __i < __size; ++__i)
       { possible_swap(__a[__i], __b[__i]);}
     }
   }

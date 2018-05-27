@@ -241,14 +241,14 @@ namespace utility
     }
     void md5(
       unsigned char __res[16],
-      const void* __mem, utility::size_t __len
+      const void* __mem, size_t __len
     ) noexcept
     {
       detail::md5_block __block;
 
       detail::md5_block_init(__block);
 
-      utility::size_t __i;
+      size_t __i;
       const unsigned char* __ptr =
         static_cast<const unsigned char*>(__mem);
       for(__i = 0; __i < __len; ++__i)
@@ -317,7 +317,7 @@ namespace utility
   {
     using std::scanf;
     using std::printf;
-    using utility::algorithm::rotate;
+    using algorithm::rotate;
 
     char str[20];
     char need[4] = {'a', 'b', 'c', 'd'};

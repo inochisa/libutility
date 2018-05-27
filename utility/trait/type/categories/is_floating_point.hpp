@@ -18,19 +18,19 @@ namespace utility
         {
           template<typename _T>
           struct __is_floating_test :
-            public utility::trait::false_type
+            public trait::false_type
           { };
           template<>
           struct __is_floating_test<float> :
-            public utility::trait::true_type
+            public trait::true_type
           { };
           template<>
           struct __is_floating_test<double> :
-            public utility::trait::true_type
+            public trait::true_type
           { };
           template<>
           struct __is_floating_test<long double> :
-            public utility::trait::true_type
+            public trait::true_type
           { };
 
         }
@@ -38,7 +38,7 @@ namespace utility
         struct is_floating_point :
           public __is_floating_impl::__is_floating_test<
             typename
-              utility::trait::type::transform::remove_cv<_T>::type>
+              trait::type::transform::remove_cv<_T>::type>
         { };
       }
     }

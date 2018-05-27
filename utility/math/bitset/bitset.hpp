@@ -25,7 +25,7 @@ namespace utility
     <
       size_t Size,
       typename bit_type = unsigned long,
-      typename trait = ::utility::trait::math::bit_trait<bit_type>
+      typename trait = ::trait::math::bit_trait<bit_type>
     >
     class bitset;
   }
@@ -39,7 +39,7 @@ namespace utility
     class bitset
     {
 
-      static_assert(utility::trait::type::is_same<bit_type, typename trait::type>::value, "The trait doesn't match the type");
+      static_assert(trait::type::is_same<bit_type, typename trait::type>::value, "The trait doesn't match the type");
       static_assert(trait::vaild, "The type doesn't support bitset");
       static_assert(trait::bitoperation, "The type doesn't support bit operation");
 

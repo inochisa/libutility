@@ -26,25 +26,25 @@ namespace utility
      * \exception this function is \b noexcept when
      *            \c is_nothrow_move_constructible<_T> &&
      *            \c is_nothrow_move_assignable<_T> is \b true
-     * \related utility::algorithm::possible_swap
+     * \related algorithm::possible_swap
      */
     template<typename _T>
     inline
-    typename utility::trait::type::miscellaneous::enable_if
+    typename trait::type::miscellaneous::enable_if
     <
-      utility::trait::type::features::is_move_assignable<_T>::value &&
-      utility::trait::type::features::is_move_constructible<_T>::value,
+      trait::type::features::is_move_assignable<_T>::value &&
+      trait::type::features::is_move_constructible<_T>::value,
       void
     >::type
     swap(_T& __a, _T& __b)
       noexcept(
-        utility::trait::type::features::is_nothrow_move_constructible<_T>::value &&
-        utility::trait::type::features::is_nothrow_move_assignable<_T>::value
+        trait::type::features::is_nothrow_move_constructible<_T>::value &&
+        trait::type::features::is_nothrow_move_assignable<_T>::value
       )
     {
-      _T __tmp(utility::algorithm::move(__a));
-      __a = utility::algorithm::move(__b);
-      __b = utility::algorithm::move(__tmp);
+      _T __tmp(algorithm::move(__a));
+      __a = algorithm::move(__b);
+      __b = algorithm::move(__tmp);
     }
   }
 }

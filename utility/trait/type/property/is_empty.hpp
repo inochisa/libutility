@@ -20,7 +20,7 @@ namespace utility
         // is_empty
         template<typename _T>
         struct is_empty :
-          public utility::trait::integral_constant<
+          public trait::integral_constant<
             bool, __utility_is_empty(_T)>
         { };
 
@@ -52,15 +52,15 @@ namespace utility
           { long __nouse;};
 
           template<typename _T,
-            bool = utility::trait::type::categories::is_class<_T>::value>
+            bool = trait::type::categories::is_class<_T>::value>
           struct __is_empty_test :
-            public utility::trait::integral_constant<bool,
+            public trait::integral_constant<bool,
               sizeof(__is_empty_helper<_T>) ==
               sizeof(__is_empty_base_helper)>
           { };
           template<typename _T>
           struct __is_empty_test<_T, false> :
-            public utility::trait::false_type
+            public trait::false_type
           { };
         }
         template<typename _T>

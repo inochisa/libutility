@@ -21,7 +21,7 @@ namespace utility
         _Compare __compare
       )
       {
-        using utility::algorithm::swap;
+        using algorithm::swap;
         _Difference __hole = __begin;
         _Difference __child = 2*__begin+1;
         for(; __child < __end;)
@@ -48,12 +48,12 @@ namespace utility
       _Compare __compare
     )
     {
-      using utility::algorithm::swap;
+      using algorithm::swap;
       typedef typename
-        utility::iterator::iterator_traits<_RandomAccessIterator>::difference_type
+        iterator::iterator_traits<_RandomAccessIterator>::difference_type
         __difference_type;
       typedef typename
-        utility::trait::type::transform::add_lvalue_reference<_Compare>::type
+        trait::type::transform::add_lvalue_reference<_Compare>::type
         __comp_ref;
 
       __difference_type __len = __last - __first;
@@ -73,9 +73,9 @@ namespace utility
     )
     {
       typedef typename
-        utility::iterator::iterator_traits<_RandomAccessIterator>::value_type
+        iterator::iterator_traits<_RandomAccessIterator>::value_type
         __value_type;
-      utility::algorithm::make_heap(__first, __last, utility::algorithm::less<__value_type>());
+      algorithm::make_heap(__first, __last, algorithm::less<__value_type>());
     }
   }
 }

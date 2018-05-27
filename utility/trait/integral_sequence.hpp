@@ -14,7 +14,7 @@ namespace utility
     {
       typedef _type value_type;
       typedef integral_sequence<_type, _vals...> type;
-      constexpr static utility::size_t size() noexcept
+      constexpr static size_t size() noexcept
       { return sizeof...(_vals);}
     };
 
@@ -24,10 +24,10 @@ namespace utility
       struct __integer_sequence
       {
         static_assert(
-          utility::trait::type::categories::is_integral<_Type>::value,
+          trait::type::categories::is_integral<_Type>::value,
           "The integer_sequence need integer type."
         );
-        typedef utility::trait::integral_sequence<_Type, _Vals...> type;
+        typedef trait::integral_sequence<_Type, _Vals...> type;
       };
     }
     template<typename _type, _type... _vals>
@@ -35,8 +35,8 @@ namespace utility
       typename
       __integral_sequence_impl::__integer_sequence<_type, _vals...>::type;
 
-    template<utility::size_t... _Vals>
-    using index_sequence = integer_sequence<utility::size_t, _Vals...>;
+    template<size_t... _Vals>
+    using index_sequence = integer_sequence<size_t, _Vals...>;
 
     namespace __make_integer_sequence_impl
     {
@@ -47,13 +47,13 @@ namespace utility
       struct __sequence_extend;
 
       template<typename _Type, _Type... _Valis, __i_size_t... _Now>
-      struct __sequence_extend<utility::trait::integral_sequence<_Type, _Valis...>, _Now...>
+      struct __sequence_extend<trait::integral_sequence<_Type, _Valis...>, _Now...>
       {
         private:
           constexpr static _Type __length =
             static_cast<_Type>(sizeof...(_Valis));
         public:
-          typedef utility::trait::integer_sequence<
+          typedef trait::integer_sequence<
             _Type, _Valis...,
             1 * __length + _Valis...,
             2 * __length + _Valis...,
@@ -72,27 +72,27 @@ namespace utility
       template<typename _T>
       struct __sequence_base<_T, 0>
       {
-        typedef utility::trait::integer_sequence<_T
+        typedef trait::integer_sequence<_T
         > type;
       };
       template<typename _T>
       struct __sequence_base<_T, 1>
       {
-        typedef utility::trait::integer_sequence<_T,
+        typedef trait::integer_sequence<_T,
           static_cast<_T>(0)
         > type;
       };
       template<typename _T>
       struct __sequence_base<_T, 2>
       {
-        typedef utility::trait::integer_sequence<_T,
+        typedef trait::integer_sequence<_T,
           static_cast<_T>(0), static_cast<_T>(1)
         > type;
       };
       template<typename _T>
       struct __sequence_base<_T, 3>
       {
-        typedef utility::trait::integer_sequence<_T,
+        typedef trait::integer_sequence<_T,
           static_cast<_T>(0), static_cast<_T>(1),
           static_cast<_T>(2)
         > type;
@@ -134,7 +134,7 @@ namespace utility
       struct __make_integer_sequence
       {
         static_assert(
-          utility::trait::type::categories::is_integral<_T>::value,
+          trait::type::categories::is_integral<_T>::value,
           "The integer_sequence need integer type."
         );
 
@@ -146,9 +146,9 @@ namespace utility
     using make_integer_sequence =
       typename __make_integer_sequence_impl::__make_integer_sequence<_T, _Val>::type;
 
-    template<utility::size_t _Val>
+    template<size_t _Val>
     using make_index_sequence =
-      utility::trait::make_integer_sequence<utility::size_t, _Val>;
+      trait::make_integer_sequence<size_t, _Val>;
   }
 }
 

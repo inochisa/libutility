@@ -26,26 +26,26 @@ namespace utility
     inline _OutputBidirectionalIterator move_backward(_InputBidirectionalIterator __first, _InputBidirectionalIterator __last, _OutputBidirectionalIterator __result)
     {
       for(;__first != __last;)
-      { *(--__result) = utility::algorithm::move(*(--__last));}
+      { *(--__result) = algorithm::move(*(--__last));}
       return __result;
     }
     template<typename _T, typename _U>
     inline
-    typename utility::trait::type::miscellaneous::enable_if<
-      utility::trait::type::releations::is_same<
+    typename trait::type::miscellaneous::enable_if<
+      trait::type::releations::is_same<
         typename
-        utility::trait::type::transform::remove_cv<_T>::type,
+        trait::type::transform::remove_cv<_T>::type,
         _U>::value &&
-      utility::trait::type::features::is_trivially_copy_assignable<_U>::value,
+      trait::type::features::is_trivially_copy_assignable<_U>::value,
       _U*>::type
     move_backward(_T* __first, _T* __last, _U* __result)
     {
-      const utility::size_t __len =
-      static_cast<utility::size_t>(__last-__first);
+      const size_t __len =
+      static_cast<size_t>(__last-__first);
       if(__len > 0)
       {
         __result -= __len;
-        utility::sstd::memmove(__result, __first, __len*sizeof(_U));
+        sstd::memmove(__result, __first, __len*sizeof(_U));
       }
       return __result;
     }

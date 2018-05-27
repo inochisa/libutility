@@ -422,11 +422,11 @@ namespace utility
         struct make_unsigned;
 
         // aligned_storage
-        template<utility::size_t  Len, utility::size_t Align>
+        template<size_t  Len, size_t Align>
         struct aligned_storage;
 
         // aligned_union
-        template<utility::size_t  Len, typename... Ts>
+        template<size_t  Len, typename... Ts>
         struct aligned_union;
 
         // enable_if

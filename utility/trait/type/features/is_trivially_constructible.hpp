@@ -20,7 +20,7 @@ namespace utility
         // is_trivially_constructible
         template<class _T, typename... _Args>
         struct is_trivially_constructible :
-          public utility::trait::integral_constant<bool,
+          public trait::integral_constant<bool,
             __utility_is_trivially_constructible(_T, _Args...)>
         { };
       }
@@ -43,27 +43,27 @@ namespace utility
         // is_trivially_constructible
         template<class _T, typename... Args>
         struct is_trivially_constructible :
-          public utility::trait::false_type
+          public trait::false_type
         { };
         template<class _T>
         struct is_trivially_constructible<_T> :
-          public utility::trait::integral_constant<bool,
-            utility::trait::type::categories::is_scalar<_T>::value>
+          public trait::integral_constant<bool,
+            trait::type::categories::is_scalar<_T>::value>
         { };
         template<class _T>
         struct is_trivially_constructible<_T, _T&> :
-          public utility::trait::integral_constant<bool,
-            utility::trait::type::categories::is_scalar<_T>::value>
+          public trait::integral_constant<bool,
+            trait::type::categories::is_scalar<_T>::value>
         { };
         template<class _T>
         struct is_trivially_constructible<_T, _T&&> :
-          public utility::trait::integral_constant<bool,
-            utility::trait::type::categories::is_scalar<_T>::value>
+          public trait::integral_constant<bool,
+            trait::type::categories::is_scalar<_T>::value>
         { };
         template<class _T>
         struct is_trivially_constructible<_T, const _T&> :
-          public utility::trait::integral_constant<bool,
-            utility::trait::type::categories::is_scalar<_T>::value>
+          public trait::integral_constant<bool,
+            trait::type::categories::is_scalar<_T>::value>
         { };
       }
     }

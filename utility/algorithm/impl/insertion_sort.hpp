@@ -18,37 +18,37 @@ namespace utility
 
     namespace detail
     {
-      using utility::algorithm::sort_tag::insertion_sort_tag;
+      using algorithm::sort_tag::insertion_sort_tag;
       template<typename _BidirectionalIterator, typename _Compare>
       void __sort(
         _BidirectionalIterator __first, _BidirectionalIterator __last,
         _Compare __compare, insertion_sort_tag /*sort_tag*/
       )
       {
-        using utility::algorithm::swap;
+        using algorithm::swap;
         typedef typename
-          utility::iterator::iterator_traits<_BidirectionalIterator>::value_type
+          iterator::iterator_traits<_BidirectionalIterator>::value_type
           __value_type;
         for(
-          _BidirectionalIterator __i = utility::iterator::next(__first);
+          _BidirectionalIterator __i = iterator::next(__first);
           __i != __last; ++__i
         )
         {
 #ifdef UTILITY_DEBUG
           static_assert(
-            utility::iterator::is_bidirectional_iterator<_BidirectionalIterator>::value,
+            iterator::is_bidirectional_iterator<_BidirectionalIterator>::value,
             "insertion sort tag need at least bidirectional iterator."
           );
 #endif // ! UTILITY_DEBUG
           __value_type __tmp = *__i;
           _BidirectionalIterator __fpos;
           for(
-            __fpos = utility::iterator::prev(__i);
-            utility::iterator::next(__fpos) != __first && __compare(__tmp, *__fpos);
+            __fpos = iterator::prev(__i);
+            iterator::next(__fpos) != __first && __compare(__tmp, *__fpos);
             --__fpos
           )
-          { swap(*__fpos, *utility::iterator::next(__fpos));}
-          *utility::iterator::next(__fpos) = __tmp;
+          { swap(*__fpos, *iterator::next(__fpos));}
+          *iterator::next(__fpos) = __tmp;
         }
       }
 

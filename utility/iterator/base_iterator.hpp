@@ -12,7 +12,7 @@ namespace utility
     <
       typename __Category,
       typename __T,
-      typename __Distant = utility::ptrdiff_t
+      typename __Distant = ptrdiff_t
       typename __Pointer = __T*,
       typename __Reference = __T&
     >

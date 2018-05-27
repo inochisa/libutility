@@ -19,11 +19,11 @@ namespace utility
         // is_copy_assignable
         template<typename _T>
         struct is_copy_assignable : public
-          utility::trait::type::features::is_assignable<
-            typename utility::trait::type::transform::add_lvalue_reference<_T>::type,
-            typename utility::trait::type::transform::add_lvalue_reference
+          trait::type::features::is_assignable<
+            typename trait::type::transform::add_lvalue_reference<_T>::type,
+            typename trait::type::transform::add_lvalue_reference
             <typename
-              utility::trait::type::transform::add_const<_T>::type>::type>
+              trait::type::transform::add_const<_T>::type>::type>
         { };
 
       }

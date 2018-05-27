@@ -12,7 +12,7 @@ namespace utility
     namespace detail
     {
       template<typename _T,
-        bool = utility::trait::type::features::is_trivially_destructible<_T>::value
+        bool = trait::type::features::is_trivially_destructible<_T>::value
       >
       struct __destroy_at
       {

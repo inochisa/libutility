@@ -17,11 +17,11 @@ namespace utility
       template<
         typename _Iterator,
         bool =
-          utility::trait::type::property::is_pod
+          trait::type::property::is_pod
           <
-            typename utility::iterator::iterator_traits<_Iterator>::value_type
+            typename iterator::iterator_traits<_Iterator>::value_type
           >::value &&
-          utility::trait::type::categories::is_pointer<_Iterator>::value
+          trait::type::categories::is_pointer<_Iterator>::value
       >
       struct __copy_if
       {
@@ -48,11 +48,11 @@ namespace utility
         )
         {
           typedef typename
-            utility::iterator::iterator_traits<_OutputIterator>::value_type
+            iterator::iterator_traits<_OutputIterator>::value_type
             __value_type;
           if(__size > 0)
           {
-            utility::sstd::memmove(
+            sstd::memmove(
               __ffirst, __first, __size*sizeof(__value_type)
             );
             return __ffirst + __size;

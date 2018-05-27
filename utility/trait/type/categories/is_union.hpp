@@ -20,7 +20,7 @@ namespace utility
         // is_union
         template<typename _T>
         struct is_union :
-          public utility::trait::integral_constant<bool, __utility_is_union(_T)>
+          public trait::integral_constant<bool, __utility_is_union(_T)>
         { };
 
       }
@@ -44,14 +44,14 @@ namespace utility
         namespace __is_union_impl
         {
           template<typename _T>
-          struct __is_union_test : pulic utility::trait::unsupport_trait<false>
+          struct __is_union_test : pulic trait::unsupport_trait<false>
           { };
         }
         template<typename _T>
         struct is_union :
           public __is_union_impl::__is_union_test<
             typename
-              utility::trait::type::transform::remove_cv<_T>::type>
+              trait::type::transform::remove_cv<_T>::type>
         { };
 
       }

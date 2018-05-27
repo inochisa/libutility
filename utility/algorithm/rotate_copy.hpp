@@ -33,8 +33,8 @@ namespace utility
       _ForwardIterator __last,  _OutputIterator __ofirst
     )
     {
-      __ofirst = utility::algorithm::copy(__mid, __last, __ofirst);
-      return utility::algorithm::copy(__first, __mid, __ofirst);
+      __ofirst = algorithm::copy(__mid, __last, __ofirst);
+      return algorithm::copy(__first, __mid, __ofirst);
     }
   }
 }

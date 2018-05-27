@@ -47,8 +47,8 @@ namespace utility
     <
       typename _Key,
       typename _Value,
-      typename _Compare = utility::algorithm::less<void>,
-      typename _Alloc = utility::memory::allocator<utility::container::pair<const _Key, _Value>>
+      typename _Compare = algorithm::less<void>,
+      typename _Alloc = memory::allocator<container::pair<const _Key, _Value>>
     >
     class multimap
     {
@@ -65,35 +65,35 @@ namespace utility
 
           public:
             bool operator()(
-              utility::container::pair<const _Key, _Value>& __x,
-              utility::container::pair<const _Key, _Value>& __y
+              container::pair<const _Key, _Value>& __x,
+              container::pair<const _Key, _Value>& __y
             ) const
             { return this->__compare(__get_key(__x), __get_key(__y));}
         };
 
       private:
-        typedef typename utility::memory::allocator_traits<_Alloc>::template
-          rebind_alloc<utility::container::pair<const _Key, _Value>>
+        typedef typename memory::allocator_traits<_Alloc>::template
+          rebind_alloc<container::pair<const _Key, _Value>>
           __allocator;
-        typedef utility::container::white_black_tree<
+        typedef container::white_black_tree<
           _Key, _Value, _Compare,
-          utility::container::pair<const _Key, _Value>, __allocator>
+          container::pair<const _Key, _Value>, __allocator>
           __tree_type;
 
       public:
         typedef _Key                                          key_type;
         typedef _Value                                        multimapped_type;
-        typedef utility::container::pair<const _Key, _Value>  value_type;
+        typedef container::pair<const _Key, _Value>  value_type;
 
-        typedef utility::size_t     size_type;
-        typedef utility::ptrdiff_t  difference_type;
+        typedef size_t     size_type;
+        typedef ptrdiff_t  difference_type;
         typedef _Compare            key_compare;
         typedef _Alloc              allocator_type;
         typedef value_type&         reference;
         typedef const value_type&   const_reference;
 
       public:
-        typedef utility::memory::allocator_traits<allocator_type>
+        typedef memory::allocator_traits<allocator_type>
           allocator_traits_type;
 
       public:
@@ -125,7 +125,7 @@ namespace utility
 
         template<typename _InputIterator,
         typename
-        utility::trait::type::miscellaneous::enable_if<
+        trait::type::miscellaneous::enable_if<
             is_iterator<_InputIterator>::value,
             bool
           >::type = true
@@ -138,7 +138,7 @@ namespace utility
         { }
         template<typename _InputIterator,
         typename
-        utility::trait::type::miscellaneous::enable_if<
+        trait::type::miscellaneous::enable_if<
             is_iterator<_InputIterator>::value,
             bool
           >::type = true
@@ -157,11 +157,11 @@ namespace utility
         ):__tree(__other.__tree, __alloc)
         { }
         multimap(multimap&& __other):
-          __tree(utility::algorithm::move(__other.__tree))
+          __tree(algorithm::move(__other.__tree))
         { }
         multimap(
           multimap&& __other, const allocator_type __alloc
-        ):__tree(utility::algorithm::move(__other.__tree), __alloc)
+        ):__tree(algorithm::move(__other.__tree), __alloc)
         { }
 
         multimap(
@@ -186,7 +186,7 @@ namespace utility
         multimap& operator=(multimap&& __other)
         {
           if(&__other != this)
-          { this->__tree = utility::algorithm::move(__other.__tree);}
+          { this->__tree = algorithm::move(__other.__tree);}
           return *this;
         }
         multimap& operator=(initializer_list<value_type> __initlist)
@@ -240,14 +240,14 @@ namespace utility
         { return this->__tree.size();}
 
       public:
-        utility::container::pair<iterator, bool>
+        container::pair<iterator, bool>
         insert(const value_type& __val)
         { return this->__tree.insert_unique(__val);}
-        utility::container::pair<iterator, bool>
+        container::pair<iterator, bool>
         insert(value_type&& __val)
         {
           return this->__tree.insert_unique(
-            utility::algorithm::move(__val)
+            algorithm::move(__val)
           );
         }
         iterator insert(
@@ -259,17 +259,17 @@ namespace utility
         )
         {
           return this->__tree.insert_unique(
-            __hint, utility::algorithm::move(__val)
+            __hint, algorithm::move(__val)
           );
         }
 
       public:
         template<typename... _Args>
-        utility::container::pair<iterator, bool>
+        container::pair<iterator, bool>
         emplace(_Args&&... __args)
         {
           return this->__tree.emplace_unique(
-            utility::algorithm::move(__args)...
+            algorithm::move(__args)...
           );
         }
         template<typename... _Args>
@@ -278,7 +278,7 @@ namespace utility
         )
         {
           return this->__tree.emplace_unique(
-            __hint, utility::algorithm::move(__args)...
+            __hint, algorithm::move(__args)...
           );
         }
 
@@ -295,17 +295,17 @@ namespace utility
         { return this->__tree.upper_bound(__key);}
         inline const_iterator upper_bound(const key_type& __key) const noexcept
         { return this->__tree.upper_bound(__key);}
-        inline utility::container::pair<iterator, iterator>
+        inline container::pair<iterator, iterator>
         equal_range(const key_type& __key) noexcept
         {
-          return utility::container::pair<iterator, iterator>{
+          return container::pair<iterator, iterator>{
             this->lower_bound(__key), this->upper_bound(__key)
           };
         }
-        inline utility::container::pair<const_iterator, const_iterator>
+        inline container::pair<const_iterator, const_iterator>
         equal_range(const key_type& __key) const noexcept
         {
-          return utility::container::pair<const_iterator, const_iterator>{
+          return container::pair<const_iterator, const_iterator>{
             this->lower_bound(__key), this->upper_bound(__key)
           };
         }
@@ -394,8 +394,8 @@ namespace utility
       typename _Compare, typename _Alloc
     >
     void swap(
-      utility::container::multimap<_Key, _Value, _Compare, _Alloc>& __x,
-      utility::container::multimap<_Key, _Value, _Compare, _Alloc>& __y
+      container::multimap<_Key, _Value, _Compare, _Alloc>& __x,
+      container::multimap<_Key, _Value, _Compare, _Alloc>& __y
     ) noexcept(noexcept(__x.swap(__y)))
     {
       __x.swap(__y);
@@ -405,8 +405,8 @@ namespace utility
       typename _Compare, typename _Alloc
     >
     void possible_swap(
-      utility::container::multimap<_Key, _Value, _Compare, _Alloc>& __x,
-      utility::container::multimap<_Key, _Value, _Compare, _Alloc>& __y
+      container::multimap<_Key, _Value, _Compare, _Alloc>& __x,
+      container::multimap<_Key, _Value, _Compare, _Alloc>& __y
     ) noexcept(noexcept(__x.possible_swap(__y)))
     {
       __x.possible_swap(__y);

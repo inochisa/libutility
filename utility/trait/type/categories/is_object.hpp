@@ -19,7 +19,7 @@ namespace utility
         // is_object
         template<typename _T>
         struct is_object :
-          public utility::trait::integral_constant<bool,
+          public trait::integral_constant<bool,
             is_scalar<_T>::value ||
             is_array<_T>::value  ||
             is_union<_T>::value  ||

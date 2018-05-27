@@ -17,9 +17,9 @@ namespace utility
         // is_trivially_move_constructible
         template<typename _T>
         struct is_trivially_move_constructible : public
-          utility::trait::type::features::is_trivially_constructible<_T,
+          trait::type::features::is_trivially_constructible<_T,
             typename
-            utility::trait::type::transform::add_rvalue_reference<_T>::type>
+            trait::type::transform::add_rvalue_reference<_T>::type>
         { };
 
       }

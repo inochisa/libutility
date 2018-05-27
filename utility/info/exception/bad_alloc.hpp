@@ -35,7 +35,7 @@ namespace utility
           virtual const char* whar() const noexcept
           {
             static const char __me[] =
-              "utility::info::exception::bad_alloc";
+              "info::exception::bad_alloc";
             return __me;
           }
       };

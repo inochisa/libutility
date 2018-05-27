@@ -21,17 +21,17 @@ namespace utility
     // {
     //   private:
     //     const _T* __begin;
-    //     utility::size_t __size;
+    //     size_t __size;
     //   public:
     //     __UTILITY_CPP14_CONSTEXPR__
-    //     initializer_list(const _T* __st, utility::size_t __s) noexcept :
+    //     initializer_list(const _T* __st, size_t __s) noexcept :
     //       __begin(__st), __size(__s)
     //     { }
     //   public:
     //     typedef _T                value_type;
     //     typedef const _T&         reference;
     //     typedef const _T&         const_reference;
-    //     typedef utility::size_t size_type;
+    //     typedef size_t size_type;
 
     //     typedef const _T*         iterator;
     //     typedef const _T*         const_iterator;
@@ -51,7 +51,7 @@ namespace utility
     //     * \return the initializer_list's size
     //     */
     //     __UTILITY_CPP14_CONSTEXPR__
-    //     inline utility::size_t size() const noexcept
+    //     inline size_t size() const noexcept
     //     { return this->__size;}
 
     //     /*!
@@ -72,7 +72,7 @@ namespace utility
     // };
 
     // /*
-    // * \see utility::container::initializer_list::begin
+    // * \see container::initializer_list::begin
     // */
     // template<typename _T>
     // __UTILITY_CPP14_CONSTEXPR__
@@ -80,7 +80,7 @@ namespace utility
     // { return __ilist.begin();}
 
     // /*
-    // * \see utility::container::initializer_list::end
+    // * \see container::initializer_list::end
     // */
     // template<typename _T>
     // __UTILITY_CPP14_CONSTEXPR__

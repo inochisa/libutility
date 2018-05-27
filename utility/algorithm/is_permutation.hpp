@@ -26,7 +26,7 @@ namespace utility
       )
       {
         typedef typename
-          utility::iterator::iterator_traits<_ForwardIterator1>::difference_type
+          iterator::iterator_traits<_ForwardIterator1>::difference_type
           __difference_type;
 
         __difference_type __count1, __count2;
@@ -51,7 +51,7 @@ namespace utility
 
           // Count the number of *__i in the first range
           __count1 = 1;
-          for(_ForwardIterator1 __j = utility::iterator::next(__i);
+          for(_ForwardIterator1 __j = iterator::next(__i);
             __j != __last1; ++__j
           )
           {
@@ -66,8 +66,8 @@ namespace utility
       }
 
       template<typename _Iterator1, typename _Iterator2,
-        bool = utility::iterator::is_random_access_iterator<_Iterator1>::value &&
-        utility::iterator::is_random_access_iterator<_Iterator2>::value
+        bool = iterator::is_random_access_iterator<_Iterator1>::value &&
+        iterator::is_random_access_iterator<_Iterator2>::value
       >
       struct __is_permutation_helper
       {
@@ -88,8 +88,8 @@ namespace utility
           { return true;}
 
           if(
-            utility::iterator::distance(__first1, __last1) !=
-            utility::iterator::distance(__first2, __last2)
+            iterator::distance(__first1, __last1) !=
+            iterator::distance(__first2, __last2)
           )
           { return false;}
 
@@ -111,8 +111,8 @@ namespace utility
         )
         {
           if(
-            utility::iterator::distance(__first1, __last1) !=
-            utility::iterator::distance(__first2, __last2)
+            iterator::distance(__first1, __last1) !=
+            iterator::distance(__first2, __last2)
           )
           { return false;}
 
@@ -164,7 +164,7 @@ namespace utility
     )
     {
       typedef typename
-        utility::trait::type::transform::add_lvalue_reference<_BinaryPredicate>::type
+        trait::type::transform::add_lvalue_reference<_BinaryPredicate>::type
         __pred_ref;
 
       return detail::__is_permutation_helper<_ForwardIterator1,
@@ -188,7 +188,7 @@ namespace utility
     {
       return is_permutation(
         __first1, __last1, __first2, __last2,
-        utility::algorithm::equal_to<void>()
+        algorithm::equal_to<void>()
       );
     }
     /**
@@ -223,10 +223,10 @@ namespace utility
     )
     {
       typedef typename
-        utility::iterator::iterator_traits<_ForwardIterator1>::difference_type
+        iterator::iterator_traits<_ForwardIterator1>::difference_type
         __difference_type;
       typedef typename
-        utility::trait::type::transform::add_lvalue_reference<_BinaryPredicate>::type
+        trait::type::transform::add_lvalue_reference<_BinaryPredicate>::type
         __pred_ref;
 
       for(; __first1 != __last1; ++__first1, ++__first2)
@@ -237,13 +237,13 @@ namespace utility
       if(__first1 == __last1)
       { return true;}
       __difference_type __len =
-        utility::iterator::distance(__first1, __last1);
+        iterator::distance(__first1, __last1);
       if(__len == 1)
       { return false;}
 
       return detail::__is_permutation<_ForwardIterator1, _ForwardIterator2, __pred_ref>(
         __first1, __last1, __first2,
-        utility::iterator::next(__first2, __len), __pred
+        iterator::next(__first2, __len), __pred
       );
     }
     /**
@@ -262,7 +262,7 @@ namespace utility
     {
       return is_permutation(
         __first1, __last1, __first2,
-        utility::algorithm::equal_to<void>()
+        algorithm::equal_to<void>()
       );
     }
   }

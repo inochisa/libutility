@@ -18,24 +18,24 @@ namespace utility
         {
           template<typename _T>
           struct __is_null_pointer_test :
-            public utility::trait::false_type
+            public trait::false_type
           { };
           template<>
-          struct __is_null_pointer_test<utility::trait::nullptr_t> :
-            public utility::trait::true_type
+          struct __is_null_pointer_test<trait::nullptr_t> :
+            public trait::true_type
           { };
         }
         template<typename _T>
         struct is_nullptr_t :
           public __is_null_pointer_impl::__is_null_pointer_test<
             typename
-            utility::trait::type::transform::remove_cv<_T>::type>
+            trait::type::transform::remove_cv<_T>::type>
         { };
         template<typename _T>
         struct is_null_pointer :
           public __is_null_pointer_impl::__is_null_pointer_test<
             typename
-              utility::trait::type::transform::remove_cv<_T>::type>
+              trait::type::transform::remove_cv<_T>::type>
         { };
 
       }

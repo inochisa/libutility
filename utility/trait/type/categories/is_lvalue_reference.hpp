@@ -15,11 +15,11 @@ namespace utility
         // is_lvalue_reference
         template<typename _T>
         struct is_lvalue_reference :
-          public utility::trait::false_type
+          public trait::false_type
         { };
         template<typename _T>
         struct is_lvalue_reference<_T&> :
-          public utility::trait::true_type
+          public trait::true_type
         { };
 
       }

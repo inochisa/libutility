@@ -26,9 +26,9 @@ namespace utility
 {
   namespace container
   {
-    template<typename _T, utility::size_t _Index,
-      bool = utility::trait::type::property::is_empty<_T>::value &&
-        !utility::trait::type::property::is_final<_T>::value
+    template<typename _T, size_t _Index,
+      bool = trait::type::property::is_empty<_T>::value &&
+        !trait::type::property::is_final<_T>::value
     >
     class compressed_index
     {
@@ -40,73 +40,73 @@ namespace utility
 
       public:
         __UTILITY_CPP17_INLINE__
-        constexpr static utility::size_t index = _Index;
+        constexpr static size_t index = _Index;
 
       private:
         pair_value_type __val;
 
       public:
         template<typename __U = _T,
-        typename utility::trait::type::miscellaneous::enable_if<
-          utility::trait::type::features::is_default_constructible<__U>::value &&
-          (utility::trait::type::features::is_implicit_constructible<__U>::value),
+        typename trait::type::miscellaneous::enable_if<
+          trait::type::features::is_default_constructible<__U>::value &&
+          (trait::type::features::is_implicit_constructible<__U>::value),
           bool
         >::type = true>
         constexpr compressed_index() noexcept(
-          utility::trait::type::features::is_nothrow_default_constructible<_T>::value
+          trait::type::features::is_nothrow_default_constructible<_T>::value
         ): __val()
         { }
         template<typename __U = _T,
-          typename utility::trait::type::miscellaneous::enable_if<
-            utility::trait::type::features::is_default_constructible<__U>::value &&
-            !(utility::trait::type::features::is_implicit_constructible<__U>::value),
+          typename trait::type::miscellaneous::enable_if<
+            trait::type::features::is_default_constructible<__U>::value &&
+            !(trait::type::features::is_implicit_constructible<__U>::value),
             bool
           >::type = true>
         constexpr explicit compressed_index() noexcept(
-          utility::trait::type::features::is_nothrow_default_constructible<_T>::value
+          trait::type::features::is_nothrow_default_constructible<_T>::value
         ): __val()
         { }
 
         template<typename _U,
-        typename utility::trait::type::miscellaneous::enable_if<
-          utility::trait::type::features::is_constructible<_T, const _U&>::value &&
-          (utility::trait::type::releations::is_convertible<const _U&, _T>::value),
+        typename trait::type::miscellaneous::enable_if<
+          trait::type::features::is_constructible<_T, const _U&>::value &&
+          (trait::type::releations::is_convertible<const _U&, _T>::value),
           bool
         >::type = true>
         constexpr compressed_index(const _T& __value) noexcept(
-          utility::trait::type::features::is_nothrow_constructible<_T, const _U&>::value
+          trait::type::features::is_nothrow_constructible<_T, const _U&>::value
         ): __val(__value)
         { }
         template<typename _U,
-        typename utility::trait::type::miscellaneous::enable_if<
-          utility::trait::type::features::is_constructible<_T, const _U&>::value &&
-          !(utility::trait::type::releations::is_convertible<const _U&, _T>::value),
+        typename trait::type::miscellaneous::enable_if<
+          trait::type::features::is_constructible<_T, const _U&>::value &&
+          !(trait::type::releations::is_convertible<const _U&, _T>::value),
           bool
         >::type = true>
         constexpr explicit compressed_index(const _U& __value) noexcept(
-          utility::trait::type::features::is_nothrow_constructible<_T, const _U&>::value
+          trait::type::features::is_nothrow_constructible<_T, const _U&>::value
         ): __val(__value)
         { }
 
         template<typename _U,
-        typename utility::trait::type::miscellaneous::enable_if<
-          utility::trait::type::features::is_constructible<_T, _U&&>::value &&
-          (utility::trait::type::releations::is_convertible<_U&&, _T>::value),
+        typename trait::type::miscellaneous::enable_if<
+          trait::type::features::is_constructible<_T, _U&&>::value &&
+          (trait::type::releations::is_convertible<_U&&, _T>::value),
           bool
         >::type = true>
         constexpr compressed_index(_U&& __value) noexcept(
-          utility::trait::type::features::is_nothrow_constructible<_T, _U&&>::value
-        ): __val(utility::algorithm::forward<_U>(__value))
+          trait::type::features::is_nothrow_constructible<_T, _U&&>::value
+        ): __val(algorithm::forward<_U>(__value))
         { }
         template<typename _U,
-        typename utility::trait::type::miscellaneous::enable_if<
-          utility::trait::type::features::is_constructible<_T, _U&&>::value &&
-          !(utility::trait::type::releations::is_convertible<_U&&, _T>::value),
+        typename trait::type::miscellaneous::enable_if<
+          trait::type::features::is_constructible<_T, _U&&>::value &&
+          !(trait::type::releations::is_convertible<_U&&, _T>::value),
           bool
         >::type = true>
         constexpr explicit compressed_index(_U&& __value) noexcept(
-          utility::trait::type::features::is_nothrow_constructible<_T, _U&&>::value
-        ): __val(utility::algorithm::forward<_U>(__value))
+          trait::type::features::is_nothrow_constructible<_T, _U&&>::value
+        ): __val(algorithm::forward<_U>(__value))
         { }
 
         compressed_index(const compressed_index&) = default;
@@ -114,27 +114,27 @@ namespace utility
 
       public:
         template<typename _U,
-        typename utility::trait::type::miscellaneous::enable_if<
-          utility::trait::type::features::is_assignable<_T, const _U&>::value,
+        typename trait::type::miscellaneous::enable_if<
+          trait::type::features::is_assignable<_T, const _U&>::value,
           bool
         >::type = true>
         compressed_index& operator=(const _U& __value) noexcept(
-          utility::trait::type::features::is_nothrow_assignable<_T, const _U&>::value
+          trait::type::features::is_nothrow_assignable<_T, const _U&>::value
         )
         {
           this->__val = __value;
           return *this;
         }
         template<typename _U,
-        typename utility::trait::type::miscellaneous::enable_if<
-          utility::trait::type::features::is_assignable<_T, _U&&>::value,
+        typename trait::type::miscellaneous::enable_if<
+          trait::type::features::is_assignable<_T, _U&&>::value,
           bool
         >::type = true>
         compressed_index& operator=(_U&& __value) noexcept(
-          utility::trait::type::features::is_nothrow_assignable<_T, _U&&>::value
+          trait::type::features::is_nothrow_assignable<_T, _U&&>::value
         )
         {
-          this->__val = utility::algorithm::forward<_U>(__value);
+          this->__val = algorithm::forward<_U>(__value);
           return *this;
         }
         compressed_index& operator=(const compressed_index&) = default;
@@ -148,56 +148,56 @@ namespace utility
 
       public:
         template<typename _U = _T,
-        typename utility::trait::type::miscellaneous::enable_if<
-          utility::trait::type::features::is_swappable<_U>::value,
+        typename trait::type::miscellaneous::enable_if<
+          trait::type::features::is_swappable<_U>::value,
           bool
         >::type = true>
         inline void swap(compressed_index& __other) noexcept(
-          utility::trait::type::features::is_nothrow_swappable<_T>::value
+          trait::type::features::is_nothrow_swappable<_T>::value
         )
         {
-          using utility::algorithm::swap;
+          using algorithm::swap;
           swap(this->__val, __other.__val);
         }
         template<typename _U,
-        typename utility::trait::type::miscellaneous::enable_if<
-          utility::trait::type::features::is_swappable_with<_T, _U>::value,
+        typename trait::type::miscellaneous::enable_if<
+          trait::type::features::is_swappable_with<_T, _U>::value,
           bool
         >::type = true>
         inline void swap(_U& __other) noexcept(
-          utility::trait::type::features::is_nothrow_swappable_with<_T, _U>::value
+          trait::type::features::is_nothrow_swappable_with<_T, _U>::value
         )
         {
-          using utility::algorithm::swap;
+          using algorithm::swap;
           swap(this->__val, __other);
         }
         template<typename _U = _T,
-        typename utility::trait::type::miscellaneous::enable_if<
-          utility::trait::type::features::is_possible_swappable<_U>::value,
+        typename trait::type::miscellaneous::enable_if<
+          trait::type::features::is_possible_swappable<_U>::value,
           bool
         >::type = true>
         inline void possible_swap(compressed_index& __other) noexcept(
-          utility::trait::type::features::is_nothrow_possible_swappable<_T>::value
+          trait::type::features::is_nothrow_possible_swappable<_T>::value
         )
         {
-          using utility::algorithm::possible_swap;
+          using algorithm::possible_swap;
           possible_swap(this->__val, __other.__val);
         }
         template<typename _U,
-        typename utility::trait::type::miscellaneous::enable_if<
-          utility::trait::type::features::is_possible_swappable_with<_T, _U>::value,
+        typename trait::type::miscellaneous::enable_if<
+          trait::type::features::is_possible_swappable_with<_T, _U>::value,
           bool
         >::type = true>
         inline void possible_swap(_U& __other) noexcept(
-          utility::trait::type::features::is_nothrow_possible_swappable_with<_T, _U>::value
+          trait::type::features::is_nothrow_possible_swappable_with<_T, _U>::value
         )
         {
-          using utility::algorithm::possible_swap;
+          using algorithm::possible_swap;
           possible_swap(this->__val, __other);
         }
     };
 
-    template<typename _T, utility::size_t _Index>
+    template<typename _T, size_t _Index>
     class compressed_index<_T, _Index, true> : public _T
     {
       public:
@@ -208,7 +208,7 @@ namespace utility
 
       public:
         __UTILITY_CPP17_INLINE__
-        constexpr static utility::size_t index = _Index;
+        constexpr static size_t index = _Index;
 
       public:
         constexpr compressed_index() = default;
@@ -217,26 +217,26 @@ namespace utility
 
       public:
         template<typename _U,
-        typename utility::trait::type::miscellaneous::enable_if<
-          utility::trait::type::features::is_constructible<_T, _U&&>::value &&
-          // !utility::trait::type::releations::is_same<_T, _U>::value &&
-          (utility::trait::type::releations::is_convertible<_U&&, _T>::value),
+        typename trait::type::miscellaneous::enable_if<
+          trait::type::features::is_constructible<_T, _U&&>::value &&
+          // !trait::type::releations::is_same<_T, _U>::value &&
+          (trait::type::releations::is_convertible<_U&&, _T>::value),
           bool
         >::type = true>
         constexpr compressed_index(_U&& __value) noexcept(
-          utility::trait::type::features::is_nothrow_constructible<_T, _U&&>::value
-        ): _T(utility::algorithm::forward<_U>(__value))
+          trait::type::features::is_nothrow_constructible<_T, _U&&>::value
+        ): _T(algorithm::forward<_U>(__value))
         { }
         template<typename _U,
-        typename utility::trait::type::miscellaneous::enable_if<
-          utility::trait::type::features::is_constructible<_T, _U&&>::value &&
-          // !utility::trait::type::releations::is_same<_T, _U>::value &&
-          !(utility::trait::type::releations::is_convertible<_U&&, _T>::value),
+        typename trait::type::miscellaneous::enable_if<
+          trait::type::features::is_constructible<_T, _U&&>::value &&
+          // !trait::type::releations::is_same<_T, _U>::value &&
+          !(trait::type::releations::is_convertible<_U&&, _T>::value),
           bool
         >::type = true>
         constexpr explicit compressed_index(_U&& __value) noexcept(
-          utility::trait::type::features::is_nothrow_constructible<_T, _U&&>::value
-        ): _T(utility::algorithm::forward<_U>(__value))
+          trait::type::features::is_nothrow_constructible<_T, _U&&>::value
+        ): _T(algorithm::forward<_U>(__value))
         { }
 
       public:
@@ -251,39 +251,39 @@ namespace utility
 
       public:
         template<typename _U = _T,
-        typename utility::trait::type::miscellaneous::enable_if<
-          utility::trait::type::features::is_swappable<_U>::value,
+        typename trait::type::miscellaneous::enable_if<
+          trait::type::features::is_swappable<_U>::value,
           bool
         >::type = true>
         inline void swap(compressed_index& __other) noexcept(
-          utility::trait::type::features::is_nothrow_swappable<_T>::value
+          trait::type::features::is_nothrow_swappable<_T>::value
         )
         { }
         template<typename _U,
-        typename utility::trait::type::miscellaneous::enable_if<
-          utility::trait::type::features::is_swappable_with<_T, _U>::value,
+        typename trait::type::miscellaneous::enable_if<
+          trait::type::features::is_swappable_with<_T, _U>::value,
           bool
         >::type = true>
         inline void swap(_U& __other) noexcept(
-          utility::trait::type::features::is_nothrow_swappable_with<_T, _U>::value
+          trait::type::features::is_nothrow_swappable_with<_T, _U>::value
         )
         { }
         template<typename _U = _T,
-        typename utility::trait::type::miscellaneous::enable_if<
-          utility::trait::type::features::is_possible_swappable<_U>::value,
+        typename trait::type::miscellaneous::enable_if<
+          trait::type::features::is_possible_swappable<_U>::value,
           bool
         >::type = true>
         inline void possible_swap(compressed_index& __other) noexcept(
-          utility::trait::type::features::is_nothrow_possible_swappable<_T>::value
+          trait::type::features::is_nothrow_possible_swappable<_T>::value
         )
         { }
         template<typename _U,
-        typename utility::trait::type::miscellaneous::enable_if<
-          utility::trait::type::features::is_possible_swappable_with<_T, _U>::value,
+        typename trait::type::miscellaneous::enable_if<
+          trait::type::features::is_possible_swappable_with<_T, _U>::value,
           bool
         >::type = true>
         inline void possible_swap(_U& __other) noexcept(
-          utility::trait::type::features::is_nothrow_possible_swappable_with<_T, _U>::value
+          trait::type::features::is_nothrow_possible_swappable_with<_T, _U>::value
         )
         { }
     };

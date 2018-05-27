@@ -39,14 +39,14 @@ namespace utility
     )
     {
       typedef typename
-        utility::iterator::iterator_traits<_RandomAccessIterator>::difference_type
+        iterator::iterator_traits<_RandomAccessIterator>::difference_type
         __difference_type;
       make_heap(__first, __middle, __compare);
       for(_RandomAccessIterator __i = __middle; __i < __last; ++__i)
       {
         if(__compare(*__i, *__first))
         {
-          utility::algorithm::swap(*__i, *__first);
+          algorithm::swap(*__i, *__first);
           detail::__pop_heap_aux(
             __first, __difference_type(__middle-__first-1), __compare
           );
@@ -70,9 +70,9 @@ namespace utility
     )
     {
       typedef typename
-        utility::iterator::iterator_traits<_RandomAccessIterator>::value_type
+        iterator::iterator_traits<_RandomAccessIterator>::value_type
         __value_type;
-        partial_sort(__first, __last, utility::algorithm::less<__value_type>());
+        partial_sort(__first, __last, algorithm::less<__value_type>());
     }
   }
 }

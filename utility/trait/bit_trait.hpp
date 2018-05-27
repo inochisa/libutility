@@ -141,15 +141,15 @@ namespace utility
         constexpr static unsigned int bitlen = sizeof(unsigned long)*per_bit;
       };
     }
-    using ::utility::trait::math::bit_trait;
-    using ::utility::trait::math::per_bit;
+    using ::trait::math::bit_trait;
+    using ::trait::math::per_bit;
   }
 }
 namespace utility
 {
   namespace math
   {
-    using ::utility::trait::math::per_bit;
+    using ::trait::math::per_bit;
   }
 }
 #endif // ! __UTILITY_TRAIT_MATH_BIT__

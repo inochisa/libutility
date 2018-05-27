@@ -16,7 +16,7 @@ namespace utility
           typedef unsigned short counter_type;
 
         public:
-          constexpr static utility::size_t max_record = 65535UL;
+          constexpr static size_t max_record = 65535UL;
 
         public:
           UTILITY_ALWAYS_INLINE
@@ -58,12 +58,12 @@ namespace utility
 
         public:
           UTILITY_ALWAYS_INLINE
-          static inline utility::size_t steps(counter_type __now) noexcept
+          static inline size_t steps(counter_type __now) noexcept
           { return __now-1;}
           UTILITY_ALWAYS_INLINE
-          static inline utility::size_t next(counter_type __now, utility::size_t __len) noexcept
+          static inline size_t next(counter_type __now, size_t __len) noexcept
           { return __now+__len;}
-          static inline utility::size_t prev(counter_type __now, utility::size_t __len) noexcept
+          static inline size_t prev(counter_type __now, size_t __len) noexcept
           { return __now-__len;}
 
       };
@@ -77,9 +77,9 @@ namespace utility
   {
     namespace config
     {
-      using utility::persistent_container::config::base_cache_sg;
+      using persistent_container::config::base_cache_sg;
     }
-    using utility::persistent_container::config::base_cache_sg;
+    using persistent_container::config::base_cache_sg;
   }
 }
 

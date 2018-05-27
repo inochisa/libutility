@@ -23,7 +23,7 @@ namespace utility
         _Compare __compare
       )
       {
-        using utility::algorithm::swap;
+        using algorithm::swap;
         _Difference __parent = (__hole-1)/2;
         for(;__hole > __top && __compare(*(__first+__parent), *(__first+__hole));)
         {
@@ -41,10 +41,10 @@ namespace utility
     )
     {
       typedef typename
-        utility::iterator::iterator_traits<_RandomAccessIterator>::difference_type
+        iterator::iterator_traits<_RandomAccessIterator>::difference_type
         __difference_type;
       typedef typename
-        utility::trait::type::transform::add_lvalue_reference<_Compare>::type
+        trait::type::transform::add_lvalue_reference<_Compare>::type
         __comp_ref;
 
       detail::__push_heap_aux<_RandomAccessIterator, __comp_ref, __difference_type>(
@@ -56,11 +56,11 @@ namespace utility
     inline void push_heap(_RandomAccessIterator __first, _RandomAccessIterator __last)
     {
       typedef typename
-        utility::iterator::iterator_traits<_RandomAccessIterator>::value_type
+        iterator::iterator_traits<_RandomAccessIterator>::value_type
         __value_type;
       push_heap(
         __first, __last,
-        utility::algorithm::less<__value_type>()
+        algorithm::less<__value_type>()
       );
     }
   }

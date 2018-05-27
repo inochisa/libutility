@@ -17,10 +17,10 @@ namespace utility
 {
   namespace container
   {
-    using utility::iterator::is_iterator;
-    using utility::iterator::is_vaild_iterator;
-    using utility::memory::allocator_arg_t;
-    using utility::memory::allocator_arg;
+    using iterator::is_iterator;
+    using iterator::is_vaild_iterator;
+    using memory::allocator_arg_t;
+    using memory::allocator_arg;
 
   }
 }

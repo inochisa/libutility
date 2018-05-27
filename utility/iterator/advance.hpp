@@ -14,8 +14,8 @@ namespace utility
     __UTILITY_CPP17_CONSTEXPR__
     inline void advance(_Iterator& __it, _Distance __dis)
     {
-      __it = __dis > 0 ? utility::iterator::next(__it, __dis) :
-        utility::iterator::prev(__it, -__dis);
+      __it = __dis > 0 ? iterator::next(__it, __dis) :
+        iterator::prev(__it, -__dis);
     }
   }
 }

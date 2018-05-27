@@ -29,7 +29,7 @@ namespace utility
     };
 
     __UTILITY_CPP17_INLINE__
-    constexpr utility::memory::allocator_arg_t allocator_arg{};
+    constexpr memory::allocator_arg_t allocator_arg{};
   }
 }
 

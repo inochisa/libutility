@@ -45,7 +45,7 @@ namespace utility
     template
     <
       typename _T,
-      typename _Container = utility::container::list<_T>
+      typename _Container = container::list<_T>
     >
     class stack
     {
@@ -57,7 +57,7 @@ namespace utility
         typedef typename container_type::size_type        size_type;
 
         static_assert(
-          utility::trait::type::releations::is_same<_T, value_type>::value,
+          trait::type::releations::is_same<_T, value_type>::value,
           "the container's value type must epual to the stack use type."
         );
 
@@ -66,29 +66,29 @@ namespace utility
 
       public:
         explicit stack() noexcept(
-          utility::trait::type::features::is_nothrow_default_constructible<container_type>::value
+          trait::type::features::is_nothrow_default_constructible<container_type>::value
         ): __container()
         { }
         explicit stack(const container_type& __cont) noexcept(
-          utility::trait::type::features::is_nothrow_copy_constructible<container_type>::value
+          trait::type::features::is_nothrow_copy_constructible<container_type>::value
         ): __container(__cont)
         { }
         explicit stack(container_type&& __cont) noexcept(
-          utility::trait::type::features::is_nothrow_move_constructible<container_type>::value
-        ): __container(utility::algorithm::move(__cont))
+          trait::type::features::is_nothrow_move_constructible<container_type>::value
+        ): __container(algorithm::move(__cont))
         { }
         stack(const stack& __stack) noexcept(
-          utility::trait::type::features::is_nothrow_copy_constructible<container_type>::value
+          trait::type::features::is_nothrow_copy_constructible<container_type>::value
         ): __container(__stack.__container)
         { }
         stack(stack&& __stack) noexcept(
-          utility::trait::type::features::is_nothrow_move_constructible<container_type>::value
-        ): __container(utility::algorithm::move(__stack.__container))
+          trait::type::features::is_nothrow_move_constructible<container_type>::value
+        ): __container(algorithm::move(__stack.__container))
         { }
 
       public:
         stack& operator=(const stack& __stack) noexcept(
-          utility::trait::type::features::is_nothrow_copy_assignable<container_type>::value
+          trait::type::features::is_nothrow_copy_assignable<container_type>::value
         )
         {
           if(&__stack != this)
@@ -96,13 +96,13 @@ namespace utility
           return *this;
         }
         stack& operator=(stack&& __stack) noexcept(
-          utility::trait::type::features::is_nothrow_move_assignable<container_type>::value
+          trait::type::features::is_nothrow_move_assignable<container_type>::value
         )
         {
           if(&__stack != this)
           {
             this->__container =
-              utility::algorithm::move(__stack.__container);
+              algorithm::move(__stack.__container);
           }
           return *this;
         }
@@ -123,12 +123,12 @@ namespace utility
         void push(const value_type& __val)
         { this->__container.push_back(__val);}
         void push(value_type&& __val)
-        { this->__container.push_back(utility::algorithm::move(__val));}
+        { this->__container.push_back(algorithm::move(__val));}
         template<typename... _Args>
         reference emplace(_Args&&... __args)
         {
           return this->__container.emplace_back(
-            utility::algorithm::move(__args)...
+            algorithm::move(__args)...
           );
         }
 
@@ -138,17 +138,17 @@ namespace utility
 
       public:
         void swap(stack& __other) noexcept(
-          utility::trait::type::features::is_nothrow_swappable<container_type>::value
+          trait::type::features::is_nothrow_swappable<container_type>::value
         )
         {
-          using utility::algorithm::swap;
+          using algorithm::swap;
           swap(this->__container, __other.__container);
         }
         void possible_swap(stack& __other) noexcept(
-          utility::trait::type::features::is_nothrow_possible_swappable<container_type>::value
+          trait::type::features::is_nothrow_possible_swappable<container_type>::value
         )
         {
-          using utility::algorithm::possible_swap;
+          using algorithm::possible_swap;
           possible_swap(this->__container, __other.__container);
         }
 
@@ -202,14 +202,14 @@ namespace utility
   {
     template<typename _T, typename _Container>
     void swap(
-      utility::container::stack<_T, _Container>& __x,
-      utility::container::stack<_T, _Container>& __y
+      container::stack<_T, _Container>& __x,
+      container::stack<_T, _Container>& __y
     ) noexcept(noexcept(__x.swap(__y)))
     { __x.swap(__y);}
     template<typename _T, typename _Container>
     void possible_swap(
-      utility::container::stack<_T, _Container>& __x,
-      utility::container::stack<_T, _Container>& __y
+      container::stack<_T, _Container>& __x,
+      container::stack<_T, _Container>& __y
     ) noexcept(noexcept(__x.possible_swap(__y)))
     { __x.possible_swap(__y);}
   }

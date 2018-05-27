@@ -17,7 +17,7 @@ namespace utility
       template<typename _RandomAccessIterator, typename _Compare, typename _Difference>
       void __pop_heap_aux(_RandomAccessIterator __first, _Difference __len, _Compare __compare)
       {
-        using utility::algorithm::swap;
+        using algorithm::swap;
         _Difference __hole = 0;
         _Difference __child = 2*__hole+1;
         for(;__child < __len;)
@@ -46,13 +46,13 @@ namespace utility
     )
     {
       typedef typename
-        utility::iterator::iterator_traits<_RandomAccessIterator>::difference_type
+        iterator::iterator_traits<_RandomAccessIterator>::difference_type
         __difference_type;
       typedef typename
-        utility::trait::type::transform::add_lvalue_reference<_Compare>::type
+        trait::type::transform::add_lvalue_reference<_Compare>::type
         __comp_ref;
 
-      utility::algorithm::swap(*(__last-1), *__first);
+      algorithm::swap(*(__last-1), *__first);
       detail::__pop_heap_aux<_RandomAccessIterator, __comp_ref, __difference_type>(
         __first, __difference_type(__last-__first-1), __compare
       );
@@ -61,11 +61,11 @@ namespace utility
     inline void pop_heap(_RandomAccessIterator __first, _RandomAccessIterator __last)
     {
       typedef typename
-        utility::iterator::iterator_traits<_RandomAccessIterator>::value_type
+        iterator::iterator_traits<_RandomAccessIterator>::value_type
         __value_type;
       pop_heap(
         __first, __last,
-        utility::algorithm::less<__value_type>()
+        algorithm::less<__value_type>()
       );
     }
   }

@@ -15,8 +15,8 @@ namespace utility
     { return __o.first;}
     // template<typename _T>
     // auto get_key(_T&& __o)
-    //   -> decltype(utility::algorithm::move(__o.first))
-    // { return utility::algorithm::move(__o.first);}
+    //   -> decltype(algorithm::move(__o.first))
+    // { return algorithm::move(__o.first);}
     template<typename _T>
     inline auto get_value(_T& __o) -> decltype(__o.second)&
     { return __o.second;}

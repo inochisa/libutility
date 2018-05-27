@@ -45,13 +45,13 @@ namespace utility
       for(; __first1 != __last1;)
       {
         if(__first2 == __last2)
-        { return utility::algorithm::copy(__first1, __last1, __result);}
+        { return algorithm::copy(__first1, __last1, __result);}
         if(__compare(*__first1, *__first2))
         { *__result++ = *__first1++; }
         else
         { *__result++ = *__first2++;}
       }
-      return utility::algorithm::copy(__first2, __last2, __result);
+      return algorithm::copy(__first2, __last2, __result);
     }
     template
     <
@@ -66,7 +66,7 @@ namespace utility
     {
       return merge(
         __first1, __last1, __first2, __last2,
-        __result, utility::algorithm::less<void>()
+        __result, algorithm::less<void>()
       );
     }
   }

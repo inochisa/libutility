@@ -19,19 +19,19 @@ namespace utility
         {
           template<typename _T>
           struct __is_member_function_pointer_test :
-            public utility::trait::false_type
+            public trait::false_type
           { };
           template<typename _T, class _Inn>
           struct __is_member_function_pointer_test<_T _Inn::*> :
-            public utility::trait::integral_constant<bool,
-              utility::trait::type::categories::is_function<_T>::value>
+            public trait::integral_constant<bool,
+              trait::type::categories::is_function<_T>::value>
           { };
         }
         template<typename _T>
         struct is_member_function_pointer :
           public __is_member_function_pointer_impl::
             __is_member_function_pointer_test<
-              typename utility::trait::type::transform::remove_cv<_T>::type
+              typename trait::type::transform::remove_cv<_T>::type
             >::type
         { };
 

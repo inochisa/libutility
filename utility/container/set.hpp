@@ -46,8 +46,8 @@ namespace utility
   {
     template<
       typename _Key,
-      typename _Compare = utility::algorithm::less<void>,
-      typename _Alloc = utility::memory::allocator<_Key>
+      typename _Compare = algorithm::less<void>,
+      typename _Alloc = memory::allocator<_Key>
     >
     class set
     {
@@ -95,13 +95,13 @@ namespace utility
           public:
             reference operator*() const
             {
-              using utility::container::get_value;
+              using container::get_value;
               return get_value(*(this->__it));
             }
             pointer operator->() const
             {
-              using utility::container::get_value;
-              return utility::memory::addressof(get_value(*(this->__it)));
+              using container::get_value;
+              return memory::addressof(get_value(*(this->__it)));
             }
 
           public:
@@ -128,21 +128,21 @@ namespace utility
         };
 
       private:
-        typedef typename utility::memory::allocator_traits<_Alloc>::template
-          rebind_alloc<utility::container::compressed_pair<
-            const _Key, utility::trait::__impl_helper::__empty
+        typedef typename memory::allocator_traits<_Alloc>::template
+          rebind_alloc<container::compressed_pair<
+            const _Key, trait::__impl_helper::__empty
           >> __allocator;
-        typedef utility::container::white_black_tree<
-          _Key, utility::trait::__impl_helper::__empty, _Compare,
-          utility::container::compressed_pair<
-            const _Key, utility::trait::__impl_helper::__empty
+        typedef container::white_black_tree<
+          _Key, trait::__impl_helper::__empty, _Compare,
+          container::compressed_pair<
+            const _Key, trait::__impl_helper::__empty
           >, __allocator> __tree_type;
 
       public:
         typedef _Key                key_type;
         typedef _Key                value_type;
-        typedef utility::size_t     size_type;
-        typedef utility::ptrdiff_t  difference_type;
+        typedef size_t     size_type;
+        typedef ptrdiff_t  difference_type;
         typedef _Compare            key_compare;
         typedef _Compare            value_compare;
         typedef _Alloc              allocator_type;
@@ -150,7 +150,7 @@ namespace utility
         typedef const value_type&   const_reference;
 
       public:
-        typedef utility::memory::allocator_traits<allocator_type>
+        typedef memory::allocator_traits<allocator_type>
           allocator_traits_type;
 
       public:
@@ -161,9 +161,9 @@ namespace utility
         typedef __set_iterator<typename __tree_type::const_iterator> iterator;
         typedef __set_iterator<typename __tree_type::const_iterator> const_iterator;
         typedef
-          utility::iterator::reverse_iterator<iterator> reverse_iterator;
+          iterator::reverse_iterator<iterator> reverse_iterator;
         typedef
-          utility::iterator::reverse_iterator<const_iterator> const_reverse_iterator;
+          iterator::reverse_iterator<const_iterator> const_reverse_iterator;
 
       private:
         __tree_type __tree;
@@ -182,7 +182,7 @@ namespace utility
 
         template<typename _InputIterator,
         typename
-        utility::trait::type::miscellaneous::enable_if<
+        trait::type::miscellaneous::enable_if<
             is_iterator<_InputIterator>::value,
             bool
           >::type = true
@@ -196,13 +196,13 @@ namespace utility
           for(_InputIterator __i = __first; __i != __last; ++__i)
           {
             __tree.insert_unique(
-              {*__i, utility::trait::__impl_helper::__empty()}
+              {*__i, trait::__impl_helper::__empty()}
             );
           }
         }
         template<typename _InputIterator,
         typename
-        utility::trait::type::miscellaneous::enable_if<
+        trait::type::miscellaneous::enable_if<
             is_iterator<_InputIterator>::value,
             bool
           >::type = true
@@ -215,7 +215,7 @@ namespace utility
           for(_InputIterator __i = __first; __i != __last; ++__i)
           {
             __tree.insert_unique(
-              {*__i, utility::trait::__impl_helper::__empty()}
+              {*__i, trait::__impl_helper::__empty()}
             );
           }
         }
@@ -228,11 +228,11 @@ namespace utility
         ):__tree(__other.__tree, __alloc)
         { }
         set(set&& __other):
-          __tree(utility::algorithm::move(__other.__tree))
+          __tree(algorithm::move(__other.__tree))
         { }
         set(
           set&& __other, const allocator_type __alloc
-        ):__tree(utility::algorithm::move(__other.__tree), __alloc)
+        ):__tree(algorithm::move(__other.__tree), __alloc)
         { }
 
         set(
@@ -247,7 +247,7 @@ namespace utility
           for(__iterator __i = __initlist.begin(); __i != __initlist.end(); ++__i)
           {
             __tree.insert_unique(
-              {*__i, utility::trait::__impl_helper::__empty()}
+              {*__i, trait::__impl_helper::__empty()}
             );
           }
         }
@@ -262,7 +262,7 @@ namespace utility
           for(__iterator __i = __initlist.begin(); __i != __initlist.end(); ++__i)
           {
             __tree.insert_unique(
-              {*__i, utility::trait::__impl_helper::__empty()}
+              {*__i, trait::__impl_helper::__empty()}
             );
           }
         }
@@ -277,7 +277,7 @@ namespace utility
         set& operator=(set&& __other)
         {
           if(&__other != this)
-          { this->__tree = utility::algorithm::move(__other.__tree);}
+          { this->__tree = algorithm::move(__other.__tree);}
           return *this;
         }
         set& operator=(initializer_list<value_type> __initlist)
@@ -289,7 +289,7 @@ namespace utility
           for(__iterator __i = __initlist.begin(); __i != __initlist.end(); ++__i)
           {
             __tree.insert_unique(
-              {*__i, utility::trait::__impl_helper::__empty()}
+              {*__i, trait::__impl_helper::__empty()}
             );
           }
           return *this;
@@ -340,28 +340,28 @@ namespace utility
         { return this->__tree.size();}
 
       public:
-        utility::container::pair<iterator, bool>
+        container::pair<iterator, bool>
         insert(const value_type& __val)
         {
           typedef typename __tree_type::iterator __iterator;
-          utility::container::pair<__iterator, bool> __tmp =
+          container::pair<__iterator, bool> __tmp =
             this->__tree.insert_unique(
-              {__val, utility::trait::__impl_helper::__empty()}
+              {__val, trait::__impl_helper::__empty()}
             );
-          return utility::container::pair<iterator, bool>{
+          return container::pair<iterator, bool>{
             iterator{*(__tmp.first).first()}, __tmp.second
           };
         }
-        utility::container::pair<iterator, bool>
+        container::pair<iterator, bool>
         insert(value_type&& __val)
         {
           typedef typename __tree_type::iterator __iterator;
-          utility::container::pair<__iterator, bool> __tmp =
+          container::pair<__iterator, bool> __tmp =
             this->__tree.insert_unique({
-              utility::algorithm::move(__val),
-              utility::trait::__impl_helper::__empty()
+              algorithm::move(__val),
+              trait::__impl_helper::__empty()
             });
-          return utility::container::pair<iterator, bool>{
+          return container::pair<iterator, bool>{
             iterator{*(__tmp.first).first()}, __tmp.second
           };
         }
@@ -372,7 +372,7 @@ namespace utility
           typedef typename __tree_type::iterator __iterator;
           __iterator __tmp = this->__tree.insert_unique(
             __hint.__it,
-            {__val, utility::trait::__impl_helper::__empty()}
+            {__val, trait::__impl_helper::__empty()}
           );
           return iterator{(*__tmp).first()};
         }
@@ -383,24 +383,24 @@ namespace utility
           typedef typename __tree_type::iterator __iterator;
           __iterator __tmp = this->__tree.insert_unique(
             __hint.__it,
-            {utility::algorithm::move(__val),
-            utility::trait::__impl_helper::__empty()}
+            {algorithm::move(__val),
+            trait::__impl_helper::__empty()}
           );
           return iterator{(*__tmp).first()};
         }
 
       public:
         template<typename... _Args>
-        utility::container::pair<iterator, bool>
+        container::pair<iterator, bool>
         emplace(_Args&&... __args)
         {
           typedef typename __tree_type::iterator __iterator;
-          utility::container::pair<__iterator, bool> __tmp =
+          container::pair<__iterator, bool> __tmp =
             this->__tree.emplace_unique(
-              value_type{utility::algorithm::move(__args)...},
-              utility::trait::__impl_helper::__empty()
+              value_type{algorithm::move(__args)...},
+              trait::__impl_helper::__empty()
             );
-          return utility::container::pair<iterator, bool>{
+          return container::pair<iterator, bool>{
             iterator{*(__tmp.first).first()}, __tmp.second
           };
         }
@@ -412,8 +412,8 @@ namespace utility
           typedef typename __tree_type::iterator __iterator;
           __iterator __tmp = this->__tree.emplace_unique_hint(
             __hint.__it,
-            value_type{utility::algorithm::move(__args)...},
-            utility::trait::__impl_helper::__empty()
+            value_type{algorithm::move(__args)...},
+            trait::__impl_helper::__empty()
           );
           return iterator{(*__tmp).first()};
         }
@@ -431,17 +431,17 @@ namespace utility
         { return iterator{this->__tree.upper_bound(__key)};}
         inline const_iterator upper_bound(const key_type& __key) const noexcept
         { return const_iterator{this->__tree.upper_bound(__key)};}
-        inline utility::container::pair<iterator, iterator>
+        inline container::pair<iterator, iterator>
         equal_range(const key_type& __key) noexcept
         {
-          return utility::container::pair<iterator, iterator>{
+          return container::pair<iterator, iterator>{
             this->lower_bound(__key), this->upper_bound(__key)
           };
         }
-        inline utility::container::pair<const_iterator, const_iterator>
+        inline container::pair<const_iterator, const_iterator>
         equal_range(const key_type& __key) const noexcept
         {
-          return utility::container::pair<const_iterator, const_iterator>{
+          return container::pair<const_iterator, const_iterator>{
             this->lower_bound(__key), this->upper_bound(__key)
           };
         }
@@ -516,16 +516,16 @@ namespace utility
   {
     template<typename _Key, typename _Compare, typename _Alloc>
     void swap(
-      utility::container::set<_Key, _Compare, _Alloc>& __x,
-      utility::container::set<_Key, _Compare, _Alloc>& __y
+      container::set<_Key, _Compare, _Alloc>& __x,
+      container::set<_Key, _Compare, _Alloc>& __y
     ) noexcept(noexcept(__x.swap(__y)))
     {
       __x.swap(__y);
     }
     template<typename _Key, typename _Compare, typename _Alloc>
     void possible_swap(
-      utility::container::set<_Key, _Compare, _Alloc>& __x,
-      utility::container::set<_Key, _Compare, _Alloc>& __y
+      container::set<_Key, _Compare, _Alloc>& __x,
+      container::set<_Key, _Compare, _Alloc>& __y
     ) noexcept(noexcept(__x.possible_swap(__y)))
     {
       __x.possible_swap(__y);

@@ -22,9 +22,9 @@ namespace utility
 
     };
     template<bool _B>
-    using bool_constant = utility::trait::integral_constant<bool, _B>;
-    using true_type   = utility::trait::bool_constant<true>;
-    using false_type  = utility::trait::bool_constant<false>;
+    using bool_constant = trait::integral_constant<bool, _B>;
+    using true_type   = trait::bool_constant<true>;
+    using false_type  = trait::bool_constant<false>;
 
   }
 }

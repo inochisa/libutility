@@ -29,14 +29,14 @@ namespace utility
     *         where elements have been initialized.
     * \attention If an exception is thrown during the initialization,
     *         the function has no effects.
-    * \see utility::memory::uninitialized_fill
+    * \see memory::uninitialized_fill
     */
     template<typename _ForwardIterator, typename _Size, typename _T>
     _ForwardIterator
     uninitialized_fill_n(_ForwardIterator __first, _Size __size, const _T& __val)
     {
       typedef typename
-        utility::iterator::iterator_traits<_ForwardIterator>::value_type
+        iterator::iterator_traits<_ForwardIterator>::value_type
         __value_type;
 #ifdef __UTILITY_USE_EXCEPTION
       _ForwardIterator __epos = __first;
@@ -44,7 +44,7 @@ namespace utility
       __UTILITY_TRY_BEGIN
         for(; __size > 0; ++__first, --__size)
         {
-          ::new (static_cast<void*>(utility::memory::addressof(*__first)))
+          ::new (static_cast<void*>(memory::addressof(*__first)))
           __value_type(__val);
         }
       __UTILITY_TRY_END

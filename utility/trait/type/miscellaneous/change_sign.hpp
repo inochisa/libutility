@@ -17,7 +17,7 @@ namespace utility
         // make_signed & make_unsigned
         namespace __change_sign_impl
         {
-          using utility::trait::type::releations::is_same;
+          using trait::type::releations::is_same;
           template<typename _T>
           struct __make_signed_impl
           { };
@@ -90,8 +90,8 @@ namespace utility
 
           template<typename _T>
           struct __change_helper :
-            public utility::trait::integral_constant<bool,
-              utility::trait::type::categories::is_integral<_T>::value
+            public trait::integral_constant<bool,
+              trait::type::categories::is_integral<_T>::value
               && !is_same<_T, bool>::value
               && !is_same<_T, wchar_t>::value
 #ifndef UTILITY_NO_UNICODE

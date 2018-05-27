@@ -18,16 +18,16 @@ namespace utility
           template<typename _T>
           _T& __is_referenceable_test(int);
           template<typename _T>
-          utility::trait::__impl_helper::__twochar
+          trait::__impl_helper::__twochar
             __is_referenceable_test(...);
 
         }
         template<typename _T>
         struct is_referenceable :
-          public utility::trait::integral_constant<bool,
-          !utility::trait::type::releations::is_same<
+          public trait::integral_constant<bool,
+          !trait::type::releations::is_same<
             decltype(__is_referenceable_impl::__is_referenceable_test<_T>(0)),
-            utility::trait::__impl_helper::__twochar>::value>
+            trait::__impl_helper::__twochar>::value>
         { };
 
       }

@@ -19,7 +19,7 @@ namespace utility
 
     namespace detail
     {
-      using utility::algorithm::sort_tag::heap_sort_tag;
+      using algorithm::sort_tag::heap_sort_tag;
       template<typename _RandomAccessIterator, typename _Compare>
       void __sort(
         _RandomAccessIterator __first, _RandomAccessIterator __last,
@@ -28,13 +28,13 @@ namespace utility
       {
 #ifdef UTILITY_DEBUG
         static_assert(
-          utility::iterator::is_random_access_iterator<_RandomAccessIterator>::value,
+          iterator::is_random_access_iterator<_RandomAccessIterator>::value,
           "heap sort need at least random access iterator."
         );
 #endif // ! UTILITY_DEBUG
-        utility::algorithm::make_heap(__first, __last, __compare);
+        algorithm::make_heap(__first, __last, __compare);
         for(;__last - __first > 1;)
-        { utility::algorithm::pop_heap(__first, __last--, __compare);}
+        { algorithm::pop_heap(__first, __last--, __compare);}
       }
     }
 

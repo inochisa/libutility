@@ -16,8 +16,8 @@ namespace utility
         // alignment_of
         template<typename _T>
         struct alignment_of :
-          public utility::trait::integral_constant<
-            utility::trait::size_t, __utility_alignof(_T)>
+          public trait::integral_constant<
+            trait::size_t, __utility_alignof(_T)>
         { };
 
       }

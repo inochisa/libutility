@@ -59,7 +59,7 @@ namespace utility
     template
     <
       typename _T,
-      typename _Allocator = utility::memory::allocator<_T>
+      typename _Allocator = memory::allocator<_T>
     >
     class vector
     {
@@ -74,14 +74,14 @@ namespace utility
             friend class __vector_const_iterator;
 
           public:
-            typedef utility::iterator::contiguous_iterator_tag
+            typedef iterator::contiguous_iterator_tag
               iterator_category;
             typedef __Value value_type;
             typedef value_type& reference;
             typedef typename
-              utility::trait::miscellaneous::pointer_traits<__Value*>::pointer pointer;
+              trait::miscellaneous::pointer_traits<__Value*>::pointer pointer;
             typedef typename
-              utility::trait::miscellaneous::pointer_traits<__Value*>::difference_type difference_type;
+              trait::miscellaneous::pointer_traits<__Value*>::difference_type difference_type;
 
           public:
             typedef __vector_iterator<value_type> self;
@@ -180,15 +180,15 @@ namespace utility
             friend class vector;
 
           public:
-            typedef utility::iterator::contiguous_iterator_tag
+            typedef iterator::contiguous_iterator_tag
             iterator_category;
             typedef __Value value_type;
             typedef const __Value const_value_type;
             typedef const value_type& reference;
             typedef typename
-              utility::trait::miscellaneous::pointer_traits<const_value_type*>::pointer pointer;
+              trait::miscellaneous::pointer_traits<const_value_type*>::pointer pointer;
             typedef typename
-              utility::trait::miscellaneous::pointer_traits<const_value_type*>::difference_type difference_type;
+              trait::miscellaneous::pointer_traits<const_value_type*>::difference_type difference_type;
 
           public:
             typedef __vector_const_iterator<value_type> self;
@@ -295,13 +295,13 @@ namespace utility
       public:
         typedef _T                    value_type;
         typedef _Allocator            allocator_type;
-        typedef utility::size_t     size_type;
-        typedef utility::ptrdiff_t  difference_type;
+        typedef size_t     size_type;
+        typedef ptrdiff_t  difference_type;
         typedef value_type&           reference;
         typedef const value_type&     const_reference;
 
       public:
-        typedef utility::memory::allocator_traits<allocator_type>
+        typedef memory::allocator_traits<allocator_type>
           allocator_traits_type;
 
       public:
@@ -312,14 +312,14 @@ namespace utility
         typedef __vector_iterator<_T>         iterator;
         typedef __vector_const_iterator<_T>   const_iterator;
         typedef
-          utility::iterator::reverse_iterator<iterator>
+          iterator::reverse_iterator<iterator>
           reverse_iterator;
         typedef
-          utility::iterator::reverse_iterator<const_iterator>
+          iterator::reverse_iterator<const_iterator>
           const_reverse_iterator;
 
       public: // assert
-        static_assert(utility::trait::type::releations::is_same<
+        static_assert(trait::type::releations::is_same<
           value_type, typename allocator_type::value_type>::value,
           "the allocator's alloc type must be the same as value type");
 
@@ -373,7 +373,7 @@ namespace utility
 
         template<typename _Inputiterator,
           typename
-          utility::trait::type::miscellaneous::enable_if<
+          trait::type::miscellaneous::enable_if<
             is_iterator<_Inputiterator>::value,
             bool
           >::type = true
@@ -384,7 +384,7 @@ namespace utility
         ): __allocator(__alloc)
         {
           size_type __len =
-            utility::iterator::distance(__first, __last);
+            iterator::distance(__first, __last);
           this->__begin =
             allocator_traits_type::allocate(this->__allocator, __len);
           this->__end = this->__begin;
@@ -488,7 +488,7 @@ namespace utility
             this->__end = __other.__end;
             this->__mend = __other.__mend;
             this->__allocator =
-              utility::algorithm::move(__other.__allocator);
+              algorithm::move(__other.__allocator);
             __other.__begin = __other.__end = __other.__mend = nullptr;
           }
           return *this;
@@ -505,14 +505,14 @@ namespace utility
           this->clear();
           if(__count > this->capacity())
           { this->reallocate(__count * 2);}
-          utility::memory::uninitialized_fill_n(
+          memory::uninitialized_fill_n(
             this->__begin, __count, __val
           );
           this->__end += __count;
         }
         template<typename _Inputiterator,
           typename
-          utility::trait::type::miscellaneous::enable_if<
+          trait::type::miscellaneous::enable_if<
             is_iterator<_Inputiterator>::value,
             bool
           >::type = true
@@ -520,11 +520,11 @@ namespace utility
         void assign(_Inputiterator __first, _Inputiterator __last)
         {
           size_type __count =
-            utility::iterator::distance(__first, __last);
+            iterator::distance(__first, __last);
           this->clear();
           if(__count > this->capacity())
           { this->reallocate(__count * 2);}
-          utility::memory::uninitialized_copy(
+          memory::uninitialized_copy(
             __first, __last, this->__begin
           );
           this->__end += __count;
@@ -626,7 +626,7 @@ namespace utility
           { this->reallocate(this->size() * 2);}
           allocator_traits_type::construct(
             this->__allocator, (this->__end)++,
-            utility::algorithm::move(__val)
+            algorithm::move(__val)
           );
         }
 
@@ -637,14 +637,14 @@ namespace utility
           difference_type __len = __pos.__ptr - this->__begin;
           if(this->__end == this->__mend)
           { this->reallocate(this->size() * 2);}
-          utility::memory::uninitialized_move_backward(
+          memory::uninitialized_move_backward(
             (this->__begin)+__len, this->__end, (this->__end)+1
           );
           ++this->__end;
           allocator_traits_type::construct(
             this->__allocator,
             (this->__begin)+__len,
-            utility::algorithm::move(__args)...
+            algorithm::move(__args)...
           );
           return iterator((this->__begin)+__len);
         }
@@ -655,7 +655,7 @@ namespace utility
           { this->reallocate(this->size() * 2);}
           allocator_traits_type::construct(
             this->__allocator, (this->__end)++,
-            utility::algorithm::move(__args)...
+            algorithm::move(__args)...
           );
           return this->back();
         }
@@ -675,7 +675,7 @@ namespace utility
           difference_type __len = __pos.__ptr - this->__begin;
           if(this->__end == this->__mend)
           { this->reallocate(this->size() * 2);}
-          utility::memory::uninitialized_move_backward(
+          memory::uninitialized_move_backward(
             (this->__begin)+__len, this->__end, (this->__end)+1
           );
           allocator_traits_type::construct(
@@ -689,13 +689,13 @@ namespace utility
           difference_type __len = __pos.__ptr - this->__begin;
           if(this->__end == this->__mend)
           { this->reallocate(this->size() * 2);}
-          utility::memory::uninitialized_move_backward(
+          memory::uninitialized_move_backward(
             (this->__begin)+__len, this->__end, (this->__end)+1
           );
           allocator_traits_type::construct(
             this->__allocator,
             (this->__begin)+__len,
-            utility::algorithm::move(__val)
+            algorithm::move(__val)
           );
           ++this->__end;
           return iterator((this->__begin)+__len);
@@ -707,10 +707,10 @@ namespace utility
           difference_type __len = __pos.__ptr - this->__begin;
           if((this->size() + __count) > this->capacity())
           { this->reallocate((this->size() + __count) * 2);}
-          utility::memory::uninitialized_move_backward(
+          memory::uninitialized_move_backward(
             (this->__begin)+__len, this->__end, (this->__end)+__count
           );
-          utility::memory::uninitialized_fill_n(
+          memory::uninitialized_fill_n(
             (this->__begin)+__len, __count, __val
           );
           (this->__end) += __count;
@@ -718,7 +718,7 @@ namespace utility
         }
         template<typename _Inputiterator,
           typename
-          utility::trait::type::miscellaneous::enable_if<
+          trait::type::miscellaneous::enable_if<
             is_iterator<_Inputiterator>::value,
             bool
           >::type = true
@@ -728,16 +728,16 @@ namespace utility
         )
         {
           difference_type __len =
-            utility::iterator::distance(__first, __last);
+            iterator::distance(__first, __last);
           difference_type __tpos = __pos.__ptr - this->__begin;
           if((this->size() + __len) > this->capacity())
           { this->reallocate((this->size() + __len) * 2);}
-          utility::memory::uninitialized_move_backward(
+          memory::uninitialized_move_backward(
             (this->__begin) + __tpos,
             this->__end, (this->__end)+__len
           );
           (this->__end) += __len;
-          utility::memory::uninitialized_copy(
+          memory::uninitialized_copy(
             __first, __last, (this->__begin)+__tpos
           );
           return iterator((this->__begin)+__tpos);
@@ -756,7 +756,7 @@ namespace utility
         {
           pointer __tptr = const_cast<pointer>(__pos.__ptr);
           allocator_traits_type::destroy(this->__allocator, __tptr);
-          utility::memory::uninitialized_move(
+          memory::uninitialized_move(
             __tptr+1, this->__end, __tptr
           );
           --(this->__end);
@@ -765,11 +765,11 @@ namespace utility
         iterator erase(const_iterator __first, const_iterator __last)
         {
           difference_type __len =
-            utility::iterator::distance(__first, __last);
+            iterator::distance(__first, __last);
           pointer __tptr = const_cast<pointer>(__first.__ptr);
           for(difference_type __i = 0; __i < __len; ++__i)
           { allocator_traits_type::destroy(this->__allocator, __tptr+__i);}
-          utility::memory::uninitialized_move(
+          memory::uninitialized_move(
             __tptr+__len, this->__end, __tptr
           );
           (this->__end) -= __len;
@@ -796,7 +796,7 @@ namespace utility
         void resize(size_type __count)
         {
           static_assert(
-            utility::trait::type::features::is_default_constructible<
+            trait::type::features::is_default_constructible<
               value_type>::value,
             "vector::resize(size_type) request value type can be "
             "default constructible"
@@ -842,20 +842,20 @@ namespace utility
 
       public:
         void swap(vector& __other) noexcept(
-          utility::trait::type::features::is_nothrow_swappable<allocator_type>::value
+          trait::type::features::is_nothrow_swappable<allocator_type>::value
         )
         {
-          using utility::algorithm::swap;
+          using algorithm::swap;
           swap(this->__allocator,   __other.__allocator);
           swap(this->__begin,       __other.__begin);
           swap(this->__end,         __other.__end);
           swap(this->__mend,        __other.__mend);
         }
         void possible_swap(vector& __other) noexcept(
-          utility::trait::type::features::is_nothrow_possible_swappable<allocator_type>::value
+          trait::type::features::is_nothrow_possible_swappable<allocator_type>::value
         )
         {
-          using utility::algorithm::possible_swap;
+          using algorithm::possible_swap;
           possible_swap(this->__allocator, __other.__allocator);
           possible_swap(this->__begin,     __other.__begin    );
           possible_swap(this->__end,       __other.__end      );
@@ -878,7 +878,7 @@ namespace utility
           size_type __old_size = this->size();
           pointer __new_begin =
             allocator_traits_type::allocate(this->__allocator, __need_size);
-          utility::memory::uninitialized_possible_move(
+          memory::uninitialized_possible_move(
             this->__begin, this->__end, __new_begin
           );
           allocator_traits_type::deallocate(
@@ -895,7 +895,7 @@ namespace utility
     inline bool operator==(const vector<_T, _Alloc>& __x, const vector<_T, _Alloc>& __y)
     {
       return __x.size() == __y.size() &&
-        utility::algorithm::equal(__x.begin(), __x.end(), __y.begin());
+        algorithm::equal(__x.begin(), __x.end(), __y.begin());
     }
     template<typename _T, typename _Alloc>
     inline bool operator!=(const vector<_T, _Alloc>& __x, const vector<_T, _Alloc>& __y)
@@ -903,7 +903,7 @@ namespace utility
     template<typename _T, typename _Alloc>
     inline bool operator<(const vector<_T, _Alloc>& __x, const vector<_T, _Alloc>& __y)
     {
-      return utility::algorithm::lexicographical_compare(
+      return algorithm::lexicographical_compare(
         __x.begin(), __x.end(), __y.begin(), __y.end()
       );
     }
@@ -922,16 +922,16 @@ namespace utility
   {
     template<typename _T, typename _Alloc>
     inline void swap(
-      utility::container::vector<_T, _Alloc>& __x,
-      utility::container::vector<_T, _Alloc>& __y
+      container::vector<_T, _Alloc>& __x,
+      container::vector<_T, _Alloc>& __y
     ) noexcept(noexcept(__x.swap(__y)))
     {
       __x.swap(__y);
     }
     template<typename _T, typename _Alloc>
     inline void possible_swap(
-      utility::container::vector<_T, _Alloc>& __x,
-      utility::container::vector<_T, _Alloc>& __y
+      container::vector<_T, _Alloc>& __x,
+      container::vector<_T, _Alloc>& __y
     ) noexcept(noexcept(__x.possible_swap(__y)))
     {
       __x.possible_swap(__y);

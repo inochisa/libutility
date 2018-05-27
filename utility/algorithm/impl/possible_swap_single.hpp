@@ -29,18 +29,18 @@ namespace utility
           template<typename __T>
           static auto __test(__T&& __x, __T&& __y)
             ->decltype(__x.possible_swap(__y),
-              utility::trait::true_type());
+              trait::true_type());
           template<typename __T>
           static auto __test(const __T& __x, const __T& __y)
-            -> utility::trait::false_type;
+            -> trait::false_type;
 
         public:
           constexpr static bool value =
-            utility::trait::type::releations::is_same<
-              utility::trait::true_type,
+            trait::type::releations::is_same<
+              trait::true_type,
               decltype(__test<_T>(
-                utility::trait::type::special::declval<_T>(),
-                utility::trait::type::special::declval<_T>()))
+                trait::type::special::declval<_T>(),
+                trait::type::special::declval<_T>()))
             >::value;
       };
       template<typename _T>
@@ -50,26 +50,26 @@ namespace utility
           template<typename __T>
           static auto __test(__T&& __x, __T&& __y)
             ->decltype(__x.swap(__y),
-              utility::trait::true_type());
+              trait::true_type());
           template<typename __T>
           static auto __test(const __T& __x, const __T& __y)
-            -> utility::trait::false_type;
+            -> trait::false_type;
 
         public:
           constexpr static bool value =
-            utility::trait::type::releations::is_same<
-              utility::trait::true_type,
+            trait::type::releations::is_same<
+              trait::true_type,
               decltype(__test<_T>(
-                utility::trait::type::special::declval<_T>(),
-                utility::trait::type::special::declval<_T>()))
+                trait::type::special::declval<_T>(),
+                trait::type::special::declval<_T>()))
             >::value;
       };
 
       template<typename _T,
         bool = __has_possible_swap_test<_T>::value,
         bool = __has_swap_test<_T>::value,
-        bool = utility::trait::type::features::is_moveable<_T>::value,
-        bool = utility::trait::type::features::is_copyable<_T>::value
+        bool = trait::type::features::is_moveable<_T>::value,
+        bool = trait::type::features::is_copyable<_T>::value
       >
       struct __possible_swap;
 
@@ -93,21 +93,21 @@ namespace utility
       struct __possible_swap<_T, false, false, true, _Copy>
       {
         static void __aux(_T& __x, _T& __y) noexcept(
-          utility::trait::type::features::is_nothrow_move_constructible<_T>::value &&
-          utility::trait::type::features::is_nothrow_move_assignable<_T>::value
+          trait::type::features::is_nothrow_move_constructible<_T>::value &&
+          trait::type::features::is_nothrow_move_assignable<_T>::value
         )
         {
-          _T __tmp(utility::algorithm::move(__x));
-          __x = utility::algorithm::move(__y);
-          __y = utility::algorithm::move(__tmp);
+          _T __tmp(algorithm::move(__x));
+          __x = algorithm::move(__y);
+          __y = algorithm::move(__tmp);
         }
       };
       template<typename _T>
       struct __possible_swap<_T, false, false, false, true>
       {
         static void __aux(_T& __x, _T& __y)  noexcept(
-          utility::trait::type::features::is_nothrow_copy_constructible<_T>::value &&
-          utility::trait::type::features::is_nothrow_copy_assignable<_T>::value
+          trait::type::features::is_nothrow_copy_constructible<_T>::value &&
+          trait::type::features::is_nothrow_copy_assignable<_T>::value
         )
         {
           _T __tmp(__x);
@@ -140,14 +140,14 @@ namespace utility
      *          \c is_nothrow_move_assignable<_T> is \b true.<br/>
      *       4. \c is_nothrow_copy_constructible<_T> &&
      *          \c is_nothrow_copy_assignable<_T> is \b true.<br/>
-     * \related utility::algorithm::swap
+     * \related algorithm::swap
      */
     template<typename _T>
-    typename utility::trait::type::miscellaneous::enable_if<
+    typename trait::type::miscellaneous::enable_if<
       __possible_swap_impl::__has_possible_swap_test<_T>::value ||
       __possible_swap_impl::__has_swap_test<_T>::value ||
-      utility::trait::type::features::is_moveable<_T>::value ||
-      utility::trait::type::features::is_copyable<_T>::value,
+      trait::type::features::is_moveable<_T>::value ||
+      trait::type::features::is_copyable<_T>::value,
     void>::type
     possible_swap(_T& __x, _T& __y) noexcept(
       noexcept(__possible_swap_impl::__possible_swap<_T>::__aux(__x, __y))

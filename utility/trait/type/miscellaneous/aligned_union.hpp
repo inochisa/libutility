@@ -19,31 +19,31 @@ namespace utility
           template<typename... _Ts>
           struct __aligned_union_helper
           {
-            constexpr static utility::trait::size_t __size = 0;
-            constexpr static utility::trait::size_t __align = 0;
+            constexpr static trait::size_t __size = 0;
+            constexpr static trait::size_t __align = 0;
           };
           template<typename _T, typename... _Ts>
           struct __aligned_union_helper<_T, _Ts...>
           {
-            constexpr static utility::trait::size_t __size =
+            constexpr static trait::size_t __size =
               sizeof(_T) > __aligned_union_helper<_Ts...>::__size ?
               sizeof(_T) : __aligned_union_helper<_Ts...>::__size;
-            constexpr static utility::trait::size_t __align =
+            constexpr static trait::size_t __align =
               alignof(_T) > __aligned_union_helper<_Ts...>::__align ?
               alignof(_T) : __aligned_union_helper<_Ts...>::__align;
         };
         }
-        template<utility::trait::size_t _Len, typename... _Ts>
+        template<trait::size_t _Len, typename... _Ts>
         struct aligned_union
         {
           private:
             static_assert(sizeof...(_Ts) != 0, "Need at least ont type");
             using __type =
               __aligned_union_impl::__aligned_union_helper<_Ts...>;
-            constexpr static utility::trait::size_t __align =
+            constexpr static trait::size_t __align =
               _Len > __type::__size ? _Len > __type::__size;
           public:
-            constexpr static utility::trait::size_t alignment_value =
+            constexpr static trait::size_t alignment_value =
               __type::__align;
             typedef aligned_storage<__align, alignment_value>::type type;
         };

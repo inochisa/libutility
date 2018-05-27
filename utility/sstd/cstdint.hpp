@@ -11,18 +11,18 @@ namespace utility
   namespace sstd
   {
     __UTILITY_CPP17_INLINE__
-    constexpr utility::size_t char_bit  = __CHAR_BIT__;
+    constexpr size_t char_bit  = __CHAR_BIT__;
     __UTILITY_CPP17_INLINE__
-    constexpr utility::size_t short_bit = char_bit* sizeof(short int);
+    constexpr size_t short_bit = char_bit* sizeof(short int);
     __UTILITY_CPP17_INLINE__
-    constexpr utility::size_t int_bit   = __CHAR_BIT__ * sizeof(int);
+    constexpr size_t int_bit   = __CHAR_BIT__ * sizeof(int);
     __UTILITY_CPP17_INLINE__
-    constexpr utility::size_t long_bit  = __CHAR_BIT__ * sizeof(long);
+    constexpr size_t long_bit  = __CHAR_BIT__ * sizeof(long);
     __UTILITY_CPP17_INLINE__
-    constexpr utility::size_t long_long_bit  =
+    constexpr size_t long_long_bit  =
       char_bit* sizeof(long long int);
     __UTILITY_CPP17_INLINE__
-    constexpr utility::size_t pointer_bit  =
+    constexpr size_t pointer_bit  =
       char_bit* sizeof(void*);
 
     __UTILITY_CPP17_INLINE__
@@ -118,18 +118,18 @@ namespace utility
   {
 
     __UTILITY_CPP17_INLINE__
-    constexpr utility::size_t char_bit  = ___CHAR_DIGITAL;
+    constexpr size_t char_bit  = ___CHAR_DIGITAL;
     __UTILITY_CPP17_INLINE__
-    constexpr utility::size_t short_bit = char_bit* sizeof(short int);
+    constexpr size_t short_bit = char_bit* sizeof(short int);
     __UTILITY_CPP17_INLINE__
-    constexpr utility::size_t int_bit   = ___WORD_DIGITAL;
+    constexpr size_t int_bit   = ___WORD_DIGITAL;
     __UTILITY_CPP17_INLINE__
-    constexpr utility::size_t long_bit  = ___LONG_DIGITAL;
+    constexpr size_t long_bit  = ___LONG_DIGITAL;
     __UTILITY_CPP17_INLINE__
-    constexpr utility::size_t long_long_bit  =
+    constexpr size_t long_long_bit  =
       char_bit* sizeof(long long int);
     __UTILITY_CPP17_INLINE__
-    constexpr utility::size_t pointer_bit  =
+    constexpr size_t pointer_bit  =
       char_bit* sizeof(void*);
 
     __UTILITY_CPP17_INLINE__

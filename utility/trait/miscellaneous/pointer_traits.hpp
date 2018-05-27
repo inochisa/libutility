@@ -59,7 +59,7 @@ namespace utility
 
         template<typename _T_ptr, bool = __has_difference_type<_T_ptr>::value>
         struct __pointer_has_difference_type
-        { typedef utility::ptrdiff_t type;};
+        { typedef ptrdiff_t type;};
 
         template<typename _T_ptr>
         struct __pointer_has_difference_type<_T_ptr, true>
@@ -110,8 +110,8 @@ namespace utility
           struct __fail { };
         public:
           static pointer pointer_to(typename
-            utility::trait::type::miscellaneous::conditional<
-              utility::trait::type::categories::is_void<element_type>::value,
+            trait::type::miscellaneous::conditional<
+              trait::type::categories::is_void<element_type>::value,
               __fail,
               element_type>::type& __ref)
           { return pointer::pointer_to(__ref);}
@@ -123,7 +123,7 @@ namespace utility
         public:
           typedef _T_ptr* pointer;
           typedef _T_ptr element_type;
-          typedef utility::ptrdiff_t difference_type;
+          typedef ptrdiff_t difference_type;
 
           template<typename _U>
           using rebind = _U*;
@@ -131,11 +131,11 @@ namespace utility
           struct __fail { };
         public:
           static pointer pointer_to(typename
-            utility::trait::type::miscellaneous::conditional<
-              utility::trait::type::categories::is_void<element_type>::value,
+            trait::type::miscellaneous::conditional<
+              trait::type::categories::is_void<element_type>::value,
               __fail,
               element_type>::type& __ref)
-          { return utility::memory::addressof(__ref);}
+          { return memory::addressof(__ref);}
       };
     }
   }

@@ -18,7 +18,7 @@ namespace utility
         // is_standard_layout
         template<typename _T>
         struct is_standard_layout : public
-          utility::trait::integral_constant<bool,
+          trait::integral_constant<bool,
             __utility_is_standard_layout(_T)>
         { };
 
@@ -43,9 +43,9 @@ namespace utility
         // is_standard_layout
         template<typename _T>
         struct is_standard_layout : public
-          utility::trait::integral_constant<bool,
-            utility::trait::type::categories::is_scalar<typename
-              utility::trait::type::transform::remove_all_extents<_T>::type>::value>
+          trait::integral_constant<bool,
+            trait::type::categories::is_scalar<typename
+              trait::type::transform::remove_all_extents<_T>::type>::value>
         { };
 
       }

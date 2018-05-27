@@ -55,7 +55,7 @@ namespace utility
     template
     <
       typename _T,
-      typename _Alloc = utility::memory::allocator<_T>
+      typename _Alloc = memory::allocator<_T>
     >
     class list
     {
@@ -77,7 +77,7 @@ namespace utility
           UTILITY_ALWAYS_INLINE
           inline void reverse()
           {
-            using utility::algorithm::swap;
+            using algorithm::swap;
             swap(__prev, __next);
           }
         };
@@ -91,14 +91,14 @@ namespace utility
             template<typename, typename>
             friend class list;
           public:
-            typedef utility::iterator::bidirectional_iterator_tag
+            typedef iterator::bidirectional_iterator_tag
               iterator_category;
             typedef __Value value_type;
             typedef value_type& reference;
             typedef typename
-              utility::trait::miscellaneous::pointer_traits<__Value*>::pointer pointer;
+              trait::miscellaneous::pointer_traits<__Value*>::pointer pointer;
             typedef typename
-              utility::trait::miscellaneous::pointer_traits<__Value*>::difference_type difference_type;
+              trait::miscellaneous::pointer_traits<__Value*>::difference_type difference_type;
 
           public:
             typedef __list_iterator<__Value>  self;
@@ -169,16 +169,16 @@ namespace utility
             template<typename, typename>
             friend class list;
           public:
-            typedef utility::iterator::bidirectional_iterator_tag
+            typedef iterator::bidirectional_iterator_tag
               iterator_category;
             typedef __Value value_type;
             typedef const value_type const_value_type;
             typedef const value_type& reference;
             typedef typename
-              utility::trait::miscellaneous::pointer_traits<const_value_type*>::pointer
+              trait::miscellaneous::pointer_traits<const_value_type*>::pointer
               pointer;
             typedef typename
-              utility::trait::miscellaneous::pointer_traits<const_value_type*>::difference_type
+              trait::miscellaneous::pointer_traits<const_value_type*>::difference_type
               difference_type;
 
           public:
@@ -256,21 +256,21 @@ namespace utility
       private:
         typedef __list_node<_T>   __node_type;
         typedef __node_type*      __link_type;
-        typedef utility::memory::allocator<__node_type>
+        typedef memory::allocator<__node_type>
           __node_allocator_type;
-        typedef utility::memory::allocator_traits<__node_allocator_type>
+        typedef memory::allocator_traits<__node_allocator_type>
           __node_allocator_traits_type;
 
       public:
         typedef _T                    value_type;
         typedef _Alloc                allocator_type;
-        typedef utility::size_t     size_type;
-        typedef utility::ptrdiff_t  difference_type;
+        typedef size_t     size_type;
+        typedef ptrdiff_t  difference_type;
         typedef value_type&           reference;
         typedef const value_type&     const_reference;
 
       public:
-        typedef utility::memory::allocator_traits<allocator_type>
+        typedef memory::allocator_traits<allocator_type>
           allocator_traits_type;
 
       public:
@@ -280,25 +280,25 @@ namespace utility
       public:
         typedef __list_iterator<value_type> iterator;
         typedef
-          utility::iterator::reverse_iterator<iterator> reverse_iterator;
+          iterator::reverse_iterator<iterator> reverse_iterator;
         typedef __list_const_iterator<value_type> const_iterator;
         typedef
-          utility::iterator::reverse_iterator<const_iterator> const_reverse_iterator;
+          iterator::reverse_iterator<const_iterator> const_reverse_iterator;
 
       public: // assert
-        static_assert(utility::trait::type::releations::is_same<
+        static_assert(trait::type::releations::is_same<
           value_type, typename allocator_type::value_type>::value,
           "the allocator's alloc type must be the same as value type");
 
       private:
-        typedef utility::memory::unique_ptr<value_type>
+        typedef memory::unique_ptr<value_type>
           __value_container;
-        typedef utility::memory::unique_ptr<__node_type>
+        typedef memory::unique_ptr<__node_type>
           __node_container;
 
       private:
-        typedef utility::container::compressed_pair<__link_type, __node_allocator_type>   __node_pair;
-        typedef utility::container::compressed_pair<size_type, allocator_type>  __mis_type;
+        typedef container::compressed_pair<__link_type, __node_allocator_type>   __node_pair;
+        typedef container::compressed_pair<size_type, allocator_type>  __mis_type;
 
       private:
         __node_pair     __base;
@@ -337,7 +337,7 @@ namespace utility
 
         template<typename _Inputiterator,
           typename
-          utility::trait::type::miscellaneous::enable_if<
+          trait::type::miscellaneous::enable_if<
             is_iterator<_Inputiterator>::value,
             bool
           >::type = true
@@ -372,11 +372,11 @@ namespace utility
         }
 
         list(list&& __other):
-          __base{utility::algorithm::move(__other.__base)},
-          __mis{utility::algorithm::move(__other.__mis)}
+          __base{algorithm::move(__other.__base)},
+          __mis{algorithm::move(__other.__mis)}
         { __other.__base.first() = nullptr;}
         list(list&& __other, const allocator_type& __alloc):
-          __base{utility::algorithm::move(__other.__base)},
+          __base{algorithm::move(__other.__base)},
           __mis{__other.__mis.first(), __alloc}
         { __other.__base.first() = nullptr;}
 
@@ -420,9 +420,9 @@ namespace utility
           {
             this->force_clear();
             this->__mis =
-              utility::algorithm::move(__other.__mis);
+              algorithm::move(__other.__mis);
             this->__base =
-              utility::algorithm::move(__other.__base);
+              algorithm::move(__other.__base);
             __other.__base.first() = nullptr;
           }
           return *this;
@@ -450,7 +450,7 @@ namespace utility
         }
         template<typename _Inputiterator>
         typename
-        utility::trait::type::miscellaneous::enable_if<
+        trait::type::miscellaneous::enable_if<
           is_iterator<_Inputiterator>::value,
           void
         >::type
@@ -526,7 +526,7 @@ namespace utility
         void push_front(value_type&& __val)
         {
           __link_type __ulink =
-            this->__allocate_node(utility::algorithm::move(__val));
+            this->__allocate_node(algorithm::move(__val));
           __node_insert(__ulink, this->__base.first()->__next);
           ++(this->__mis.first());
         }
@@ -539,7 +539,7 @@ namespace utility
         void push_back(value_type&& __val)
         {
           __link_type __ulink =
-            this->__allocate_node(utility::algorithm::move(__val));
+            this->__allocate_node(algorithm::move(__val));
           __node_insert(__ulink, this->__base.first());
           ++(this->__mis.first());
         }
@@ -549,7 +549,7 @@ namespace utility
         iterator emplace(const_iterator __pos ,_Args&&... __args)
         {
           __link_type __ulink =
-            this->__allocate_node(utility::algorithm::move(__args)...);
+            this->__allocate_node(algorithm::move(__args)...);
           __node_insert(__ulink, __pos.__ptr);
           ++(this->__mis.first());
           return iterator(__pos.__ptr);
@@ -558,7 +558,7 @@ namespace utility
         reference emplace_front(_Args&&... __args)
         {
           __link_type __ulink =
-            this->__allocate_node(utility::algorithm::move(__args)...);
+            this->__allocate_node(algorithm::move(__args)...);
           __node_insert(__ulink, this->__base.first()->__next);
           ++(this->__mis.first());
           return *(this->__base.first()->__next->__data);
@@ -567,7 +567,7 @@ namespace utility
         reference emplace_back(_Args&&... __args)
         {
           __link_type __ulink =
-            this->__allocate_node(utility::algorithm::move(__args)...);
+            this->__allocate_node(algorithm::move(__args)...);
           __node_insert(__ulink, this->__base.first());
           ++(this->__mis.first());
           return *(this->__base.first()->__prev->__data);
@@ -600,7 +600,7 @@ namespace utility
         iterator insert(const_iterator __pos, value_type&& __val)
         {
           __link_type __ulink =
-            this->__allocate_node(utility::algorithm::move(__val));
+            this->__allocate_node(algorithm::move(__val));
           __node_insert(__ulink, __pos.__ptr);
           ++(this->__mis.first());
           return iterator(__ulink);
@@ -610,7 +610,7 @@ namespace utility
         {
           if(__count == 0)
           { return iterator(__pos.__ptr);}
-          utility::container::pair<__link_type, __link_type> __chain =
+          container::pair<__link_type, __link_type> __chain =
             this->__allocate_node_chain(__count, __val);
           __link_type __tpos =__pos.__ptr;
           __node_connect(__tpos->__prev, __chain.first);
@@ -620,7 +620,7 @@ namespace utility
         }
 
         template<typename _Inputiterator,
-          typename utility::trait::type::miscellaneous::enable_if<
+          typename trait::type::miscellaneous::enable_if<
             is_iterator<_Inputiterator>::value,
           bool>::type = true
         >
@@ -629,12 +629,12 @@ namespace utility
         {
           if(__first == __last)
           { return iterator(__pos.__ptr);}
-          utility::container::pair<__link_type, __link_type> __chain =
+          container::pair<__link_type, __link_type> __chain =
             this->__allocate_node_chain(__first, __last);
           __link_type __tpos = __pos.__ptr;
           __node_connect(__tpos->__prev, __chain.first);
           __node_connect(__chain.second, __tpos);
-          this->__mis.first() += utility::iterator::distance(__first, __last);
+          this->__mis.first() += iterator::distance(__first, __last);
           return iterator(__chain.first);
         }
         inline iterator insert(const_iterator __pos,
@@ -715,18 +715,18 @@ namespace utility
 
       public:
         void swap(list& __other) noexcept(
-          utility::trait::type::features::is_nothrow_swappable<allocator_type>::value
+          trait::type::features::is_nothrow_swappable<allocator_type>::value
         )
         {
-          using utility::algorithm::swap;
+          using algorithm::swap;
           swap(this->__mis,   __other.__mis);
           swap(this->__base,  __other.__base);
         }
         void possible_swap(list& __other) noexcept(
-          utility::trait::type::features::is_nothrow_possible_swappable<allocator_type>::value
+          trait::type::features::is_nothrow_possible_swappable<allocator_type>::value
         )
         {
-          using utility::algorithm::possible_swap;
+          using algorithm::possible_swap;
           possible_swap(this->__mis,  __other.__mis);
           possible_swap(this->__base, __other.__base);
         }
@@ -777,7 +777,7 @@ namespace utility
         {
           if(!__con.empty() && (__first != __last))
           {
-            size_type __dist = utility::iterator::distance(__first, __last);
+            size_type __dist = iterator::distance(__first, __last);
             __link_type __plink = __pos.__ptr;
             __link_type __tflink = __first.__ptr;
             __link_type __tllink = __last.__ptr->__prev;
@@ -838,9 +838,9 @@ namespace utility
 
       public:
         inline void merge(list& __other)
-        { this->merge(__other, utility::algorithm::less<value_type>{});}
+        { this->merge(__other, algorithm::less<value_type>{});}
         inline void merge(list&& __other)
-        { this->merge(__other, utility::algorithm::less<value_type>{});}
+        { this->merge(__other, algorithm::less<value_type>{});}
         template<typename _Compare>
         void merge(list& __other, _Compare __compare)
         {
@@ -875,14 +875,14 @@ namespace utility
         {
           __sort(
             this->__base.first()->__next, this->__base.first()->__prev,
-            this->__mis.first(), utility::algorithm::less<value_type>{}
+            this->__mis.first(), algorithm::less<value_type>{}
           );
         }
         template<typename _Compare>
         inline void sort(_Compare __compare)
         {
           typedef typename
-            utility::trait::type::transform::add_lvalue_reference<_Compare>::type
+            trait::type::transform::add_lvalue_reference<_Compare>::type
             __comp_ref;
           __sort<__comp_ref>(
             this->__base.first()->__next, this->__base.first()->__prev,
@@ -892,13 +892,13 @@ namespace utility
 
       public:
         inline void unique()
-        { this->unique(utility::algorithm::equal_to<value_type>{});}
+        { this->unique(algorithm::equal_to<value_type>{});}
         template<typename _BinaryPredicate>
         void unique(_BinaryPredicate __binarypred)
         {
           for(iterator __it = this->begin(), __eit = this->end(); __it != __eit;)
           {
-            iterator __tit = utility::iterator::next(__it);
+            iterator __tit = iterator::next(__it);
             for(;__tit != __eit && __binarypred(*__it, *__tit); ++__tit);
             if(++__it != __tit)
             { __it = this->erase(__it, __tit);}
@@ -949,7 +949,7 @@ namespace utility
           );
           allocator_traits_type::construct(
             this->__mis.second(), __valc.get(),
-            utility::algorithm::move(__args)...
+            algorithm::move(__args)...
           );
           __link_type __link = __node.release();
           __link->__data = __valc.release();
@@ -971,7 +971,7 @@ namespace utility
           __node_allocator_traits_type::deallocate(this->__base.second(), __link);
         }
         UTILITY_ALWAYS_INLINE
-        inline utility::container::pair<__link_type, __link_type>
+        inline container::pair<__link_type, __link_type>
         __allocate_node_chain(size_type __count, const value_type& __val)
         {
           __node_container __node(
@@ -1014,17 +1014,17 @@ namespace utility
               this->__deallocate_node(__bpos);
             }
           );
-          return utility::container::pair<__link_type, __link_type>(
+          return container::pair<__link_type, __link_type>(
             __bpos, __epos
           );
         }
         template<typename _Inputiterator,
           typename
-          utility::trait::type::miscellaneous::enable_if<
+          trait::type::miscellaneous::enable_if<
             is_iterator<_Inputiterator>::value,
           bool>::type = true
         >
-        utility::container::pair<__link_type, __link_type> __allocate_node_chain(
+        container::pair<__link_type, __link_type> __allocate_node_chain(
           _Inputiterator __first, _Inputiterator __last
         )
         {
@@ -1068,7 +1068,7 @@ namespace utility
               this->__deallocate_node(__bpos);
             }
           );
-          return utility::container::pair<__link_type, __link_type>(
+          return container::pair<__link_type, __link_type>(
             __bpos, __epos
           );
         }
@@ -1107,7 +1107,7 @@ namespace utility
           size_type __tsize, _Compare __compare
         )
         {
-          using utility::algorithm::swap;
+          using algorithm::swap;
           if(__tsize < 2)
           { return __first;}
           if(__tsize == 2)
@@ -1166,7 +1166,7 @@ namespace utility
     inline bool operator==(const list<_T, _Alloc>& __x, const list<_T, _Alloc>& __y)
     {
       return __x.size() == __y.size() &&
-        utility::algorithm::equal(__x.begin(), __x.end(), __y.begin());
+        algorithm::equal(__x.begin(), __x.end(), __y.begin());
     }
     template<typename _T, typename _Alloc>
     inline bool operator!=(const list<_T, _Alloc>& __x, const list<_T, _Alloc>& __y)
@@ -1174,7 +1174,7 @@ namespace utility
     template<typename _T, typename _Alloc>
     inline bool operator<(const list<_T, _Alloc>& __x, const list<_T, _Alloc>& __y)
     {
-      return utility::algorithm::lexicographical_compare(
+      return algorithm::lexicographical_compare(
         __x.begin(), __x.end(), __y.begin(), __y.end()
       );
     }
@@ -1194,16 +1194,16 @@ namespace utility
   {
     template<typename _T, typename _Alloc>
     inline void swap(
-      utility::container::list<_T, _Alloc>& __x,
-      utility::container::list<_T, _Alloc>& __y
+      container::list<_T, _Alloc>& __x,
+      container::list<_T, _Alloc>& __y
     ) noexcept(noexcept(__x.swap(__y)))
     {
       __x.swap(__y);
     }
     template<typename _T, typename _Alloc>
     inline void possible_swap(
-      utility::container::list<_T, _Alloc>& __x,
-      utility::container::list<_T, _Alloc>& __y
+      container::list<_T, _Alloc>& __x,
+      container::list<_T, _Alloc>& __y
     ) noexcept(noexcept(__x.possible_swap(__y)))
     {
       __x.possible_swap(__y);

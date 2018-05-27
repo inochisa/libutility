@@ -36,7 +36,7 @@ namespace utility
           virtual const char* what() const noexcept
           {
             static const char __me[] =
-              "utility::info::exception::exception";
+              "info::exception::exception";
             return __me;
           }
       };

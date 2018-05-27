@@ -36,152 +36,152 @@ namespace utility
       public:
         template<typename _U1 = _T1, typename _U2 = _T2,
           typename
-            utility::trait::type::miscellaneous::enable_if<
-              utility::trait::type::features::is_default_constructible<_U1>::value &&
-              utility::trait::type::features::is_default_constructible<_U2>::value &&
-              (utility::trait::type::features::is_implicit_constructible<_U1>::value &&
-               utility::trait::type::features::is_implicit_constructible<_U2>::value),
+            trait::type::miscellaneous::enable_if<
+              trait::type::features::is_default_constructible<_U1>::value &&
+              trait::type::features::is_default_constructible<_U2>::value &&
+              (trait::type::features::is_implicit_constructible<_U1>::value &&
+               trait::type::features::is_implicit_constructible<_U2>::value),
               bool>::type = true>
         constexpr compressed_pair() noexcept(
-          utility::trait::type::features::is_nothrow_default_constructible<_T1>::value &&
-          utility::trait::type::features::is_nothrow_default_constructible<_T2>::value
+          trait::type::features::is_nothrow_default_constructible<_T1>::value &&
+          trait::type::features::is_nothrow_default_constructible<_T2>::value
         ):first_base(), second_base()
         { }
 
         template<typename _U1 = _T1, typename _U2 = _T2,
           typename
-            utility::trait::type::miscellaneous::enable_if<
-              utility::trait::type::features::is_default_constructible<_U1>::value &&
-              utility::trait::type::features::is_default_constructible<_U2>::value &&
-              !(utility::trait::type::features::is_implicit_constructible<_U1>::value &&
-               utility::trait::type::features::is_implicit_constructible<_U2>::value),
+            trait::type::miscellaneous::enable_if<
+              trait::type::features::is_default_constructible<_U1>::value &&
+              trait::type::features::is_default_constructible<_U2>::value &&
+              !(trait::type::features::is_implicit_constructible<_U1>::value &&
+               trait::type::features::is_implicit_constructible<_U2>::value),
               bool>::type = false>
         constexpr explicit compressed_pair() noexcept(
-          utility::trait::type::features::is_nothrow_default_constructible<_T1>::value &&
-          utility::trait::type::features::is_nothrow_default_constructible<_T2>::value
+          trait::type::features::is_nothrow_default_constructible<_T1>::value &&
+          trait::type::features::is_nothrow_default_constructible<_T2>::value
         ):first_base(), second_base()
         { }
 
         template<typename _U1 = _T1, typename _U2 = _T2,
         typename
-          utility::trait::type::miscellaneous::enable_if<
-            utility::trait::type::features::is_copy_constructible<_U1>::value &&
-            utility::trait::type::features::is_copy_constructible<_U2>::value &&
-            (utility::trait::type::releations::is_convertible<const _U1&, _U1>::value &&
-             utility::trait::type::releations::is_convertible<const _U2&, _U2>::value),
+          trait::type::miscellaneous::enable_if<
+            trait::type::features::is_copy_constructible<_U1>::value &&
+            trait::type::features::is_copy_constructible<_U2>::value &&
+            (trait::type::releations::is_convertible<const _U1&, _U1>::value &&
+             trait::type::releations::is_convertible<const _U2&, _U2>::value),
             bool
           >::type = true>
         constexpr compressed_pair(const _T1& __first, const _T2& __second) noexcept(
-          utility::trait::type::features::is_nothrow_copy_constructible<_T1>::value &&
-          utility::trait::type::features::is_nothrow_copy_constructible<_T2>::value
+          trait::type::features::is_nothrow_copy_constructible<_T1>::value &&
+          trait::type::features::is_nothrow_copy_constructible<_T2>::value
         ):first_base(__first), second_base(__second)
         { }
         template<typename _U1 = _T1, typename _U2 = _T2,
         typename
-          utility::trait::type::miscellaneous::enable_if<
-            utility::trait::type::features::is_copy_constructible<_U1>::value &&
-            utility::trait::type::features::is_copy_constructible<_U2>::value &&
-            !(utility::trait::type::releations::is_convertible<const _U1&, _U1>::value &&
-             utility::trait::type::releations::is_convertible<const _U2&, _U2>::value),
+          trait::type::miscellaneous::enable_if<
+            trait::type::features::is_copy_constructible<_U1>::value &&
+            trait::type::features::is_copy_constructible<_U2>::value &&
+            !(trait::type::releations::is_convertible<const _U1&, _U1>::value &&
+             trait::type::releations::is_convertible<const _U2&, _U2>::value),
             bool
           >::type = false>
         constexpr explicit compressed_pair(const _T1& __first, const _T2& __second) noexcept(
-          utility::trait::type::features::is_nothrow_copy_constructible<_T1>::value &&
-          utility::trait::type::features::is_nothrow_copy_constructible<_T2>::value
+          trait::type::features::is_nothrow_copy_constructible<_T1>::value &&
+          trait::type::features::is_nothrow_copy_constructible<_T2>::value
         ):first_base(__first), second_base(__second)
         { }
 
         template<typename _U1, typename _U2,
         typename
-        utility::trait::type::miscellaneous::enable_if<
-          utility::trait::type::features::is_constructible<_T1, _U1&&>::value &&
-          utility::trait::type::features::is_constructible<_T2, _U2&&>::value &&
-          (utility::trait::type::releations::is_convertible<_U1&&, _T1>::value &&
-           utility::trait::type::releations::is_convertible<_U2&&, _T2>::value),
+        trait::type::miscellaneous::enable_if<
+          trait::type::features::is_constructible<_T1, _U1&&>::value &&
+          trait::type::features::is_constructible<_T2, _U2&&>::value &&
+          (trait::type::releations::is_convertible<_U1&&, _T1>::value &&
+           trait::type::releations::is_convertible<_U2&&, _T2>::value),
           bool>::type = true>
         constexpr compressed_pair(_U1&& __tfirst, _U2&& __tsecond) noexcept(
-          utility::trait::type::features::is_nothrow_constructible<_T1, _U1&&>::value &&
-          utility::trait::type::features::is_nothrow_constructible<_T2, _U2&&>::value
-        ):first_base(utility::algorithm::forward<_U1>(__tfirst)),
-          second_base(utility::algorithm::forward<_U2>(__tsecond))
+          trait::type::features::is_nothrow_constructible<_T1, _U1&&>::value &&
+          trait::type::features::is_nothrow_constructible<_T2, _U2&&>::value
+        ):first_base(algorithm::forward<_U1>(__tfirst)),
+          second_base(algorithm::forward<_U2>(__tsecond))
         { }
         template<typename _U1, typename _U2,
         typename
-        utility::trait::type::miscellaneous::enable_if<
-          utility::trait::type::features::is_constructible<_T1, _U1&&>::value &&
-          utility::trait::type::features::is_constructible<_T2, _U2&&>::value &&
-          !(utility::trait::type::releations::is_convertible<_U1&&, _T1>::value &&
-           utility::trait::type::releations::is_convertible<_U2&&, _T2>::value),
+        trait::type::miscellaneous::enable_if<
+          trait::type::features::is_constructible<_T1, _U1&&>::value &&
+          trait::type::features::is_constructible<_T2, _U2&&>::value &&
+          !(trait::type::releations::is_convertible<_U1&&, _T1>::value &&
+           trait::type::releations::is_convertible<_U2&&, _T2>::value),
           bool>::type = false>
         constexpr explicit compressed_pair(_U1&& __tfirst, _U2&& __tsecond) noexcept(
-          utility::trait::type::features::is_nothrow_constructible<_T1, _U1&&>::value &&
-          utility::trait::type::features::is_nothrow_constructible<_T2, _U2&&>::value
-        ):first_base(utility::algorithm::forward<_U1>(__tfirst)),
-          second_base(utility::algorithm::forward<_U2>(__tsecond))
+          trait::type::features::is_nothrow_constructible<_T1, _U1&&>::value &&
+          trait::type::features::is_nothrow_constructible<_T2, _U2&&>::value
+        ):first_base(algorithm::forward<_U1>(__tfirst)),
+          second_base(algorithm::forward<_U2>(__tsecond))
         { }
 
         template<typename _U1, typename _U2,
         typename
-        utility::trait::type::miscellaneous::enable_if<
-          utility::trait::type::features::is_constructible<_T1, const _U1&>::value &&
-          utility::trait::type::features::is_constructible<_T2, const _U2&>::value &&
-          (utility::trait::type::releations::is_convertible<const _U1&, _T1>::value &&
-           utility::trait::type::releations::is_convertible<const _U2&, _T2>::value),
+        trait::type::miscellaneous::enable_if<
+          trait::type::features::is_constructible<_T1, const _U1&>::value &&
+          trait::type::features::is_constructible<_T2, const _U2&>::value &&
+          (trait::type::releations::is_convertible<const _U1&, _T1>::value &&
+           trait::type::releations::is_convertible<const _U2&, _T2>::value),
           bool>::type = true>
         constexpr compressed_pair(
           const compressed_pair<_U1, _U2>& __tpair
         ) noexcept(
-          utility::trait::type::features::is_nothrow_constructible<_T1, const _U1&>::value &&
-          utility::trait::type::features::is_nothrow_constructible<_T2, const _U2&>::value
+          trait::type::features::is_nothrow_constructible<_T1, const _U1&>::value &&
+          trait::type::features::is_nothrow_constructible<_T2, const _U2&>::value
         ):first_base(__tpair.first()), second_base(__tpair.second())
         { }
         template<typename _U1, typename _U2,
         typename
-        utility::trait::type::miscellaneous::enable_if<
-          utility::trait::type::features::is_constructible<_T1, const _U1&>::value &&
-          utility::trait::type::features::is_constructible<_T2, const _U2&>::value &&
-          !(utility::trait::type::releations::is_convertible<const _U1&, _T1>::value &&
-           utility::trait::type::releations::is_convertible<const _U2&, _T2>::value),
+        trait::type::miscellaneous::enable_if<
+          trait::type::features::is_constructible<_T1, const _U1&>::value &&
+          trait::type::features::is_constructible<_T2, const _U2&>::value &&
+          !(trait::type::releations::is_convertible<const _U1&, _T1>::value &&
+           trait::type::releations::is_convertible<const _U2&, _T2>::value),
           bool>::type = false>
         constexpr explicit compressed_pair(
           const compressed_pair<_U1, _U2>& __tpair
         ) noexcept(
-          utility::trait::type::features::is_nothrow_constructible<_T1, const _U1&>::value &&
-          utility::trait::type::features::is_nothrow_constructible<_T2, const _U2&>::value
+          trait::type::features::is_nothrow_constructible<_T1, const _U1&>::value &&
+          trait::type::features::is_nothrow_constructible<_T2, const _U2&>::value
         ):first_base(__tpair.first()), second_base(__tpair.second())
         { }
 
         template<typename _U1, typename _U2,
         typename
-        utility::trait::type::miscellaneous::enable_if<
-          utility::trait::type::features::is_constructible<_T1, _U1&&>::value &&
-          utility::trait::type::features::is_constructible<_T2, _U2&&>::value &&
-          (utility::trait::type::releations::is_convertible<_U1&&, _T1>::value &&
-           utility::trait::type::releations::is_convertible<_U2&&, _T2>::value),
+        trait::type::miscellaneous::enable_if<
+          trait::type::features::is_constructible<_T1, _U1&&>::value &&
+          trait::type::features::is_constructible<_T2, _U2&&>::value &&
+          (trait::type::releations::is_convertible<_U1&&, _T1>::value &&
+           trait::type::releations::is_convertible<_U2&&, _T2>::value),
           bool>::type = true>
         constexpr compressed_pair(
           compressed_pair<_U1, _U2>&& __tpair
         ) noexcept(
-          utility::trait::type::features::is_nothrow_constructible<_T1, _U1&&>::value &&
-          utility::trait::type::features::is_nothrow_constructible<_T2,  _U2&&>::value
-        ):first_base(utility::algorithm::forward<_U1>(__tpair.first())),
-          second_base(utility::algorithm::forward<_U2>(__tpair.second()))
+          trait::type::features::is_nothrow_constructible<_T1, _U1&&>::value &&
+          trait::type::features::is_nothrow_constructible<_T2,  _U2&&>::value
+        ):first_base(algorithm::forward<_U1>(__tpair.first())),
+          second_base(algorithm::forward<_U2>(__tpair.second()))
         { }
         template<typename _U1, typename _U2,
         typename
-        utility::trait::type::miscellaneous::enable_if<
-          utility::trait::type::features::is_constructible<_T1, _U1&&>::value &&
-          utility::trait::type::features::is_constructible<_T2, _U2&&>::value &&
-          !(utility::trait::type::releations::is_convertible<_U1&&, _T1>::value &&
-           utility::trait::type::releations::is_convertible<_U2&&, _T2>::value),
+        trait::type::miscellaneous::enable_if<
+          trait::type::features::is_constructible<_T1, _U1&&>::value &&
+          trait::type::features::is_constructible<_T2, _U2&&>::value &&
+          !(trait::type::releations::is_convertible<_U1&&, _T1>::value &&
+           trait::type::releations::is_convertible<_U2&&, _T2>::value),
           bool>::type = true>
         constexpr explicit compressed_pair(
           compressed_pair<_U1, _U2>&& __tpair
         ) noexcept(
-          utility::trait::type::features::is_nothrow_constructible<_T1, _U1&&>::value &&
-          utility::trait::type::features::is_nothrow_constructible<_T2,  _U2&&>::value
-        ):first_base(utility::algorithm::forward<_U1>(__tpair.first())),
-          second_base(utility::algorithm::forward<_U2>(__tpair.second()))
+          trait::type::features::is_nothrow_constructible<_T1, _U1&&>::value &&
+          trait::type::features::is_nothrow_constructible<_T2,  _U2&&>::value
+        ):first_base(algorithm::forward<_U1>(__tpair.first())),
+          second_base(algorithm::forward<_U2>(__tpair.second()))
         { }
 
 
@@ -201,20 +201,20 @@ namespace utility
 
       public:
         void swap(compressed_pair& __other) noexcept(
-          utility::trait::type::features::is_nothrow_swappable<_T1>::value &&
-          utility::trait::type::features::is_nothrow_swappable<_T2>::value
+          trait::type::features::is_nothrow_swappable<_T1>::value &&
+          trait::type::features::is_nothrow_swappable<_T2>::value
         )
         {
-          using utility::algorithm::swap;
+          using algorithm::swap;
           swap(this->first(),   __other.first());
           swap(this->second(),  __other.second());
         }
         void possible_swap(compressed_pair& __other) noexcept(
-          utility::trait::type::features::is_nothrow_swappable<_T1>::value &&
-          utility::trait::type::features::is_nothrow_swappable<_T2>::value
+          trait::type::features::is_nothrow_swappable<_T1>::value &&
+          trait::type::features::is_nothrow_swappable<_T2>::value
         )
         {
-          using utility::algorithm::possible_swap;
+          using algorithm::possible_swap;
           possible_swap(this->first(),  __other.first());
           possible_swap(this->second(), __other.second());
         }
@@ -234,139 +234,139 @@ namespace utility
       public:
         template<typename _U = _T,
           typename
-            utility::trait::type::miscellaneous::enable_if<
-              utility::trait::type::features::is_default_constructible<_U>::value &&
-              (utility::trait::type::features::is_implicit_constructible<_U>::value),
+            trait::type::miscellaneous::enable_if<
+              trait::type::features::is_default_constructible<_U>::value &&
+              (trait::type::features::is_implicit_constructible<_U>::value),
               bool>::type = true>
         constexpr compressed_pair() noexcept(
-          utility::trait::type::features::is_nothrow_default_constructible<_T>::value
+          trait::type::features::is_nothrow_default_constructible<_T>::value
         ):first_base(), second_base()
         { }
 
         template<typename _U = _T,
           typename
-            utility::trait::type::miscellaneous::enable_if<
-              utility::trait::type::features::is_default_constructible<_U>::value &&
-              !(utility::trait::type::features::is_implicit_constructible<_U>::value),
+            trait::type::miscellaneous::enable_if<
+              trait::type::features::is_default_constructible<_U>::value &&
+              !(trait::type::features::is_implicit_constructible<_U>::value),
               bool>::type = false>
         constexpr explicit compressed_pair() noexcept(
-          utility::trait::type::features::is_nothrow_default_constructible<_T>::value
+          trait::type::features::is_nothrow_default_constructible<_T>::value
         ):first_base(), second_base()
         { }
 
         template<typename _U = _T,
         typename
-          utility::trait::type::miscellaneous::enable_if<
-            utility::trait::type::features::is_constructible<_U, const _U&>::value &&
-            (utility::trait::type::releations::is_convertible<const _U&, _U>::value),
+          trait::type::miscellaneous::enable_if<
+            trait::type::features::is_constructible<_U, const _U&>::value &&
+            (trait::type::releations::is_convertible<const _U&, _U>::value),
             bool
           >::type = true>
         constexpr compressed_pair(const _T& __first, const _T& __second) noexcept(
-          utility::trait::type::features::is_nothrow_constructible<_T, const _T&>::value
+          trait::type::features::is_nothrow_constructible<_T, const _T&>::value
         ):first_base(__first), second_base(__second)
         { }
         template<typename _U = _T,
         typename
-          utility::trait::type::miscellaneous::enable_if<
-            utility::trait::type::features::is_constructible<_U, const _U&>::value &&
-            !(utility::trait::type::releations::is_convertible<const _U&, _U>::value),
+          trait::type::miscellaneous::enable_if<
+            trait::type::features::is_constructible<_U, const _U&>::value &&
+            !(trait::type::releations::is_convertible<const _U&, _U>::value),
             bool
           >::type = false>
         constexpr explicit compressed_pair(const _T& __first, const _T& __second) noexcept(
-          utility::trait::type::features::is_nothrow_constructible<_T, const _T&>::value
+          trait::type::features::is_nothrow_constructible<_T, const _T&>::value
         ):first_base(__first), second_base(__second)
         { }
 
         template<typename _U1, typename _U2,
         typename
-        utility::trait::type::miscellaneous::enable_if<
-          utility::trait::type::features::is_constructible<_T, _U1&&>::value &&
-          utility::trait::type::features::is_constructible<_T, _U2&&>::value &&
-          (utility::trait::type::releations::is_convertible<_U1&&, _T>::value &&
-           utility::trait::type::releations::is_convertible<_U2&&, _T>::value),
+        trait::type::miscellaneous::enable_if<
+          trait::type::features::is_constructible<_T, _U1&&>::value &&
+          trait::type::features::is_constructible<_T, _U2&&>::value &&
+          (trait::type::releations::is_convertible<_U1&&, _T>::value &&
+           trait::type::releations::is_convertible<_U2&&, _T>::value),
           bool>::type = true>
         constexpr compressed_pair(_U1&& __tfirst, _U2&& __tsecond) noexcept(
-          utility::trait::type::features::is_nothrow_constructible<_T, _U1&&>::value &&
-          utility::trait::type::features::is_nothrow_constructible<_T, _U2&&>::value
-        ):first_base(utility::algorithm::forward<_U1>(__tfirst)),
-          second_base(utility::algorithm::forward<_U2>(__tsecond))
+          trait::type::features::is_nothrow_constructible<_T, _U1&&>::value &&
+          trait::type::features::is_nothrow_constructible<_T, _U2&&>::value
+        ):first_base(algorithm::forward<_U1>(__tfirst)),
+          second_base(algorithm::forward<_U2>(__tsecond))
         { }
         template<typename _U1, typename _U2,
         typename
-        utility::trait::type::miscellaneous::enable_if<
-          utility::trait::type::features::is_constructible<_T, _U1&&>::value &&
-          utility::trait::type::features::is_constructible<_T, _U2&&>::value &&
-          !(utility::trait::type::releations::is_convertible<_U1&&, _T>::value &&
-           utility::trait::type::releations::is_convertible<_U2&&, _T>::value),
+        trait::type::miscellaneous::enable_if<
+          trait::type::features::is_constructible<_T, _U1&&>::value &&
+          trait::type::features::is_constructible<_T, _U2&&>::value &&
+          !(trait::type::releations::is_convertible<_U1&&, _T>::value &&
+           trait::type::releations::is_convertible<_U2&&, _T>::value),
           bool>::type = false>
         constexpr explicit compressed_pair(_U1&& __tfirst, _U2&& __tsecond) noexcept(
-          utility::trait::type::features::is_nothrow_constructible<_T, _U1&&>::value &&
-          utility::trait::type::features::is_nothrow_constructible<_T, _U2&&>::value
-        ):first_base(utility::algorithm::forward<_U1>(__tfirst)),
-          second_base(utility::algorithm::forward<_U2>(__tsecond))
+          trait::type::features::is_nothrow_constructible<_T, _U1&&>::value &&
+          trait::type::features::is_nothrow_constructible<_T, _U2&&>::value
+        ):first_base(algorithm::forward<_U1>(__tfirst)),
+          second_base(algorithm::forward<_U2>(__tsecond))
         { }
 
         template<typename _U1, typename _U2,
         typename
-        utility::trait::type::miscellaneous::enable_if<
-          utility::trait::type::features::is_constructible<_T, const _U1&>::value &&
-          utility::trait::type::features::is_constructible<_T, const _U2&>::value &&
-          (utility::trait::type::releations::is_convertible<const _U1&, _T>::value &&
-           utility::trait::type::releations::is_convertible<const _U2&, _T>::value),
+        trait::type::miscellaneous::enable_if<
+          trait::type::features::is_constructible<_T, const _U1&>::value &&
+          trait::type::features::is_constructible<_T, const _U2&>::value &&
+          (trait::type::releations::is_convertible<const _U1&, _T>::value &&
+           trait::type::releations::is_convertible<const _U2&, _T>::value),
           bool>::type = true>
         constexpr compressed_pair(
           const compressed_pair<_U1, _U2>& __tpair
         ) noexcept(
-          utility::trait::type::features::is_nothrow_constructible<_T, const _U1&>::value &&
-          utility::trait::type::features::is_nothrow_constructible<_T, const _U2&>::value
+          trait::type::features::is_nothrow_constructible<_T, const _U1&>::value &&
+          trait::type::features::is_nothrow_constructible<_T, const _U2&>::value
         ):first_base(__tpair.first()), second_base(__tpair.second())
         { }
         template<typename _U1, typename _U2,
         typename
-        utility::trait::type::miscellaneous::enable_if<
-          utility::trait::type::features::is_constructible<_T, const _U1&>::value &&
-          utility::trait::type::features::is_constructible<_T, const _U2&>::value &&
-          !(utility::trait::type::releations::is_convertible<const _U1&, _T>::value &&
-           utility::trait::type::releations::is_convertible<const _U2&, _T>::value),
+        trait::type::miscellaneous::enable_if<
+          trait::type::features::is_constructible<_T, const _U1&>::value &&
+          trait::type::features::is_constructible<_T, const _U2&>::value &&
+          !(trait::type::releations::is_convertible<const _U1&, _T>::value &&
+           trait::type::releations::is_convertible<const _U2&, _T>::value),
           bool>::type = false>
         constexpr explicit compressed_pair(
           const compressed_pair<_U1, _U2>& __tpair
         ) noexcept(
-          utility::trait::type::features::is_nothrow_constructible<_T, const _U1&>::value &&
-          utility::trait::type::features::is_nothrow_constructible<_T, const _U2&>::value
+          trait::type::features::is_nothrow_constructible<_T, const _U1&>::value &&
+          trait::type::features::is_nothrow_constructible<_T, const _U2&>::value
         ):first_base(__tpair.first()), second_base(__tpair.second())
         { }
 
         template<typename _U1, typename _U2,
         typename
-        utility::trait::type::miscellaneous::enable_if<
-          utility::trait::type::features::is_constructible<_T, _U1&&>::value &&
-          utility::trait::type::features::is_constructible<_T, _U2&&>::value &&
-          (utility::trait::type::releations::is_convertible<_U1&&, _T>::value &&
-           utility::trait::type::releations::is_convertible<_U2&&, _T>::value),
+        trait::type::miscellaneous::enable_if<
+          trait::type::features::is_constructible<_T, _U1&&>::value &&
+          trait::type::features::is_constructible<_T, _U2&&>::value &&
+          (trait::type::releations::is_convertible<_U1&&, _T>::value &&
+           trait::type::releations::is_convertible<_U2&&, _T>::value),
           bool>::type = true>
         constexpr compressed_pair(
           compressed_pair<_U1, _U2>&& __tpair
         ) noexcept(
-          utility::trait::type::features::is_nothrow_constructible<_T, _U1&&>::value &&
-          utility::trait::type::features::is_nothrow_constructible<_T,  _U2&&>::value
-        ):first_base(utility::algorithm::forward<_U1>(__tpair.first())),
-          second_base(utility::algorithm::forward<_U2>(__tpair.second()))
+          trait::type::features::is_nothrow_constructible<_T, _U1&&>::value &&
+          trait::type::features::is_nothrow_constructible<_T,  _U2&&>::value
+        ):first_base(algorithm::forward<_U1>(__tpair.first())),
+          second_base(algorithm::forward<_U2>(__tpair.second()))
         { }
         template<typename _U1, typename _U2,
         typename
-        utility::trait::type::miscellaneous::enable_if<
-          utility::trait::type::features::is_constructible<_T, _U1&&>::value &&
-          utility::trait::type::features::is_constructible<_T, _U2&&>::value &&
-          !(utility::trait::type::releations::is_convertible<_U1&&, _T>::value &&
-           utility::trait::type::releations::is_convertible<_U2&&, _T>::value),
+        trait::type::miscellaneous::enable_if<
+          trait::type::features::is_constructible<_T, _U1&&>::value &&
+          trait::type::features::is_constructible<_T, _U2&&>::value &&
+          !(trait::type::releations::is_convertible<_U1&&, _T>::value &&
+           trait::type::releations::is_convertible<_U2&&, _T>::value),
           bool>::type = true>
         constexpr explicit compressed_pair(
           compressed_pair<_U1, _U2>&& __tpair
         ) noexcept(
-          utility::trait::type::features::is_nothrow_constructible<_T, _U1&&>::value
-        ):first_base(utility::algorithm::forward<_U1>(__tpair.first())),
-          second_base(utility::algorithm::forward<_U2>(__tpair.second()))
+          trait::type::features::is_nothrow_constructible<_T, _U1&&>::value
+        ):first_base(algorithm::forward<_U1>(__tpair.first())),
+          second_base(algorithm::forward<_U2>(__tpair.second()))
         { }
 
 
@@ -386,18 +386,18 @@ namespace utility
 
       public:
         void swap(compressed_pair& __other) noexcept(
-          utility::trait::type::features::is_nothrow_swappable<_T>::value
+          trait::type::features::is_nothrow_swappable<_T>::value
         )
         {
-          using utility::algorithm::swap;
+          using algorithm::swap;
           swap(this->first(),   __other.first());
           swap(this->second(),  __other.second());
         }
         void possible_swap(compressed_pair& __other) noexcept(
-          utility::trait::type::features::is_nothrow_swappable<_T>::value
+          trait::type::features::is_nothrow_swappable<_T>::value
         )
         {
-          using utility::algorithm::possible_swap;
+          using algorithm::possible_swap;
           possible_swap(this->first(),  __other.first());
           possible_swap(this->second(), __other.second());
         }

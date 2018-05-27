@@ -20,7 +20,7 @@ namespace utility
         // is_constructible
         template<class _T, typename... _Args>
         struct is_constructible :
-          public utility::trait::integral_constant<bool,
+          public trait::integral_constant<bool,
             __utility_is_constructible(_T, _Args...)>
         { };
       }
@@ -51,28 +51,28 @@ namespace utility
         namespace __is_constructible_impl
         {
           template<typename _T>
-          using __remove_cv_ref = utility::trait::type::transform::remove_cv_reference<_T>;
+          using __remove_cv_ref = trait::type::transform::remove_cv_reference<_T>;
           template<typename _T, typename... _Args>
           struct __is_constructible_helper;
 
           template<typename _To, typename _From>
           struct __is_invaild_base_to_derived_cast
           {
-            static_assert(utility::trait::type::categories::is_reference<_To>::value,
+            static_assert(trait::type::categories::is_reference<_To>::value,
               "Can not convert to a lvalue"
             );
             using __rawFrom = typename __remove_cv_ref<_From>::type;
             using __rawTo = typename __remove_cv_ref<_To>::type;
-            constexpr static bool value = utility::trait::__type_and__<
-              utility::trait::__type_not__<
-                utility::trait::type::releations::is_same<__rawFrom,__rawTo>>,
-              utility::trait::type::releations::is_base_of<__rawFrom,__rawTo>,
-              utility::trait::__type_not__<__is_constructible_helper<__rawTo, _From>>>::value;
+            constexpr static bool value = trait::__type_and__<
+              trait::__type_not__<
+                trait::type::releations::is_same<__rawFrom,__rawTo>>,
+              trait::type::releations::is_base_of<__rawFrom,__rawTo>,
+              trait::__type_not__<__is_constructible_helper<__rawTo, _From>>>::value;
           };
 
           template<typename _To, typename _From>
           struct __is_invalid_lvalue_to_rvalue_cast : public
-            utility::trait::false_type
+            trait::false_type
           { };
 
           template<typename _To_ref, typename _From_ref>
@@ -80,12 +80,12 @@ namespace utility
           {
             using __rawFrom = typename __remove_cv_ref<_From_ref>::type;
             using __rawTo = typename __remove_cv_ref<_To_ref>::type;
-            constexpr static bool value = utility::trait::__type_and__<
-              utility::trait::__type_not__<
-                utility::trait::type::categories::is_function<__rawTo>>,
-              utility::trait::__type_or__<
-                utility::trait::type::releations::is_same<__rawFrom, __rawTo>,
-                utility::trait::type::releations::is_base_of<__rawTo, __rawFrom>>>::value;
+            constexpr static bool value = trait::__type_and__<
+              trait::__type_not__<
+                trait::type::categories::is_function<__rawTo>>,
+              trait::__type_or__<
+                trait::type::releations::is_same<__rawFrom, __rawTo>,
+                trait::type::releations::is_base_of<__rawTo, __rawFrom>>>::value;
           };
 
           struct __is_constructible_test_helper
@@ -96,51 +96,51 @@ namespace utility
 
             public:
               template<typename _To, typename _From,
-                typename = decltype(__help<_To>(utility::trait::type::special::declval<_From>()))>
-              static utility::trait::true_type __test_cast(int);
+                typename = decltype(__help<_To>(trait::type::special::declval<_From>()))>
+              static trait::true_type __test_cast(int);
 
               template<typename _To, typename _From,
-                typename = decltype(static_cast<_To>(utility::trait::type::special::declval<_From>()))>
-              static utility::trait::integral_constant<bool,
+                typename = decltype(static_cast<_To>(trait::type::special::declval<_From>()))>
+              static trait::integral_constant<bool,
                 !__is_invaild_base_to_derived_cast<_To, _From>::value &&
                 !__is_invalid_lvalue_to_rvalue_cast<_To, _From>::value>
                 __test_cast(long);
               template<typename, typename>
-              static utility::trait::false_type __test_cast(...);
+              static trait::false_type __test_cast(...);
 
             public:
               template<typename _T, typename... _Args,
-                typename = decltype(_T(utility::trait::type::special::declval<_Args>()...))>
-              static utility::trait::true_type __test_nary(int);
+                typename = decltype(_T(trait::type::special::declval<_Args>()...))>
+              static trait::true_type __test_nary(int);
               template<typename _T, typename...>
-              static utility::trait::false_type __test_nary(...);
+              static trait::false_type __test_nary(...);
 
             public:
               template<typename _T, typename _U, typename =
-                decltype(new _T(utility::trait::type::special::declval<_U>()))>
-              static utility::trait::type::features::is_destructible<_T>
+                decltype(new _T(trait::type::special::declval<_U>()))>
+              static trait::type::features::is_destructible<_T>
                 __test_unary(int);
               template<typename, typename>
-              static utility::trait::false_type __test_unary(...);
+              static trait::false_type __test_unary(...);
           };
 
           template<typename _T, bool =
-            utility::trait::type::categories::is_void<_T>::value>
+            trait::type::categories::is_void<_T>::value>
           struct __is_default_constructible_test :
             public decltype(__is_constructible_test_helper::__test_nary<_T>(0))
           { };
           template<typename _T>
           struct __is_default_constructible_test<_T, true> : public
-            utility::trait::false_type
+            trait::false_type
           { };
           template<typename _T>
           struct __is_default_constructible_test<_T[], false> : public
-            utility::trait::false_type
+            trait::false_type
           { };
-          template<typename _T, utility::trait::size_t _Size>
+          template<typename _T, trait::size_t _Size>
           struct __is_default_constructible_test<_T[_Size], false>: public
             __is_default_constructible_test<typename
-              utility::trait::type::transform::remove_all_extents<_T>::type>
+              trait::type::transform::remove_all_extents<_T>::type>
           { };
           template<typename _T, typename... _Args>
           struct __is_constructible_helper

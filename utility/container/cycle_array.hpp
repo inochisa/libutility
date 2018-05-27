@@ -16,7 +16,7 @@ namespace utility
     template
     <
       typename _T,
-      utility::size_t _Size
+      size_t _Size
     >
     class cycle_array
     {
@@ -28,8 +28,8 @@ namespace utility
         typedef const value_type*       const_pointer;
 
       public:
-        typedef utility::size_t       size_type;
-        typedef utility::ptrdiff_t    difference_type;
+        typedef size_t       size_type;
+        typedef ptrdiff_t    difference_type;
 
       public:
         value_type __element[_Size > 0 ? _Size : 1];

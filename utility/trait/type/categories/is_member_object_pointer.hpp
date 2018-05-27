@@ -17,7 +17,7 @@ namespace utility
         // is_member_object_pointer
         template<typename _T>
         struct is_member_object_pointer :
-          public utility::trait::integral_constant<bool,
+          public trait::integral_constant<bool,
             is_member_pointer<_T>::value           &&
             !is_member_function_pointer<_T>::value>
         { };

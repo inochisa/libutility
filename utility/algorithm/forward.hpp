@@ -14,16 +14,16 @@ namespace utility
     template<typename _T>
     __UTILITY_CPP14_CONSTEXPR__
     _T&& forward(
-      typename utility::trait::type::transform::remove_reference<_T>::type& __val) noexcept
+      typename trait::type::transform::remove_reference<_T>::type& __val) noexcept
     { return static_cast<_T&&>(__val);}
 
     template<typename _T>
     __UTILITY_CPP14_CONSTEXPR__
     _T&& forward(
-      typename utility::trait::type::transform::remove_reference<_T>::type&& __val) noexcept
+      typename trait::type::transform::remove_reference<_T>::type&& __val) noexcept
     {
       static_assert(
-        !utility::trait::type::categories::is_lvalue_reference<_T>::value,
+        !trait::type::categories::is_lvalue_reference<_T>::value,
         "Can not transform a lvalue to a rvalue!"
       );
       return static_cast<_T&&>(__val);

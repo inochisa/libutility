@@ -20,7 +20,7 @@ namespace utility
         // is_scalar
         template<typename _T>
         struct is_scalar :
-          public utility::trait::integral_constant<bool,
+          public trait::integral_constant<bool,
             is_arithmetic<_T>::value     ||
             is_member_pointer<_T>::value ||
             is_pointer<_T>::value        ||
@@ -28,8 +28,8 @@ namespace utility
             is_enum<_T>::value>
         { };
         template<>
-        struct is_scalar<utility::trait::nullptr_t> :
-          public utility::trait::true_type
+        struct is_scalar<trait::nullptr_t> :
+          public trait::true_type
         { };
 
       }

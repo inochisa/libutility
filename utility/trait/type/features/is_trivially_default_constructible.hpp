@@ -16,7 +16,7 @@ namespace utility
         // is_trivially_default_constructible
         template<typename _T>
         struct is_trivially_default_constructible : public
-          utility::trait::type::features::is_trivially_constructible<_T>
+          trait::type::features::is_trivially_constructible<_T>
         { };
 
       }

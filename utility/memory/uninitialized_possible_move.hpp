@@ -21,7 +21,7 @@ namespace utility
       _ForwardIterator
       __uninitialized_possible_move(
         _InputIterator __first, _InputIterator __last, _ForwardIterator __result,
-        utility::trait::true_type
+        trait::true_type
       )
       { return uninitialized_move(__first, __last, __result);}
       template<typename _InputIterator, typename _ForwardIterator>
@@ -29,7 +29,7 @@ namespace utility
       _ForwardIterator
       __uninitialized_possible_move(
         _InputIterator __first, _InputIterator __last, _ForwardIterator __result,
-        utility::trait::false_type
+        trait::false_type
       )
       { return uninitialized_copy(__first, __last, __result);}
 
@@ -38,7 +38,7 @@ namespace utility
       _ForwardIterator
       __uninitialized_possible_move_backward(
         _InputIterator __first, _InputIterator __last, _ForwardIterator __result,
-        utility::trait::true_type
+        trait::true_type
       )
       { return uninitialized_move_backward(__first, __last, __result);}
       template<typename _InputIterator, typename _ForwardIterator>
@@ -46,7 +46,7 @@ namespace utility
       _ForwardIterator
       __uninitialized_possible_move_backward(
         _InputIterator __first, _InputIterator __last, _ForwardIterator __result,
-        utility::trait::false_type
+        trait::false_type
       )
       { return uninitialized_copy_backward(__first, __last, __result);}
 
@@ -60,8 +60,8 @@ namespace utility
       _InputIterator __first, _InputIterator __last, _ForwardIterator __result
     )
     {
-      typedef utility::trait::type::features::is_nothrow_move_constructible<
-        typename utility::iterator::iterator_traits<_InputIterator>::value_type>
+      typedef trait::type::features::is_nothrow_move_constructible<
+        typename iterator::iterator_traits<_InputIterator>::value_type>
         __identify;
 
       return detail::__uninitialized_possible_move(
@@ -75,8 +75,8 @@ namespace utility
       _InputIterator __first, _InputIterator __last, _ForwardIterator __result
     )
     {
-      typedef utility::trait::type::features::is_nothrow_move_constructible<
-        typename utility::iterator::iterator_traits<_InputIterator>::value_type>
+      typedef trait::type::features::is_nothrow_move_constructible<
+        typename iterator::iterator_traits<_InputIterator>::value_type>
         __identify;
 
       return detail::__uninitialized_possible_move_backward(

@@ -12,7 +12,7 @@ namespace utility
     using ::std::div_t;
     using ::std::ldiv_t;
     using ::std::lldiv_t;
-    using utility::size_t;
+    using size_t;
 
     using ::std::abort;
     using ::std::exit;

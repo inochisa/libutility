@@ -17,7 +17,7 @@ namespace utility
         // is_arithmetic
         template<typename _T>
         struct is_arithmetic :
-          public utility::trait::integral_constant<bool,
+          public trait::integral_constant<bool,
             is_integral<_T>::value || is_floating_point<_T>::value>
         { };
 

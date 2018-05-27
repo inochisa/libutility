@@ -22,15 +22,15 @@ namespace utility
       {
         namespace __invoke_related
         {
-          using utility::trait::__impl_helper::__wrapper;
-          using utility::trait::good_type;
-          using utility::trait::__impl_helper::__empty;
-          using utility::trait::__type_or__;
+          using trait::__impl_helper::__wrapper;
+          using trait::good_type;
+          using trait::__impl_helper::__empty;
+          using trait::__type_or__;
           template<typename _T>
-          using __decay = utility::trait::type::transform::decay<_T>;
+          using __decay = trait::type::transform::decay<_T>;
           template<typename _T>
           using __remove_cv_ref =
-            utility::trait::type::transform::remove_cv_reference<_T>;
+            trait::type::transform::remove_cv_reference<_T>;
 
           // invoke tags
           struct __invoke_member_function_unpacked;
@@ -65,7 +65,7 @@ namespace utility
           {
             private:
               template<typename __Fn, typename __Arg, typename... __Args>
-              static __invoke_process<good_type<decltype(((utility::trait::type::special::declval<__Arg>()).*utility::trait::type::special::declval<__Fn>())(utility::trait::type::special::declval<__Args>()...))>, __invoke_member_function_unpacked> __test(int);
+              static __invoke_process<good_type<decltype(((trait::type::special::declval<__Arg>()).*trait::type::special::declval<__Fn>())(trait::type::special::declval<__Args>()...))>, __invoke_member_function_unpacked> __test(int);
               template<typename __Fn, typename __Arg, typename... __Args>
               static __invoke_process<__empty, __invoke_failed> __test(...);
 
@@ -77,7 +77,7 @@ namespace utility
           {
             private:
               template<typename __Fn, typename __Arg, typename... __Args>
-              static __invoke_process<good_type<decltype(((*utility::trait::type::special::declval<__Arg>()).*utility::trait::type::special::declval<__Fn>())(utility::trait::type::special::declval<__Args>()...))>, __invoke_member_function_packed> __test(int);
+              static __invoke_process<good_type<decltype(((*trait::type::special::declval<__Arg>()).*trait::type::special::declval<__Fn>())(trait::type::special::declval<__Args>()...))>, __invoke_member_function_packed> __test(int);
               template<typename __Fn, typename __Arg, typename... __Args>
               static __invoke_process<__empty, __invoke_failed> __test(...);
 
@@ -95,9 +95,9 @@ namespace utility
               typedef _Res _Class::* _Fn;
 
             public:
-              typedef typename utility::trait::type::miscellaneous::conditional<
+              typedef typename trait::type::miscellaneous::conditional<
                 __type_or__<
-                  utility::trait::type::releations::is_same<_Argval, _Class>,utility::trait::type::releations::is_base_of<_Class, _Argval>
+                  trait::type::releations::is_same<_Argval, _Class>,trait::type::releations::is_base_of<_Class, _Argval>
                 >::value,
                 __invoke_member_function_unpacked_helper<_Fn, _Arg, _Args...>,
                 __invoke_member_function_packed_helper<_Fn, _Arg, _Args...>
@@ -109,7 +109,7 @@ namespace utility
           {
             private:
               template<typename __Fn, typename __Arg>
-              static __invoke_process<good_type<decltype(utility::trait::type::special::declval<__Arg>().*utility::trait::type::special::declval<__Fn>())>, __invoke_member_object_unpacked> __test(int);
+              static __invoke_process<good_type<decltype(trait::type::special::declval<__Arg>().*trait::type::special::declval<__Fn>())>, __invoke_member_object_unpacked> __test(int);
               template<typename __Fn, typename __Arg>
               static __invoke_process<__empty, __invoke_failed> __test(...);
 
@@ -121,7 +121,7 @@ namespace utility
           {
             private:
               template<typename __Fn, typename __Arg>
-              static __invoke_process<good_type<decltype((*utility::trait::type::special::declval<__Arg>()).*utility::trait::type::special::declval<__Fn>())>, __invoke_member_object_packed> __test(int);
+              static __invoke_process<good_type<decltype((*trait::type::special::declval<__Arg>()).*trait::type::special::declval<__Fn>())>, __invoke_member_object_packed> __test(int);
               template<typename __Fn, typename __Arg>
               static __invoke_process<__empty, __invoke_failed> __test(...);
 
@@ -139,9 +139,9 @@ namespace utility
               typedef _Res _Class::* _Fn;
 
             public:
-              typedef typename utility::trait::type::miscellaneous::conditional<
+              typedef typename trait::type::miscellaneous::conditional<
                 __type_or__<
-                  utility::trait::type::releations::is_same<_Argval, _Class>,utility::trait::type::releations::is_base_of<_Class, _Argval>
+                  trait::type::releations::is_same<_Argval, _Class>,trait::type::releations::is_base_of<_Class, _Argval>
                 >::value,
                 __invoke_member_object_unpacked_helper<_Fn, _Arg>,
                 __invoke_member_object_packed_helper<_Fn, _Arg>
@@ -153,7 +153,7 @@ namespace utility
           {
             private:
               template<typename __Fn, typename... __Args>
-              static __invoke_process<good_type<decltype(utility::trait::type::special::declval<__Fn>()(utility::trait::type::special::declval<__Args>()...))>, __invoke_operators> __test(int);
+              static __invoke_process<good_type<decltype(trait::type::special::declval<__Fn>()(trait::type::special::declval<__Args>()...))>, __invoke_operators> __test(int);
               template<typename __Fn, typename... __Args>
               static __invoke_process<__empty, __invoke_failed> __test(...);
 
@@ -199,8 +199,8 @@ namespace utility
 
           template<typename _Fn, typename... _Args>
           struct __invoke_result : public __invoke_result_helper<
-            utility::trait::type::categories::is_member_function_pointer<_Fn>::value,
-            utility::trait::type::categories::is_member_object_pointer<_Fn>::value,
+            trait::type::categories::is_member_function_pointer<_Fn>::value,
+            trait::type::categories::is_member_object_pointer<_Fn>::value,
             _Fn, _Args...>
           { };
 

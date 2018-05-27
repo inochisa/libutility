@@ -144,22 +144,22 @@ namespace utility
 
     }
 
-    unsigned long long CRC64(const void* __pos, utility::size_t __len) noexcept
+    unsigned long long CRC64(const void* __pos, size_t __len) noexcept
     {
       unsigned long long __res = 0U;
       const unsigned char* __ptr = static_cast<const unsigned char*>(__pos);
-      for(utility::size_t __i = 0; __i < __len; ++__i, ++__ptr)
+      for(size_t __i = 0; __i < __len; ++__i, ++__ptr)
       { __res = (__res >> 8) ^ CRC_table::CRC64_TABLE[(__res ^ (*__ptr))];}
       return __res;
     }
 
     unsigned long long CRC64(
       unsigned long long __pre_crc,
-      const void* __pos, utility::size_t __len
+      const void* __pos, size_t __len
     ) noexcept
     {
       const unsigned char* __ptr = static_cast<const unsigned char*>(__pos);
-      for(utility::size_t __i = 0; __i < __len; ++__i, ++__ptr)
+      for(size_t __i = 0; __i < __len; ++__i, ++__ptr)
       { __pre_crc = (__pre_crc >> 8) ^ CRC_table::CRC64_TABLE[(__pre_crc ^ (*__ptr))];}
       return __pre_crc;
     }

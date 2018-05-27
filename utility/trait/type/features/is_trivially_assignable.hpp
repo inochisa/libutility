@@ -18,7 +18,7 @@ namespace utility
         // is_trivially_assignable
         template<typename _T, typename _U>
         struct is_trivially_assignable :
-          public utility::trait::integral_constant<bool,
+          public trait::integral_constant<bool,
             __utility_is_trivially_assignable(_T, _U)>
         { };
 
@@ -42,27 +42,27 @@ namespace utility
         // is_trivially_assignable
         template<typename _T, typename _U>
         struct is_trivially_assignable :
-          public utility::trait::false_type
+          public trait::false_type
         { };
         template<typename _T>
         struct is_trivially_assignable<_T&, _T> : public
-          utility::trait::integral_constant<bool,
-            utility::trait::type::categories::is_scalar<_T>::value>
+          trait::integral_constant<bool,
+            trait::type::categories::is_scalar<_T>::value>
         { };
         template<typename _T>
         struct is_trivially_assignable<_T&, _T&> : public
-          utility::trait::integral_constant<bool,
-            utility::trait::type::categories::is_scalar<_T>::value>
+          trait::integral_constant<bool,
+            trait::type::categories::is_scalar<_T>::value>
         { };
         template<typename _T>
         struct is_trivially_assignable<_T&, const _T&> : public
-          utility::trait::integral_constant<bool,
-            utility::trait::type::categories::is_scalar<_T>::value>
+          trait::integral_constant<bool,
+            trait::type::categories::is_scalar<_T>::value>
         { };
         template<typename _T>
         struct is_trivially_assignable<_T&, _T&&> : public
-          utility::trait::integral_constant<bool,
-            utility::trait::type::categories::is_scalar<_T>::value>
+          trait::integral_constant<bool,
+            trait::type::categories::is_scalar<_T>::value>
         { };
       }
     }

@@ -17,32 +17,32 @@ namespace utility
 
     namespace detail
     {
-      using utility::algorithm::sort_tag::cycle_sort_tag;
+      using algorithm::sort_tag::cycle_sort_tag;
       template<typename _ForwardIterartor, typename _Compare>
       void __sort(
         _ForwardIterartor __first, _ForwardIterartor __last,
         _Compare __compare, cycle_sort_tag /*sort_tag*/
       )
       {
-        using utility::algorithm::swap;
+        using algorithm::swap;
 #ifdef UTILITY_DEBUG
         static_assert(
-          utility::iterator::is_forward_iterator<_ForwardIterartor>::value,
+          iterator::is_forward_iterator<_ForwardIterartor>::value,
           "cycle sort need at least forward iterator."
         );
 #endif // ! UTILITY_DEBUG
         typedef typename
-          utility::iterator::iterator_traits<_ForwardIterartor>::value_type
+          iterator::iterator_traits<_ForwardIterartor>::value_type
           __value_type;
         for(
           _ForwardIterartor __i = __first;
-          utility::iterator::next(__i) != __last; ++__i
+          iterator::next(__i) != __last; ++__i
         )
         {
           __value_type __val = *__i;
           _ForwardIterartor __pos = __i;
           for(
-            _ForwardIterartor __j = utility::iterator::next(__i);
+            _ForwardIterartor __j = iterator::next(__i);
             __j != __last; ++__j
           )
           {
@@ -58,7 +58,7 @@ namespace utility
           {
             __pos = __i;
             for(
-              _ForwardIterartor __j = utility::iterator::next(__i);
+              _ForwardIterartor __j = iterator::next(__i);
               __j != __last; ++__j
             )
             {

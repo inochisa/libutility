@@ -18,13 +18,13 @@ namespace utility
         // aligned_storage
         namespace __aligned_storage_impl
         {
-          using utility::trait::__impl_helper::__type_pair;
-          using utility::trait::__impl_helper::__none;
+          using trait::__impl_helper::__type_pair;
+          using trait::__impl_helper::__none;
           template<typename _T>
           struct __align_type
           {
-            constexpr static utility::trait::size_t value =
-              utility::trait::type::property_query::alignment_of<_T>::value;
+            constexpr static trait::size_t value =
+              trait::type::property_query::alignment_of<_T>::value;
             typedef _T type;
           };
           struct __double_array
@@ -38,73 +38,73 @@ namespace utility
             __type_pair<__align_type<unsigned long long>,
             __type_pair<__align_type<double>,
             __type_pair<__align_type<long double>,
-            __type_pair<__align_type<utility::trait::__impl_helper::__ldouble>,
+            __type_pair<__align_type<trait::__impl_helper::__ldouble>,
             __type_pair<__align_type<__double_array>,
             __type_pair<__align_type<int*>,
             __none>>>>>>>>>> __all;
 
 
-          template<typename _T, utility::trait::size_t _align>
+          template<typename _T, trait::size_t _align>
           struct __aligned_storage_helper;
 
-          template<typename _F, utility::trait::size_t _align>
+          template<typename _F, trait::size_t _align>
           struct __aligned_storage_helper<__type_pair<_F, __none>, _align>
           {
             typedef typename
-              utility::trait::miscellaneous::conditional<
+              trait::miscellaneous::conditional<
                 _align == _F::value,
                 typename _t::type,
                 void
               >::type type;
           };
-          template<typename _F, typename _S, utility::trait::size_t _align>
+          template<typename _F, typename _S, trait::size_t _align>
           struct __aligned_storage_helper<__type_pair<_F, _S>, _align>
           {
             typedef typename
-              utility::trait::miscellaneous::conditional<
+              trait::miscellaneous::conditional<
                 _align == _F::value,
                 typename _t::type,
                 typename __aligned_storage_helper<_T, _align>::type
               >::type type;
           };
 
-          template<utility::trait::size_t _N, utility::trait::size_t _T1,
-          utility::trait::size_t _T2>
+          template<trait::size_t _N, trait::size_t _T1,
+          trait::size_t _T2>
           struct __select_type
           {
             private:
-              constexpr static utility::trait::size_t __min =
+              constexpr static trait::size_t __min =
                 _T1 < _T2 ? _T1 : _T2;
-              constexpr static utility::trait::size_t __max =
+              constexpr static trait::size_t __max =
                 _T1 > _T2 ? _T1 : _T2;
             public:
-              constexpr utility::trait::size_t value =
+              constexpr trait::size_t value =
                 _N < __max ? __min : __max;
           };
 
-          template<typename _T, utility::trait::size_t _N>
+          template<typename _T, trait::size_t _N>
           struct __aligned_max_helper;
-          template<typename _F, utility::trait::size_t _N>
+          template<typename _F, trait::size_t _N>
           struct __aligned_max_helper<__type_pair<_F, __none>, _N> :
-            public utility::trait::integral_constant<utility::trait::size_t,
+            public trait::integral_constant<trait::size_t,
               _F::value>
           { };
-          template<typename _F, typename _T, utility::trait::size_t _N>
+          template<typename _F, typename _T, trait::size_t _N>
           struct __aligned_max_helper<__type_pair<_F, _T>, _N> :
-            public utility::trait::integral_constant<utility::trait::size_t,
+            public trait::integral_constant<trait::size_t,
               __select_type<_N, _F::value, __aligned_max_helper<_T, _N
               >::value>::value>
           { };
 
         }
-        template<utility::trait::size_t _Len, utility::trait::size_t _Align =
+        template<trait::size_t _Len, trait::size_t _Align =
           __aligned_storage_impl::__aligned_max_helper<
             __aligned_storage_impl::__all, _Len>::value>
         struct aligned_storage
         {
           typedef typename __aligned_storage_impl::__align_type<
             __aligned_storage_impl::__all, _Align>::type _Aligner;
-          static_assert(!utility::trait::type::categories::is_void<
+          static_assert(!trait::type::categories::is_void<
             _Aligner>::value, "");
           union type
           {
@@ -114,7 +114,7 @@ namespace utility
         };
 
 #define aligned_storage_template(n) \
-        template<utility::trait::size_t _Len> \
+        template<trait::size_t _Len> \
         struct aligned_storage<_Len, n> \
         {\
           struct alignas(n) type \

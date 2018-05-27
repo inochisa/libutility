@@ -44,9 +44,9 @@ namespace utility
     <
       typename _Key,
       typename _Value,
-      typename _Compare = utility::algorithm::less<_Key>,
-      typename _Key_Value_Container = utility::container::pair<const _Key, _Value>,
-      typename _Alloc = utility::memory::allocator<_Key_Value_Container>
+      typename _Compare = algorithm::less<_Key>,
+      typename _Key_Value_Container = container::pair<const _Key, _Value>,
+      typename _Alloc = memory::allocator<_Key_Value_Container>
     >
     class white_black_tree
     {
@@ -138,17 +138,17 @@ namespace utility
             friend class __white_black_tree_const_iterator;
 
           public:
-            typedef utility::iterator::bidirectional_iterator_tag
+            typedef iterator::bidirectional_iterator_tag
               iterator_category;
             typedef __Key                   key_type;
             typedef __Value                 mapped_type;
             typedef __Key_Value_Container   value_type;
             typedef value_type&             reference;
             typedef typename
-              utility::trait::miscellaneous::pointer_traits<value_type*>::pointer
+              trait::miscellaneous::pointer_traits<value_type*>::pointer
               pointer;
             typedef typename
-              utility::trait::miscellaneous::pointer_traits<value_type*>::difference_type
+              trait::miscellaneous::pointer_traits<value_type*>::difference_type
               difference_type;
 
           public:
@@ -227,7 +227,7 @@ namespace utility
             friend class white_black_tree;
 
           public:
-            typedef utility::iterator::bidirectional_iterator_tag
+            typedef iterator::bidirectional_iterator_tag
               iterator_category;
             typedef __Key                   key_type;
             typedef __Value                 mapped_type;
@@ -235,10 +235,10 @@ namespace utility
             typedef const value_type        const_value_type;
             typedef const value_type&       reference;
             typedef typename
-              utility::trait::miscellaneous::pointer_traits<const_value_type*>::pointer
+              trait::miscellaneous::pointer_traits<const_value_type*>::pointer
               pointer;
             typedef typename
-              utility::trait::miscellaneous::pointer_traits<const_value_type*>::difference_type
+              trait::miscellaneous::pointer_traits<const_value_type*>::difference_type
               difference_type;
 
           public:
@@ -323,9 +323,9 @@ namespace utility
       private:
         typedef __white_black_tree_node<_Key, _Value, _Key_Value_Container> __node_type;
         typedef __node_type* __link_type;
-        typedef utility::memory::allocator<__node_type>
+        typedef memory::allocator<__node_type>
           __node_allocator_type;
-        typedef utility::memory::allocator_traits<__node_allocator_type>
+        typedef memory::allocator_traits<__node_allocator_type>
           __node_allocator_traits_type;
 
       public:
@@ -333,20 +333,20 @@ namespace utility
         typedef _Value                mapped_type;
         typedef _Key_Value_Container  value_type;
         typedef _Compare              key_compare;
-        typedef utility::size_t       size_type;
-        typedef utility::ptrdiff_t    difference_type;
+        typedef size_t       size_type;
+        typedef ptrdiff_t    difference_type;
         typedef value_type&           reference;
         typedef const value_type&     const_reference;
         typedef _Alloc                allocator_type;
 
       private:
-        typedef utility::memory::unique_ptr<value_type>
+        typedef memory::unique_ptr<value_type>
           __value_container;
-        typedef utility::memory::unique_ptr<__node_type>
+        typedef memory::unique_ptr<__node_type>
           __node_container;
 
       public:
-        typedef utility::memory::allocator_traits<allocator_type>
+        typedef memory::allocator_traits<allocator_type>
           allocator_traits_type;
 
       public:
@@ -359,18 +359,18 @@ namespace utility
         typedef __white_black_tree_const_iterator<key_type, mapped_type, value_type>
           const_iterator;
         typedef
-          utility::iterator::reverse_iterator<iterator> reverse_iterator;
+          iterator::reverse_iterator<iterator> reverse_iterator;
         typedef
-          utility::iterator::reverse_iterator<const_iterator> const_reverse_iterator;
+          iterator::reverse_iterator<const_iterator> const_reverse_iterator;
 
       public: // assert:
-        static_assert(utility::trait::type::releations::is_same<
+        static_assert(trait::type::releations::is_same<
           value_type, typename allocator_type::value_type>::value,
           "the allocator's alloc type must be the same as value type");
 
       private:
-        typedef utility::container::compressed_pair<__link_type, __node_allocator_type>   __node_pair;
-        typedef utility::container::compressed_pair<size_type, allocator_type>  __mis_type;
+        typedef container::compressed_pair<__link_type, __node_allocator_type>   __node_pair;
+        typedef container::compressed_pair<size_type, allocator_type>  __mis_type;
 
 
       private:
@@ -385,8 +385,8 @@ namespace utility
       public:
         template<typename _Comp = _Compare,
         typename
-        utility::trait::type::miscellaneous::enable_if<
-          utility::trait::type::features::is_default_constructible<_Comp>::value,
+        trait::type::miscellaneous::enable_if<
+          trait::type::features::is_default_constructible<_Comp>::value,
           bool
           >::type = true
         >
@@ -398,8 +398,8 @@ namespace utility
 
         template<typename _Comp = _Compare,
         typename
-        utility::trait::type::miscellaneous::enable_if<
-          utility::trait::type::features::is_copy_constructible<_Comp>::value,
+        trait::type::miscellaneous::enable_if<
+          trait::type::features::is_copy_constructible<_Comp>::value,
           bool
           >::type = true
         >
@@ -413,8 +413,8 @@ namespace utility
 
         template<typename _Comp = _Compare,
         typename
-        utility::trait::type::miscellaneous::enable_if<
-          utility::trait::type::features::is_default_constructible<_Comp>::value,
+        trait::type::miscellaneous::enable_if<
+          trait::type::features::is_default_constructible<_Comp>::value,
           bool
           >::type = true
         >
@@ -426,13 +426,13 @@ namespace utility
 
         template<typename _InputIterator, typename _Comp = _Compare,
         typename
-        utility::trait::type::miscellaneous::enable_if<
+        trait::type::miscellaneous::enable_if<
             is_iterator<_InputIterator>::value,
             bool
           >::type = true,
         typename
-        utility::trait::type::miscellaneous::enable_if<
-          utility::trait::type::features::is_copy_constructible<_Comp>::value,
+        trait::type::miscellaneous::enable_if<
+          trait::type::features::is_copy_constructible<_Comp>::value,
           bool
           >::type = true
         >
@@ -450,13 +450,13 @@ namespace utility
         }
         template<typename _Comp = _Compare, typename _InputIterator,
         typename
-        utility::trait::type::miscellaneous::enable_if<
+        trait::type::miscellaneous::enable_if<
             is_iterator<_InputIterator>::value,
             bool
           >::type = true,
         typename
-        utility::trait::type::miscellaneous::enable_if<
-          utility::trait::type::features::is_default_constructible<_Comp>::value,
+        trait::type::miscellaneous::enable_if<
+          trait::type::features::is_default_constructible<_Comp>::value,
           bool
           >::type = true
         >
@@ -507,20 +507,20 @@ namespace utility
         }
 
         white_black_tree(white_black_tree&& __other):
-          __base{utility::algorithm::move(__other.__base)},
-          __mis{utility::algorithm::move(__other.__mis)},
-          __compare(utility::algorithm::move(__other.__compare))
+          __base{algorithm::move(__other.__base)},
+          __mis{algorithm::move(__other.__mis)},
+          __compare(algorithm::move(__other.__compare))
         { __other.__base.first() = nullptr;}
         white_black_tree(
           white_black_tree&& __other,
           const allocator_type& __alloc
-        ):__base{utility::algorithm::move(__other.__base)},
+        ):__base{algorithm::move(__other.__base)},
           __mis{__other.__mis.first(), __alloc},
-          __compare(utility::algorithm::move(__other.__compare))
+          __compare(algorithm::move(__other.__compare))
         { __other.__base.first() = nullptr;}
 
         white_black_tree(
-          utility::container::initializer_list<value_type> __init,
+          container::initializer_list<value_type> __init,
           const key_compare& __comp,
           const allocator_type& __alloc = allocator_type()
         ):__base{nullptr, __node_allocator_type()},
@@ -528,21 +528,21 @@ namespace utility
           __compare{__comp}
         {
           typedef typename
-            utility::container::initializer_list<value_type>::iterator
+            container::initializer_list<value_type>::iterator
             __iterator;
           this->__init();
           for(__iterator __it = __init.begin(), __end = __init.end(); __it != __end;)
           { this->insert_equal(*__it++);}
         }
         white_black_tree(
-          utility::container::initializer_list<value_type> __init,
+          container::initializer_list<value_type> __init,
           const allocator_type& __alloc = allocator_type()
         ):__base{nullptr, __node_allocator_type()},
           __mis{0U, __alloc},
           __compare{}
         {
           typedef typename
-            utility::container::initializer_list<value_type>::iterator
+            container::initializer_list<value_type>::iterator
             __iterator;
           this->__init();
           for(__iterator __it = __init.begin(), __end = __init.end(); __it != __end;)
@@ -583,20 +583,20 @@ namespace utility
           {
             if(this->__base.first() != nullptr)
             { this->force_clear();}
-            this->__base = utility::algorithm::move(__other.__base);
-            this->__mis = utility::algorithm::move(__other.__mis);
+            this->__base = algorithm::move(__other.__base);
+            this->__mis = algorithm::move(__other.__mis);
             this->__compare =
-              utility::algorithm::move(__other.__compare);
+              algorithm::move(__other.__compare);
             __other.__base.first() = nullptr;
           }
           return *this;
         }
         white_black_tree& operator=(
-          utility::container::initializer_list<value_type> __init
+          container::initializer_list<value_type> __init
         )
         {
           typedef typename
-            utility::container::initializer_list<value_type>::iterator
+            container::initializer_list<value_type>::iterator
             __iterator;
           this->__mis.first() = 0U;
           if(this->__base.first() == nullptr)
@@ -666,14 +666,14 @@ namespace utility
         { return __get_value(*(this->__base.first()->__right->__data));}
 
       public:
-        utility::container::pair<iterator, bool>
+        container::pair<iterator, bool>
         insert_unique(const value_type& __val)
         { return __insert_unique(this->__allocate_node(__val), this);}
-        utility::container::pair<iterator, bool>
+        container::pair<iterator, bool>
         insert_unique(value_type&& __val)
         {
           return __insert_unique(
-            this->__allocate_node(utility::algorithm::move(__val)), this
+            this->__allocate_node(algorithm::move(__val)), this
           );
         }
         iterator insert_unique(
@@ -688,7 +688,7 @@ namespace utility
         {
           return __insert_unique(
             __hint.__ptr,
-            this->__allocate_node(utility::algorithm::move(__val)), this
+            this->__allocate_node(algorithm::move(__val)), this
           );
         }
         iterator insert_equal(const value_type& __val)
@@ -696,7 +696,7 @@ namespace utility
         iterator insert_equal(value_type&& __val)
         {
           return __insert_equal(
-            this->__allocate_node(utility::algorithm::move(__val)), this
+            this->__allocate_node(algorithm::move(__val)), this
           );
         }
         iterator insert_equal(
@@ -711,7 +711,7 @@ namespace utility
         {
           return __insert_equal(
             __hint.__ptr,
-            this->__allocate_node(utility::algorithm::move(__val)), this
+            this->__allocate_node(algorithm::move(__val)), this
           );
         }
 
@@ -724,12 +724,12 @@ namespace utility
 
       public:
         template<typename... _Args>
-        utility::container::pair<iterator, bool>
+        container::pair<iterator, bool>
         emplace_unique(_Args&&... __args)
         {
           return __insert_unique(
             this->__allocate_node(
-              utility::algorithm::forward<_Args>(__args)...
+              algorithm::forward<_Args>(__args)...
             ), this
           );
         }
@@ -738,7 +738,7 @@ namespace utility
         {
           return __insert_equal(
             this->__allocate_node(
-              utility::algorithm::forward<_Args>(__args)...
+              algorithm::forward<_Args>(__args)...
             ), this
           );
         }
@@ -750,7 +750,7 @@ namespace utility
           return __insert_unique(
             __hint.__ptr,
             this->__allocate_node(
-              utility::algorithm::forward<_Args>(__args)...
+              algorithm::forward<_Args>(__args)...
             ), this
           );
         }
@@ -762,7 +762,7 @@ namespace utility
           return __insert_equal(
             __hint.__ptr,
             this->__allocate_node(
-              utility::algorithm::forward<_Args>(__args)...
+              algorithm::forward<_Args>(__args)...
             ), this
           );
         }
@@ -770,7 +770,7 @@ namespace utility
       public:
         size_type count(const key_type& __key) const noexcept
         {
-          return utility::iterator::distance(
+          return iterator::distance(
             this->lower_bound(__key),
             this->upper_bound(__key)
           );
@@ -799,17 +799,17 @@ namespace utility
         { return iterator(const_cast<__link_type>(__upper_bound(this, __key)));}
         inline const_iterator upper_bound(const key_type& __key) const noexcept
         { return const_iterator(const_cast<__link_type>(__upper_bound(this, __key)));}
-        inline utility::container::pair<iterator, iterator>
+        inline container::pair<iterator, iterator>
         equal_range(const key_type& __key) noexcept
         {
-          return utility::container::pair<iterator, iterator>{
+          return container::pair<iterator, iterator>{
             this->lower_bound(__key), this->upper_bound(__key)
           };
         }
-        inline utility::container::pair<const_iterator, const_iterator>
+        inline container::pair<const_iterator, const_iterator>
         equal_range(const key_type& __key) const noexcept
         {
-          return utility::container::pair<const_iterator, const_iterator>{
+          return container::pair<const_iterator, const_iterator>{
             this->lower_bound(__key), this->upper_bound(__key)
           };
         }
@@ -846,10 +846,10 @@ namespace utility
         }
         inline size_type erase(const key_type& __key)
         {
-          utility::container::pair<const_iterator, const_iterator>  __tmp =
+          container::pair<const_iterator, const_iterator>  __tmp =
             this->equal_range(__key);
           size_type __res =
-            utility::iterator::distance(__tmp.first, __tmp.second);
+            iterator::distance(__tmp.first, __tmp.second);
           this->erase(__tmp.first, __tmp.second);
           return __res;
         }
@@ -871,16 +871,16 @@ namespace utility
       public:
         template<
           typename _Key_Compare = key_compare,
-          typename utility::trait::type::miscellaneous::enable_if<
-            utility::trait::type::features::is_swappable<_Key_Compare>::value,
+          typename trait::type::miscellaneous::enable_if<
+            trait::type::features::is_swappable<_Key_Compare>::value,
           bool>::type = true
         >
         void swap(white_black_tree& __other) noexcept(
-          utility::trait::type::features::is_nothrow_swappable<key_compare>::value &&
-          utility::trait::type::features::is_nothrow_swappable<allocator_type>::value
+          trait::type::features::is_nothrow_swappable<key_compare>::value &&
+          trait::type::features::is_nothrow_swappable<allocator_type>::value
         )
         {
-          using utility::algorithm::swap;
+          using algorithm::swap;
           swap(this->__base,    __other.__base);
           swap(this->__mis,     __other.__mis);
           swap(this->__compare, __other.__compare);
@@ -888,16 +888,16 @@ namespace utility
         }
         template<
           typename _Key_Compare = key_compare, typename __Alloc = allocator_type,
-          typename utility::trait::type::miscellaneous::enable_if<
-            utility::trait::type::features::is_possible_swappable<_Key_Compare>::value &&
-            utility::trait::type::features::is_possible_swappable<__Alloc>::value,
+          typename trait::type::miscellaneous::enable_if<
+            trait::type::features::is_possible_swappable<_Key_Compare>::value &&
+            trait::type::features::is_possible_swappable<__Alloc>::value,
           bool>::type = true
         >
         void possible_swap(white_black_tree& __other) noexcept(
-          utility::trait::type::features::is_nothrow_possible_swappable<key_compare>::value
+          trait::type::features::is_nothrow_possible_swappable<key_compare>::value
         )
         {
-          using utility::algorithm::possible_swap;
+          using algorithm::possible_swap;
           possible_swap(this->__base,    __other.__base);
           possible_swap(this->__mis,     __other.__mis);
           possible_swap(this->__compare, __other.__compare);
@@ -997,7 +997,7 @@ namespace utility
         }
 
       private:
-        static utility::container::pair<iterator, bool>
+        static container::pair<iterator, bool>
         __insert_unique(
           __link_type __ins, white_black_tree* __this
         ) noexcept
@@ -1020,7 +1020,7 @@ namespace utility
           {
             if(__tmp == __this->begin())
             {
-              return utility::container::pair<iterator, bool>(
+              return container::pair<iterator, bool>(
                 __insert(__pos, __header, __ins, __this), true
               );
             }
@@ -1031,12 +1031,12 @@ namespace utility
             __get_key(*(__tmp.__ptr->__data)), __get_key(*(__ins->__data))
           ))
           {
-            return utility::container::pair<iterator, bool>(
+            return container::pair<iterator, bool>(
               __insert(__pos, __header, __ins, __this), true
             );
           }
           __this->__deallocate_node(__ins);
-          return utility::container::pair<iterator, bool>(__tmp, false);
+          return container::pair<iterator, bool>(__tmp, false);
         }
         static iterator __insert_unique(
           __link_type __pos, __link_type __ins,
@@ -1171,7 +1171,7 @@ namespace utility
           );
           allocator_traits_type::construct(
             this->__mis.second(), __value_holder.get(),
-            utility::algorithm::forward<_Args>(__args)...
+            algorithm::forward<_Args>(__args)...
           );
           __node_container __node_holder(
             __node_allocator_traits_type::allocate(this->__base.second())
@@ -1348,7 +1348,7 @@ namespace utility
             { __z->__parent->__right = __y;}
 
             __y->__parent = __z->__parent;
-            utility::algorithm::swap(__y->__color, __z->__color);
+            algorithm::swap(__y->__color, __z->__color);
             __y = __z;
           }
           else
@@ -1476,13 +1476,13 @@ namespace utility
         UTILITY_ALWAYS_INLINE
         static inline const key_type& __get_key(const value_type& __con)
         {
-          using utility::container::get_key;
+          using container::get_key;
           return get_key(__con);
         }
         UTILITY_ALWAYS_INLINE
         static inline const key_type& __get_value(const value_type& __con)
         {
-          using utility::container::get_key;
+          using container::get_key;
           return get_value(__con);
         }
     };
@@ -1497,7 +1497,7 @@ namespace utility
     )
     {
       return __x.size() == __y.size() &&
-        utility::algorithm::equal(__x.begin(), __x.end(), __y.begin());
+        algorithm::equal(__x.begin(), __x.end(), __y.begin());
     }
     template<
       typename _Key, typename _Value, typename _Compare,
@@ -1517,7 +1517,7 @@ namespace utility
       const white_black_tree<_Key, _Value, _Compare, _Key_Value_Container, _Alloc>& __y
     )
     {
-      return utility::algorithm::lexicographical_compare(
+      return algorithm::lexicographical_compare(
         __x.begin(), __x.end(), __y.begin(), __y.end()
       );
     }
@@ -1556,13 +1556,13 @@ namespace utility
     template<
       typename _Key, typename _Value, typename _Compare,
       typename _Key_Value_Container, typename _Alloc,
-      typename utility::trait::type::miscellaneous::enable_if<
-        utility::trait::type::features::is_swappable<_Compare>::value,
+      typename trait::type::miscellaneous::enable_if<
+        trait::type::features::is_swappable<_Compare>::value,
       bool>::type = true
     >
     void swap(
-      utility::container::white_black_tree<_Key, _Value, _Compare, _Key_Value_Container, _Alloc>& __x,
-      utility::container::white_black_tree<_Key, _Value, _Compare, _Key_Value_Container, _Alloc>& __y
+      container::white_black_tree<_Key, _Value, _Compare, _Key_Value_Container, _Alloc>& __x,
+      container::white_black_tree<_Key, _Value, _Compare, _Key_Value_Container, _Alloc>& __y
     ) noexcept(noexcept(__x.swap(__y)))
     {
       __x.swap(__y);
@@ -1570,14 +1570,14 @@ namespace utility
     template<
       typename _Key, typename _Value, typename _Compare,
       typename _Key_Value_Container, typename _Alloc,
-      typename utility::trait::type::miscellaneous::enable_if<
-        utility::trait::type::features::is_possible_swappable<_Compare>::value &&
-        utility::trait::type::features::is_possible_swappable<_Alloc>::value,
+      typename trait::type::miscellaneous::enable_if<
+        trait::type::features::is_possible_swappable<_Compare>::value &&
+        trait::type::features::is_possible_swappable<_Alloc>::value,
       bool>::type = true
     >
     void possible_swap(
-      utility::container::white_black_tree<_Key, _Value, _Compare, _Key_Value_Container, _Alloc>& __x,
-      utility::container::white_black_tree<_Key, _Value, _Compare, _Key_Value_Container, _Alloc>& __y
+      container::white_black_tree<_Key, _Value, _Compare, _Key_Value_Container, _Alloc>& __x,
+      container::white_black_tree<_Key, _Value, _Compare, _Key_Value_Container, _Alloc>& __y
     ) noexcept(noexcept(__x.possible_swap(__y)))
     {
       __x.possible_swap(__y);

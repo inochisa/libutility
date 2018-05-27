@@ -240,14 +240,14 @@ namespace utility
     }
     void sha1(
       unsigned char __res[20],
-      const void* __mem, utility::size_t __len
+      const void* __mem, size_t __len
     ) noexcept
     {
       detail::sha1_block __block;
 
       detail::sha1_block_init(__block);
 
-      utility::size_t __i;
+      size_t __i;
       const unsigned char* __ptr =
         static_cast<const unsigned char*>(__mem);
 
@@ -281,7 +281,7 @@ namespace utility
     void printsha1()
     {
       using std::printf;
-      using utility::algorithm::rotate;
+      using algorithm::rotate;
 
       char need[5] = {'a', 'b', 'c', 'd', 'e'};
 

@@ -25,14 +25,14 @@ namespace utility
       typedef int                       int_type;
       typedef streamoff                 off_type;
       typedef streampos                 pos_type;
-      typedef utility::sstd::mbstate_t  state_type;
+      typedef sstd::mbstate_t  state_type;
 
       __UTILITY_CPP17_CONSTEXPR__
       static inline void assign(char_type& __c, const char_type& __a) noexcept
       { __c = __a;}
       __UTILITY_CPP17_CONSTEXPR__
       static inline char_type* assign(
-        char_type* __cptr, utility::size_t __count,
+        char_type* __cptr, size_t __count,
         char_type __a
       ) noexcept
       {
@@ -49,7 +49,7 @@ namespace utility
 
       static inline char_type* move(
         char_type* __dest, const char_type* __src,
-        utility::size_t __count
+        size_t __count
       ) noexcept
       {
         char_type* __tmp = __dest;
@@ -70,7 +70,7 @@ namespace utility
 
       static inline char_type* copy(
         char_type* __dest, const char_type* __src,
-        utility::size_t __count
+        size_t __count
       ) noexcept
       {
         char_type* __tmp = __dest;
@@ -82,7 +82,7 @@ namespace utility
       __UTILITY_CPP17_CONSTEXPR__
       static inline int compare(
         const char_type* __comp1, const char_type* __comp2,
-        utility::size_t __count
+        size_t __count
       ) noexcept
       {
         for(; __count; --__count, ++__comp1, ++__comp2)
@@ -96,9 +96,9 @@ namespace utility
       }
 
       __UTILITY_CPP17_CONSTEXPR__
-      static inline utility::size_t length(const char_type* __str) noexcept
+      static inline size_t length(const char_type* __str) noexcept
       {
-        utility::size_t __len = 0;
+        size_t __len = 0;
         for(; !eq(*__str, char_type(0)); ++__str, ++__len)
         { }
         return __len;
@@ -106,7 +106,7 @@ namespace utility
 
       __UTILITY_CPP17_CONSTEXPR__
       static inline const char_type* find(
-        const char_type* __str, utility::size_t __count,
+        const char_type* __str, size_t __count,
         const char_type& __pat
       ) noexcept
       {
@@ -137,14 +137,14 @@ namespace utility
       typedef int                       int_type;
       typedef streamoff                 off_type;
       typedef streampos                 pos_type;
-      typedef utility::sstd::mbstate_t  state_type;
+      typedef sstd::mbstate_t  state_type;
 
       __UTILITY_CPP17_CONSTEXPR__
       static inline void assign(char_type& __c, const char_type& __a) noexcept
       { __c = __a;}
       __UTILITY_CPP17_CONSTEXPR__
       static inline char_type* assign(
-        char_type* __cptr, utility::size_t __count,
+        char_type* __cptr, size_t __count,
         char_type __a
       ) noexcept
       {
@@ -161,7 +161,7 @@ namespace utility
 
       static inline char_type* move(
         char_type* __dest, const char_type* __src,
-        utility::size_t __count
+        size_t __count
       ) noexcept
       {
         char_type* __tmp = __dest;
@@ -182,7 +182,7 @@ namespace utility
 
       static inline char_type* copy(
         char_type* __dest, const char_type* __src,
-        utility::size_t __count
+        size_t __count
       ) noexcept
       {
         char_type* __tmp = __dest;
@@ -194,7 +194,7 @@ namespace utility
       __UTILITY_CPP17_CONSTEXPR__
       static inline int compare(
         const char_type* __comp1, const char_type* __comp2,
-        utility::size_t __count
+        size_t __count
       ) noexcept
       {
         for(; __count; --__count, ++__comp1, ++__comp2)
@@ -208,9 +208,9 @@ namespace utility
       }
 
       __UTILITY_CPP17_CONSTEXPR__
-      static inline utility::size_t length(const char_type* __str) noexcept
+      static inline size_t length(const char_type* __str) noexcept
       {
-        utility::size_t __len = 0;
+        size_t __len = 0;
         for(; !eq(*__str, char_type(0)); ++__str, ++__len)
         { }
         return __len;
@@ -218,7 +218,7 @@ namespace utility
 
       __UTILITY_CPP17_CONSTEXPR__
       static inline const char_type* find(
-        const char_type* __str, utility::size_t __count,
+        const char_type* __str, size_t __count,
         const char_type& __pat
       ) noexcept
       {
@@ -247,17 +247,17 @@ namespace utility
     struct char_traits<wchar_t>
     {
       typedef wchar_t                   char_type;
-      typedef utility::sstd::wint_t     int_type;
+      typedef sstd::wint_t     int_type;
       typedef streamoff                 off_type;
       typedef streampos                 pos_type;
-      typedef utility::sstd::mbstate_t  state_type;
+      typedef sstd::mbstate_t  state_type;
 
       __UTILITY_CPP17_CONSTEXPR__
       static inline void assign(char_type& __c, const char_type& __a) noexcept
       { __c = __a;}
       __UTILITY_CPP17_CONSTEXPR__
       static inline char_type* assign(
-        char_type* __cptr, utility::size_t __count,
+        char_type* __cptr, size_t __count,
         char_type __a
       ) noexcept
       {
@@ -274,7 +274,7 @@ namespace utility
 
       static inline char_type* move(
         char_type* __dest, const char_type* __src,
-        utility::size_t __count
+        size_t __count
       ) noexcept
       {
         char_type* __tmp = __dest;
@@ -295,7 +295,7 @@ namespace utility
 
       static inline char_type* copy(
         char_type* __dest, const char_type* __src,
-        utility::size_t __count
+        size_t __count
       ) noexcept
       {
         char_type* __tmp = __dest;
@@ -307,7 +307,7 @@ namespace utility
       __UTILITY_CPP17_CONSTEXPR__
       static inline int compare(
         const char_type* __comp1, const char_type* __comp2,
-        utility::size_t __count
+        size_t __count
       ) noexcept
       {
         for(; __count; --__count, ++__comp1, ++__comp2)
@@ -321,9 +321,9 @@ namespace utility
       }
 
       __UTILITY_CPP17_CONSTEXPR__
-      static inline utility::size_t length(const char_type* __str) noexcept
+      static inline size_t length(const char_type* __str) noexcept
       {
-        utility::size_t __len = 0;
+        size_t __len = 0;
         for(; !eq(*__str, char_type(0)); ++__str, ++__len)
         { }
         return __len;
@@ -331,7 +331,7 @@ namespace utility
 
       __UTILITY_CPP17_CONSTEXPR__
       static inline const char_type* find(
-        const char_type* __str, utility::size_t __count,
+        const char_type* __str, size_t __count,
         const char_type& __pat
       ) noexcept
       {
@@ -360,17 +360,17 @@ namespace utility
     struct char_traits<char16_t>
     {
       typedef char16_t                        char_type;
-      typedef utility::sstd::uint_least16_t   int_type;
+      typedef sstd::uint_least16_t   int_type;
       typedef streamoff                       off_type;
       typedef u16streampos                    pos_type;
-      typedef utility::sstd::mbstate_t        state_type;
+      typedef sstd::mbstate_t        state_type;
 
       __UTILITY_CPP17_CONSTEXPR__
       static inline void assign(char_type& __c, const char_type& __a) noexcept
       { __c = __a;}
       __UTILITY_CPP17_CONSTEXPR__
       static inline char_type* assign(
-        char_type* __cptr, utility::size_t __count,
+        char_type* __cptr, size_t __count,
         char_type __a
       ) noexcept
       {
@@ -387,7 +387,7 @@ namespace utility
 
       static inline char_type* move(
         char_type* __dest, const char_type* __src,
-        utility::size_t __count
+        size_t __count
       ) noexcept
       {
         char_type* __tmp = __dest;
@@ -408,7 +408,7 @@ namespace utility
 
       static inline char_type* copy(
         char_type* __dest, const char_type* __src,
-        utility::size_t __count
+        size_t __count
       ) noexcept
       {
         char_type* __tmp = __dest;
@@ -420,7 +420,7 @@ namespace utility
       __UTILITY_CPP17_CONSTEXPR__
       static inline int compare(
         const char_type* __comp1, const char_type* __comp2,
-        utility::size_t __count
+        size_t __count
       ) noexcept
       {
         for(; __count; --__count, ++__comp1, ++__comp2)
@@ -434,9 +434,9 @@ namespace utility
       }
 
       __UTILITY_CPP17_CONSTEXPR__
-      static inline utility::size_t length(const char_type* __str) noexcept
+      static inline size_t length(const char_type* __str) noexcept
       {
-        utility::size_t __len = 0;
+        size_t __len = 0;
         for(; !eq(*__str, char_type(0)); ++__str, ++__len)
         { }
         return __len;
@@ -444,7 +444,7 @@ namespace utility
 
       __UTILITY_CPP17_CONSTEXPR__
       static inline const char_type* find(
-        const char_type* __str, utility::size_t __count,
+        const char_type* __str, size_t __count,
         const char_type& __pat
       ) noexcept
       {
@@ -472,17 +472,17 @@ namespace utility
     struct char_traits<char32_t>
     {
       typedef char32_t                        char_type;
-      typedef utility::sstd::uint_least32_t   int_type;
+      typedef sstd::uint_least32_t   int_type;
       typedef streamoff                       off_type;
       typedef u32streampos                    pos_type;
-      typedef utility::sstd::mbstate_t        state_type;
+      typedef sstd::mbstate_t        state_type;
 
       __UTILITY_CPP17_CONSTEXPR__
       static inline void assign(char_type& __c, const char_type& __a) noexcept
       { __c = __a;}
       __UTILITY_CPP17_CONSTEXPR__
       static inline char_type* assign(
-        char_type* __cptr, utility::size_t __count,
+        char_type* __cptr, size_t __count,
         char_type __a
       ) noexcept
       {
@@ -499,7 +499,7 @@ namespace utility
 
       static inline char_type* move(
         char_type* __dest, const char_type* __src,
-        utility::size_t __count
+        size_t __count
       ) noexcept
       {
         char_type* __tmp = __dest;
@@ -520,7 +520,7 @@ namespace utility
 
       static inline char_type* copy(
         char_type* __dest, const char_type* __src,
-        utility::size_t __count
+        size_t __count
       ) noexcept
       {
         char_type* __tmp = __dest;
@@ -532,7 +532,7 @@ namespace utility
       __UTILITY_CPP17_CONSTEXPR__
       static inline int compare(
         const char_type* __comp1, const char_type* __comp2,
-        utility::size_t __count
+        size_t __count
       ) noexcept
       {
         for(; __count; --__count, ++__comp1, ++__comp2)
@@ -546,9 +546,9 @@ namespace utility
       }
 
       __UTILITY_CPP17_CONSTEXPR__
-      static inline utility::size_t length(const char_type* __str) noexcept
+      static inline size_t length(const char_type* __str) noexcept
       {
-        utility::size_t __len = 0;
+        size_t __len = 0;
         for(; !eq(*__str, char_type(0)); ++__str, ++__len)
         { }
         return __len;
@@ -556,7 +556,7 @@ namespace utility
 
       __UTILITY_CPP17_CONSTEXPR__
       static inline const char_type* find(
-        const char_type* __str, utility::size_t __count,
+        const char_type* __str, size_t __count,
         const char_type& __pat
       ) noexcept
       {

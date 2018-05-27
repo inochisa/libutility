@@ -20,7 +20,7 @@ namespace utility
         // is_class
         template<typename _T>
         struct is_class :
-          public utility::trait::integral_constant<bool, __utility_is_class(_T)>
+          public trait::integral_constant<bool, __utility_is_class(_T)>
         { };
 
       }
@@ -44,11 +44,11 @@ namespace utility
           template<typename _T>
           char __is_class_test (int _T::*);
           template<typename _T>
-          utility::trait::__impl_helper::__twochar __is_class_test(...);
+          trait::__impl_helper::__twochar __is_class_test(...);
         }
         template<typename _T>
         struct is_class :
-          public utility::trait::integral_constant<
+          public trait::integral_constant<
             bool, sizeof(__is_class_impl::__is_class_test(0)) == 1 &&
                   !is_union<_T>::value>
         { };

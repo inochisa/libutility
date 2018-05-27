@@ -21,7 +21,7 @@ namespace utility
         // is_base_of
         template<typename _T1, typename _T2>
         struct is_base_of :
-          public utility::trait::integral_constant<
+          public trait::integral_constant<
             bool, __utility_is_base_of(_T1, _T2)>
         { };
 
@@ -46,7 +46,7 @@ namespace utility
         // is_base_of
         namespace __is_base_of_impl
         {
-          using __two = utility::trait::__impl_helper::__twochar;
+          using __two = trait::__impl_helper::__twochar;
 
           template<typename _T>
           struct __is_base_of_base_helper
@@ -67,21 +67,21 @@ namespace utility
             private:
               template<typename __T1, typename __T2>
               static auto __test(int) ->decltype(__is_base_of_base_helper<__T1>(
-                utility::trait::type::special::declval<__is_base_of_helper<__T2>>()
+                trait::type::special::declval<__is_base_of_helper<__T2>>()
               ), char('\0'));
               template<typename __T1, typename __T2>
               static __two __test(...);
 
             public:
               constexpr static bool value =
-                utility::trait::type::categories::is_class<_T1>::value &&
+                trait::type::categories::is_class<_T1>::value &&
                 sizeof(__test<_T1, _T2>(0)) == 2;
           };
 
         }
         template<typename _T1, typename _T2>
         struct is_base_of :
-          public utility::trait::integral_constant<bool,
+          public trait::integral_constant<bool,
             __is_base_of_impl::__is_base_of_test<_T1, _T2>::value
           >
         { };

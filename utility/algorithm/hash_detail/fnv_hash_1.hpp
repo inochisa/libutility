@@ -10,35 +10,35 @@ namespace utility
   {
     namespace hash_detail
     {
-      template<utility::size_t = sizeof(utility::size_t)>
+      template<size_t = sizeof(size_t)>
       struct fnv_hash_1;
 
       template<>
       struct fnv_hash_1<4>
       {
         public:
-          static inline utility::size_t __aux(
-            const void* __src, utility::size_t __len,
-            utility::size_t __res = 2166136261UL
+          static inline size_t __aux(
+            const void* __src, size_t __len,
+            size_t __res = 2166136261UL
           ) noexcept
           {
             const unsigned char* __ptr =
               static_cast<const unsigned char*>(__src);
             for(; __len; --__len)
             {
-              __res *= static_cast<utility::size_t>(16777619UL);
-              __res ^= static_cast<utility::size_t>(*__ptr++);
+              __res *= static_cast<size_t>(16777619UL);
+              __res ^= static_cast<size_t>(*__ptr++);
             }
             return __res;
           }
 
         public:
-          inline utility::size_t operator()(
-            const void* __src, utility::size_t __len,
-            utility::size_t __res = 2166136261UL
+          inline size_t operator()(
+            const void* __src, size_t __len,
+            size_t __res = 2166136261UL
           ) const noexcept
           {
-            return utility::algorithm::hash_detail::fnv_hash_1<4>::__aux(
+            return algorithm::hash_detail::fnv_hash_1<4>::__aux(
               __src, __len, __res
             );
           }
@@ -48,28 +48,28 @@ namespace utility
       struct fnv_hash_1<8>
       {
         public:
-          static inline utility::size_t __aux(
-            const void* __src, utility::size_t __len,
-            utility::size_t __res = 14695981039346656037UL
+          static inline size_t __aux(
+            const void* __src, size_t __len,
+            size_t __res = 14695981039346656037UL
           ) noexcept
           {
             const unsigned char* __ptr =
               static_cast<const unsigned char*>(__src);
             for(; __len; --__len)
             {
-              __res *= static_cast<utility::size_t>(1099511628211UL);
-              __res ^= static_cast<utility::size_t>(*__ptr++);
+              __res *= static_cast<size_t>(1099511628211UL);
+              __res ^= static_cast<size_t>(*__ptr++);
             }
             return __res;
           }
 
         public:
-          inline utility::size_t operator()(
-            const void* __src, utility::size_t __len,
-            utility::size_t __res = 14695981039346656037UL
+          inline size_t operator()(
+            const void* __src, size_t __len,
+            size_t __res = 14695981039346656037UL
           ) const noexcept
           {
-            return utility::algorithm::hash_detail::fnv_hash_1<8>::__aux(
+            return algorithm::hash_detail::fnv_hash_1<8>::__aux(
               __src, __len, __res
             );
           }

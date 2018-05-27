@@ -11,11 +11,11 @@ namespace utility
   {
     template<typename _T>
     inline __UTILITY_CPP14_CONSTEXPR__
-    typename utility::trait::type::transform::remove_reference<_T>::type&&
+    typename trait::type::transform::remove_reference<_T>::type&&
     move(_T&& __val) noexcept
     {
       typedef typename
-        utility::trait::type::transform::remove_reference<_T>::type _U;
+        trait::type::transform::remove_reference<_T>::type _U;
       return static_cast<_U&&>(__val);
     }
   }

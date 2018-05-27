@@ -21,11 +21,11 @@ namespace utility
       _ForwardIterator
       __uninitialized_copy(_InputIterator __first,
         _InputIterator __last, _ForwardIterator __result,
-        utility::trait::false_type
+        trait::false_type
       )
       {
         typedef typename
-        utility::iterator::iterator_traits<_ForwardIterator>::value_type
+        iterator::iterator_traits<_ForwardIterator>::value_type
         __value_type;
 #ifdef __UTILITY_USE_EXCEPTION
         _ForwardIterator __epos = __result;
@@ -33,7 +33,7 @@ namespace utility
         __UTILITY_TRY_BEGIN
           for(; __first != __last; (void)++__first, ++__result)
           {
-            ::new (static_cast<void*>(utility::memory::addressof(*__result)))
+            ::new (static_cast<void*>(memory::addressof(*__result)))
             __value_type(*__first);
           }
         __UTILITY_TRY_END
@@ -50,13 +50,13 @@ namespace utility
       _ForwardIterator
       __uninitialized_copy(_InputIterator __first,
         _InputIterator __last, _ForwardIterator __result,
-        utility::trait::true_type
+        trait::true_type
       )
       {
         typedef typename
-          utility::iterator::iterator_traits<_ForwardIterator>::value_type
+          iterator::iterator_traits<_ForwardIterator>::value_type
           __value_type;
-        utility::sstd::memmove(
+        sstd::memmove(
           __result, __first, (__last-__first)*sizeof(__value_type));
         return __result + (__last-__first);
       }
@@ -65,11 +65,11 @@ namespace utility
       _BidirIterator2
       __uninitialized_copy_backward(_BidirIterator1 __first,
         _BidirIterator1 __last, _BidirIterator2 __result,
-        utility::trait::false_type
+        trait::false_type
       )
       {
         typedef typename
-        utility::iterator::iterator_traits<_BidirIterator2>::value_type
+        iterator::iterator_traits<_BidirIterator2>::value_type
         __value_type;
 #ifdef __UTILITY_USE_EXCEPTION
         _BidirIterator2 __epos = __result;
@@ -77,7 +77,7 @@ namespace utility
         __UTILITY_TRY_BEGIN
           for(; __first != __last;)
           {
-            ::new (static_cast<void*>(utility::memory::addressof(*--__result)))
+            ::new (static_cast<void*>(memory::addressof(*--__result)))
             __value_type(*--__first);
           }
         __UTILITY_TRY_END
@@ -94,13 +94,13 @@ namespace utility
       _BidirIterator2
       __uninitialized_copy_backward(_BidirIterator1 __first,
         _BidirIterator1 __last, _BidirIterator2 __result,
-        utility::trait::true_type
+        trait::true_type
       )
       {
         typedef typename
-          utility::iterator::iterator_traits<_BidirIterator2>::value_type
+          iterator::iterator_traits<_BidirIterator2>::value_type
           __value_type;
-        utility::sstd::memmove(
+        sstd::memmove(
           __result, __first, (__last-__first)*sizeof(__value_type)
         );
         return __result + (__last-__first);
@@ -131,7 +131,7 @@ namespace utility
     *         the function has no effects.
     * \note   If the \a _ForwardIterator and \a _InputIterator are both pointer
     *         the memmove is used to speed up copying.
-    * \see utility::memory::uninitialized_copy_n
+    * \see memory::uninitialized_copy_n
     */
     template<typename _InputIterator, typename _ForwardIterator>
     inline
@@ -140,15 +140,15 @@ namespace utility
       _InputIterator __last, _ForwardIterator __result)
     {
       typedef typename
-      utility::iterator::iterator_traits<_ForwardIterator>::value_type
+      iterator::iterator_traits<_ForwardIterator>::value_type
       __value_type;
       typedef
-        utility::trait::integral_constant<bool,
-          utility::trait::type::categories::is_pointer<_InputIterator>::value &&
-          utility::trait::type::categories::is_pointer<_ForwardIterator>::value &&
-          (utility::trait::type::categories::is_arithmetic<__value_type>::value ||
-           utility::trait::type::categories::is_pointer<__value_type>::value ||
-           utility::trait::type::property::is_pod<__value_type>::value)>
+        trait::integral_constant<bool,
+          trait::type::categories::is_pointer<_InputIterator>::value &&
+          trait::type::categories::is_pointer<_ForwardIterator>::value &&
+          (trait::type::categories::is_arithmetic<__value_type>::value ||
+           trait::type::categories::is_pointer<__value_type>::value ||
+           trait::type::property::is_pod<__value_type>::value)>
         __identify;
       return detail::__uninitialized_copy(
         __first, __last, __result, __identify{}
@@ -163,15 +163,15 @@ namespace utility
       _BidirIterator1 __last, _BidirIterator2 __result)
     {
       typedef typename
-      utility::iterator::iterator_traits<_BidirIterator2>::value_type
+      iterator::iterator_traits<_BidirIterator2>::value_type
       __value_type;
       typedef
-        utility::trait::integral_constant<bool,
-          utility::trait::type::categories::is_pointer<_BidirIterator1>::value &&
-          utility::trait::type::categories::is_pointer<_BidirIterator2>::value &&
-          (utility::trait::type::categories::is_arithmetic<__value_type>::value ||
-           utility::trait::type::categories::is_pointer<__value_type>::value ||
-           utility::trait::type::property::is_pod<__value_type>::value)>
+        trait::integral_constant<bool,
+          trait::type::categories::is_pointer<_BidirIterator1>::value &&
+          trait::type::categories::is_pointer<_BidirIterator2>::value &&
+          (trait::type::categories::is_arithmetic<__value_type>::value ||
+           trait::type::categories::is_pointer<__value_type>::value ||
+           trait::type::property::is_pod<__value_type>::value)>
         __identify;
       return detail::__uninitialized_copy_backward(
         __first, __last, __result, __identify{}

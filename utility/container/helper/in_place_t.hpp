@@ -53,10 +53,10 @@ namespace utility
       __UTILITY_CPP17_INLINE__
       constexpr in_place_type_t<_T> in_place_type{};
 
-      template<utility::size_t _I>
+      template<size_t _I>
       struct in_place_index_t
       { explicit in_place_index_t() = default;};
-      template<utility::size_t _I>
+      template<size_t _I>
       __UTILITY_CPP17_INLINE__
       constexpr in_place_index_t<_I> in_place_index{};
 

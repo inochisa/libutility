@@ -33,7 +33,7 @@ namespace utility
     template
     <
       _T,
-      _Alloc = utility::memory::allocator<_T>
+      _Alloc = memory::allocator<_T>
     >
     class forward_list
     {
@@ -64,14 +64,14 @@ namespace utility
             friend class list;
 
           public:
-            typedef utility::iterator::forward_iterator_tag
+            typedef iterator::forward_iterator_tag
               iterator_category;
             typedef __Value value_type;
             typedef value_type& reference;
             typedef typename
-              utility::trait::miscellaneous::pointer_traits<__Value*>::pointer pointer;
+              trait::miscellaneous::pointer_traits<__Value*>::pointer pointer;
             typedef typename
-              utility::trait::miscellaneous::pointer_traits<__Value*>::difference_type difference_type;
+              trait::miscellaneous::pointer_traits<__Value*>::difference_type difference_type;
 
           public:
             typedef __list_iterator<__Value>  self;
@@ -134,16 +134,16 @@ namespace utility
             friend class list;
 
           public:
-            typedef utility::iterator::forward_iterator_tag
+            typedef iterator::forward_iterator_tag
               iterator_category;
             typedef __Value value_type;
             typedef const value_type const_value_type;
             typedef const value_type& reference;
             typedef typename
-              utility::trait::miscellaneous::pointer_traits<const_value_type*>::pointer
+              trait::miscellaneous::pointer_traits<const_value_type*>::pointer
               pointer;
             typedef typename
-              utility::trait::miscellaneous::pointer_traits<const_value_type*>::difference_type
+              trait::miscellaneous::pointer_traits<const_value_type*>::difference_type
               difference_type;
 
           public:
@@ -207,21 +207,21 @@ namespace utility
       private:
         typedef __list_node<_T>   __node_type;
         typedef __node_type*      __link_type;
-        typedef utility::memory::allocator<__node_type>
+        typedef memory::allocator<__node_type>
           __node_allocator_type;
-        typedef utility::memory::allocator_traits<__node_allocator_type>
+        typedef memory::allocator_traits<__node_allocator_type>
           __node_allocator_traits_type;
 
       public:
         typedef _T                    value_type;
         typedef _Alloc                allocator_type;
-        typedef utility::size_t     size_type;
-        typedef utility::ptrdiff_t  difference_type;
+        typedef size_t     size_type;
+        typedef ptrdiff_t  difference_type;
         typedef value_type&           reference;
         typedef const value_type&     const_reference;
 
       public:
-        typedef utility::memory::allocator_traits<allocator_type>
+        typedef memory::allocator_traits<allocator_type>
           allocator_traits_type;
 
       public:
@@ -233,7 +233,7 @@ namespace utility
         typedef __list_const_iterator<value_type> const_iterator;
 
       public: // assert
-        static_assert(utility::trait::type::releations::is_same<
+        static_assert(trait::type::releations::is_same<
           value_type, typename allocator_type::value_type>::value,
           "the allocator's alloc type must be the same as value type");
 

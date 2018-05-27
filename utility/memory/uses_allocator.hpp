@@ -11,7 +11,7 @@ namespace utility
   {
     namespace __use_allocator_impl
     {
-      using __two = utility::trait::__impl_helper::__twochar;
+      using __two = trait::__impl_helper::__twochar;
 
       template<typename _T>
       struct __has_allocator_type_test
@@ -30,12 +30,12 @@ namespace utility
       template<typename _T, typename _Alloc,
         bool = __has_allocator_type_test<_T>::value>
       struct __uses_allocator :
-        public utility::trait::integral_constant<bool,
-          utility::trait::type::releations::is_convertible<_Alloc, typename _T::allocator_type>::value>
+        public trait::integral_constant<bool,
+          trait::type::releations::is_convertible<_Alloc, typename _T::allocator_type>::value>
       { };
       template<typename _T, typename _Alloc>
       struct __uses_allocator<_T, _Alloc, false> :
-        public utility::trait::false_type
+        public trait::false_type
       { };
 
     }

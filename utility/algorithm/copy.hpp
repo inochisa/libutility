@@ -16,7 +16,7 @@ namespace utility
     {
       template<typename _InputIterator, typename _OutputIterator>
       _OutputIterator __copy(_InputIterator __first, _InputIterator __last,
-        _OutputIterator __result, utility::trait::false_type)
+        _OutputIterator __result, trait::false_type)
       {
         while(__first != __last)
         { *__result++ = *__first++;}
@@ -24,12 +24,12 @@ namespace utility
       }
       template<typename _InputIterator, typename _OutputIterator>
       _OutputIterator __copy(_InputIterator __first, _InputIterator __last,
-        _OutputIterator __result, utility::trait::true_type)
+        _OutputIterator __result, trait::true_type)
       {
         typedef typename
-          utility::iterator::iterator_traits<_OutputIterator>::value_type
+          iterator::iterator_traits<_OutputIterator>::value_type
           __value_type;
-        utility::sstd::memmove(
+        sstd::memmove(
           __result, __first, (__last-__first)*sizeof(__value_type)
         );
         return __result + (__last-__first);
@@ -56,13 +56,13 @@ namespace utility
     )
     {
       typedef typename
-        utility::iterator::iterator_traits<_OutputIterator>::value_type
+        iterator::iterator_traits<_OutputIterator>::value_type
         __value_type;
       typedef
-        utility::trait::integral_constant<bool,
-          utility::trait::type::categories::is_pointer<_InputIterator>::value &&
-          utility::trait::type::categories::is_pointer<_OutputIterator>::value &&
-          (utility::trait::type::property::is_pod<__value_type>::value)>
+        trait::integral_constant<bool,
+          trait::type::categories::is_pointer<_InputIterator>::value &&
+          trait::type::categories::is_pointer<_OutputIterator>::value &&
+          (trait::type::property::is_pod<__value_type>::value)>
         __identify;
       return detail::__copy(__first, __last, __result, __identify());
     }

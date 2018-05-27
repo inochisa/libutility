@@ -25,22 +25,22 @@ namespace utility
         {
           private:
             typedef typename
-              utility::trait::type::transform::remove_reference
+              trait::type::transform::remove_reference
               < _T>::type _type;
           public:
             typedef typename
-              utility::trait::type::miscellaneous::conditional
+              trait::type::miscellaneous::conditional
               <
-                utility::trait::type::categories::is_array<_type>::value,
-                typename utility::trait::type::transform::remove_extent<_type>::type*,
+                trait::type::categories::is_array<_type>::value,
+                typename trait::type::transform::remove_extent<_type>::type*,
                 typename
-                utility::trait::type::miscellaneous::conditional
+                trait::type::miscellaneous::conditional
                 <
-                  utility::trait::type::categories::is_function<_type>::value,
+                  trait::type::categories::is_function<_type>::value,
                   typename
-                  utility::trait::type::transform::add_pointer<_type>::type,
+                  trait::type::transform::add_pointer<_type>::type,
                   typename
-                  utility::trait::type::transform::remove_cv<_type>::type
+                  trait::type::transform::remove_cv<_type>::type
                 >::type
               >::type type;
         };

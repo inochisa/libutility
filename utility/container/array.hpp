@@ -34,7 +34,7 @@ namespace utility
     template
     <
       typename _T,
-      utility::size_t _Size
+      size_t _Size
     >
     class array
     {
@@ -46,17 +46,17 @@ namespace utility
         typedef const value_type*       const_pointer;
 
       public:
-        typedef utility::size_t       size_type;
-        typedef utility::ptrdiff_t    difference_type;
+        typedef size_t       size_type;
+        typedef ptrdiff_t    difference_type;
 
       public:
         typedef value_type*             iterator;
         typedef const value_type*       const_iterator;
         typedef
-          utility::iterator::reverse_iterator<iterator>
+          iterator::reverse_iterator<iterator>
           reverse_iterator;
         typedef
-          utility::iterator::reverse_iterator<const_iterator>
+          iterator::reverse_iterator<const_iterator>
           const_reverse_iterator;
 
       public:

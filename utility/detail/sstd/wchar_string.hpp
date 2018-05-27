@@ -49,7 +49,7 @@ namespace utility
          *
          * the wide character version of \c strend
          *
-         * \see utility::detail::sstd::charS::strend
+         * \see detail::sstd::charS::strend
          */
         inline wchar_t* wcsend(wchar_t* __wstr) noexcept
         {
@@ -82,12 +82,12 @@ namespace utility
          *
          * the wide character version of \c strlen
          *
-         * \see utility::detail::sstd::charS::strlen
+         * \see detail::sstd::charS::strlen
          */
-        inline utility::ptrdiff_t wcslen(const wchar_t* __wstr) noexcept
+        inline ptrdiff_t wcslen(const wchar_t* __wstr) noexcept
         {
           return __wstr == nullptr ? -1 :
-            utility::detail::sstd::charS::wcsend(__wstr) - __wstr;
+            detail::sstd::charS::wcsend(__wstr) - __wstr;
         }
 
         // Copying
@@ -97,7 +97,7 @@ namespace utility
          *
          * the wide character version of \c strcpy
          *
-         * \see utility::detail::sstd::charS::strcpy
+         * \see detail::sstd::charS::strcpy
          */
         inline wchar_t* wcscpy(wchar_t* __wdest, const wchar_t* __wsrc) noexcept
         {
@@ -115,7 +115,7 @@ namespace utility
          *
          * the wide character version of \c stpcpy
          *
-         * \see utility::detail::sstd::charS::stpcpy
+         * \see detail::sstd::charS::stpcpy
          */
         inline wchar_t* wcpcpy(wchar_t* __wdest, const wchar_t* __wsrc) noexcept
         {
@@ -132,10 +132,10 @@ namespace utility
          *
          * the wide character version of \c strncpy
          *
-         * \see utility::detail::sstd::charS::strncpy
+         * \see detail::sstd::charS::strncpy
          */
         inline wchar_t* wcsncpy(wchar_t* __wdest, const wchar_t* __wsrc,
-          utility::size_t __size
+          size_t __size
         ) noexcept
         {
           if(__size && __wdest != nullptr && __wsrc != nullptr)
@@ -152,10 +152,10 @@ namespace utility
          *
          * the wide character version of \c stpncpy
          *
-         * \see utility::detail::sstd::charS::stpncpy
+         * \see detail::sstd::charS::stpncpy
          */
         inline wchar_t* wcpncpy(wchar_t* __wdest, const wchar_t* __wsrc,
-          utility::size_t __size
+          size_t __size
         ) noexcept
         {
           if(__size && __wdest != nullptr && __wsrc != nullptr)
@@ -174,14 +174,14 @@ namespace utility
          *
          * the wide character version of \c stpcat
          *
-         * \see utility::detail::sstd::charS::stpcat
+         * \see detail::sstd::charS::stpcat
          */
         inline wchar_t* wcscat(wchar_t* __wdest, const wchar_t* __wsrc) noexcept
         {
           if(__wdest != nullptr && __wsrc != nullptr)
           {
             wchar_t* __dest =
-              utility::detail::sstd::charS::wcsend(__wdest);
+              detail::sstd::charS::wcsend(__wdest);
             for(;*__wsrc != '\0';)
             { *__dest++ = *__wsrc++;}
             *__dest = '\0';
@@ -193,14 +193,14 @@ namespace utility
          *
          * the wide character version of \c strcat
          *
-         * \see utility::detail::sstd::charS::strcat
+         * \see detail::sstd::charS::strcat
          */
         inline wchar_t* wcpcat(wchar_t* __wdest, const wchar_t* __wsrc) noexcept
         {
           if(__wdest != nullptr && __wsrc != nullptr)
           {
             __wdest =
-              utility::detail::sstd::charS::wcsend(__wdest);
+              detail::sstd::charS::wcsend(__wdest);
             for(;*__wsrc != '\0';)
             { *__wdest++ = *__wsrc++;}
             *__wdest = '\0';
@@ -212,16 +212,16 @@ namespace utility
          *
          * the wide character version of \c strncat
          *
-         * \see utility::detail::sstd::charS::strncat
+         * \see detail::sstd::charS::strncat
          */
         inline wchar_t* wcsncat(wchar_t* __wdest, const wchar_t* __wsrc,
-          utility::size_t __size
+          size_t __size
         )
         {
           if(__size && __wdest != nullptr && __wsrc != nullptr)
           {
             wchar_t* __dest =
-              utility::detail::sstd::charS::wcsend(__wdest);
+              detail::sstd::charS::wcsend(__wdest);
             for(;*__wsrc != '\0' && __size--;)
             { *__dest++ = *__wsrc++;}
             *__dest = '\0';
@@ -233,16 +233,16 @@ namespace utility
          *
          * the wide character version of \c stpncat
          *
-         * \see utility::detail::sstd::charS::stpncat
+         * \see detail::sstd::charS::stpncat
          */
         inline wchar_t* wcpncat(wchar_t* __wdest, const wchar_t* __wsrc,
-          utility::size_t __size
+          size_t __size
         ) noexcept
         {
           if(__size && __wdest != nullptr && __wsrc != nullptr)
           {
             __wdest =
-              utility::detail::sstd::charS::wcsend(__wdest);
+              detail::sstd::charS::wcsend(__wdest);
             for(;*__wsrc != '\0' && __size--;)
             { *__wdest = *__wsrc++;}
             *__wdest = '\0';
@@ -257,10 +257,10 @@ namespace utility
          *
          * the wide character version of \c strncmp
          *
-         * \see utility::detail::sstd::charS::strncmp
+         * \see detail::sstd::charS::strncmp
          */
         inline int wcsncmp(const wchar_t* __comp1, const wchar_t* __comp2,
-          utility::size_t __size
+          size_t __size
         ) noexcept
         {
           if(__size && __comp1 != nullptr && __comp2 != nullptr)
@@ -279,18 +279,18 @@ namespace utility
          *
          * the wide character version of \c strcmp
          *
-         * \see utility::detail::sstd::charS::strcmp
+         * \see detail::sstd::charS::strcmp
          */
         inline int wcscmp(const wchar_t* __comp1, const wchar_t* __comp2)
         {
           if(__comp1 != nullptr && __comp2 != nullptr)
           {
-            utility::ptrdiff_t __size1 =
-              utility::detail::sstd::charS::wcslen(__comp1);
-            utility::ptrdiff_t __size2 =
-              utility::detail::sstd::charS::wcslen(__comp2);
-            utility::ptrdiff_t __size = __size1 < __size2 ? __size1 : __size2;
-            return utility::detail::sstd::charS::wcsncmp(
+            ptrdiff_t __size1 =
+              detail::sstd::charS::wcslen(__comp1);
+            ptrdiff_t __size2 =
+              detail::sstd::charS::wcslen(__comp2);
+            ptrdiff_t __size = __size1 < __size2 ? __size1 : __size2;
+            return detail::sstd::charS::wcsncmp(
               __comp1, __comp2, __size
             );
           }
@@ -304,7 +304,7 @@ namespace utility
          *
          * the wide character version of \c strchr
          *
-         * \see utility::detail::sstd::charS::strchr
+         * \see detail::sstd::charS::strchr
          */
         inline wchar_t* wcschr(wchar_t* __wstr, wchar_t __wchar) noexcept
         {
@@ -345,14 +345,14 @@ namespace utility
          *
          * the wide character version of \c strrchr
          *
-         * \see utility::detail::sstd::charS::strrchr
+         * \see detail::sstd::charS::strrchr
          */
         inline wchar_t* wcsrchr(wchar_t* __wstr, wchar_t __wchar) noexcept
         {
           if(__wstr != nullptr)
           {
             wchar_t* __wend =
-              utility::detail::sstd::charS::wcsend(__wstr);
+              detail::sstd::charS::wcsend(__wstr);
             for(;__wend >= __wstr; --__wend)
             {
               if(*__wend == __wchar)
@@ -373,7 +373,7 @@ namespace utility
           if(__wstr != nullptr)
           {
             const wchar_t* __wend =
-              utility::detail::sstd::charS::wcsend(__wstr);
+              detail::sstd::charS::wcsend(__wstr);
             for(;__wend >= __wstr; --__wend)
             {
               if(*__wend == __wchar)
@@ -387,9 +387,9 @@ namespace utility
          *
          * the wide character version of \c strcspn
          *
-         * \see utility::detail::sstd::charS::strcspn
+         * \see detail::sstd::charS::strcspn
          */
-        inline utility::size_t wcscspn(const wchar_t* __wsrc, const wchar_t* __wpat) noexcept
+        inline size_t wcscspn(const wchar_t* __wsrc, const wchar_t* __wpat) noexcept
         {
           if(__wsrc != nullptr && __wpat != nullptr)
           {
@@ -413,7 +413,7 @@ namespace utility
          *
          * the wide character version of \c strpbrk
          *
-         * \see utility::detail::sstd::charS::strpbrk
+         * \see detail::sstd::charS::strpbrk
          */
         inline wchar_t* wcspbrk(wchar_t* __wsrc, const wchar_t* __wpat) noexcept
         {
@@ -460,11 +460,11 @@ namespace utility
          *
          * the wide character version of \c strspn
          *
-         * \see utility::detail::sstd::charS::strspn
+         * \see detail::sstd::charS::strspn
          */
-        inline utility::size_t wcsspn(const wchar_t* __wsrc, const wchar_t* __wpat) noexcept
+        inline size_t wcsspn(const wchar_t* __wsrc, const wchar_t* __wpat) noexcept
         {
-          utility::size_t __i = 0;
+          size_t __i = 0;
           if(__wsrc != nullptr && __wpat != nullptr)
           {
             while(*__wsrc != '\0')
@@ -485,23 +485,23 @@ namespace utility
          *
          * the wide character version of \c strstr
          *
-         * \see utility::detail::sstd::charS::strstr
+         * \see detail::sstd::charS::strstr
          */
         inline wchar_t* wcsstr(wchar_t* __wsrc, const wchar_t* __wpat) noexcept
         {
           if(__wsrc != nullptr && __wpat != nullptr)
           {
-            utility::ptrdiff_t __slen =
-              utility::detail::sstd::charS::wcslen(__wsrc);
-            utility::ptrdiff_t __plen =
-              utility::detail::sstd::charS::wcslen(__wpat);
+            ptrdiff_t __slen =
+              detail::sstd::charS::wcslen(__wsrc);
+            ptrdiff_t __plen =
+              detail::sstd::charS::wcslen(__wpat);
             if(__slen < __plen)
             { return nullptr;}
-            utility::ptrdiff_t __len = __slen - __plen+1;
+            ptrdiff_t __len = __slen - __plen+1;
             while(__len--)
             {
               if((*__wsrc == * __wpat) &&
-                    utility::detail::sstd::charS::wcsncmp(
+                    detail::sstd::charS::wcsncmp(
                       __wsrc, __wpat, __plen
                     ) == 0)
               { return __wsrc;}
@@ -520,17 +520,17 @@ namespace utility
         {
           if(__wsrc != nullptr && __wpat != nullptr)
           {
-            utility::size_t __slen =
-              utility::detail::sstd::charS::wcslen(__wsrc);
-            utility::size_t __plen =
-              utility::detail::sstd::charS::wcslen(__wpat);
+            size_t __slen =
+              detail::sstd::charS::wcslen(__wsrc);
+            size_t __plen =
+              detail::sstd::charS::wcslen(__wpat);
             if(__slen < __plen)
             { return nullptr;}
-            utility::size_t __len = __slen - __plen+1;
+            size_t __len = __slen - __plen+1;
             while(__len--)
             {
               if((*__wsrc == * __wpat) &&
-                    utility::detail::sstd::charS::wcsncmp(
+                    detail::sstd::charS::wcsncmp(
                       __wsrc, __wpat, __plen
                     ) == 0)
               { return __wsrc;}

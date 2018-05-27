@@ -220,10 +220,10 @@ namespace utility
     inline void sort(_Iterator __first, _Iterator __last, _Compare __compare)
     {
       typedef typename
-        utility::trait::type::transform::add_lvalue_reference<_Compare>::type
+        trait::type::transform::add_lvalue_reference<_Compare>::type
         __comp_ref;
 
-      utility::algorithm::detail::__sort<_Iterator, __comp_ref>(
+      algorithm::detail::__sort<_Iterator, __comp_ref>(
         __first, __last, __compare, SortTag()
       );
     }
@@ -242,12 +242,12 @@ namespace utility
     inline void sort(_Iterator __first, _Iterator __last)
     {
       typedef typename
-        utility::iterator::iterator_traits<_Iterator>::value_type
+        iterator::iterator_traits<_Iterator>::value_type
         __value_type;
 
-      utility::algorithm::sort(
+      algorithm::sort(
         __first, __last,
-        utility::algorithm::less<__value_type>()
+        algorithm::less<__value_type>()
       );
     }
   }

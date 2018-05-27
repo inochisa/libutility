@@ -17,7 +17,7 @@ namespace utility
 
     namespace detail
     {
-      using utility::algorithm::sort_tag::bubble_sort_tag;
+      using algorithm::sort_tag::bubble_sort_tag;
       template<typename _BidirectionalIterator, typename _Compare>
       void __sort(
         _BidirectionalIterator __first, _BidirectionalIterator __last,
@@ -25,10 +25,10 @@ namespace utility
         bubble_sort_tag /*sort_tag*/
       )
       {
-        using utility::algorithm::swap;
+        using algorithm::swap;
 #ifdef UTILITY_DEBUG
         static_assert(
-          utility::iterator::is_bidirectional_iterator<_BidirectionalIterator>::value,
+          iterator::is_bidirectional_iterator<_BidirectionalIterator>::value,
           "bubble sort sort need at least bidirectional iterator."
         );
 #endif // ! UTILITY_DEBUG
@@ -37,13 +37,13 @@ namespace utility
         {
           __unsorted = false;
           for(
-            _BidirectionalIterator __i = utility::iterator::next(__first);
+            _BidirectionalIterator __i = iterator::next(__first);
             __i != __last; ++__i
           )
           {
-            if(__compare(*__i, *utility::iterator::prev(__i)))
+            if(__compare(*__i, *iterator::prev(__i)))
             {
-              swap(*__i, *utility::iterator::prev(__i));
+              swap(*__i, *iterator::prev(__i));
               __unsorted = true;
             }
           }

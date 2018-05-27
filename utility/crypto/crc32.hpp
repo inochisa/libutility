@@ -80,12 +80,12 @@ namespace utility
 
     }
 
-    unsigned long CRC32(const void* __pos, utility::size_t __len) noexcept
+    unsigned long CRC32(const void* __pos, size_t __len) noexcept
     {
       unsigned long __res = 0xffffffffU;
       unsigned short __table_value;
       const unsigned char* __ptr = static_cast<const unsigned char*>(__pos);
-      for(utility::size_t __i = 0U; __i < __len; ++__i)
+      for(size_t __i = 0U; __i < __len; ++__i)
       {
         __table_value = CRC_table::CRC32_TABLE[(__res^(*__ptr)) ^ 0x000000ffUL];
         __res = ((__res >> 8) & 0x00ffffffUL) ^ __table_value;
@@ -95,13 +95,13 @@ namespace utility
 
     unsigned long CRC32(
       unsigned long __pre_crc,
-      const void* __pos, utility::size_t __len
+      const void* __pos, size_t __len
     ) noexcept
     {
       __pre_crc = ~__pre_crc;
       unsigned short __table_value;
       const unsigned char* __ptr = static_cast<const unsigned char*>(__pos);
-      for(utility::size_t __i = 0U; __i < __len; ++__i)
+      for(size_t __i = 0U; __i < __len; ++__i)
       {
         __table_value = CRC_table::CRC32_TABLE[(__pre_crc^(*__ptr)) ^ 0x000000ffUL];
         __pre_crc = ((__pre_crc >> 8) & 0x00ffffffUL) ^ __table_value;

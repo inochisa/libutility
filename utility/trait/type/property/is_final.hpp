@@ -20,7 +20,7 @@ namespace utility
         // is_final
         template<typename _T>
         struct is_final :
-          public utility::trait::integral_constant<
+          public trait::integral_constant<
             bool, __utility_is_final(_T)>
         { };
 
@@ -43,7 +43,7 @@ namespace utility
       {
         // is_final
         template<typename _T>
-        struct is_final : public utility::trait::unsupport_trait<true>
+        struct is_final : public trait::unsupport_trait<true>
         { };
 
       }

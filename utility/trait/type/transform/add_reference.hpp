@@ -17,7 +17,7 @@ namespace utility
         namespace __add_lvalue_reference_impl
         {
           template<typename _T, bool =
-          utility::trait::type::transform::is_referenceable<_T>::value>
+          trait::type::transform::is_referenceable<_T>::value>
           struct __add_lvalue_reference_helper
           { typedef _T type;};
           template<typename _T>
@@ -35,7 +35,7 @@ namespace utility
         namespace __add_rvalue_reference_impl
         {
           template<typename _T, bool =
-           utility::trait::type::transform::is_referenceable<_T>::value>
+           trait::type::transform::is_referenceable<_T>::value>
           struct __add_rvalue_reference_helper
           { typedef _T type;};
           template<typename _T>

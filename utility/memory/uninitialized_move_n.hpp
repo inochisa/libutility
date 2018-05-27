@@ -34,14 +34,14 @@ namespace utility
     * \attention If an exception is thrown during the initialization,
     *         the function has no effects. And the original source will be
     *         right but uncertain.
-    * \see utility::memory::uninitialized_move
+    * \see memory::uninitialized_move
     */
     template<typename _InputIterator, typename _Size, typename _ForwardIterator>
     _ForwardIterator
     uninitialized_move_n(_InputIterator __first, _Size __size, _ForwardIterator __result)
     {
       typedef typename
-        utility::iterator::iterator_traits<_ForwardIterator>::value_type
+        iterator::iterator_traits<_ForwardIterator>::value_type
         __value_type;
 #ifdef __UTILITY_USE_EXCEPTION
       _ForwardIterator __epos = __result;
@@ -49,8 +49,8 @@ namespace utility
       __UTILITY_TRY_BEGIN
         for(; __size > 0; (void)++__first, ++__result, --__size)
         {
-          ::new (static_cast<void*>(utility::memory::addressof(*__result)))
-          __value_type(utility::algorithm::move(*__first));
+          ::new (static_cast<void*>(memory::addressof(*__result)))
+          __value_type(algorithm::move(*__first));
         }
       __UTILITY_TRY_END
       __UTILITY_CATCH(...)

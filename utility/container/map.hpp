@@ -10,6 +10,21 @@
  */
 
 #include<utility/config/utility_config.hpp>
+
+#ifdef ___UTILITY__CHECK__USE__STD___
+
+#include<map>
+
+namespace utility
+{
+  namespace container
+  {
+    using std::map;
+  }
+}
+
+#else // ___UTILITY__CHECK__USE__STD___
+
 #include<utility/container/container_helper.hpp>
 #include<utility/algorithm/move.hpp>
 #include<utility/algorithm/swap.hpp>
@@ -368,11 +383,11 @@ namespace utility
 
       public:
         void swap(map& __other) noexcept(
-          noexcept(this->__tree.swap(__other.__tree))
+          noexcept(__tree.swap(__other.__tree))
         )
         { this->__tree.swap(__other.__tree);}
         void possible_swap(map& __other) noexcept(
-          noexcept(this->__tree.possible_swap(__other.__tree))
+          noexcept(__tree.possible_swap(__other.__tree))
         )
         { this->__tree.possible_swap(__other.__tree);}
 
@@ -449,5 +464,7 @@ namespace utility
     }
   }
 }
+
+#endif // ! ___UTILITY__CHECK__USE__STD___
 
 #endif // ! __UTILITY_CONTAINER_MAP__

@@ -9,6 +9,21 @@
  */
 
 #include<utility/config/utility_config.hpp>
+
+#ifdef ___UTILITY__CHECK__USE__STD___
+
+#include<list>
+
+namespace utility
+{
+  namespace container
+  {
+    using std::list;
+  }
+}
+
+#else // ___UTILITY__CHECK__USE__STD___
+
 #include<utility/algorithm/algorithm_auxiliary.hpp>
 #include<utility/algorithm/swap.hpp>
 #include<utility/algorithm/possible_swap.hpp>
@@ -141,10 +156,10 @@ namespace utility
             }
 
           public:
-            bool operator==(const self& __o) const noexcept
-            { return this->__ptr == __o.__ptr;}
-            bool operator!=(const self& __o) const noexcept
-            { return !(this->operator==(__o));}
+            bool operator==(const self& __other) const noexcept
+            { return this->__ptr == __other.__ptr;}
+            bool operator!=(const self& __other) const noexcept
+            { return !(this->operator==(__other));}
 
         };
         template<typename __Value>
@@ -232,10 +247,10 @@ namespace utility
             }
 
           public:
-            bool operator==(const self& __o) const noexcept
-            { return this->__ptr == __o.__ptr;}
-            bool operator!=(const self& __o) const noexcept
-            { return !(this->operator==(__o));}
+            bool operator==(const self& __other) const noexcept
+            { return this->__ptr == __other.__ptr;}
+            bool operator!=(const self& __other) const noexcept
+            { return !(this->operator==(__other));}
         };
 
       private:
@@ -469,31 +484,31 @@ namespace utility
 
       public:
         iterator begin() noexcept
-        { return iterator(this->__base.first()->__next);}
+        { return iterator{this->__base.first()->__next};}
         const_iterator begin() const noexcept
-        { return const_iterator(this->__base.first()->__next);}
+        { return const_iterator{this->__base.first()->__next};}
         const_iterator cbegin() const noexcept
-        { return const_iterator(this->__base.first()->__next);}
+        { return const_iterator{this->__base.first()->__next};}
         iterator end() noexcept
-        { return iterator(this->__base.first());}
+        { return iterator{this->__base.first()};}
         const_iterator end() const noexcept
-        { return const_iterator(this->__base.first());}
+        { return const_iterator{this->__base.first()};}
         const_iterator cend() const noexcept
-        { return const_iterator(this->__base.first());}
+        { return const_iterator{this->__base.first()};}
 
       public:
         reverse_iterator rbegin() noexcept
-        { return reverse_iterator(this->end());}
+        { return reverse_iterator{this->end()};}
         const_reverse_iterator rbegin() const noexcept
-        { return const_reverse_iterator(this->end());}
+        { return const_reverse_iterator{this->end()};}
         const_reverse_iterator crbegin() const noexcept
-        { return const_reverse_iterator(this->end());}
+        { return const_reverse_iterator{this->end()};}
         reverse_iterator rend() noexcept
-        { return reverse_iterator(this->begin());}
+        { return reverse_iterator{this->begin()};}
         const_reverse_iterator rend() const noexcept
-        { return const_reverse_iterator(this->begin());}
+        { return const_reverse_iterator{this->begin()};}
         const_reverse_iterator crend() const noexcept
-        { return const_reverse_iterator(this->begin());}
+        { return const_reverse_iterator{this->begin()};}
 
       public:
         bool empty() const noexcept
@@ -823,9 +838,9 @@ namespace utility
 
       public:
         inline void merge(list& __other)
-        { this->merge(__other, utility::algorithm::less<value_type>());}
+        { this->merge(__other, utility::algorithm::less<value_type>{});}
         inline void merge(list&& __other)
-        { this->merge(__other, utility::algorithm::less<value_type>());}
+        { this->merge(__other, utility::algorithm::less<value_type>{});}
         template<typename _Compare>
         void merge(list& __other, _Compare __compare)
         {
@@ -860,7 +875,7 @@ namespace utility
         {
           __sort(
             this->__base.first()->__next, this->__base.first()->__prev,
-            this->__mis.first(), utility::algorithm::less<value_type>()
+            this->__mis.first(), utility::algorithm::less<value_type>{}
           );
         }
         template<typename _Compare>
@@ -877,7 +892,7 @@ namespace utility
 
       public:
         inline void unique()
-        { this->unique(utility::algorithm::equal_to<value_type>());}
+        { this->unique(utility::algorithm::equal_to<value_type>{});}
         template<typename _BinaryPredicate>
         void unique(_BinaryPredicate __binarypred)
         {
@@ -908,6 +923,8 @@ namespace utility
             __node_allocator_traits_type::deallocate(
               this->__base.second(), this->__base.first()
             );
+
+            this->__base.first() = nullptr;
           }
         }
         UTILITY_ALWAYS_INLINE
@@ -1193,5 +1210,7 @@ namespace utility
     }
   }
 }
+
+#endif // ! ___UTILITY__CHECK__USE__STD___
 
 #endif // ! __UTILITY_CONTAINER_LIST__

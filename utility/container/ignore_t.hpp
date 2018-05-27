@@ -10,6 +10,21 @@
 
 #include<utility/config/utility_config.hpp>
 
+#ifdef ___UTILITY__CHECK__USE__STD___
+
+#include<tuple>
+
+namespace utility
+{
+  namespace container
+  {
+    using std::ignore;
+    typedef decltype(std::ignore) ignore_t;
+  }
+}
+
+#else // ___UTILITY__CHECK__USE__STD___
+
 namespace utility
 {
   namespace container
@@ -27,9 +42,10 @@ namespace utility
     };
 
     __UTILITY_CPP17_INLINE__
-    constexpr utility::container::ignore_t ignore =
-      utility::container::ignore_t();
+    constexpr utility::container::ignore_t ignore{};
   }
 }
+
+#endif // ! ___UTILITY__CHECK__USE__STD___
 
 #endif // ! __UTILITY_CONTAINER_IGNORE_T__

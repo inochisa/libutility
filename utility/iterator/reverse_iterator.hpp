@@ -3,6 +3,21 @@
 #define __UTILITY_ITERATOR_REVERSE_ITERATOR__
 
 #include<utility/config/utility_config.hpp>
+
+#ifdef ___UTILITY__CHECK__USE__STD___
+
+#include<iterator>
+
+namespace utility
+{
+  namespace iterator
+  {
+    using std::reverse_iterator;
+  }
+}
+
+#else // ! ___UTILITY__CHECK__USE__STD___
+
 #include<utility/memory/addressof.hpp>
 #include<utility/iterator/iterator_traits.hpp>
 
@@ -225,5 +240,7 @@ namespace utility
     { return reverse_iterator<__Iterator>(__it);}
   }
 }
+
+#endif // ! ___UTILITY__CHECK__USE__STD___
 
 #endif // ! __UTILITY_ITERATOR_REVERSE_ITERATOR__

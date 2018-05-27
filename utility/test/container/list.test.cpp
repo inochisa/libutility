@@ -88,7 +88,7 @@ void test_construct()
   assert(test13 == list<int>({1,2,3,4,5}));
   assert(test14 == list<int>({1,2,3,4,5}));
 
-  printf("Test construct passes\n\n");
+  printf("Test construct passes\n");
 
   return;
 }
@@ -144,7 +144,7 @@ void test_insert()
   test.clear();
   assert(test == list<int>{});
 
-  printf("Test insert, push_back, pop_back, emplace, emplace_back passes\n\n");
+  printf("Test insert, push_back, pop_back, emplace, emplace_back passes\n");
 
   return;
 }
@@ -163,7 +163,7 @@ void test_push_front()
   test.pop_front();
   assert(test == list<int>({9,10}));
 
-  printf("Test push_front, emplace_front, pop_front passes\n\n");
+  printf("Test push_front, emplace_front, pop_front passes\n");
 
   return;
 }
@@ -180,7 +180,7 @@ void test_remove()
   test.remove([](const int&)->bool{ return true;});
   assert(test == list<int>{});
 
-  printf("Test remove passes\n\n");
+  printf("Test remove passes\n");
 
   return;
 }
@@ -201,7 +201,7 @@ void test_front()
   assert(y == 1256);
   assert(_y == 1256);
 
-  printf("Test front and back passes\n\n");
+  printf("Test front and back passes\n");
 
   return;
 }
@@ -229,7 +229,7 @@ void test_splice()
   assert(test == list<int>({99704,30558,76616,73799,65703,30058,65677,83362,70219,36602,48771,17537,68428,40010,50204,82012,99793,7790,14052,71205,74962,15453,13968,90023,98948,1256}));
   assert(ins == list<int>{});
 
-  printf("Test splice passes\n\n");
+  printf("Test splice passes\n");
 
   return;
 }
@@ -247,7 +247,7 @@ void test_erase()
   test.erase(test.begin(), test.end());
   assert(test == list<int>{});
 
-  printf("Test erase passes\n\n");
+  printf("Test erase passes\n");
 
   return;
 }
@@ -266,7 +266,7 @@ void test_sort()
   assert(test.size() == 1000);
   assert(is_sorted(test.begin(), test.end()));
 
-  printf("Test sort passes\n\n");
+  printf("Test sort passes\n");
 
   return;
 }
@@ -296,7 +296,7 @@ void test_size()
   assert(test.size() == 12);
   assert(test == list<int>({0,0,0,0,0,0,0,0,0,0,1,1}));
 
-  printf("Test size passes\n\n");
+  printf("Test size passes\n");
 
   return;
 }

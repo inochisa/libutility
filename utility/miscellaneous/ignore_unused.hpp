@@ -9,7 +9,12 @@ namespace utility
   namespace miscellaneous
   {
     template<typename... Ts>
-    inline void ignore_unused(...)
+    UTILITY_ALWAYS_INLINE __UTILITY_CPP14_CONSTEXPR__
+    inline void ignore_unused()
+    { }
+    template<typename... Ts>
+    UTILITY_ALWAYS_INLINE __UTILITY_CPP14_CONSTEXPR__
+    inline void ignore_unused(const Ts& ...)
     { }
   }
 }

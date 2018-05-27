@@ -60,6 +60,51 @@ namespace utility
           __result, __first, (__last-__first)*sizeof(__value_type));
         return __result + (__last-__first);
       }
+
+      template<typename _BidirIterator1, typename _BidirIterator2>
+      _BidirIterator2
+      __uninitialized_copy_backward(_BidirIterator1 __first,
+        _BidirIterator1 __last, _BidirIterator2 __result,
+        utility::trait::false_type
+      )
+      {
+        typedef typename
+        utility::iterator::iterator_traits<_BidirIterator2>::value_type
+        __value_type;
+#ifdef __UTILITY_USE_EXCEPTION
+        _BidirIterator2 __epos = __result;
+#endif // ! __UTILITY_USE_EXCEPTION
+        __UTILITY_TRY_BEGIN
+          for(; __first != __last;)
+          {
+            ::new (static_cast<void*>(utility::memory::addressof(*--__result)))
+            __value_type(*--__first);
+          }
+        __UTILITY_TRY_END
+        __UTILITY_CATCH(...)
+        __UTILITY_CATCH_UNWIND(
+          for(; __epos != __result;)
+          { (--__epos)->~__value_type();}
+        )
+        return __result;
+      }
+
+      template<typename _BidirIterator1, typename _BidirIterator2>
+      inline
+      _BidirIterator2
+      __uninitialized_copy_backward(_BidirIterator1 __first,
+        _BidirIterator1 __last, _BidirIterator2 __result,
+        utility::trait::true_type
+      )
+      {
+        typedef typename
+          utility::iterator::iterator_traits<_BidirIterator2>::value_type
+          __value_type;
+        utility::sstd::memmove(
+          __result, __first, (__last-__first)*sizeof(__value_type)
+        );
+        return __result + (__last-__first);
+      }
     }
 
     /*!
@@ -105,7 +150,32 @@ namespace utility
            utility::trait::type::categories::is_pointer<__value_type>::value ||
            utility::trait::type::property::is_pod<__value_type>::value)>
         __identify;
-      return detail::__uninitialized_copy(__first, __last, __result, __identify());
+      return detail::__uninitialized_copy(
+        __first, __last, __result, __identify{}
+      );
+    }
+
+
+    template<typename _BidirIterator1, typename _BidirIterator2>
+    inline
+    _BidirIterator2
+    uninitialized_copy_backward(_BidirIterator1 __first,
+      _BidirIterator1 __last, _BidirIterator2 __result)
+    {
+      typedef typename
+      utility::iterator::iterator_traits<_BidirIterator2>::value_type
+      __value_type;
+      typedef
+        utility::trait::integral_constant<bool,
+          utility::trait::type::categories::is_pointer<_BidirIterator1>::value &&
+          utility::trait::type::categories::is_pointer<_BidirIterator2>::value &&
+          (utility::trait::type::categories::is_arithmetic<__value_type>::value ||
+           utility::trait::type::categories::is_pointer<__value_type>::value ||
+           utility::trait::type::property::is_pod<__value_type>::value)>
+        __identify;
+      return detail::__uninitialized_copy_backward(
+        __first, __last, __result, __identify{}
+      );
     }
   }
 }

@@ -3,6 +3,21 @@
 #define __UTILITY_CONTAINER_FORWARD_LIST__
 
 #include<utility/config/utility_config.hpp>
+
+#ifdef ___UTILITY__CHECK__USE__STD___
+
+#include<forward_list>
+
+namespace utility
+{
+  namespace container
+  {
+    using std::forward_list;
+  }
+}
+
+#else // ___UTILITY__CHECK__USE__STD___
+
 #include<utility/container/container_helper.hpp>
 #include<utility/memory/allocator.hpp>
 #include<utility/memory/allocator_traits.hpp>
@@ -18,7 +33,7 @@ namespace utility
     template
     <
       _T,
-      _Alloc = utility::memory::allocator
+      _Alloc = utility::memory::allocator<_T>
     >
     class forward_list
     {
@@ -314,5 +329,7 @@ namespace utility
     };
   }
 }
+
+#endif // ! ___UTILITY__CHECK__USE__STD___
 
 #endif // ! __UTILITY_CONTAINER_FORWARD_LIST__

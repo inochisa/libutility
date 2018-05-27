@@ -3,6 +3,22 @@
 #define __UTILITY_BASIC_ALLOCATOR__
 
 #include<utility/config/utility_config.hpp>
+
+#ifdef ___UTILITY__CHECK__USE__STD___
+
+#include<memory>
+
+namespace utility
+{
+  namespace container
+  {
+    template<typename _T>
+    using basic_allocator = std::allocator<_T>;
+  }
+}
+
+#else // ___UTILITY__CHECK__USE__STD___
+
 #include<utility/memory/addressof.hpp>
 #include<utility/algorithm/max.hpp>
 #include<utility/algorithm/forward.hpp>
@@ -203,5 +219,7 @@ namespace utility
     { return false;}
   }
 }
+
+#endif // ! ___UTILITY__CHECK__USE__STD___
 
 #endif // ! __UTILITY_BASIC_ALLOCATOR__

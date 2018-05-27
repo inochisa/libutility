@@ -5,6 +5,7 @@
 #ifdef UTILITY_DEBUG
 
 #define __utility_private public
+#define __utility_debug   public
 #define __UTILITY_ASSGIN(__TYPE, __TYPENAME, __ASS) \
           __type __TYPENAME = __ASS
 
@@ -24,9 +25,15 @@
 #else
 
 #define __utility_private private
+#define __utility_debug   private
 #define __UTILITY_ASSGIN(__TYPE, __TYPENAME, __ASS)
 
 #endif // ! __UTILITY_DEBUG
 
+#ifndef UTILITY_NOEXTRA
+# define __utility_extra   public
+#else
+# define __utility_extra   private
+#endif
 
 #endif // ! ___UTILITY__DEBUG__CONFIG___

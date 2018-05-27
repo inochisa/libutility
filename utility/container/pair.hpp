@@ -9,6 +9,21 @@
  */
 
 #include<utility/config/utility_config.hpp>
+
+#ifdef ___UTILITY__CHECK__USE__STD___
+
+#include<utility>
+
+namespace utility
+{
+  namespace container
+  {
+    using std::pair;
+  }
+}
+
+#else // ___UTILITY__CHECK__USE__STD___
+
 #include<utility/algorithm/forward.hpp>
 #include<utility/algorithm/swap.hpp>
 #include<utility/algorithm/possible_swap.hpp>
@@ -376,5 +391,6 @@ namespace utility
 
 }
 
+#endif // ! ___UTILITY__CHECK__USE__STD___
 
 #endif // ! __UTILITY_CONTAINER_PAIR__

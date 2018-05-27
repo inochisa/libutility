@@ -9,6 +9,21 @@
  */
 
 #include<utility/config/utility_config.hpp>
+
+#ifdef ___UTILITY__CHECK__USE__STD___
+
+#include<vector>
+
+namespace utility
+{
+  namespace container
+  {
+    using std::vector;
+  }
+}
+
+#else // ___UTILITY__CHECK__USE__STD___
+
 #include<utility/algorithm/swap.hpp>
 #include<utility/algorithm/possible_swap.hpp>
 #include<utility/algorithm/move.hpp>
@@ -16,12 +31,15 @@
 #include<utility/algorithm/move_backward.hpp>
 #include<utility/algorithm/equal.hpp>
 #include<utility/algorithm/lexicographical_compare.hpp>
+
 #include<utility/container/container_helper.hpp>
+
 #include<utility/memory/allocator.hpp>
 #include<utility/memory/allocator_traits.hpp>
 #include<utility/memory/uninitialized_copy.hpp>
 #include<utility/memory/uninitialized_fill_n.hpp>
 #include<utility/memory/uninitialized_move.hpp>
+#include<utility/memory/uninitialized_possible_move.hpp>
 #include<utility/trait/type/type_trait_special.hpp>
 #include<utility/trait/type/releations/is_same.hpp>
 #include<utility/trait/type/features/is_default_constructible.hpp>
@@ -202,8 +220,7 @@ namespace utility
               const __vector_iterator<value_type>& __other
             ) noexcept
             {
-              if(this != &__other)
-              { this->__ptr = __other.__ptr;}
+              this->__ptr = __other.__ptr;
               return *this;
             }
 
@@ -861,7 +878,7 @@ namespace utility
           size_type __old_size = this->size();
           pointer __new_begin =
             allocator_traits_type::allocate(this->__allocator, __need_size);
-          utility::memory::uninitialized_move(
+          utility::memory::uninitialized_possible_move(
             this->__begin, this->__end, __new_begin
           );
           allocator_traits_type::deallocate(
@@ -921,5 +938,7 @@ namespace utility
     }
   }
 }
+
+#endif // ! ___UTILITY__CHECK__USE__STD___
 
 #endif // ! __UTILITY_CONTAINER_VECTOR__

@@ -601,9 +601,9 @@ namespace utility
           >::type = true
         >
         explicit hash_table():
-          __bucket{97UL}, __mis{0U, allocator_type{}},
+          __bucket(97UL), __mis{0U, allocator_type{}},
           __load_allocator{1.0f, __node_allocator_type{}},
-          __hasher(), __key_eq()
+          __hasher{}, __key_eq{}
         { }
         template<typename _Key_Eq = _Key_eq, typename _Hasher = _Hash,
         typename
@@ -617,7 +617,7 @@ namespace utility
           size_type __count, const hasher& __ha,
           const key_equal& __equal,
           const allocator_type& __alloc = allocator_type()
-        ):__bucket{__hash_length::__next_prime(__count)},
+        ):__bucket(__hash_length::__next_prime(__count)),
           __mis{0U, __alloc},
           __load_allocator{1.0f, __node_allocator_type{}},
           __hasher{__ha}, __key_eq{__equal}
@@ -634,7 +634,7 @@ namespace utility
         explicit hash_table(
           size_type __count, const hasher& __ha,
           const allocator_type& __alloc = allocator_type()
-        ):__bucket{__hash_length::__next_prime(__count)},
+        ):__bucket(__hash_length::__next_prime(__count)),
           __mis{0U, __alloc},
           __load_allocator{1.0f, __node_allocator_type{}},
           __hasher{__ha}, __key_eq{}
@@ -652,14 +652,14 @@ namespace utility
         explicit hash_table(
           size_type __count,
           const allocator_type& __alloc = allocator_type()
-        ):__bucket{__hash_length::__next_prime(__count)},
+        ):__bucket(__hash_length::__next_prime(__count)),
           __mis{0U, __alloc},
           __load_allocator{1.0f, __node_allocator_type{}},
           __hasher{}, __key_eq{}
         { }
 
         explicit hash_table(const allocator_type& __alloc):
-          __bucket{97UL}, __mis{0U, __alloc},
+          __bucket(97UL), __mis{0U, __alloc},
           __load_allocator{1.0f, __node_allocator_type{}},
           __hasher{}, __key_eq{}
         { }
@@ -744,7 +744,7 @@ namespace utility
 
 
         hash_table(const hash_table& __other):
-          __bucket{__other.__bucket.size()},
+          __bucket(__other.__bucket.size()),
           __mis{__other.__mis},
           __load_allocator{__other.__load_allocator},
           __hasher{__other.__hasher},
@@ -764,7 +764,7 @@ namespace utility
         }
         hash_table(
           const hash_table& __other, const allocator_type& __alloc
-        ):__bucket{__other.__bucket.size()},
+        ):__bucket(__other.__bucket.size()),
           __mis{__other.__mis.first(), __alloc},
           __load_allocator{__other.__load_allocator},
           __hasher{__other.__hasher},

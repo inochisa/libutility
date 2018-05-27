@@ -9,6 +9,21 @@
  */
 
 #include<utility/config/utility_config.hpp>
+
+#ifdef ___UTILITY__CHECK__USE__STD___
+
+#include<stack>
+
+namespace utility
+{
+  namespace container
+  {
+    using std::stack;
+  }
+}
+
+#else // ___UTILITY__CHECK__USE__STD___
+
 #include<utility/algorithm/move.hpp>
 #include<utility/algorithm/swap.hpp>
 #include<utility/algorithm/possible_swap.hpp>
@@ -199,5 +214,7 @@ namespace utility
     { __x.possible_swap(__y);}
   }
 }
+
+#endif // ! ___UTILITY__CHECK__USE__STD___
 
 #endif // ! __UTILITY_CONTAINER_STACK__

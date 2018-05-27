@@ -93,4 +93,8 @@
 #include<utility/config/extra/utility_memory_extra.hpp>
 #include<utility/config/extra/utility_trait_extra.hpp>
 
+#if defined(UTILITY_USE_STD) && !defined(___UTILITY__CHECK__USE__STD___)
+# define ___UTILITY__CHECK__USE__STD___
+#endif
+
 #endif // ! ___UTILITY__CONFIG__

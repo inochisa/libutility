@@ -31,7 +31,7 @@ namespace utility
   {
     class any;
 
-    namespace __any_detail
+    namespace __detail
     {
       using trait::type::transform::decay;
       using trait::type::releations::is_same;
@@ -137,14 +137,14 @@ namespace utility
     {
       private:
         template<typename, typename>
-        friend class __any_detail::__small_object_manager;
+        friend class __detail::__small_object_manager;
         template<typename, typename>
-        friend class __any_detail::__large_object_manager;
+        friend class __detail::__large_object_manager;
 
       private:
-        typedef __any_detail::__any_storage<1U>       any_stroge;
-        typedef __any_detail::__any_operator          any_op;
-        typedef __any_detail::__any_args              any_args;
+        typedef __detail::__any_storage<1U>       any_stroge;
+        typedef __detail::__any_operator          any_op;
+        typedef __detail::__any_args              any_args;
 
       private:
         typedef void(*any_manager)(any_op, const any*, any_args*);
@@ -182,14 +182,14 @@ namespace utility
 
         template<
           typename _ValueType,
-          typename _T = typename __any_detail::decay<_ValueType>::type,
+          typename _T = typename __detail::decay<_ValueType>::type,
           typename _Manager =
-            typename __any_detail::__object_manager<_T, 1U>::type,
-          typename __any_detail::enable_if<trait::__and__<
-            !__any_detail::is_same<_T, any>::value,
-            !__any_detail::__is_inplace_type<_T>::value,
-            __any_detail::is_constructible<_T, _ValueType&&>::value,
-            __any_detail::is_copy_constructible<_T>::value>::value,
+            typename __detail::__object_manager<_T, 1U>::type,
+          typename __detail::enable_if<trait::__and__<
+            !__detail::is_same<_T, any>::value,
+            !__detail::__is_inplace_type<_T>::value,
+            __detail::is_constructible<_T, _ValueType&&>::value,
+            __detail::is_copy_constructible<_T>::value>::value,
           bool>::type = true
         >
         any(_ValueType&& __val):
@@ -202,14 +202,14 @@ namespace utility
 
         template<
           typename _ValueType,
-          typename _T = typename __any_detail::decay<_ValueType>::type,
+          typename _T = typename __detail::decay<_ValueType>::type,
           typename _Manager =
-            typename __any_detail::__object_manager<_T, 1U>::type,
-          typename __any_detail::enable_if<trait::__and__<
-            !__any_detail::is_same<_T, any>::value,
-            !__any_detail::__is_inplace_type<_T>::value,
-            !__any_detail::is_constructible<_T, _ValueType&&>::value,
-            __any_detail::is_copy_constructible<_T>::value>::value,
+            typename __detail::__object_manager<_T, 1U>::type,
+          typename __detail::enable_if<trait::__and__<
+            !__detail::is_same<_T, any>::value,
+            !__detail::__is_inplace_type<_T>::value,
+            !__detail::is_constructible<_T, _ValueType&&>::value,
+            __detail::is_copy_constructible<_T>::value>::value,
           bool>::type = true
         >
         any(_ValueType&& __val):
@@ -220,15 +220,15 @@ namespace utility
         template<
           typename _ValueType,
           typename... _Args,
-          typename _T = __any_detail::decay<_ValueType>::type,
+          typename _T = __detail::decay<_ValueType>::type,
           typename _Manager =
-            typename __any_detail::__object_manager<_T, 1U>::type,
-          typename __any_detail::enable_if<trait::__and__<
-            __any_detail::is_constructible<_T, _Args&&...>::value,
-            __any_detail::is_copy_constructible<_T>::value>::value,
+            typename __detail::__object_manager<_T, 1U>::type,
+          typename __detail::enable_if<trait::__and__<
+            __detail::is_constructible<_T, _Args&&...>::value,
+            __detail::is_copy_constructible<_T>::value>::value,
           bool>::type = true
         >
-        explicit any(__any_detail::in_place_type_t<_ValueType>, _Args&&... __args):
+        explicit any(__detail::in_place_type_t<_ValueType>, _Args&&... __args):
           __manager{&_Manager::operate}, __stroge{}
         {
           _Manager::create(
@@ -239,16 +239,16 @@ namespace utility
           typename _ValueType,
           typename _U,
           typename... _Args,
-          typename _T = __any_detail::decay<_ValueType>::type,
+          typename _T = __detail::decay<_ValueType>::type,
           typename _Manager =
-            typename __any_detail::__object_manager<_T, 1U>::type,
-          typename __any_detail::enable_if<trait::__and__<
-            __any_detail::is_constructible<_T, initializer_list<_U>, _Args&&...>::value,
-            __any_detail::is_copy_constructible<_T>::value>::value,
+            typename __detail::__object_manager<_T, 1U>::type,
+          typename __detail::enable_if<trait::__and__<
+            __detail::is_constructible<_T, initializer_list<_U>, _Args&&...>::value,
+            __detail::is_copy_constructible<_T>::value>::value,
           bool>::type = true
         >
         explicit any(
-          __any_detail::in_place_type_t<_ValueType>,
+          __detail::in_place_type_t<_ValueType>,
           initializer_list<_U> __init, _Args&&... __args
         ):__manager{&_Manager::operate}, __stroge{}
         {
@@ -350,8 +350,8 @@ namespace utility
         template<typename _T>
         const void* _get() const noexcept
         {
-          typedef typename __any_detail::decay<_T>::type _U;
-          typedef typename __any_detail::__object_manager<_U, 1U>::type _Manager;
+          typedef typename __detail::decay<_T>::type _U;
+          typedef typename __detail::__object_manager<_U, 1U>::type _Manager;
           if(this->empty() ||
             this->__manager != &_Manager::operate)
           { return nullptr;}
@@ -362,8 +362,8 @@ namespace utility
         template<typename _T>
         void* _get() noexcept
         {
-          typedef typename __any_detail::decay<_T>::type _U;
-          typedef typename __any_detail::__object_manager<_U, 1U>::type _Manager;
+          typedef typename __detail::decay<_T>::type _U;
+          typedef typename __detail::__object_manager<_U, 1U>::type _Manager;
           if(this->empty() ||
             this->__manager != &_Manager::operate)
           { return nullptr;}
@@ -375,18 +375,18 @@ namespace utility
       private:
         template<
           typename _T,
-          typename _U = typename __any_detail::decay<_T>::type,
-          typename __any_detail::enable_if<
-            __any_detail::is_copy_constructible<_U>::value,
+          typename _U = typename __detail::decay<_T>::type,
+          typename __detail::enable_if<
+            __detail::is_copy_constructible<_U>::value,
             bool>::type = true
         >
         static inline const void* caster(const any* __any) noexcept
         { return __any->_get<_T>();}
         template<
           typename _T,
-          typename _U = typename __any_detail::decay<_T>::type,
-          typename __any_detail::enable_if<
-            __any_detail::is_copy_constructible<_U>::value,
+          typename _U = typename __detail::decay<_T>::type,
+          typename __detail::enable_if<
+            __detail::is_copy_constructible<_U>::value,
             bool>::type = true
         >
         static inline void* caster(any* __any) noexcept
@@ -414,22 +414,22 @@ namespace utility
     template<typename _T>
     _T any_cast(any& __operand)
     {
-      typedef typename __any_detail::decay<_T>::type _U;
-      static_assert(__any_detail::is_constructible<_T, _U&>::value, "ill-formed any cast");
+      typedef typename __detail::decay<_T>::type _U;
+      static_assert(__detail::is_constructible<_T, _U&>::value, "ill-formed any cast");
       return static_cast<_T>(*any_cast<_U>(&__operand));
     }
     template<typename _T>
     _T any_cast(const any& __operand)
     {
-      typedef typename __any_detail::decay<_T>::type _U;
-      static_assert(__any_detail::is_constructible<_T, const _U&>::value, "ill-formed any cast");
+      typedef typename __detail::decay<_T>::type _U;
+      static_assert(__detail::is_constructible<_T, const _U&>::value, "ill-formed any cast");
       return static_cast<_T>(*any_cast<_U>(&__operand));
     }
     template<typename _T>
     _T any_cast(any&& __operand)
     {
-      typedef typename __any_detail::decay<_T>::type _U;
-      static_assert(__any_detail::is_constructible<_T, _U>::value, "ill-formed any cast");
+      typedef typename __detail::decay<_T>::type _U;
+      static_assert(__detail::is_constructible<_T, _U>::value, "ill-formed any cast");
       return algorithm::move(static_cast<_T>(*any_cast<_U>(&__operand)));
     }
 
@@ -437,7 +437,7 @@ namespace utility
     any make_any(_Args&&... __args)
     {
       return any{
-        __any_detail::in_place_type_t<_ValueType>{},
+        __detail::in_place_type_t<_ValueType>{},
         algorithm::forward<_Args>(__args)...
       }
     }
@@ -445,12 +445,12 @@ namespace utility
     any make_any(initializer_list<_U> __init, _Args&&... __args)
     {
       return any{
-        __any_detail::in_place_type_t<_ValueType>{}, __init
+        __detail::in_place_type_t<_ValueType>{}, __init
         algorithm::forward<_Args>(__args)...
       }
     }
 
-    namespace __any_detail
+    namespace __detail
     {
       template<typename _T, unsigned short _L>
       void __large_object_manager<_T, _L>::operate(

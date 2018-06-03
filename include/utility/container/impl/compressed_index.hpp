@@ -1,6 +1,6 @@
 
-#ifndef __UTILITY_CONTAINER_COMPRESSED_INDEX__
-#define __UTILITY_CONTAINER_COMPRESSED_INDEX__
+#ifndef __UTILITY_CONTAINER_IMPL_COMPRESSED_INDEX__
+#define __UTILITY_CONTAINER_IMPL_COMPRESSED_INDEX__
 
 #include<utility/config/utility_config.hpp>
 #include<utility/algorithm/forward.hpp>
@@ -290,4 +290,4 @@ namespace utility
   }
 }
 
-#endif // ! __UTILITY_CONTAINER_COMPRESSED_INDEX__
+#endif // ! __UTILITY_CONTAINER_IMPL_COMPRESSED_INDEX__

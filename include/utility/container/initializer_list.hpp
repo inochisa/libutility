@@ -9,7 +9,6 @@
  */
 
 #include<utility/config/utility_config.hpp>
-#include<utility/container/container_helper.hpp>
 #include<initializer_list>
 
 namespace utility

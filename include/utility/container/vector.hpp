@@ -9,6 +9,7 @@
  */
 
 #include<utility/config/utility_config.hpp>
+#include<utility/container/container_helper.hpp>
 
 #ifdef ___UTILITY__CHECK__USE__STD___
 
@@ -32,14 +33,13 @@ namespace utility
 #include<utility/algorithm/equal.hpp>
 #include<utility/algorithm/lexicographical_compare.hpp>
 
-#include<utility/container/container_helper.hpp>
-
 #include<utility/memory/allocator.hpp>
 #include<utility/memory/allocator_traits.hpp>
 #include<utility/memory/uninitialized_copy.hpp>
 #include<utility/memory/uninitialized_fill_n.hpp>
 #include<utility/memory/uninitialized_move.hpp>
 #include<utility/memory/uninitialized_possible_move.hpp>
+
 #include<utility/trait/type/type_trait_special.hpp>
 #include<utility/trait/type/releations/is_same.hpp>
 #include<utility/trait/type/features/is_default_constructible.hpp>
@@ -47,6 +47,7 @@ namespace utility
 #include<utility/trait/type/features/is_nothrow_possible_swappable.hpp>
 #include<utility/trait/type/miscellaneous/enable_if.hpp>
 #include<utility/trait/miscellaneous/pointer_traits.hpp>
+
 #include<utility/iterator/reverse_iterator.hpp>
 #include<utility/iterator/iterator_tag.hpp>
 #include<utility/iterator/iterator_traits.hpp>

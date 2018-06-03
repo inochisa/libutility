@@ -11,7 +11,7 @@
 
 #include<utility/config/utility_config.hpp>
 
-#ifdef ___UTILITY__CHECK__USE__STD___
+#ifdef ___UTILITY__COMPATIBLE__WITH__STD__
 
 #include<utility>
 
@@ -32,7 +32,7 @@ namespace utility
   }
 }
 
-#else // ___UTILITY__CHECK__USE__STD___
+#else // ___UTILITY__COMPATIBLE__WITH__STD__
 
 namespace utility
 {
@@ -64,7 +64,7 @@ namespace utility
   }
 }
 
-#endif // ! ___UTILITY__CHECK__USE__STD___
+#endif // ! ___UTILITY__COMPATIBLE__WITH__STD__
 
 #include<utility/trait/trait_helper.hpp>
 

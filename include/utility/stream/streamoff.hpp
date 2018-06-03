@@ -12,7 +12,7 @@
 
 namespace utility
 {
-  namespace charS
+  namespace stream
   {
     typedef long long streamoff;
   }

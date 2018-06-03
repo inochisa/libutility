@@ -9,6 +9,7 @@
  */
 
 #include<utility/config/utility_config.hpp>
+
 #include<utility/algorithm/algorithm_auxiliary.hpp>
 #include<utility/algorithm/hash.hpp>
 #include<utility/algorithm/swap.hpp>
@@ -18,20 +19,25 @@
 #include<utility/algorithm/max.hpp>
 #include<utility/algorithm/lower_bound.hpp>
 #include<utility/algorithm/is_permutation.hpp>
+
 #include<utility/container/container_helper.hpp>
 #include<utility/container/pair.hpp>
 #include<utility/container/compressed_pair.hpp>
 #include<utility/container/vector.hpp>
 #include<utility/container/impl/pair_value.hpp>
+
 #include<utility/trait/type/releations/is_same.hpp>
 #include<utility/trait/type/features/is_nothrow_swappable.hpp>
 #include<utility/trait/type/features/is_nothrow_possible_swappable.hpp>
 #include<utility/trait/miscellaneous/pointer_traits.hpp>
+
 #include<utility/memory/allocator.hpp>
 #include<utility/memory/allocator_traits.hpp>
 #include<utility/memory/unique_ptr.hpp>
+
 #include<utility/iterator/iterator_tag.hpp>
 #include<utility/iterator/distance.hpp>
+
 #include<utility/miscellaneous/ignore_unused.hpp>
 
 namespace utility

@@ -78,6 +78,9 @@
 #endif // __BYTE_ORDER__
 
 
+// get std support config
+#include<utility/config/utility_control_config.hpp>
+
 #define utility_null nullptr
 // #define Label(X)  laber_##X
 // #define Jump(X)   goto laber_##X
@@ -92,9 +95,5 @@
 #include<utility/config/extra/utility_math_extra.hpp>
 #include<utility/config/extra/utility_memory_extra.hpp>
 #include<utility/config/extra/utility_trait_extra.hpp>
-
-#if defined(UTILITY_USE_STD) && !defined(___UTILITY__CHECK__USE__STD___)
-# define ___UTILITY__CHECK__USE__STD___
-#endif
 
 #endif // ! ___UTILITY__CONFIG__

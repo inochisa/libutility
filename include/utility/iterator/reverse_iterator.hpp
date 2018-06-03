@@ -4,7 +4,7 @@
 
 #include<utility/config/utility_config.hpp>
 
-#ifdef ___UTILITY__CHECK__USE__STD___
+#ifdef ___UTILITY__COMPATIBLE__WITH__STD__
 
 #include<iterator>
 
@@ -16,7 +16,7 @@ namespace utility
   }
 }
 
-#else // ! ___UTILITY__CHECK__USE__STD___
+#else // ! ___UTILITY__COMPATIBLE__WITH__STD__
 
 #include<utility/memory/addressof.hpp>
 #include<utility/iterator/iterator_traits.hpp>
@@ -241,6 +241,6 @@ namespace utility
   }
 }
 
-#endif // ! ___UTILITY__CHECK__USE__STD___
+#endif // ! ___UTILITY__COMPATIBLE__WITH__STD__
 
 #endif // ! __UTILITY_ITERATOR_REVERSE_ITERATOR__

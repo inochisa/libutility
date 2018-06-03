@@ -9,6 +9,9 @@
  */
 
 #include<utility/config/utility_config.hpp>
+#include<utility/container/container_helper.hpp>
+
+
 #include<utility/algorithm/swap.hpp>
 #include<utility/algorithm/possible_swap.hpp>
 #include<utility/algorithm/algorithm_auxiliary.hpp>
@@ -16,10 +19,11 @@
 #include<utility/algorithm/forward.hpp>
 #include<utility/algorithm/equal.hpp>
 #include<utility/algorithm/lexicographical_compare.hpp>
-#include<utility/container/container_helper.hpp>
+
 #include<utility/container/impl/pair_value.hpp>
 #include<utility/container/pair.hpp>
 #include<utility/container/compressed_pair.hpp>
+
 #include<utility/trait/type/releations/is_same.hpp>
 #include<utility/trait/type/features/is_swappable.hpp>
 #include<utility/trait/type/features/is_possible_swappable.hpp>
@@ -28,10 +32,13 @@
 #include<utility/trait/type/features/is_default_constructible.hpp>
 #include<utility/trait/type/features/is_copy_constructible.hpp>
 #include<utility/trait/type/miscellaneous/enable_if.hpp>
+
 #include<utility/trait/miscellaneous/pointer_traits.hpp>
+
 #include<utility/memory/allocator.hpp>
 #include<utility/memory/allocator_traits.hpp>
 #include<utility/memory/unique_ptr.hpp>
+
 #include<utility/iterator/iterator_tag.hpp>
 #include<utility/iterator/reverse_iterator.hpp>
 #include<utility/iterator/distance.hpp>

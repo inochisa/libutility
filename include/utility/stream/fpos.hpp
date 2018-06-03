@@ -9,12 +9,12 @@
  */
 
 #include<utility/config/utility_config.hpp>
-#include<utility/charS/streamoff.hpp>
+#include<utility/stream/streamoff.hpp>
 #include<utility/sstd/cstring.hpp>
 
 namespace utility
 {
-  namespace charS
+  namespace stream
   {
     template<typename _Status>
     class fpos

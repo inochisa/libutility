@@ -10,6 +10,7 @@
  */
 
 #include<utility/config/utility_config.hpp>
+#include<utility/container/container_helper.hpp>
 
 #ifdef ___UTILITY__CHECK__USE__STD___
 
@@ -25,17 +26,20 @@ namespace utility
 
 #else // ___UTILITY__CHECK__USE__STD___
 
-#include<utility/container/container_helper.hpp>
 #include<utility/algorithm/move.hpp>
 #include<utility/algorithm/swap.hpp>
 #include<utility/algorithm/possible_swap.hpp>
+
 #include<utility/container/impl/pair_value.hpp>
 #include<utility/container/pair.hpp>
 #include<utility/container/compressed_pair.hpp>
 #include<utility/container/white_black_tree.hpp>
+
 #include<utility/trait/type/releations/is_same.hpp>
 #include<utility/trait/type/miscellaneous/enable_if.hpp>
+
 #include<utility/iterator/iterator_traits.hpp>
+
 #include<utility/memory/addressof.hpp>
 #include<utility/memory/allocator_traits.hpp>
 

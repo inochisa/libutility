@@ -9,6 +9,7 @@
  */
 
 #include<utility/config/utility_config.hpp>
+#include<utility/container/container_helper.hpp>
 
 #ifdef ___UTILITY__CHECK__USE__STD___
 
@@ -27,8 +28,9 @@ namespace utility
 #include<utility/algorithm/move.hpp>
 #include<utility/algorithm/swap.hpp>
 #include<utility/algorithm/possible_swap.hpp>
-#include<utility/container/container_helper.hpp>
+
 #include<utility/container/list.hpp>
+
 #include<utility/trait/type/releations/is_same.hpp>
 #include<utility/trait/type/features/is_nothrow_default_constructible.hpp>
 #include<utility/trait/type/features/is_nothrow_copy_constructible.hpp>

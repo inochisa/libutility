@@ -186,10 +186,20 @@ namespace utility
       { typedef int type;};
 
       struct __empty
-      { };
+      {
+        __empty() = delete;
+        __empty(const __empty&) = delete;
+        __empty(__empty&&) = delete;
+        ~__empty() = delete;
+      };
       template<typename... _Ts>
       struct __template_empty
-      { };
+      {
+        __template_empty() = delete;
+        __template_empty(const __template_empty&) = delete;
+        __template_empty(__template_empty&&) = delete;
+        ~__template_empty() = delete;
+      };
 
       template<typename _Fp, typename _Sp>
       struct __type_pair

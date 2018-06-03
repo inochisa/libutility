@@ -9,6 +9,7 @@
  */
 
 #include<utility/config/utility_config.hpp>
+#include<utility/container/container_helper.hpp>
 
 #ifdef ___UTILITY__CHECK__USE__STD___
 
@@ -24,7 +25,6 @@ namespace utility
 
 #else // ___UTILITY__CHECK__USE__STD___
 
-#include<utility/container/container_helper.hpp>
 #include<utility/iterator/reverse_iterator.hpp>
 
 namespace utility

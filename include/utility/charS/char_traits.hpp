@@ -11,8 +11,8 @@
 #include<utility/config/utility_config.hpp>
 #include<utility/sstd/cstring.hpp>
 #include<utility/sstd/cstdint.hpp>
-#include<utility/charS/streamoff.hpp>
-#include<utility/charS/fpos.hpp>
+#include<utility/stream/streamoff.hpp>
+#include<utility/stream/fpos.hpp>
 
 namespace utility
 {
@@ -21,11 +21,11 @@ namespace utility
     template<typename _CharT>
     struct char_traits
     {
-      typedef _CharT                    char_type;
-      typedef int                       int_type;
-      typedef streamoff                 off_type;
-      typedef streampos                 pos_type;
-      typedef sstd::mbstate_t  state_type;
+      typedef _CharT                          char_type;
+      typedef int                             int_type;
+      typedef stream::streamoff               off_type;
+      typedef stream::streampos               pos_type;
+      typedef sstd::mbstate_t                 state_type;
 
       __UTILITY_CPP17_CONSTEXPR__
       static inline void assign(char_type& __c, const char_type& __a) noexcept
@@ -133,11 +133,11 @@ namespace utility
     template<>
     struct char_traits<char>
     {
-      typedef char                      char_type;
-      typedef int                       int_type;
-      typedef streamoff                 off_type;
-      typedef streampos                 pos_type;
-      typedef sstd::mbstate_t  state_type;
+      typedef char                            char_type;
+      typedef int                             int_type;
+      typedef stream::streamoff               \off_type;
+      typedef stream::streampos               pos_type;
+      typedef sstd::mbstate_t                 state_type;
 
       __UTILITY_CPP17_CONSTEXPR__
       static inline void assign(char_type& __c, const char_type& __a) noexcept
@@ -246,11 +246,11 @@ namespace utility
     template<>
     struct char_traits<wchar_t>
     {
-      typedef wchar_t                   char_type;
-      typedef sstd::wint_t     int_type;
-      typedef streamoff                 off_type;
-      typedef streampos                 pos_type;
-      typedef sstd::mbstate_t  state_type;
+      typedef wchar_t                         char_type;
+      typedef sstd::wint_t                    int_type;
+      typedef stream::streamoff               off_type;
+      typedef stream::streampos               pos_type;
+      typedef sstd::mbstate_t                 state_type;
 
       __UTILITY_CPP17_CONSTEXPR__
       static inline void assign(char_type& __c, const char_type& __a) noexcept
@@ -360,10 +360,10 @@ namespace utility
     struct char_traits<char16_t>
     {
       typedef char16_t                        char_type;
-      typedef sstd::uint_least16_t   int_type;
-      typedef streamoff                       off_type;
-      typedef u16streampos                    pos_type;
-      typedef sstd::mbstate_t        state_type;
+      typedef sstd::uint_least16_t            int_type;
+      typedef stream::streamoff               off_type;
+      typedef stream::u16streampos            pos_type;
+      typedef sstd::mbstate_t                 state_type;
 
       __UTILITY_CPP17_CONSTEXPR__
       static inline void assign(char_type& __c, const char_type& __a) noexcept
@@ -472,10 +472,10 @@ namespace utility
     struct char_traits<char32_t>
     {
       typedef char32_t                        char_type;
-      typedef sstd::uint_least32_t   int_type;
-      typedef streamoff                       off_type;
-      typedef u32streampos                    pos_type;
-      typedef sstd::mbstate_t        state_type;
+      typedef sstd::uint_least32_t            int_type;
+      typedef stream::streamoff               off_type;
+      typedef stream::u32streampos            pos_type;
+      typedef sstd::mbstate_t                 state_type;
 
       __UTILITY_CPP17_CONSTEXPR__
       static inline void assign(char_type& __c, const char_type& __a) noexcept

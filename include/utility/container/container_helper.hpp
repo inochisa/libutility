@@ -17,6 +17,13 @@ namespace utility
 {
   namespace container
   {
+    namespace helper
+    {
+      struct __success
+      { };
+      struct __failure
+      { };
+    }
     using iterator::is_iterator;
     using iterator::is_vaild_iterator;
     using memory::allocator_arg_t;

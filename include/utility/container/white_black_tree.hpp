@@ -145,7 +145,7 @@ namespace utility
             friend class __white_black_tree_const_iterator;
 
           public:
-            typedef iterator::bidirectional_iterator_tag
+            typedef helper::bidirectional_iterator_tag
               iterator_category;
             typedef __Key                   key_type;
             typedef __Value                 mapped_type;
@@ -234,7 +234,7 @@ namespace utility
             friend class white_black_tree;
 
           public:
-            typedef iterator::bidirectional_iterator_tag
+            typedef helper::bidirectional_iterator_tag
               iterator_category;
             typedef __Key                   key_type;
             typedef __Value                 mapped_type;
@@ -366,9 +366,9 @@ namespace utility
         typedef __white_black_tree_const_iterator<key_type, mapped_type, value_type>
           const_iterator;
         typedef
-          iterator::reverse_iterator<iterator> reverse_iterator;
+          helper::reverse_iterator<iterator> reverse_iterator;
         typedef
-          iterator::reverse_iterator<const_iterator> const_reverse_iterator;
+          helper::reverse_iterator<const_iterator> const_reverse_iterator;
 
       public: // assert:
         static_assert(trait::type::releations::is_same<
@@ -777,7 +777,7 @@ namespace utility
       public:
         size_type count(const key_type& __key) const noexcept
         {
-          return iterator::distance(
+          return helper::distance(
             this->lower_bound(__key),
             this->upper_bound(__key)
           );
@@ -856,7 +856,7 @@ namespace utility
           container::pair<const_iterator, const_iterator>  __tmp =
             this->equal_range(__key);
           size_type __res =
-            iterator::distance(__tmp.first, __tmp.second);
+            helper::distance(__tmp.first, __tmp.second);
           this->erase(__tmp.first, __tmp.second);
           return __res;
         }

@@ -75,7 +75,7 @@ namespace utility
             friend class __vector_const_iterator;
 
           public:
-            typedef iterator::contiguous_iterator_tag
+            typedef helper::contiguous_iterator_tag
               iterator_category;
             typedef __Value value_type;
             typedef value_type& reference;
@@ -181,7 +181,7 @@ namespace utility
             friend class vector;
 
           public:
-            typedef iterator::contiguous_iterator_tag
+            typedef helper::contiguous_iterator_tag
             iterator_category;
             typedef __Value value_type;
             typedef const __Value const_value_type;
@@ -313,10 +313,10 @@ namespace utility
         typedef __vector_iterator<_T>         iterator;
         typedef __vector_const_iterator<_T>   const_iterator;
         typedef
-          iterator::reverse_iterator<iterator>
+          helper::reverse_iterator<iterator>
           reverse_iterator;
         typedef
-          iterator::reverse_iterator<const_iterator>
+          helper::reverse_iterator<const_iterator>
           const_reverse_iterator;
 
       public: // assert
@@ -385,7 +385,7 @@ namespace utility
         ): __allocator(__alloc)
         {
           size_type __len =
-            iterator::distance(__first, __last);
+            helper::distance(__first, __last);
           this->__begin =
             allocator_traits_type::allocate(this->__allocator, __len);
           this->__end = this->__begin;
@@ -521,7 +521,7 @@ namespace utility
         void assign(_Inputiterator __first, _Inputiterator __last)
         {
           size_type __count =
-            iterator::distance(__first, __last);
+            helper::distance(__first, __last);
           this->clear();
           if(__count > this->capacity())
           { this->reallocate(__count * 2);}
@@ -729,7 +729,7 @@ namespace utility
         )
         {
           difference_type __len =
-            iterator::distance(__first, __last);
+            helper::distance(__first, __last);
           difference_type __tpos = __pos.__ptr - this->__begin;
           if((this->size() + __len) > this->capacity())
           { this->reallocate((this->size() + __len) * 2);}
@@ -766,7 +766,7 @@ namespace utility
         iterator erase(const_iterator __first, const_iterator __last)
         {
           difference_type __len =
-            iterator::distance(__first, __last);
+            helper::distance(__first, __last);
           pointer __tptr = const_cast<pointer>(__first.__ptr);
           for(difference_type __i = 0; __i < __len; ++__i)
           { allocator_traits_type::destroy(this->__allocator, __tptr+__i);}

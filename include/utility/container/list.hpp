@@ -95,7 +95,7 @@ namespace utility
             template<typename, typename>
             friend class list;
           public:
-            typedef iterator::bidirectional_iterator_tag
+            typedef helper::bidirectional_iterator_tag
               iterator_category;
             typedef __Value value_type;
             typedef value_type& reference;
@@ -173,7 +173,7 @@ namespace utility
             template<typename, typename>
             friend class list;
           public:
-            typedef iterator::bidirectional_iterator_tag
+            typedef helper::bidirectional_iterator_tag
               iterator_category;
             typedef __Value value_type;
             typedef const value_type const_value_type;
@@ -284,10 +284,10 @@ namespace utility
       public:
         typedef __list_iterator<value_type> iterator;
         typedef
-          iterator::reverse_iterator<iterator> reverse_iterator;
+          helper::reverse_iterator<iterator> reverse_iterator;
         typedef __list_const_iterator<value_type> const_iterator;
         typedef
-          iterator::reverse_iterator<const_iterator> const_reverse_iterator;
+          helper::reverse_iterator<const_iterator> const_reverse_iterator;
 
       public: // assert
         static_assert(trait::type::releations::is_same<
@@ -638,7 +638,7 @@ namespace utility
           __link_type __tpos = __pos.__ptr;
           __node_connect(__tpos->__prev, __chain.first);
           __node_connect(__chain.second, __tpos);
-          this->__mis.first() += iterator::distance(__first, __last);
+          this->__mis.first() += helper::distance(__first, __last);
           return iterator(__chain.first);
         }
         inline iterator insert(const_iterator __pos,
@@ -781,7 +781,7 @@ namespace utility
         {
           if(!__con.empty() && (__first != __last))
           {
-            size_type __dist = iterator::distance(__first, __last);
+            size_type __dist = helper::distance(__first, __last);
             __link_type __plink = __pos.__ptr;
             __link_type __tflink = __first.__ptr;
             __link_type __tllink = __last.__ptr->__prev;
@@ -902,7 +902,7 @@ namespace utility
         {
           for(iterator __it = this->begin(), __eit = this->end(); __it != __eit;)
           {
-            iterator __tit = iterator::next(__it);
+            iterator __tit = helper::next(__it);
             for(;__tit != __eit && __binarypred(*__it, *__tit); ++__tit);
             if(++__it != __tit)
             { __it = this->erase(__it, __tit);}

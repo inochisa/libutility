@@ -64,7 +64,7 @@ namespace utility
             friend class list;
 
           public:
-            typedef iterator::forward_iterator_tag
+            typedef helper::forward_iterator_tag
               iterator_category;
             typedef __Value value_type;
             typedef value_type& reference;
@@ -134,7 +134,7 @@ namespace utility
             friend class list;
 
           public:
-            typedef iterator::forward_iterator_tag
+            typedef helper::forward_iterator_tag
               iterator_category;
             typedef __Value value_type;
             typedef const value_type const_value_type;

@@ -117,7 +117,7 @@ namespace utility
             friend class __hash_table_const_iterator;
 
           public:
-            typedef iterator::forward_iterator_tag
+            typedef helper::forward_iterator_tag
               iterator_category;
             typedef __Key                   key_type;
             typedef __Value                 mapped_type;
@@ -219,7 +219,7 @@ namespace utility
             friend class hash_table;
 
           public:
-            typedef iterator::forward_iterator_tag
+            typedef helper::forward_iterator_tag
               iterator_category;
             typedef __Key                   key_type;
             typedef __Value                 mapped_type;
@@ -332,7 +332,7 @@ namespace utility
             friend class __hash_table_const_local_iterator;
 
           public:
-            typedef iterator::forward_iterator_tag
+            typedef helper::forward_iterator_tag
               iterator_category;
             typedef __Key                             key_type;
             typedef __Value                           mapped_type;
@@ -433,7 +433,7 @@ namespace utility
             friend class hash_table;
 
           public:
-            typedef iterator::forward_iterator_tag
+            typedef helper::forward_iterator_tag
               iterator_category;
             typedef __Key                             key_type;
             typedef __Value                           mapped_type;
@@ -696,7 +696,7 @@ namespace utility
           const size_type __bucket_size =
             algorithm::max<size_type>(
               __hash_length::__next_prime(
-                iterator::distance(__first, __last)
+                helper::distance(__first, __last)
               ),
               __hash_length::__next_prime(__count)
             );
@@ -1161,8 +1161,8 @@ namespace utility
         {
           if(__first == __last)
           { return 0U;}
-          if(this->is_overload(iterator::distance(__first, __last)))
-          { this->resize(iterator::distance(__first, __last));}
+          if(this->is_overload(helper::distance(__first, __last)))
+          { this->resize(helper::distance(__first, __last));}
           size_type __success = 0;
           for(; __first != __last; ++__first)
           {
@@ -1178,8 +1178,8 @@ namespace utility
         {
           if(__first == __last)
           { return;}
-          if(this->is_overload(iterator::distance(__first, __last)))
-          { this->resize(iterator::distance(__first, __last));}
+          if(this->is_overload(helper::distance(__first, __last)))
+          { this->resize(helper::distance(__first, __last));}
           for(; __first != __last; ++__first)
           { __insert_equal(this->__allocate_node(*__first), this);}
         }

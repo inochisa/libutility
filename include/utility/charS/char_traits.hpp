@@ -135,7 +135,7 @@ namespace utility
     {
       typedef char                            char_type;
       typedef int                             int_type;
-      typedef stream::streamoff               \off_type;
+      typedef stream::streamoff               off_type;
       typedef stream::streampos               pos_type;
       typedef sstd::mbstate_t                 state_type;
 

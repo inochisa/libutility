@@ -87,7 +87,7 @@ void vector_construct()
   assert(vec13 == vector<int>({1,2,3,4,5}));
   assert(vec14 == vector<int>({1,2,3,4,5}));
 
-  printf("Vector construct test passes\n\n");
+  printf("Vector construct test passes\n");
 
   return;
 }
@@ -139,7 +139,7 @@ void vector_insert()
   vec.clear();
   assert(vec == vector<int>{});
 
-  printf("Vector insert, push_back, pop_back, emplace, emplace_back test passes\n\n");
+  printf("Vector insert, push_back, pop_back, emplace, emplace_back test passes\n");
 
   return;
 }
@@ -160,7 +160,7 @@ void vector_front()
   assert(y == 1256);
   assert(_y == 1256);
 
-  printf("Vector front and back test passes\n\n");
+  printf("Vector front and back test passes\n");
 
   return;
 }
@@ -178,7 +178,7 @@ void vector_erase()
   vec.erase(vec.begin(), vec.end());
   assert(vec == vector<int>{});
 
-  printf("Vector erase test passes\n\n");
+  printf("Vector erase test passes\n");
 
   return;
 }
@@ -217,7 +217,7 @@ void vector_size()
   assert(vec.capacity() == 200);
   assert(vec == vector<int>({0,0,0,0,0,0,0,0,0,0,1,1}));
 
-  printf("Vector size test passes\n\n");
+  printf("Vector size test passes\n");
 }
 
 int main()

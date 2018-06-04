@@ -50,14 +50,10 @@ namespace utility
         typedef ptrdiff_t    difference_type;
 
       public:
-        typedef value_type*             iterator;
-        typedef const value_type*       const_iterator;
-        typedef
-          iterator::reverse_iterator<iterator>
-          reverse_iterator;
-        typedef
-          iterator::reverse_iterator<const_iterator>
-          const_reverse_iterator;
+        typedef value_type*                       iterator;
+        typedef const value_type*                 const_iterator;
+        typedef helper::reverse_iterator<iterator>        reverse_iterator;
+        typedef helper::reverse_iterator<const_iterator>  const_reverse_iterator;
 
       public:
         value_type __element[_Size > 0 ? _Size : 1];

@@ -165,9 +165,9 @@ namespace utility
         typedef __multiset_iterator<typename __tree_type::const_iterator> iterator;
         typedef __multiset_iterator<typename __tree_type::const_iterator> const_iterator;
         typedef
-          iterator::reverse_iterator<iterator> reverse_iterator;
+          helper::reverse_iterator<iterator> reverse_iterator;
         typedef
-          iterator::reverse_iterator<const_iterator> const_reverse_iterator;
+          helper::reverse_iterator<const_iterator> const_reverse_iterator;
 
       public: // assert:
         static_assert(trait::type::releations::is_same<

@@ -52,7 +52,7 @@ namespace utility
             trait::type::categories::is_reference<_T>::value,
             _T, _Args...>
         { };
-        template<class _T, trait::size_t __Size>
+        template<class _T, size_t __Size>
         struct is_nothrow_constructible<_T[__Size]> : public
           __is_nothrow_constructible_impl::__is_nothrow_constructible_helper<
             trait::type::features::is_constructible<_T>::value,

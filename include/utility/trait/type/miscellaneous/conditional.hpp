@@ -13,13 +13,15 @@ namespace utility
       namespace miscellaneous
       {
         // conditional
-        template<bool B, typename _IF, typename _ELSE>
+        template<bool _B, typename _IF, typename _ELSE>
         struct conditional
         { typedef _IF type;};
         template<typename _IF, typename _ELSE>
         struct conditional<false, _IF, _ELSE>
         { typedef _ELSE type;};
 
+        template<bool _B, typename _IF, typename _ELSE>
+        using conditional_t = typename conditional<_B, _IF, _ELSE>::type;
       }
     }
   }

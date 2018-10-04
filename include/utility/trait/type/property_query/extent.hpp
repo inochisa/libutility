@@ -15,27 +15,27 @@ namespace utility
         // extent
         template<typename _T, unsigned int _I = 0>
         struct extent :
-          public trait::integral_constant<trait::size_t, 0>
+          public trait::integral_constant<size_t, 0>
         { };
         template<typename _T, unsigned int _I>
         struct extent<_T[], _I> :
           public trait::integral_constant<
-            trait::size_t, extent<_T, _I-1>::value>
+            size_t, extent<_T, _I-1>::value>
         { };
         template<typename _T>
         struct extent<_T[], 0> :
-          public trait::integral_constant<trait::size_t, 0>
+          public trait::integral_constant<size_t, 0>
         { };
-        template<typename _T, trait::size_t _size>
+        template<typename _T, size_t _size>
         struct extent<_T[_size], 0> :
           public trait::integral_constant<
-            trait::size_t, _size>
+            size_t, _size>
         { };
-        template<typename _T, trait::size_t _size,
+        template<typename _T, size_t _size,
                 unsigned int _I>
         struct extent<_T[_size], _I> :
           public trait::integral_constant<
-            trait::size_t, extent<_T, _I-1>::value>
+            size_t, extent<_T, _I-1>::value>
         { };
 
       }

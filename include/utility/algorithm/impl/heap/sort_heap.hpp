@@ -1,10 +1,10 @@
 
-#ifndef __UTILITY_ALGORITHM_HEAPIMPL_SORT_HEAP__
-#define __UTILITY_ALGORITHM_HEAPIMPL_SORT_HEAP__
+#ifndef __UTILITY_ALGORITHM_IMPL_HEAP_SORT_HEAP__
+#define __UTILITY_ALGORITHM_IMPL_HEAP_SORT_HEAP__
 
 #include<utility/config/utility_config.hpp>
 #include<utility/algorithm/algorithm_auxiliary.hpp>
-#include<utility/algorithm/impl/pop_heap.hpp>
+#include<utility/algorithm/impl/heap/pop_heap.hpp>
 #include<utility/iterator/iterator_traits.hpp>
 
 namespace utility
@@ -31,4 +31,4 @@ namespace utility
   }
 }
 
-#endif // ! __UTILITY_ALGORITHM_HEAPIMPL_SORT_HEAP__
+#endif // ! __UTILITY_ALGORITHM_IMPL_HEAP_SORT_HEAP__

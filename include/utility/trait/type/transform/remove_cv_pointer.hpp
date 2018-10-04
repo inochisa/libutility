@@ -63,6 +63,9 @@ namespace utility
             remove_cv<typename remove_all_pointer<_T>::type>::type type;
         };
 
+        template<typename _T>
+        using remove_cv_all_pointer_t = typename remove_cv_all_pointer<_T>::type;
+
       }
     }
   }

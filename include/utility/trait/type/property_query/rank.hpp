@@ -15,17 +15,17 @@ namespace utility
         // rank
         template<typename _T>
         struct rank :
-          public trait::integral_constant<trait::size_t, 0>
+          public trait::integral_constant<size_t, 0>
         { };
         template<typename _T>
         struct rank<_T[]> :
           public trait::integral_constant<
-            trait::size_t, rank<_T>::value+1>
+            size_t, rank<_T>::value+1>
         { };
-        template<typename _T, trait::size_t _size>
+        template<typename _T, size_t _size>
         struct rank<_T[_size]> :
           public trait::integral_constant<
-            trait::size_t, rank<_T>::value+1>
+            size_t, rank<_T>::value+1>
         { };
 
       }

@@ -24,7 +24,15 @@ namespace utility
     namespace __invoke_detail
     {
       using namespace trait::type::miscellaneous::__invoke_related;
-      using trait::__impl_helper::__is_reference_wrapper;
+      using trait::__opt__::__is_reference_wrapper__;
+
+      template<typename _T>
+      struct __belong_to
+      { typedef void type;};
+      template<typename _T, class _Inn>
+      struct __belong_to<_T _Inn::*>
+      { typedef _Inn type;};
+
 
       template<
         bool /*invocable*/,
@@ -109,7 +117,8 @@ namespace utility
     {
       typedef typename trait::type::miscellaneous::conditional<
         trait::type::categories::is_member_pointer<_Fn>::value,
-        typename trait::type::property_query::belong_to<_Fn>::type,
+        /*typename trait::type::property_query::belong_to<_Fn>::type,*/
+        typename __invoke_detail::__belong_to<_Fn>::type,
         void
       >::type __base_type;
       typedef typename trait::type::transform::decay<_Other>::type __Object;
@@ -118,7 +127,7 @@ namespace utility
         trait::type::categories::is_member_function_pointer<_Fn>::value,
         trait::type::categories::is_member_object_pointer<_Fn>::value,
         trait::type::releations::is_base_of<__base_type, __Object>::value,
-        __invoke_detail::__is_reference_wrapper<__Object>::value
+        __invoke_detail::__is_reference_wrapper__<__Object>::value
       > __invoke_object;
       return __invoke_object::__aux(
         algorithm::forward<_Fn>(__func),

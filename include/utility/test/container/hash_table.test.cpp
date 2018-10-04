@@ -55,8 +55,8 @@ inline void test_attribute()
   static_assert(is_same<typename const_iterator::iterator_category, forward_iterator_tag>::value, "const_iterator::iterator_category");
   static_assert(is_same<typename const_iterator::key_type, long>::value, "const_iterator::key_type");
   static_assert(is_same<typename const_iterator::mapped_type, int>::value, "const_iterator::mapped_type");
-  static_assert(is_same<typename const_iterator::value_type, utility::container::pair<const long, int>>::value, "const_iterator::value_type");
-  static_assert(is_same<typename const_iterator::const_value_type, const utility::container::pair<const long, int>>::value, "const_iterator::const_value_type");
+  static_assert(is_same<typename const_iterator::non_const_value_type, utility::container::pair<const long, int>>::value, "const_iterator::non_const_value_type");
+  static_assert(is_same<typename const_iterator::value_type, const utility::container::pair<const long, int>>::value, "const_iterator::value_type");
   static_assert(is_same<typename const_iterator::container_type, hash_table<long, int>>::value, "const_iterator::container_type");
   static_assert(is_same<typename const_iterator::reference, const utility::container::pair<const long, int>&>::value, "const_iterator::reference");
   static_assert(is_same<typename const_iterator::pointer, const utility::container::pair<const long, int>*>::value, "const_iterator::pointer");
@@ -76,8 +76,8 @@ inline void test_attribute()
   static_assert(is_same<typename const_local_iterator::iterator_category, forward_iterator_tag>::value, "const_local_iterator::iterator_category");
   static_assert(is_same<typename const_local_iterator::key_type, long>::value, "const_local_iterator::key_type");
   static_assert(is_same<typename const_local_iterator::mapped_type, int>::value, "const_local_iterator::mapped_type");
-  static_assert(is_same<typename const_local_iterator::value_type, utility::container::pair<const long, int>>::value, "const_local_iterator::value_type");
-  static_assert(is_same<typename const_local_iterator::const_value_type, const utility::container::pair<const long, int>>::value, "const_local_iterator::const_value_type");
+  static_assert(is_same<typename const_local_iterator::non_const_value_type, utility::container::pair<const long, int>>::value, "const_local_iterator::non_const_value_type");
+  static_assert(is_same<typename const_local_iterator::value_type, const utility::container::pair<const long, int>>::value, "const_local_iterator::value_type");
   static_assert(is_same<typename const_local_iterator::container_type, hash_table<long, int>>::value, "const_local_iterator::container_type");
   static_assert(is_same<typename const_local_iterator::reference, const utility::container::pair<const long, int>&>::value, "const_local_iterator::reference");
   static_assert(is_same<typename const_local_iterator::pointer, const utility::container::pair<const long, int>*>::value, "const_local_iterator::pointer");

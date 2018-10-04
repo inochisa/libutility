@@ -3,6 +3,7 @@
 #define __UTILITY_TRAIT_TYPE_FEATURES_IS_DESTRUCTIBLE__
 
 #include<utility/trait/trait_helper.hpp>
+#include<utility/trait/opt/__twochar__.hpp>
 #include<utility/trait/type/type_trait_special.hpp>
 #include<utility/trait/type/categories/is_function.hpp>
 #include<utility/trait/type/categories/is_reference.hpp>
@@ -19,16 +20,18 @@ namespace utility
         // is_destructible
         namespace __is_destructible_impl
         {
-          template<typename _T>
-          using __int = trait::__impl_helper::__int_type<_T>;
-          using __two = trait::__impl_helper::__twochar;
+          using __two = trait::__opt__::__twochar__;
+
+          template<typename>
+          struct __int_type__
+          { typedef int type;};
 
           template<typename _T>
           struct __is_destructible_test_helper
           {
             private:
               template<typename __T>
-              static char __test(typename __int<
+              static char __test(typename __int_type__<
                 decltype(trait::type::special::declval<__T&>().~__T())
                 >::type);
               template<typename __T>

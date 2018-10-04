@@ -45,6 +45,9 @@ namespace utility
               >::type type;
         };
 
+        template<typename _T>
+        using decay_t = typename decay<_T>::type;
+
       }
     }
   }

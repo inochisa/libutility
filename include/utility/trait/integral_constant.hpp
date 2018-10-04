@@ -2,8 +2,6 @@
 #ifndef __UTILITY_TRAIT_INTEGRAL_CONSTANT__
 #define __UTILITY_TRAIT_INTEGRAL_CONSTANT__
 
-#include<utility/trait/trait_helper.hpp>
-
 namespace utility
 {
   namespace trait

@@ -4,20 +4,6 @@
 
 #include<utility/config/utility_config.hpp>
 
-#ifdef ___UTILITY__COMPATIBLE__WITH__STD__
-
-#include<iterator>
-
-namespace utility
-{
-  namespace iterator
-  {
-    using std::reverse_iterator;
-  }
-}
-
-#else // ! ___UTILITY__COMPATIBLE__WITH__STD__
-
 #include<utility/memory/addressof.hpp>
 #include<utility/iterator/iterator_traits.hpp>
 
@@ -54,21 +40,21 @@ namespace utility
         inline reverse_iterator(): current()
         { }
         __UTILITY_CPP14_CONSTEXPR__
-        inline explicit reverse_iterator(iterator_type __iit):
-          current(__iit)
+        inline explicit reverse_iterator(iterator_type _iit):
+          current(_iit)
         { }
         template<typename _T>
         __UTILITY_CPP14_CONSTEXPR__
-        inline reverse_iterator(const reverse_iterator<_T>& __oit):
-          current(__oit.base())
+        inline reverse_iterator(const reverse_iterator<_T>& _oit):
+          current(_oit.base())
         { }
 
       public:
         template<typename _T>
         inline __UTILITY_CPP14_CONSTEXPR__
-        reverse_iterator& operator= (const reverse_iterator<_T>& __oit)
+        reverse_iterator& operator= (const reverse_iterator<_T>& _oit)
         {
-          this->current = __oit.base();
+          this->current = _oit.base();
           return *this;
         }
 
@@ -119,51 +105,51 @@ namespace utility
           return __nit;
         }
         __UTILITY_CPP14_CONSTEXPR__
-        inline reverse_iterator operator+(difference_type __len) const
+        inline reverse_iterator operator+(difference_type _len) const
         {
           // using trait::type::releations::is_convertible;
           // static_assert(is_convertible<iterator_category,
           //   random_access_iterator_tag>::value,
           //   "Need the iterator support random access.");
-          return reverse_iterator(this->current - __len);
+          return reverse_iterator(this->current - _len);
         }
         __UTILITY_CPP14_CONSTEXPR__
-        inline reverse_iterator operator-(difference_type __len) const
+        inline reverse_iterator operator-(difference_type _len) const
         {
           // using trait::type::releations::is_convertible;
           // static_assert(is_convertible<iterator_category,
           //   random_access_iterator_tag>::value,
           //   "Need the iterator support random access.");
-          return reverse_iterator(this->current + __len);
+          return reverse_iterator(this->current + _len);
         }
         __UTILITY_CPP14_CONSTEXPR__
-        inline reverse_iterator& operator+=(difference_type __len)
+        inline reverse_iterator& operator+=(difference_type _len)
         {
           // using trait::type::releations::is_convertible;
           // static_assert(is_convertible<iterator_category,
           //   random_access_iterator_tag>::value,
           //   "Need the iterator support random access.");
-          this->current -= __len;
+          this->current -= _len;
           return *this;
         }
         __UTILITY_CPP14_CONSTEXPR__
-        inline reverse_iterator& operator-=(difference_type __len)
+        inline reverse_iterator& operator-=(difference_type _len)
         {
           // using trait::type::releations::is_convertible;
           // static_assert(is_convertible<iterator_category,
           //   random_access_iterator_tag>::value,
           //   "Need the iterator support random access.");
-          this->current += __len;
+          this->current += _len;
           return *this;
         }
         __UTILITY_CPP14_CONSTEXPR__
-        inline reference operator[](difference_type __len) const
+        inline reference operator[](difference_type _len) const
         {
           // using trait::type::releations::is_convertible;
           // static_assert(is_convertible<iterator_category,
           //   random_access_iterator_tag>::value,
           //   "Need the iterator support random access.");
-          return *(*this + __len);
+          return *(*this + _len);
         }
 
       public:
@@ -174,42 +160,42 @@ namespace utility
 
     template<typename __Iterator1, typename __Iterator2>
     __UTILITY_CPP14_CONSTEXPR__
-    inline bool operator==(const reverse_iterator<__Iterator1>& __x,
-      const reverse_iterator<__Iterator2>& __y)
-    { return __x.base() == __y.base();}
+    inline bool operator==(const reverse_iterator<__Iterator1>& _x,
+      const reverse_iterator<__Iterator2>& _y)
+    { return _x.base() == _y.base();}
     template<typename __Iterator1, typename __Iterator2>
     __UTILITY_CPP14_CONSTEXPR__
-    inline bool operator!=(const reverse_iterator<__Iterator1>& __x,
-      const reverse_iterator<__Iterator2>& __y)
-    { return __x.base() != __y.base();}
+    inline bool operator!=(const reverse_iterator<__Iterator1>& _x,
+      const reverse_iterator<__Iterator2>& _y)
+    { return _x.base() != _y.base();}
 
     template<typename __Iterator1, typename __Iterator2>
     __UTILITY_CPP14_CONSTEXPR__
-    inline bool operator<(const reverse_iterator<__Iterator1>& __x,
-      const reverse_iterator<__Iterator2>& __y)
+    inline bool operator<(const reverse_iterator<__Iterator1>& _x,
+      const reverse_iterator<__Iterator2>& _y)
     {
-      return __x.base() > __y.base();
+      return _x.base() > _y.base();
     }
     template<typename __Iterator1, typename __Iterator2>
     __UTILITY_CPP14_CONSTEXPR__
-    inline bool operator<=(const reverse_iterator<__Iterator1>& __x,
-      const reverse_iterator<__Iterator2>& __y)
+    inline bool operator<=(const reverse_iterator<__Iterator1>& _x,
+      const reverse_iterator<__Iterator2>& _y)
     {
-      return __x.base() >= __y.base();
+      return _x.base() >= _y.base();
     }
     template<typename __Iterator1, typename __Iterator2>
     __UTILITY_CPP14_CONSTEXPR__
-    inline bool operator>(const reverse_iterator<__Iterator1>& __x,
-      const reverse_iterator<__Iterator2>& __y)
+    inline bool operator>(const reverse_iterator<__Iterator1>& _x,
+      const reverse_iterator<__Iterator2>& _y)
     {
-      return __x.base() < __y.base();
+      return _x.base() < _y.base();
     }
     template<typename __Iterator1, typename __Iterator2>
     __UTILITY_CPP14_CONSTEXPR__
-    inline bool operator>=(const reverse_iterator<__Iterator1>& __x,
-      const reverse_iterator<__Iterator2>& __y)
+    inline bool operator>=(const reverse_iterator<__Iterator1>& _x,
+      const reverse_iterator<__Iterator2>& _y)
     {
-      return __x.base() <= __y.base();
+      return _x.base() <= _y.base();
     }
 
 #ifdef UTILITY_ITERATOR_HAS_EXTRA_OPERATOR_ADD
@@ -217,30 +203,28 @@ namespace utility
     template<typename __Iterator>
     __UTILITY_CPP14_CONSTEXPR__
     inline reverse_iterator<__Iterator> operator+(
-      typename reverse_iterator<__Iterator>::difference_type __len,
-      const reverse_iterator<__Iterator>& __it)
+      typename reverse_iterator<__Iterator>::difference_type _len,
+      const reverse_iterator<__Iterator>& _it)
     {
-      return __it + __len;
+      return _it + _len;
     }
 
 #endif // ! UTILITY_ITERATOR_HAS_EXTRA_OPERATOR_ADD
 
     template<typename __Iterator>
     __UTILITY_CPP14_CONSTEXPR__
-    inline auto operator-(const reverse_iterator<__Iterator>& __x,
-      const reverse_iterator<__Iterator>& __y)
-      ->decltype(__y.base() - __x.base())
+    inline auto operator-(const reverse_iterator<__Iterator>& _x,
+      const reverse_iterator<__Iterator>& _y)
+      ->decltype(_y.base() - _x.base())
     {
-      return __y.base() - __x.base();
+      return _y.base() - _x.base();
     }
 
     template<typename __Iterator>
     __UTILITY_CPP17_CONSTEXPR__
-    inline reverse_iterator<__Iterator> make_reverse_iterator(__Iterator __it)
-    { return reverse_iterator<__Iterator>(__it);}
+    inline reverse_iterator<__Iterator> make_reverse_iterator(__Iterator _it)
+    { return reverse_iterator<__Iterator>(_it);}
   }
 }
-
-#endif // ! ___UTILITY__COMPATIBLE__WITH__STD__
 
 #endif // ! __UTILITY_ITERATOR_REVERSE_ITERATOR__

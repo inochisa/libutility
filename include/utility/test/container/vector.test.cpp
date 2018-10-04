@@ -40,8 +40,8 @@ inline void vector_attribute()
   static_assert(is_same<typename iterator::self, iterator>::value, "iterator::difference_type");
 
   static_assert(is_same<typename const_iterator::iterator_category, contiguous_iterator_tag>::value, "const_iterator::iterator_category");
-  static_assert(is_same<typename const_iterator::value_type, int>::value, "const_iterator::value_type");
-  static_assert(is_same<typename const_iterator::const_value_type, const int>::value, "const_iterator::const_value_type");
+  static_assert(is_same<typename const_iterator::value_type, const int>::value, "const_iterator::value_type");
+  static_assert(is_same<typename const_iterator::non_const_value_type, int>::value, "const_iterator::const_value_type");
   static_assert(is_same<typename const_iterator::reference, const int&>::value, "const_iterator::reference");
   static_assert(is_same<typename const_iterator::pointer, const int*>::value, "const_iterator::pointer");
   static_assert(is_same<typename const_iterator::difference_type, decltype(0L)>::value, "const_iterator::difference_type");
@@ -87,7 +87,7 @@ void vector_construct()
   assert(vec13 == vector<int>({1,2,3,4,5}));
   assert(vec14 == vector<int>({1,2,3,4,5}));
 
-  printf("Vector construct test passes\n");
+  printf("Vector construct test passes\n\n");
 
   return;
 }
@@ -139,7 +139,7 @@ void vector_insert()
   vec.clear();
   assert(vec == vector<int>{});
 
-  printf("Vector insert, push_back, pop_back, emplace, emplace_back test passes\n");
+  printf("Vector insert, push_back, pop_back, emplace, emplace_back test passes\n\n");
 
   return;
 }
@@ -160,7 +160,7 @@ void vector_front()
   assert(y == 1256);
   assert(_y == 1256);
 
-  printf("Vector front and back test passes\n");
+  printf("Vector front and back test passes\n\n");
 
   return;
 }
@@ -178,7 +178,7 @@ void vector_erase()
   vec.erase(vec.begin(), vec.end());
   assert(vec == vector<int>{});
 
-  printf("Vector erase test passes\n");
+  printf("Vector erase test passes\n\n");
 
   return;
 }
@@ -217,7 +217,7 @@ void vector_size()
   assert(vec.capacity() == 200);
   assert(vec == vector<int>({0,0,0,0,0,0,0,0,0,0,1,1}));
 
-  printf("Vector size test passes\n");
+  printf("Vector size test passes\n\n");
 }
 
 int main()

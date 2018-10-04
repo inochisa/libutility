@@ -41,8 +41,8 @@ inline void test_attribute()
   static_assert(is_same<typename iterator::self, iterator>::value, "iterator::difference_type");
 
   static_assert(is_same<typename const_iterator::iterator_category, bidirectional_iterator_tag>::value, "const_iterator::iterator_category");
-  static_assert(is_same<typename const_iterator::value_type, int>::value, "const_iterator::value_type");
-  static_assert(is_same<typename const_iterator::const_value_type, const int>::value, "const_iterator::const_value_type");
+  static_assert(is_same<typename const_iterator::non_const_value_type, int>::value, "const_iterator::non_const_value_type");
+  static_assert(is_same<typename const_iterator::value_type, const int>::value, "const_iterator::value_type");
   static_assert(is_same<typename const_iterator::reference, const int&>::value, "const_iterator::reference");
   static_assert(is_same<typename const_iterator::pointer, const int*>::value, "const_iterator::pointer");
   static_assert(is_same<typename const_iterator::difference_type, decltype(0L)>::value, "const_iterator::difference_type");

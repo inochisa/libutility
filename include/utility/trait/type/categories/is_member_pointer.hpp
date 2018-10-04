@@ -33,6 +33,11 @@ namespace utility
               trait::type::transform::remove_cv<_T>::type>
         { };
 
+#if !defined(__UTILITY_NO_CPP14__)
+        template<typename _T>
+        constexpr bool is_member_pointer_v = is_member_pointer<_T>::value;
+#endif
+
       }
     }
   }

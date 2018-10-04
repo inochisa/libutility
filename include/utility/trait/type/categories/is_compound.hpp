@@ -24,6 +24,11 @@ namespace utility
             !is_null_pointer<_T>::value>
         { };
 
+#if !defined(__UTILITY_NO_CPP14__)
+        template<typename _T>
+        constexpr bool is_compound_v = is_compound<_T>::value;
+#endif
+
       }
     }
   }

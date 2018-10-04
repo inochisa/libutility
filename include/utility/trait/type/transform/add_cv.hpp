@@ -58,6 +58,9 @@ namespace utility
         { typedef typename add_const<typename
             add_volatile<_T>::type>::type type;};
 
+        template<typename _T>
+        using add_cv_t = typename add_cv<_T>::type;
+
       }
     }
   }

@@ -123,6 +123,10 @@ namespace utility
           public __change_sign_impl::__make_unsigned_helper<_T>
         { };
 
+        template<typename _T>
+        using make_signed_t = typename make_signed<_T>::type;
+        template<typename _T>
+        using make_unsigned_t = typename make_unsigned<_T>::type;
       }
     }
   }

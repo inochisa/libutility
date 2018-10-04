@@ -31,6 +31,7 @@ namespace utility
 
 #else
 
+# include<utility/trait/opt/__twochar__.hpp>
 # include<utility/trait/type/miscellaneous/enable_if.hpp>
 # include<utility/trait/type/type_trait_special.hpp>
 
@@ -52,7 +53,7 @@ namespace utility
               int>::type
               );
           template<typename _T>
-          trait::__impl_helper::__twochar&
+          trait::__opt__::__twochar__&
             __is_polymorphic_test(...);
         }
         template<typename _T>

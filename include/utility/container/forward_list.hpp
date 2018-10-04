@@ -5,25 +5,13 @@
 #include<utility/config/utility_config.hpp>
 #include<utility/container/container_helper.hpp>
 
-#ifdef ___UTILITY__CHECK__USE__STD___
-
-#include<forward_list>
-
-namespace utility
-{
-  namespace container
-  {
-    using std::forward_list;
-  }
-}
-
-#else // ___UTILITY__CHECK__USE__STD___
-
 #include<utility/memory/allocator.hpp>
 #include<utility/memory/allocator_traits.hpp>
+
 #include<utility/trait/type/miscellaneous/enable_if.hpp>
 #include<utility/trait/type/releations/is_same.hpp>
 #include<utility/trait/miscellaneous/pointer_traits.hpp>
+
 #include<utility/iterator/iterator_tag.hpp>
 
 namespace utility
@@ -329,7 +317,5 @@ namespace utility
     };
   }
 }
-
-#endif // ! ___UTILITY__CHECK__USE__STD___
 
 #endif // ! __UTILITY_CONTAINER_FORWARD_LIST__

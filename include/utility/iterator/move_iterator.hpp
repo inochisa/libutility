@@ -17,31 +17,30 @@ namespace utility
   namespace iterator
   {
 
-    template<typename __Iterator>
+    template<typename _Iterator>
     class move_iterator
     {
       private:
         typedef typename
-          iterator_traits<__Iterator>::reference        original_reference;
+          iterator_traits<_Iterator>::reference        original_reference;
       public:
         typedef typename
-          iterator_traits<__Iterator>::iterator_category  iterator_category;
+          iterator_traits<_Iterator>::iterator_category  iterator_category;
         typedef typename
-          iterator_traits<__Iterator>::value_type       value_type;
+          iterator_traits<_Iterator>::value_type       value_type;
         typedef typename
-          iterator_traits<__Iterator>::difference_type  difference_type;
-        typedef __Iterator                              pointer;
-        typedef typename
-          trait::type::miscellaneous::conditional<
-           trait::type::categories::is_reference<original_reference>::value,
-           typename trait::transform::remove_reference<original_reference>::type&&,
-           original_reference>::type                    reference;
+          iterator_traits<_Iterator>::difference_type  difference_type;
+        typedef _Iterator                              pointer;
+        typedef typename trait::type::miscellaneous::conditional<
+            trait::type::categories::is_reference<original_reference>::value,
+            typename trait::transform::remove_reference<original_reference>::type&&,
+          original_reference>::type                    reference;
 
       public:
-        typedef __Iterator                              iterator_type;
+        typedef _Iterator                              iterator_type;
 
       private:
-        __Iterator current;
+        iterator_type current;
 
       public:
         __UTILITY_CPP14_CONSTEXPR__
@@ -69,10 +68,7 @@ namespace utility
       public:
         __UTILITY_CPP14_CONSTEXPR__
         inline reference operator*() const
-        {
-          iterator_type __uit = this->current;
-          return static_cast<reference>(*__uit);
-        }
+        { return static_cast<reference>(*current);}
         __UTILITY_CPP14_CONSTEXPR__
         inline pointer operator->() const
         { return this->current;}
@@ -166,66 +162,56 @@ namespace utility
 
     };
 
-    template<typename __Iterator1, __Iterator2>
+    template<typename _Iterator1, _Iterator2>
     __UTILITY_CPP14_CONSTEXPR__
-    inline bool operator==(const move_iterator<__Iterator1>& __x,
-      const move_iterator<__Iterator1>& __y)
+    inline bool operator==(const move_iterator<_Iterator1>& __x,
+      const move_iterator<_Iterator1>& __y)
     { return __x.base() == __y.base();}
-    template<typename __Iterator1, __Iterator2>
+    template<typename _Iterator1, _Iterator2>
     __UTILITY_CPP14_CONSTEXPR__
-    inline bool operator!=(const move_iterator<__Iterator1>& __x,
-      const move_iterator<__Iterator1>& __y)
+    inline bool operator!=(const move_iterator<_Iterator1>& __x,
+      const move_iterator<_Iterator1>& __y)
     { return __x.base() != __y.base();}
 
-    template<typename __Iterator1, __Iterator2>
+    template<typename _Iterator1, _Iterator2>
     __UTILITY_CPP14_CONSTEXPR__
-    inline bool operator<(const move_iterator<__Iterator1>& __x,
-      const move_iterator<__Iterator1>& __y)
-    {
-      return __x.base() < __y.base();
-    }
-    template<typename __Iterator1, __Iterator2>
+    inline bool operator<(const move_iterator<_Iterator1>& __x,
+      const move_iterator<_Iterator1>& __y)
+    { return __x.base() < __y.base();}
+    template<typename _Iterator1, _Iterator2>
     __UTILITY_CPP14_CONSTEXPR__
-    inline bool operator<=(const move_iterator<__Iterator1>& __x,
-      const move_iterator<__Iterator1>& __y)
-    {
-      return __x.base() <= __y.base();
-    }
-    template<typename __Iterator1, __Iterator2>
+    inline bool operator<=(const move_iterator<_Iterator1>& __x,
+      const move_iterator<_Iterator1>& __y)
+    { return __x.base() <= __y.base();}
+    template<typename _Iterator1, _Iterator2>
     __UTILITY_CPP14_CONSTEXPR__
-    inline bool operator>(const move_iterator<__Iterator1>& __x,
-      const move_iterator<__Iterator1>& __y)
-    {
-      return __x.base() > __y.base();
-    }
-    template<typename __Iterator1, __Iterator2>
+    inline bool operator>(const move_iterator<_Iterator1>& __x,
+      const move_iterator<_Iterator1>& __y)
+    { return __x.base() > __y.base();}
+    template<typename _Iterator1, _Iterator2>
     __UTILITY_CPP14_CONSTEXPR__
-    inline bool operator>=(const move_iterator<__Iterator1>& __x,
-      const move_iterator<__Iterator1>& __y)
-    {
-      return __x.base() >= __y.base();
-    }
+    inline bool operator>=(const move_iterator<_Iterator1>& __x,
+      const move_iterator<_Iterator1>& __y)
+    { return __x.base() >= __y.base();}
 
-    template<typename __Iterator>
+    template<typename _Iterator>
     __UTILITY_CPP14_CONSTEXPR__
-    inline move_iterator<__Iterator> operator+(
-      typename move_iterator<__Iterator>::difference_type __len,
-      const move_iterator<__Iterator>& __it)
+    inline move_iterator<_Iterator> operator+(
+      typename move_iterator<_Iterator>::difference_type __len,
+      const move_iterator<_Iterator>& __it)
     { return __it + __len;}
 
-    template<typename __Iterator>
+    template<typename _Iterator>
     __UTILITY_CPP14_CONSTEXPR__
-    inline auto operator-(const move_iterator<__Iterator>& __x,
-      const move_iterator<__Iterator>& __y)
+    inline auto operator-(const move_iterator<_Iterator>& __x,
+      const move_iterator<_Iterator>& __y)
       ->decltype(__x.base() - __y.base())
-    {
-      return __x.base() - __y.base();
-    }
+    { return __x.base() - __y.base();}
 
-    template<typename __Iterator>
+    template<typename _Iterator>
     __UTILITY_CPP17_CONSTEXPR__
-    inline move_iterator<__Iterator> make_move_iterator(__Iterator __it)
-    { return move_iterator<__Iterator>(__it);}
+    inline move_iterator<_Iterator> make_move_iterator(_Iterator __it)
+    { return move_iterator<_Iterator>(__it);}
   }
 }
 

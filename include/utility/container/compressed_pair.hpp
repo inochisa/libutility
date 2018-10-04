@@ -17,7 +17,8 @@
 
 #include<utility/container/container_helper.hpp>
 #include<utility/container/impl/compressed_index.hpp>
-#include<utility/container/impl/pair_value.hpp>
+
+#include<utility/trait/opt/__types__.hpp>
 
 namespace utility
 {
@@ -404,17 +405,135 @@ namespace utility
           possible_swap(this->second(), __other.second());
         }
     };
+  }
 
-    template<typename _T1, typename _T2>
-    const _T1& get_key(const compressed_pair<_T1, _T2>& __o) noexcept
-    { return __o.first();}
-    template<typename _T1, typename _T2>
-    _T2& get_value(compressed_pair<_T1, _T2>& __o) noexcept
-    { return __o.second();}
-    template<typename _T1, typename _T2>
-    const _T2& get_value(const compressed_pair<_T1, _T2>& __o) noexcept
-    { return __o.second();}
+  namespace trait
+  {
+    namespace __opt__
+    {
+      template<typename _T1, typename _T2>
+      struct __type_tuple_size__<container::compressed_pair<_T1, _T2>>
+      { constexpr static size_t value = 2;};
+      template<typename _T1, typename _T2>
+      struct __checkout_type_feature__<container::compressed_pair<_T1, _T2>>
+      { typedef __type_pair__<_T1, _T2> type;};
+    }
+  }
 
+  namespace container
+  {
+    namespace __detail
+    {
+      using trait::__opt__::__checkout_type_feature__;
+      using trait::__opt__::__type_tuple_get__;
+      template<size_t _Id>
+      struct __get_compressed_pair;
+
+      template<>
+      struct __get_compressed_pair<0>
+      {
+        template<typename _T1, typename _T2>
+        __UTILITY_CPP14_CONSTEXPR__
+        static _T1& get(compressed_pair<_T1, _T2>& _pair) noexcept
+        { return _pair.first();}
+        template<typename _T1, typename _T2>
+        __UTILITY_CPP14_CONSTEXPR__
+        static const _T1& get(const compressed_pair<_T1, _T2>& _pair) noexcept
+        { return _pair.first();}
+        template<typename _T1, typename _T2>
+        __UTILITY_CPP14_CONSTEXPR__
+        static _T1&& get(compressed_pair<_T1, _T2>&& _pair) noexcept
+        {
+          using algorithm::forward;
+          return forward<_T1>(_pair.first());
+        }
+        template<typename _T1, typename _T2>
+        __UTILITY_CPP14_CONSTEXPR__
+        static const _T1&& get(
+          const compressed_pair<_T1, _T2>&& _pair
+        ) noexcept
+        {
+          using algorithm::forward;
+          return forward<const _T1>(_pair.first());
+        }
+      };
+
+      template<>
+      struct __get_compressed_pair<1>
+      {
+        template<typename _T1, typename _T2>
+        __UTILITY_CPP14_CONSTEXPR__
+        static _T2& get(compressed_pair<_T1, _T2>& _pair) noexcept
+        { return _pair.second();}
+        template<typename _T1, typename _T2>
+        __UTILITY_CPP14_CONSTEXPR__
+        static const _T2& get(const compressed_pair<_T1, _T2>& _pair) noexcept
+        { return _pair.second();}
+        template<typename _T1, typename _T2>
+        __UTILITY_CPP14_CONSTEXPR__
+        static _T2&& get(compressed_pair<_T1, _T2>&& _pair) noexcept
+        {
+          using algorithm::forward;
+          return forward<_T2>(_pair.second());
+        }
+        template<typename _T1, typename _T2>
+        __UTILITY_CPP14_CONSTEXPR__
+        static const _T2&& get(
+          const compressed_pair<_T1, _T2>&& _pair
+        ) noexcept
+        {
+          using algorithm::forward;
+          return forward<const _T2>(_pair.second());
+        }
+      };
+    }
+
+    template<size_t _Id, typename _T1, typename _T2>
+    __UTILITY_CPP14_CONSTEXPR__
+    typename __detail::__type_tuple_get__<
+      _Id,
+      typename __detail::__checkout_type_feature__<
+        compressed_pair<_T1, _T2>
+      >::type
+    >::type&
+    get(compressed_pair<_T1, _T2>& _pair) noexcept
+    { return __detail::__get_compressed_pair<_Id>::get(_pair);}
+    template<size_t _Id, typename _T1, typename _T2>
+    __UTILITY_CPP14_CONSTEXPR__
+    const typename __detail::__type_tuple_get__<
+      _Id,
+      typename __detail::__checkout_type_feature__<
+        compressed_pair<_T1, _T2>
+      >::type
+    >::type&
+    get(const compressed_pair<_T1, _T2>& _pair) noexcept
+    { return __detail::__get_compressed_pair<_Id>::get(_pair);}
+    template<size_t _Id, typename _T1, typename _T2>
+    __UTILITY_CPP14_CONSTEXPR__
+    typename __detail::__type_tuple_get__<
+      _Id,
+      typename __detail::__checkout_type_feature__<
+        compressed_pair<_T1, _T2>
+      >::type
+    >::type&&
+    get(compressed_pair<_T1, _T2>&& _pair) noexcept
+    {
+      using algorithm::move;
+      return __detail::__get_compressed_pair<_Id>::get(move(_pair));
+    }
+    template<size_t _Id, typename _T1, typename _T2>
+    __UTILITY_CPP14_CONSTEXPR__
+    const typename __detail::__type_tuple_get__<
+      _Id,
+      typename __detail::__checkout_type_feature__<
+        compressed_pair<_T1, _T2>
+      >::type
+    >::type&&
+    get(const compressed_pair<_T1, _T2>&& _pair) noexcept
+    {
+      using algorithm::move;
+      return __detail::__get_compressed_pair<_Id>::get(move(_pair));
+    }
   }
 }
 

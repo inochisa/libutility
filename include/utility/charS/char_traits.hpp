@@ -37,8 +37,8 @@ namespace utility
       ) noexcept
       {
         char_type* __tmp = __cptr;
-        for(; __count; --__count, ++__tmp)
-        { assign(*__tmp, __a);}
+        for(; __count; --__count)
+        { assign(*__tmp++, __a);}
         return __tmp;
       }
 
@@ -55,7 +55,7 @@ namespace utility
         char_type* __tmp = __dest;
         if(__dest < __src)
         {
-          for(;__count; --__count, ++__dest, ++__src)
+          for(; __count; --__count, ++__dest, ++__src)
           { assign(*__dest, *__src);}
         }
         else if(__src < __dest)
@@ -465,7 +465,7 @@ namespace utility
       constexpr static inline int_type eof() noexcept
       { return static_cast<int_type>(WEOF);}
       constexpr static inline int_type not_eof(int_type __ch) noexcept
-      { return eq_int_type(__ch, eof()) ? ~eof() : __ch;}
+      { return eq_int_type(__ch, eof()) ? static_cast<int_type>(~eof()) : __ch;}
     };
 
     template<>

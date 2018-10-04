@@ -1,12 +1,12 @@
 
-#ifndef __UTILITY_ALGORITHM_HEAPIMPL_POP_HEAP__
-#define __UTILITY_ALGORITHM_HEAPIMPL_POP_HEAP__
+#ifndef __UTILITY_ALGORITHM_IMPL_HEAP_POP_HEAP__
+#define __UTILITY_ALGORITHM_IMPL_HEAP_POP_HEAP__
 
 #include<utility/config/utility_config.hpp>
 #include<utility/trait/type/transform/add_reference.hpp>
 #include<utility/algorithm/algorithm_auxiliary.hpp>
 #include<utility/algorithm/swap.hpp>
-#include<utility/algorithm/impl/push_heap.hpp>
+#include<utility/algorithm/impl/heap/push_heap.hpp>
 
 namespace utility
 {
@@ -70,4 +70,4 @@ namespace utility
     }
   }
 }
-#endif // ! __UTILITY_ALGORITHM_HEAPIMPL_POP_HEAP__
+#endif // ! __UTILITY_ALGORITHM_IMPL_HEAP_POP_HEAP__

@@ -40,6 +40,12 @@ namespace utility
             typename
               trait::type::transform::remove_cv<_T>::type>
         { };
+
+#if !defined(__UTILITY_NO_CPP14__)
+        template<typename _T>
+        constexpr bool is_floating_point_v = is_floating_point<_T>::value;
+#endif
+
       }
     }
   }

@@ -21,6 +21,11 @@ namespace utility
             is_integral<_T>::value || is_floating_point<_T>::value>
         { };
 
+#if !defined(__UTILITY_NO_CPP14__)
+        template<typename _T>
+        constexpr bool is_arithmetic_v = is_arithmetic<_T>::value;
+#endif
+
       }
     }
   }

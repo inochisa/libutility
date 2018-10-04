@@ -29,6 +29,9 @@ namespace utility
         struct remove_all_pointer<_T* const volatile>
         { typedef typename remove_all_pointer<_T>::type type;};
 
+        template<typename _T>
+        using remove_all_pointer_t = typename remove_all_pointer<_T>::type;
+
       }
     }
   }

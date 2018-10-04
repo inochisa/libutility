@@ -20,6 +20,11 @@ namespace utility
         struct is_same<_T, _T> : public trait::true_type
         { };
 
+#if !defined(__UTILITY_NO_CPP14__)
+        template<typename _T1, typename _T2>
+        constexpr bool is_same_v = is_same<_T1, _T2>::value;
+#endif
+
       }
     }
   }

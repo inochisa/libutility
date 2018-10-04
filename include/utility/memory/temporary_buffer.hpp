@@ -66,23 +66,23 @@ namespace utility
         typedef typename
           trait::type::transform::remove_cv<_T>::type
           value_type;
-        typedef value_type* pointer;
-        typedef value_type& reference;
-        typedef ptrdiff_t difference_type;
-        typedef ptrdiff_t size_type;
+        typedef value_type*     pointer;
+        typedef value_type&     reference;
+        typedef ptrdiff_t       difference_type;
+        typedef ptrdiff_t       size_type;
 
       public:
         typedef pointer accessor;
 
       private:
-        size_type __ori_size;
-        size_type __size;
-        pointer __item;
+        size_type   __req_size;
+        size_type   __size;
+        pointer     __item;
 
       public:
-        temporary_buffer():__ori_size(0), __size(0), __item(nullptr)
+        temporary_buffer():__req_size{0}, __size{0}, __item{nullptr}
         { }
-        temporary_buffer(size_type __s):__ori_size(__s)
+        temporary_buffer(size_type __s):__req_size{__s}
         {
           container::pair<pointer, size_type> __res =
             detail::get_temporary_buffer<value_type>(__s);
@@ -90,8 +90,9 @@ namespace utility
           this->__item = __res.first;
         }
         temporary_buffer(temporary_buffer&& __other) noexcept:
-          __ori_size(__other.__ori_size),
-          __size(__other.__size), __item(__other.__item)
+          __req_size{__other.__req_size},
+          __size{__other.__size},
+          __item{__other.__item}
         { __other.__item = nullptr;}
 
         ~temporary_buffer()
@@ -118,7 +119,7 @@ namespace utility
         { return this->__size;}
 
         size_type request_size() const noexcept
-        { return this->__ori_size;}
+        { return this->__req_size;}
 
       public:
         accessor begin() noexcept

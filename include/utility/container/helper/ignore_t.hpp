@@ -10,25 +10,6 @@
 
 #include<utility/config/utility_config.hpp>
 
-#ifdef ___UTILITY__COMPATIBLE__WITH__STD__
-
-#include<tuple>
-
-namespace utility
-{
-  namespace container
-  {
-    namespace helper
-    {
-      using std::ignore;
-      typedef decltype(std::ignore) ignore_t;
-
-    } // helper
-  }
-}
-
-#else // ___UTILITY__COMPATIBLE__WITH__STD__
-
 namespace utility
 {
   namespace container
@@ -54,7 +35,5 @@ namespace utility
     } // helper
   }
 }
-
-#endif // ! ___UTILITY__COMPATIBLE__WITH__STD__
 
 #endif // ! __UTILITY_CONTAINER_HELPER_IGNORE_T__

@@ -31,20 +31,20 @@ namespace utility
     {
       typedef __crypto_block<64, 5> sha1_block;
 
-      void sha1_block_init(sha1_block& __block) noexcept
+      void sha1_block_init(sha1_block& _block) noexcept
       {
-        __block.bits = 0;
-        __block.dlength = 0;
-        __block.hash[0] = 0x67452301;
-        __block.hash[1] = 0xEFCDAB89;
-        __block.hash[2] = 0x98BADCFE;
-        __block.hash[3] = 0x10325476;
-        __block.hash[4] = 0xc3d2e1f0;
+        _block.bits = 0;
+        _block.dlength = 0;
+        _block.hash[0] = 0x67452301;
+        _block.hash[1] = 0xEFCDAB89;
+        _block.hash[2] = 0x98BADCFE;
+        _block.hash[3] = 0x10325476;
+        _block.hash[4] = 0xc3d2e1f0;
 
         return;
       }
 
-      void sha1_block_transform(sha1_block& __block) noexcept
+      void sha1_block_transform(sha1_block& _block) noexcept
       {
         unsigned long __a, __b, __c, __d, __e;
         unsigned long __data[80];
@@ -52,10 +52,10 @@ namespace utility
         for(unsigned int __i = 0, __j = 0; __i < 16; ++__i, __j+=4)
         {
           __data[__i] =
-            (  __block.data[__j] << 24UL) +
-            (__block.data[__j+1] << 16UL) +
-            (__block.data[__j+2] << 8UL) +
-            (__block.data[__j+3]);
+            (  _block.data[__j] << 24UL) +
+            (_block.data[__j+1] << 16UL) +
+            (_block.data[__j+2] << 8UL) +
+            (_block.data[__j+3]);
           __data[__i] &= 0xffffffffUL;
         }
         for(unsigned int __i = 16; __i != 80; ++__i)
@@ -66,11 +66,11 @@ namespace utility
           __data[__i] &= 0xffffffffUL;
         }
 
-        __a = __block.hash[0];
-        __b = __block.hash[1];
-        __c = __block.hash[2];
-        __d = __block.hash[3];
-        __e = __block.hash[4];
+        __a = _block.hash[0];
+        __b = _block.hash[1];
+        __c = _block.hash[2];
+        __d = _block.hash[3];
+        __e = _block.hash[4];
 
         ___R1(__a, __b, __c, __d, __e,  __data[0]);
         ___R1(__e, __a, __b, __c, __d,  __data[1]);
@@ -157,110 +157,110 @@ namespace utility
         ___R4(__b, __c, __d, __e, __a, __data[79]);
 
         // append the block hashes;
-        __block.hash[0] += __a;
-        __block.hash[1] += __b;
-        __block.hash[2] += __c;
-        __block.hash[3] += __d;
-        __block.hash[4] += __e;
+        _block.hash[0] += __a;
+        _block.hash[1] += __b;
+        _block.hash[2] += __c;
+        _block.hash[3] += __d;
+        _block.hash[4] += __e;
 
-        __block.hash[0] &= 0xffffffffUL;
-        __block.hash[1] &= 0xffffffffUL;
-        __block.hash[2] &= 0xffffffffUL;
-        __block.hash[3] &= 0xffffffffUL;
-        __block.hash[4] &= 0xffffffffUL;
+        _block.hash[0] &= 0xffffffffUL;
+        _block.hash[1] &= 0xffffffffUL;
+        _block.hash[2] &= 0xffffffffUL;
+        _block.hash[3] &= 0xffffffffUL;
+        _block.hash[4] &= 0xffffffffUL;
 
         // init the block data;
-        __block.bits += 512U;
-        __block.dlength = 0;
+        _block.bits += 512U;
+        _block.dlength = 0;
 
         return;
       }
 
-      static void sha1_last_block(sha1_block& __block) noexcept
+      static void sha1_last_block(sha1_block& _block) noexcept
       {
-        __block.bits += __block.dlength * 8ULL;
+        _block.bits += _block.dlength * 8ULL;
 
-        if(__block.dlength > 55UL)
+        if(_block.dlength > 55UL)
         {
-          __block.data[__block.dlength++] = 0x80U;
-          while(__block.dlength < 64UL)
-          { __block.data[__block.dlength++] = 0x00U;}
-          sha1_block_transform(__block);
+          _block.data[_block.dlength++] = 0x80U;
+          while(_block.dlength < 64UL)
+          { _block.data[_block.dlength++] = 0x00U;}
+          sha1_block_transform(_block);
           for(unsigned int __i = 0; __i < 56UL; ++__i)
-          { __block.data[__i] = 0x00U;}
+          { _block.data[__i] = 0x00U;}
         }
         else
         {
-          __block.data[__block.dlength++] = 0x80U;
-          while(__block.dlength < 56UL)
-          { __block.data[__block.dlength++] = 0X00U;}
+          _block.data[_block.dlength++] = 0x80U;
+          while(_block.dlength < 56UL)
+          { _block.data[_block.dlength++] = 0X00U;}
         }
 
-        __block.data[56] = ((__block.bits >> 56U) & 0xffU);
-        __block.data[57] = ((__block.bits >> 48U) & 0xffU);
-        __block.data[58] = ((__block.bits >> 40U) & 0xffU);
-        __block.data[59] = ((__block.bits >> 32U) & 0xffU);
-        __block.data[60] = ((__block.bits >> 24U) & 0xffU);
-        __block.data[61] = ((__block.bits >> 16U) & 0xffU);
-        __block.data[62] = ((__block.bits >>  8U) & 0xffU);
-        __block.data[63] = ((__block.bits       ) & 0xffU);
+        _block.data[56] = ((_block.bits >> 56U) & 0xffU);
+        _block.data[57] = ((_block.bits >> 48U) & 0xffU);
+        _block.data[58] = ((_block.bits >> 40U) & 0xffU);
+        _block.data[59] = ((_block.bits >> 32U) & 0xffU);
+        _block.data[60] = ((_block.bits >> 24U) & 0xffU);
+        _block.data[61] = ((_block.bits >> 16U) & 0xffU);
+        _block.data[62] = ((_block.bits >>  8U) & 0xffU);
+        _block.data[63] = ((_block.bits       ) & 0xffU);
 
-        sha1_block_transform(__block);
+        sha1_block_transform(_block);
 
         return;
       }
 
       static inline void sha1_result_transform(
-        unsigned char __res[20], sha1_block& __block
+        unsigned char _res[20], sha1_block& _block
       ) noexcept
       {
-        __res[0]  =  (__block.hash[0] >> 24) & 0xffU;
-        __res[1]  =  (__block.hash[0] >> 16) & 0xffU;
-        __res[2]  =  (__block.hash[0] >> 8 ) & 0xffU;
-        __res[3]  =  (__block.hash[0]      ) & 0xffU;
-        __res[4]  =  (__block.hash[1] >> 24) & 0xffU;
-        __res[5]  =  (__block.hash[1] >> 16) & 0xffU;
-        __res[6]  =  (__block.hash[1] >> 8 ) & 0xffU;
-        __res[7]  =  (__block.hash[1]      ) & 0xffU;
-        __res[8]  =  (__block.hash[2] >> 24) & 0xffU;
-        __res[9]  =  (__block.hash[2] >> 16) & 0xffU;
-        __res[10] =  (__block.hash[2] >> 8 ) & 0xffU;
-        __res[11] =  (__block.hash[2]      ) & 0xffU;
-        __res[12] =  (__block.hash[3] >> 24) & 0xffU;
-        __res[13] =  (__block.hash[3] >> 16) & 0xffU;
-        __res[14] =  (__block.hash[3] >> 8 ) & 0xffU;
-        __res[15] =  (__block.hash[3]      ) & 0xffU;
-        __res[16] =  (__block.hash[4] >> 24) & 0xffU;
-        __res[17] =  (__block.hash[4] >> 16) & 0xffU;
-        __res[18] =  (__block.hash[4] >> 8 ) & 0xffU;
-        __res[19] =  (__block.hash[4]      ) & 0xffU;
+        _res[0]  =  (_block.hash[0] >> 24) & 0xffU;
+        _res[1]  =  (_block.hash[0] >> 16) & 0xffU;
+        _res[2]  =  (_block.hash[0] >> 8 ) & 0xffU;
+        _res[3]  =  (_block.hash[0]      ) & 0xffU;
+        _res[4]  =  (_block.hash[1] >> 24) & 0xffU;
+        _res[5]  =  (_block.hash[1] >> 16) & 0xffU;
+        _res[6]  =  (_block.hash[1] >> 8 ) & 0xffU;
+        _res[7]  =  (_block.hash[1]      ) & 0xffU;
+        _res[8]  =  (_block.hash[2] >> 24) & 0xffU;
+        _res[9]  =  (_block.hash[2] >> 16) & 0xffU;
+        _res[10] =  (_block.hash[2] >> 8 ) & 0xffU;
+        _res[11] =  (_block.hash[2]      ) & 0xffU;
+        _res[12] =  (_block.hash[3] >> 24) & 0xffU;
+        _res[13] =  (_block.hash[3] >> 16) & 0xffU;
+        _res[14] =  (_block.hash[3] >> 8 ) & 0xffU;
+        _res[15] =  (_block.hash[3]      ) & 0xffU;
+        _res[16] =  (_block.hash[4] >> 24) & 0xffU;
+        _res[17] =  (_block.hash[4] >> 16) & 0xffU;
+        _res[18] =  (_block.hash[4] >> 8 ) & 0xffU;
+        _res[19] =  (_block.hash[4]      ) & 0xffU;
 
         return;
       }
     }
     void sha1(
-      unsigned char __res[20],
-      const void* __mem, size_t __len
+      unsigned char _res[20],
+      const void* _mem, size_t _len
     ) noexcept
     {
-      detail::sha1_block __block;
+      detail::sha1_block _block;
 
-      detail::sha1_block_init(__block);
+      detail::sha1_block_init(_block);
 
       size_t __i;
       const unsigned char* __ptr =
-        static_cast<const unsigned char*>(__mem);
+        static_cast<const unsigned char*>(_mem);
 
-      for(__i = 0; __i < __len; ++__i)
+      for(__i = 0; __i < _len; ++__i)
       {
-        __block.data[__block.dlength++] = __ptr[__i];
-        if(__block.dlength == 64U)
-        { detail::sha1_block_transform(__block);}
+        _block.data[_block.dlength++] = __ptr[__i];
+        if(_block.dlength == 64U)
+        { detail::sha1_block_transform(_block);}
       }
       // align the last 512 bits;
-      detail::sha1_last_block(__block);
+      detail::sha1_last_block(_block);
       // Get the result from the result block
-      detail::sha1_result_transform(__res, __block);
+      detail::sha1_result_transform(_res, _block);
     }
   }
 }

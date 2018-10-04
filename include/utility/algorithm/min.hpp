@@ -10,7 +10,7 @@ namespace utility
   {
     template<typename _T>
     inline __UTILITY_CPP14_CONSTEXPR__
-    const _T& mix(const _T& __a, const _T& __b) noexcept
+    const _T& min(const _T& __a, const _T& __b) noexcept
     {
       if(__a < __b )
       { return __a;}

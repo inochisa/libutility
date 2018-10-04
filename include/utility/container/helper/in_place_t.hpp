@@ -10,29 +10,7 @@
  */
 
 #include<utility/config/utility_config.hpp>
-
-#ifdef ___UTILITY__COMPATIBLE__WITH__STD__
-
-#include<utility>
-
-namespace utility
-{
-  namespace container
-  {
-    namespace helper
-    {
-      using std::in_place;
-      using std::in_place_t;
-      using std::in_place_type;
-      using std::in_place_type_t;
-      using std::in_place_index;
-      using std::in_place_index_t;
-
-    } // helper
-  }
-}
-
-#else // ___UTILITY__COMPATIBLE__WITH__STD__
+#include<utility/trait/trait_helper.hpp>
 
 namespace utility
 {
@@ -49,29 +27,25 @@ namespace utility
       template<typename _T>
       struct in_place_type_t
       { explicit in_place_type_t() = default;};
+
+#ifndef __UTILITY_NO_CPP14__
       template<typename _T>
       __UTILITY_CPP17_INLINE__
       constexpr in_place_type_t<_T> in_place_type{};
+#endif // ! __UTILITY_NO_CPP14__
 
       template<size_t _I>
       struct in_place_index_t
       { explicit in_place_index_t() = default;};
+
+#ifndef __UTILITY_NO_CPP14__
       template<size_t _I>
       __UTILITY_CPP17_INLINE__
       constexpr in_place_index_t<_I> in_place_index{};
+#endif // ! __UTILITY_NO_CPP14__
 
     } // helper
-  }
-}
 
-#endif // ! ___UTILITY__COMPATIBLE__WITH__STD__
-
-#include<utility/trait/trait_helper.hpp>
-
-namespace utility
-{
-  namespace container
-  {
     namespace helper_traits
     {
       template<typename _T>

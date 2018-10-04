@@ -13,13 +13,15 @@ namespace utility
       namespace miscellaneous
       {
         // enable_if
-        template<bool B, typename _T = void>
+        template<bool _B, typename _T = void>
         struct enable_if
         { };
         template<typename _T>
         struct enable_if<true, _T>
         { typedef _T type;};
 
+        template<bool _B, typename _T = void>
+        using enable_if_t = typename enable_if<_B, _T>::type;
       }
     }
   }

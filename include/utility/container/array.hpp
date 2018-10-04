@@ -11,20 +11,6 @@
 #include<utility/config/utility_config.hpp>
 #include<utility/container/container_helper.hpp>
 
-#ifdef ___UTILITY__CHECK__USE__STD___
-
-#include<array>
-
-namespace utility
-{
-  namespace container
-  {
-    using std::array;
-  }
-}
-
-#else // ___UTILITY__CHECK__USE__STD___
-
 #include<utility/iterator/reverse_iterator.hpp>
 
 namespace utility
@@ -157,7 +143,5 @@ namespace utility
     };
   }
 }
-
-#endif // ! ___UTILITY__CHECK__USE__STD___
 
 #endif // ! __UTILITY_CONTAINER_ARRAY__

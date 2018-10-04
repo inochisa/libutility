@@ -114,6 +114,11 @@ namespace utility
           public trait::true_type
         { };
 
+#if !defined(__UTILITY_NO_CPP14__)
+        template<typename _T>
+        constexpr bool is_function_v = is_function<_T>::value;
+#endif
+
       }
     }
   }

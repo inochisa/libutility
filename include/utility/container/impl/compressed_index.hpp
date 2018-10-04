@@ -3,9 +3,11 @@
 #define __UTILITY_CONTAINER_IMPL_COMPRESSED_INDEX__
 
 #include<utility/config/utility_config.hpp>
+
 #include<utility/algorithm/forward.hpp>
 #include<utility/algorithm/swap.hpp>
 #include<utility/algorithm/possible_swap.hpp>
+
 #include<utility/trait/type/property/is_empty.hpp>
 #include<utility/trait/type/property/is_final.hpp>
 #include<utility/trait/type/releations/is_convertible.hpp>
@@ -152,24 +154,26 @@ namespace utility
           trait::type::features::is_swappable<_U>::value,
           bool
         >::type = true>
-        inline void swap(compressed_index& __other) noexcept(
+        inline int swap(compressed_index& __other) noexcept(
           trait::type::features::is_nothrow_swappable<_T>::value
         )
         {
           using algorithm::swap;
           swap(this->__val, __other.__val);
+          return 0;
         }
         template<typename _U,
         typename trait::type::miscellaneous::enable_if<
           trait::type::features::is_swappable_with<_T, _U>::value,
           bool
         >::type = true>
-        inline void swap(_U& __other) noexcept(
+        inline int swap(_U& __other) noexcept(
           trait::type::features::is_nothrow_swappable_with<_T, _U>::value
         )
         {
           using algorithm::swap;
           swap(this->__val, __other);
+          return 0;
         }
         template<typename _U = _T,
         typename trait::type::miscellaneous::enable_if<
@@ -255,19 +259,19 @@ namespace utility
           trait::type::features::is_swappable<_U>::value,
           bool
         >::type = true>
-        inline void swap(compressed_index& __other) noexcept(
+        inline int swap(compressed_index& __other) noexcept(
           trait::type::features::is_nothrow_swappable<_T>::value
         )
-        { }
+        { return 0;}
         template<typename _U,
         typename trait::type::miscellaneous::enable_if<
           trait::type::features::is_swappable_with<_T, _U>::value,
           bool
         >::type = true>
-        inline void swap(_U& __other) noexcept(
+        inline int swap(_U& __other) noexcept(
           trait::type::features::is_nothrow_swappable_with<_T, _U>::value
         )
-        { }
+        { return 0;}
         template<typename _U = _T,
         typename trait::type::miscellaneous::enable_if<
           trait::type::features::is_possible_swappable<_U>::value,

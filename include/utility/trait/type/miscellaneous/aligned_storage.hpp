@@ -16,7 +16,7 @@ namespace utility
         // aligned_storage
         namespace __aligned_storage_impl
         {
-          template<trait::size_t _Len>
+          template<size_t _Len>
           struct __aligned_storage_helper
           {
             union type
@@ -27,8 +27,8 @@ namespace utility
           };
         }
         template<
-          trait::size_t _Len,
-          trait::size_t _Align =
+          size_t _Len,
+          size_t _Align =
             __utility_alignof(typename
               __aligned_storage_impl::__aligned_storage_helper<_Len>::type)
         >
@@ -40,6 +40,14 @@ namespace utility
             struct alignas(_Align) { } __align;
           };
         };
+
+        template<
+          size_t _Len,
+          size_t _Align =
+            __utility_alignof(typename
+              __aligned_storage_impl::__aligned_storage_helper<_Len>::type)
+        >
+        using aligned_storage_t = typename aligned_storage<_Len, _Align>::type;
       }
     }
   }

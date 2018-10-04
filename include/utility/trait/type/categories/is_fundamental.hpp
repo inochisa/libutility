@@ -24,6 +24,11 @@ namespace utility
             is_null_pointer<_T>::value>
         { };
 
+#if !defined(__UTILITY_NO_CPP14__)
+        template<typename _T>
+        constexpr bool is_fundamental_v = is_fundamental<_T>::value;
+#endif
+
       }
     }
   }

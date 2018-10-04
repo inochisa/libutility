@@ -20,7 +20,6 @@
 #include<utility/algorithm/equal.hpp>
 #include<utility/algorithm/lexicographical_compare.hpp>
 
-#include<utility/container/impl/pair_value.hpp>
 #include<utility/container/pair.hpp>
 #include<utility/container/compressed_pair.hpp>
 
@@ -919,7 +918,7 @@ namespace utility
           __head->__left = __head->__right = nullptr;
           __head = nullptr;
           __node_allocator_traits_type::deallocate(
-            this->__base.second(), this->__base.first()
+            this->__base.second(), this->__base.first(), 1
           );
           this->__base.first() = nullptr;
         }
@@ -1194,14 +1193,14 @@ namespace utility
               this->__mis.second(), __pos->__data
             );
             allocator_traits_type::deallocate(
-              this->__mis.second(), __pos->__data
+              this->__mis.second(), __pos->__data, 1
             );
           }
           __node_allocator_traits_type::destroy(
             this->__base.second(), __pos
           );
           __node_allocator_traits_type::deallocate(
-            this->__base.second(), __pos
+            this->__base.second(), __pos, 1
           );
         }
 
@@ -1483,14 +1482,14 @@ namespace utility
         UTILITY_ALWAYS_INLINE
         static inline const key_type& __get_key(const value_type& __con)
         {
-          using container::get_key;
-          return get_key(__con);
+          using container::get;
+          return get<0>(__con);
         }
         UTILITY_ALWAYS_INLINE
         static inline const key_type& __get_value(const value_type& __con)
         {
-          using container::get_key;
-          return get_value(__con);
+          using container::get;
+          return get<1>(__con);
         }
     };
 

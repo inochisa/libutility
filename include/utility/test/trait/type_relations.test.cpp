@@ -8,7 +8,7 @@ struct __test_child : public __test_par
 
 int main()
 {
-  using namespace trait::type::releations;
+  using namespace utility::trait::type::releations;
   using std::cout;
 
   cout << "is_same" << "\n";

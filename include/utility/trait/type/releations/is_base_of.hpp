@@ -32,6 +32,7 @@ namespace utility
 
 #else
 
+#include<utility/trait/opt/__twochar__.hpp>
 #include<utility/trait/type/type_trait_special.hpp>
 #include<utility/trait/type/categories/is_class.hpp>
 
@@ -46,7 +47,7 @@ namespace utility
         // is_base_of
         namespace __is_base_of_impl
         {
-          using __two = trait::__impl_helper::__twochar;
+          using __two = trait::__opt__::__twochar__;
 
           template<typename _T>
           struct __is_base_of_base_helper
@@ -78,6 +79,12 @@ namespace utility
                 sizeof(__test<_T1, _T2>(0)) == 2;
           };
 
+          template<typename _T>
+          struct __is_base_of_test<void, _T>
+          {
+            public:
+              constexpr static bool value = false;
+          };
         }
         template<typename _T1, typename _T2>
         struct is_base_of :
@@ -92,6 +99,24 @@ namespace utility
 }
 
 #endif // ! __utility_has_is_base_of
+
+namespace utility
+{
+  namespace trait
+  {
+    namespace type
+    {
+      namespace releations
+      {
+#if !defined(__UTILITY_NO_CPP14__)
+        template<typename _T1, typename _T2>
+        constexpr bool is_base_of_v = is_base_of<_T1, _T2>::value;
+#endif
+
+      }
+    }
+  }
+}
 
 #include<utility/trait/config/trait_undef.hpp>
 

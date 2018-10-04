@@ -31,6 +31,9 @@ namespace utility
               >::type
             >::type type;
         };
+
+        template<typename _T>
+        using remove_all_t = typename remove_all<_T>::type;
       }
     }
   }

@@ -41,7 +41,7 @@ namespace utility
         { return *__ptr;}
 
       public:
-        types& get() const noexcept
+        type& get() const noexcept
         { return *__ptr;}
 
       public:
@@ -52,6 +52,13 @@ namespace utility
         )
         { return invoke(this->get(), algorithm::forward<_Args>(__args)...);}
     };
+
+    template<typename _T>
+    struct unwrap_refwrapper_type
+    { typedef _T type;};
+    template<typename _T>
+    struct unwrap_refwrapper_type<reference_wrapper<_T>>
+    { typedef _T& type;};
 
     namespace __invoke_detail
     {

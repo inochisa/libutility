@@ -94,6 +94,24 @@ namespace utility
 
 #endif // __utility_has_is_enum
 
+namespace utility
+{
+  namespace trait
+  {
+    namespace type
+    {
+      namespace categories
+      {
+#if !defined(__UTILITY_NO_CPP14__)
+        template<typename _T>
+        constexpr bool is_enum_v = is_enum<_T>::value;
+#endif
+
+      }
+    }
+  }
+}
+
 #include<utility/trait/config/trait_undef.hpp>
 
 #endif // __UTILITY_TRAIT_TYPE_CATEGORIES_IS_ENUM__

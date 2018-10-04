@@ -11,25 +11,13 @@
 #include<utility/config/utility_config.hpp>
 #include<utility/container/container_helper.hpp>
 
-#ifdef ___UTILITY__COMPATIBLE__WITH__STD__
-
-#include<utility>
-
-namespace utility
-{
-  namespace container
-  {
-    using std::pair;
-  }
-}
-
-#else // ___UTILITY__COMPATIBLE__WITH__STD__
-
 #include<utility/algorithm/forward.hpp>
 #include<utility/algorithm/swap.hpp>
 #include<utility/algorithm/possible_swap.hpp>
 
 #include<utility/container/detail/pair_helper.hpp>
+
+#include<utility/trait/opt/__types__.hpp>
 
 namespace utility
 {
@@ -57,7 +45,7 @@ namespace utility
         >
         constexpr pair() noexcept(
           __detail::__pair_default_noexcept<_T1, _T2>::value
-        ):first(), second()
+        ):first{}, second{}
         { }
 
         template<
@@ -66,7 +54,7 @@ namespace utility
         >
         explicit constexpr pair() noexcept(
           __detail::__pair_default_noexcept<_T1, _T2>::value
-        ):first(), second()
+        ):first{}, second{}
         { }
 
         template<
@@ -287,6 +275,18 @@ namespace utility
 
   }
 
+  namespace trait
+  {
+    namespace __opt__
+    {
+      template<typename _Fp, typename _Sp>
+      struct __type_tuple_size__<container::pair<_Fp, _Sp>>
+      { constexpr static size_t value = 2;};
+      template<typename _Fp, typename _Sp>
+      struct __checkout_type_feature__<container::pair<_Fp, _Sp>>
+      { typedef __type_pair__<_Fp, _Sp> type;};
+    }
+  }
 
   namespace algorithm
   {
@@ -304,8 +304,121 @@ namespace utility
     { __a.possible_swap(__b);}
   }
 
-}
+  namespace container
+  {
+    namespace __detail
+    {
+      using trait::__opt__::__checkout_type_feature__;
+      using trait::__opt__::__type_tuple_get__;
+      template<size_t _Id>
+      struct __get_pair;
 
-#endif // ! ___UTILITY__COMPATIBLE__WITH__STD__
+      template<>
+      struct __get_pair<0>
+      {
+        template<typename _T1, typename _T2>
+        __UTILITY_CPP14_CONSTEXPR__
+        static _T1& get(pair<_T1, _T2>& _pair) noexcept
+        { return _pair.first;}
+        template<typename _T1, typename _T2>
+        __UTILITY_CPP14_CONSTEXPR__
+        static const _T1& get(const pair<_T1, _T2>& _pair) noexcept
+        { return _pair.first;}
+        template<typename _T1, typename _T2>
+        __UTILITY_CPP14_CONSTEXPR__
+        static _T1&& get(pair<_T1, _T2>&& _pair) noexcept
+        {
+          using algorithm::forward;
+          return forward<_T1>(_pair.first);
+        }
+        template<typename _T1, typename _T2>
+        __UTILITY_CPP14_CONSTEXPR__
+        static const _T1&& get(
+          const pair<_T1, _T2>&& _pair
+        ) noexcept
+        {
+          using algorithm::forward;
+          return forward<const _T1>(_pair.first);
+        }
+      };
+
+      template<>
+      struct __get_pair<1>
+      {
+        template<typename _T1, typename _T2>
+        __UTILITY_CPP14_CONSTEXPR__
+        static _T2& get(pair<_T1, _T2>& _pair) noexcept
+        { return _pair.second;}
+        template<typename _T1, typename _T2>
+        __UTILITY_CPP14_CONSTEXPR__
+        static const _T2& get(const pair<_T1, _T2>& _pair) noexcept
+        { return _pair.second;}
+        template<typename _T1, typename _T2>
+        __UTILITY_CPP14_CONSTEXPR__
+        static _T2&& get(pair<_T1, _T2>&& _pair) noexcept
+        {
+          using algorithm::forward;
+          return forward<_T2>(_pair.second);
+        }
+        template<typename _T1, typename _T2>
+        __UTILITY_CPP14_CONSTEXPR__
+        static const _T2&& get(
+          const pair<_T1, _T2>&& _pair
+        ) noexcept
+        {
+          using algorithm::forward;
+          return forward<const _T2>(_pair.second);
+        }
+      };
+    }
+
+    template<size_t _Id, typename _T1, typename _T2>
+    __UTILITY_CPP14_CONSTEXPR__
+    typename __detail::__type_tuple_get__<
+      _Id,
+      typename __detail::__checkout_type_feature__<
+        pair<_T1, _T2>
+      >::type
+    >::type&
+    get(pair<_T1, _T2>& _pair) noexcept
+    { return __detail::__get_pair<_Id>::get(_pair);}
+    template<size_t _Id, typename _T1, typename _T2>
+    __UTILITY_CPP14_CONSTEXPR__
+    const typename __detail::__type_tuple_get__<
+      _Id,
+      typename __detail::__checkout_type_feature__<
+        pair<_T1, _T2>
+      >::type
+    >::type&
+    get(const pair<_T1, _T2>& _pair) noexcept
+    { return __detail::__get_pair<_Id>::get(_pair);}
+    template<size_t _Id, typename _T1, typename _T2>
+    __UTILITY_CPP14_CONSTEXPR__
+    typename __detail::__type_tuple_get__<
+      _Id,
+      typename __detail::__checkout_type_feature__<
+        pair<_T1, _T2>
+      >::type
+    >::type&&
+    get(pair<_T1, _T2>&& _pair) noexcept
+    {
+      using algorithm::move;
+      return __detail::__get_pair<_Id>::get(move(_pair));
+    }
+    template<size_t _Id, typename _T1, typename _T2>
+    __UTILITY_CPP14_CONSTEXPR__
+    const typename __detail::__type_tuple_get__<
+      _Id,
+      typename __detail::__checkout_type_feature__<
+        pair<_T1, _T2>
+      >::type
+    >::type&&
+    get(const pair<_T1, _T2>&& _pair) noexcept
+    {
+      using algorithm::move;
+      return __detail::__get_pair<_Id>::get(move(_pair));
+    }
+  }
+}
 
 #endif // ! __UTILITY_CONTAINER_PAIR__

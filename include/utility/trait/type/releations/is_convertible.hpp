@@ -67,12 +67,12 @@ namespace utility
                 >::value>
           struct __is_convertible_check
           {
-            constexpr static trait::size_t __size = 0;
+            constexpr static size_t __size = 0;
           };
           template<typename _T>
           struct __is_convertible_check<_T, 0>
           {
-            constexpr static trait::size_t __size = sizeof(_T);
+            constexpr static size_t __size = sizeof(_T);
           };
 
           template
@@ -158,6 +158,11 @@ namespace utility
         struct is_convertible :
           public __is_convertible_impl::__is_convertible_helper<_F, _T>
         { };
+
+#if !defined(__UTILITY_NO_CPP14__)
+        template<typename _F, typename _T>
+        constexpr bool is_convertible_v = is_convertible<_F, _T>::value;
+#endif
 
       }
     }

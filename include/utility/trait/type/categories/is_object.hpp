@@ -26,6 +26,11 @@ namespace utility
             is_class<_T>::value>
         { };
 
+#if !defined(__UTILITY_NO_CPP14__)
+        template<typename _T>
+        constexpr bool is_object_v = is_object<_T>::value;
+#endif
+
       }
     }
   }

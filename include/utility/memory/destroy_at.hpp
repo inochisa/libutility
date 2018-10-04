@@ -17,7 +17,7 @@ namespace utility
       struct __destroy_at
       {
         static inline void __aux(_T* __ptr)
-        { __ptr->_T();}
+        { __ptr->~_T();}
       };
       template<typename _T>
       struct __destroy_at<_T, true>

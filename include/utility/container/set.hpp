@@ -12,30 +12,16 @@
 #include<utility/config/utility_config.hpp>
 #include<utility/container/container_helper.hpp>
 
-#ifdef ___UTILITY__CHECK__USE__STD___
-
-#include<set>
-
-namespace utility
-{
-  namespace container
-  {
-    using std::set;
-  }
-}
-
-#else // ___UTILITY__CHECK__USE__STD___
-
 #include<utility/algorithm/move.hpp>
 #include<utility/algorithm/swap.hpp>
 #include<utility/algorithm/possible_swap.hpp>
 
-#include<utility/container/impl/pair_value.hpp>
 #include<utility/container/pair.hpp>
 #include<utility/container/compressed_pair.hpp>
 #include<utility/container/white_black_tree.hpp>
 
 #include<utility/trait/trait_helper.hpp>
+#include<utility/trait/opt/__empty__.hpp>
 #include<utility/trait/type/releations/is_same.hpp>
 #include<utility/trait/type/miscellaneous/enable_if.hpp>
 
@@ -99,13 +85,13 @@ namespace utility
           public:
             reference operator*() const
             {
-              using container::get_value;
-              return get_value(*(this->__it));
+              using container::get;
+              return get<1>(*(this->__it));
             }
             pointer operator->() const
             {
-              using container::get_value;
-              return memory::addressof(get_value(*(this->__it)));
+              using container::get;
+              return memory::addressof(get<1>(*(this->__it)));
             }
 
           public:
@@ -134,19 +120,19 @@ namespace utility
       private:
         typedef typename memory::allocator_traits<_Alloc>::template
           rebind_alloc<container::compressed_pair<
-            const _Key, trait::__impl_helper::__empty
+            const _Key, trait::__opt__::__empty__
           >> __allocator;
         typedef container::white_black_tree<
-          _Key, trait::__impl_helper::__empty, _Compare,
+          _Key, trait::__opt__::__empty__, _Compare,
           container::compressed_pair<
-            const _Key, trait::__impl_helper::__empty
+            const _Key, trait::__opt__::__empty__
           >, __allocator> __tree_type;
 
       public:
         typedef _Key                key_type;
         typedef _Key                value_type;
-        typedef size_t     size_type;
-        typedef ptrdiff_t  difference_type;
+        typedef size_t              size_type;
+        typedef ptrdiff_t           difference_type;
         typedef _Compare            key_compare;
         typedef _Compare            value_compare;
         typedef _Alloc              allocator_type;
@@ -200,7 +186,7 @@ namespace utility
           for(_InputIterator __i = __first; __i != __last; ++__i)
           {
             __tree.insert_unique(
-              {*__i, trait::__impl_helper::__empty()}
+              {*__i, trait::__opt__::__empty__{}}
             );
           }
         }
@@ -219,7 +205,7 @@ namespace utility
           for(_InputIterator __i = __first; __i != __last; ++__i)
           {
             __tree.insert_unique(
-              {*__i, trait::__impl_helper::__empty()}
+              {*__i, trait::__opt__::__empty__{}}
             );
           }
         }
@@ -251,7 +237,7 @@ namespace utility
           for(__iterator __i = __initlist.begin(); __i != __initlist.end(); ++__i)
           {
             __tree.insert_unique(
-              {*__i, trait::__impl_helper::__empty()}
+              {*__i, trait::__opt__::__empty__{}}
             );
           }
         }
@@ -266,7 +252,7 @@ namespace utility
           for(__iterator __i = __initlist.begin(); __i != __initlist.end(); ++__i)
           {
             __tree.insert_unique(
-              {*__i, trait::__impl_helper::__empty()}
+              {*__i, trait::__opt__::__empty__{}}
             );
           }
         }
@@ -293,7 +279,7 @@ namespace utility
           for(__iterator __i = __initlist.begin(); __i != __initlist.end(); ++__i)
           {
             __tree.insert_unique(
-              {*__i, trait::__impl_helper::__empty()}
+              {*__i, trait::__opt__::__empty__{}}
             );
           }
           return *this;
@@ -350,7 +336,7 @@ namespace utility
           typedef typename __tree_type::iterator __iterator;
           container::pair<__iterator, bool> __tmp =
             this->__tree.insert_unique(
-              {__val, trait::__impl_helper::__empty()}
+              {__val, trait::__opt__::__empty__{}}
             );
           return container::pair<iterator, bool>{
             iterator{*(__tmp.first).first()}, __tmp.second
@@ -363,7 +349,7 @@ namespace utility
           container::pair<__iterator, bool> __tmp =
             this->__tree.insert_unique({
               algorithm::move(__val),
-              trait::__impl_helper::__empty()
+              trait::__opt__::__empty__{}
             });
           return container::pair<iterator, bool>{
             iterator{*(__tmp.first).first()}, __tmp.second
@@ -376,7 +362,7 @@ namespace utility
           typedef typename __tree_type::iterator __iterator;
           __iterator __tmp = this->__tree.insert_unique(
             __hint.__it,
-            {__val, trait::__impl_helper::__empty()}
+            {__val, trait::__opt__::__empty__{}}
           );
           return iterator{(*__tmp).first()};
         }
@@ -388,7 +374,7 @@ namespace utility
           __iterator __tmp = this->__tree.insert_unique(
             __hint.__it,
             {algorithm::move(__val),
-            trait::__impl_helper::__empty()}
+            trait::__opt__::__empty__{}}
           );
           return iterator{(*__tmp).first()};
         }
@@ -402,7 +388,7 @@ namespace utility
           container::pair<__iterator, bool> __tmp =
             this->__tree.emplace_unique(
               value_type{algorithm::move(__args)...},
-              trait::__impl_helper::__empty()
+              trait::__opt__::__empty__{}
             );
           return container::pair<iterator, bool>{
             iterator{*(__tmp.first).first()}, __tmp.second
@@ -417,7 +403,7 @@ namespace utility
           __iterator __tmp = this->__tree.emplace_unique_hint(
             __hint.__it,
             value_type{algorithm::move(__args)...},
-            trait::__impl_helper::__empty()
+            trait::__opt__::__empty__{}
           );
           return iterator{(*__tmp).first()};
         }
@@ -536,7 +522,5 @@ namespace utility
     }
   }
 }
-
-#endif // ! ___UTILITY__CHECK__USE__STD___
 
 #endif // ! __UTILITY_CONTAINER_SET__

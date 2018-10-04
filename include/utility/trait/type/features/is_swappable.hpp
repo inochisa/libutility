@@ -3,7 +3,10 @@
 #define __UTILITY_TRAIT_TYPE_FEATURES_IS_SWAPPABLE__
 
 #include<utility/trait/trait_helper.hpp>
-#include<utility/algorithm/impl/swap_single.hpp>
+
+#include<utility/algorithm/impl/swap/swap_single.hpp>
+
+#include<utility/trait/opt/__twochar__.hpp>
 #include<utility/trait/type/type_trait_special.hpp>
 #include<utility/trait/type/categories/is_void.hpp>
 #include<utility/trait/type/transform/is_referenceable.hpp>
@@ -24,7 +27,7 @@ namespace utility
         // is_nothrow_swappable(C++17)
         namespace __swappable_impl
         {
-          using __two = trait::__impl_helper::__twochar;
+          using __two = trait::__opt__::__twochar__;
 
           template<typename _T, typename _U = _T,
             bool = !trait::type::categories::is_void<_T>::value

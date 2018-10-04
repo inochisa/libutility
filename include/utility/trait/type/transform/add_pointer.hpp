@@ -33,10 +33,15 @@ namespace utility
         }
         template<typename _T>
         struct add_pointer
-        { typedef typename
-            __add_pointer_impl::__add_pointer_helper<_T>::type type;};
+        {
+          typedef typename
+            __add_pointer_impl::__add_pointer_helper<_T>::type type;
+        };
 
-          }
+        template<typename _T>
+        using add_pointer_t = typename add_pointer<_T>::type;
+
+      }
     }
   }
 }

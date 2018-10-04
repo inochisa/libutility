@@ -3,6 +3,7 @@
 #define __UTILITY_TRAIT_TYPE_FEATURES_IS_IMPLICIT_CONSTRUCTIBLE__
 
 #include<utility/trait/trait_helper.hpp>
+#include<utility/trait/opt/__twochar__.hpp>
 #include<utility/trait/type/type_trait_special.hpp>
 #include<utility/trait/type/features/is_constructible.hpp>
 
@@ -17,7 +18,7 @@ namespace utility
         // is_implicit_constructible
         namespace __is_implicit_constructible
         {
-          using __two = trait::__impl_helper::__twochar;
+          using __two = trait::__opt__::__twochar__;
 
           template<typename _T, typename... _Args>
           struct __is_implicit_constructible_test

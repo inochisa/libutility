@@ -21,7 +21,7 @@ namespace utility
             public trait::false_type
           { };
           template<>
-          struct __is_null_pointer_test<trait::nullptr_t> :
+          struct __is_null_pointer_test<nullptr_t> :
             public trait::true_type
           { };
         }
@@ -37,6 +37,13 @@ namespace utility
             typename
               trait::type::transform::remove_cv<_T>::type>
         { };
+
+#if !defined(__UTILITY_NO_CPP14__)
+        template<typename _T>
+        constexpr bool is_nullptr_t_v = is_nullptr_t<_T>::value;
+        template<typename _T>
+        constexpr bool is_null_pointer_v = is_null_pointer<_T>::value;
+#endif
 
       }
     }

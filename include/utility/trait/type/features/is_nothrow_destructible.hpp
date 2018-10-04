@@ -44,7 +44,7 @@ namespace utility
         struct is_nothrow_destructible<_T&&> :
           public trait::true_type
         { };
-        template<typename _T, trait::size_t _Size>
+        template<typename _T, size_t _Size>
         struct is_nothrow_destructible<_T[_Size]> :
           public is_nothrow_destructible<_T>
         { };

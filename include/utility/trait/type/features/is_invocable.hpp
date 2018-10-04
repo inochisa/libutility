@@ -41,7 +41,7 @@ namespace utility
           struct __is_noexcept_invoke_test<__invoke_member_function_unpacked, _Fn, _Arg, _Args...>
           {
             private:
-              typedef typename __wrapper<_Arg, typename __decay<_Arg>::type>::type _Ori;
+              typedef typename __wrapper__<_Arg, typename __decay<_Arg>::type>::type _Ori;
             public:
               constexpr static bool value = noexcept(((trait::type::special::declval<_Ori>()).*trait::type::special::declval<_Fn>())(trait::type::special::declval<_Args>()...));
           };
@@ -55,7 +55,7 @@ namespace utility
           struct __is_noexcept_invoke_test<__invoke_member_object_unpacked, _Fn, _Arg, _Args...>
           {
             private:
-              typedef typename __wrapper<_Arg, typename __decay<_Arg>::type>::type _Ori;
+              typedef typename __wrapper__<_Arg, typename __decay<_Arg>::type>::type _Ori;
             public:
               constexpr static bool value = noexcept(trait::type::special::declval<_Ori>().*trait::type::special::declval<_Fn>());
           };

@@ -24,7 +24,6 @@
 #include<utility/container/pair.hpp>
 #include<utility/container/compressed_pair.hpp>
 #include<utility/container/vector.hpp>
-#include<utility/container/impl/pair_value.hpp>
 
 #include<utility/trait/type/releations/is_same.hpp>
 #include<utility/trait/type/features/is_nothrow_swappable.hpp>
@@ -40,495 +39,27 @@
 
 #include<utility/miscellaneous/ignore_unused.hpp>
 
+#include<utility/container/impl/hash_table_impl.hpp>
+
 namespace utility
 {
   namespace container
   {
-    namespace __hash_length
-    {
-      const size_t __prime_list[28] =
-      {
-        53UL,         97UL,           193UL,          389UL,
-        769UL,        1543UL,         3079UL,         6151UL,
-        12289UL,      24593UL,        49157UL,        98317UL,
-        196613UL,     393241UL,       786433UL,       1572869UL,
-        3145739UL,    6291469UL,      12582917UL,     25165843UL,
-        50331653UL,   100663319UL,    201326611UL,    402653189UL,
-        805306457UL,  1610612741UL,   3221225473UL,   4294967291UL
-      };
-
-      inline size_t __next_prime(size_t __n) noexcept
-      {
-        const size_t* __pos =
-          algorithm::lower_bound(
-            __prime_list, __prime_list+28, __n
-          );
-        return __pos == __prime_list+28 ? 4294967291UL : *__pos;
-      }
-    }
-
-    template
-    <
-      typename _Key,
-      typename _Value = _Key,
-      typename _Key_Value_Container = container::pair<const _Key, _Value>,
-      typename _Hash = algorithm::hash<_Key>,
-      typename _Key_eq = algorithm::equal_to<void>,
-      typename _Alloc = memory::allocator<_Key_Value_Container>
+    template<
+      typename _Key,                  typename _Value,
+      typename _Key_Value_Container,  typename _Hash,
+      typename _Key_eq,               typename _Alloc
     >
     class hash_table
     {
       private:
-        template
-        <
-          typename __Key,
-          typename __Value,
-          typename __Key_Value_Container
-        >
-        struct __hash_table_node
-        {
-          public:
-            typedef __Key                 __key_type;
-            typedef __Value               __mapped_type;
-            typedef __Key_Value_Container __data_type;
-          public:
-            typedef __hash_table_node<__Key, __Value, __Key_Value_Container>
-              __node_type;
-            typedef __hash_table_node<__Key, __Value, __Key_Value_Container>*
-              __link_type;
-
-          __link_type   __next;
-          __data_type* __data;
-        };
-
-        template
-        <
-          typename __Key,
-          typename __Value,
-          typename __Key_Value_Container,
-          typename __Container
-        >
-        class __hash_table_iterator
-        {
-          private:
-            template<typename, typename, typename, typename, typename, typename>
-            friend class hash_table;
-            template<typename, typename, typename, typename>
-            friend class __hash_table_const_iterator;
-
-          public:
-            typedef helper::forward_iterator_tag
-              iterator_category;
-            typedef __Key                   key_type;
-            typedef __Value                 mapped_type;
-            typedef __Key_Value_Container   value_type;
-            typedef __Container             container_type;
-            typedef value_type&             reference;
-            typedef typename
-              trait::miscellaneous::pointer_traits<value_type*>::pointer
-              pointer;
-            typedef typename
-              trait::miscellaneous::pointer_traits<value_type*>::difference_type
-              difference_type;
-
-          public:
-            typedef __hash_table_iterator<__Key, __Value, __Key_Value_Container, __Container> self;
-
-          private:
-            typedef __hash_table_node<__Key, __Value, __Key_Value_Container> __node_type;
-            typedef __hash_table_node<__Key, __Value, __Key_Value_Container>* __link_type;
-            typedef __Container*    __container_link;
-
-          private:
-            __link_type      __ptr;
-            __container_link __container_ptr;
-
-          public:
-            inline __hash_table_iterator() noexcept:
-              __ptr(nullptr), __container_ptr(nullptr)
-            { }
-            inline explicit __hash_table_iterator(__link_type __link, __container_link __con_link) noexcept:
-              __ptr(__link), __container_ptr(__con_link)
-            { }
-
-          public:
-            self& operator=(const self& __oit)
-            {
-              if(&__oit != this)
-              {
-                this->__ptr = __oit.__ptr;
-                this->__container_ptr = __oit.__container_ptr;
-              }
-              return *this;
-            }
-
-          public:
-            reference operator*() const noexcept
-            { return *(this->__ptr->__data);}
-            pointer operator->() const noexcept
-            { return this->__ptr->__data;}
-
-          public:
-            self& operator++() noexcept
-            {
-              __link_type __old = this->__ptr;
-              this->__ptr = this->__ptr->__next;
-              if(this->__ptr == nullptr)
-              {
-                typename __Container::size_type __pos =
-                  this->__container_ptr->key_hash(get_key(*(__old->__data)), this->__container_ptr->bucket_size())+1;
-                for(;
-                  this->__ptr == nullptr &&
-                    __pos < this->__container_ptr->bucket_size();
-                  ++__pos
-                )
-                { this->__ptr = this->__container_ptr->__bucket[__pos];}
-              }
-              return *this;
-            }
-            self operator++(int) noexcept
-            {
-              self __tmp(*this);
-              this->operator++();
-              return __tmp;
-            }
-
-          public:
-            bool operator==(const self& __o) const noexcept
-            {
-              return this->__ptr == __o.__ptr &&
-                     this->__container_ptr == __o.__container_ptr;
-            }
-            bool operator!=(const self& __o) const noexcept
-            {
-              return this->__ptr != __o.__ptr ||
-                     this->__container_ptr != __o.__container_ptr;
-            }
-        };
-        template
-        <
-          typename __Key,
-          typename __Value,
-          typename __Key_Value_Container,
-          typename __Container
-        >
-        class __hash_table_const_iterator
-        {
-          private:
-            template<typename, typename, typename, typename, typename, typename>
-            friend class hash_table;
-
-          public:
-            typedef helper::forward_iterator_tag
-              iterator_category;
-            typedef __Key                   key_type;
-            typedef __Value                 mapped_type;
-            typedef __Key_Value_Container   value_type;
-            typedef __Container             container_type;
-            typedef const value_type        const_value_type;
-            typedef const value_type&       reference;
-            typedef typename
-              trait::miscellaneous::pointer_traits<const_value_type*>::pointer
-              pointer;
-            typedef typename
-              trait::miscellaneous::pointer_traits<const_value_type*>::difference_type
-              difference_type;
-
-          public:
-            typedef __hash_table_const_iterator<__Key, __Value, __Key_Value_Container, __Container> self;
-
-          private:
-            typedef __hash_table_node<__Key, __Value, __Key_Value_Container> __node_type;
-            typedef __hash_table_node<__Key, __Value, __Key_Value_Container>* __link_type;
-            typedef __Container*    __container_link;
-
-          private:
-            __link_type      __ptr;
-            __container_link __container_ptr;
-
-          public:
-            inline __hash_table_const_iterator() noexcept:
-              __ptr(nullptr), __container_ptr(nullptr)
-            { }
-            inline explicit __hash_table_const_iterator(
-              __link_type __link, __container_link __con_link
-            ) noexcept:
-              __ptr(__link), __container_ptr(__con_link)
-            { }
-            inline __hash_table_const_iterator(
-              const __hash_table_iterator<__Key, __Value, __Key_Value_Container, __Container>& __it
-            ) noexcept:
-              __ptr(__it.__ptr), __container_ptr(__it.__container_ptr)
-            { }
-
-          public:
-            self& operator=(const self& __oit) noexcept
-            {
-              if(&__oit != this)
-              {
-                this->__ptr = __oit.__ptr;
-                this->__container_ptr = __oit.__container_ptr;
-              }
-              return *this;
-            }
-
-          public:
-            reference operator*() const noexcept
-            { return *(this->__ptr->__data);}
-            pointer operator->() const noexcept
-            { return this->__ptr->__data;}
-
-          public:
-            self& operator++() noexcept
-            {
-              __link_type __old = this->__ptr;
-              this->__ptr = this->__ptr->__next;
-              if(this->__ptr == nullptr)
-              {
-                typename __Container::size_type __pos =
-                  this->__container_ptr->key_hash(get_key(*(__old->__data)), this->__container_ptr->bucket_size())+1;
-                for(;
-                  this->__ptr == nullptr &&
-                    __pos < this->__container_ptr->bucket_size();
-                  ++__pos
-                )
-                { this->__ptr = this->__container_ptr->__bucket[__pos];}
-              }
-              return *this;
-            }
-            self operator++(int) noexcept
-            {
-              self __tmp(*this);
-              this->operator++();
-              return __tmp;
-            }
-
-          public:
-            bool operator==(const self& __o) const noexcept
-            {
-              return this->__ptr == __o.__ptr &&
-                     this->__container_ptr == __o.__container_ptr;
-            }
-            bool operator!=(const self& __o) const noexcept
-            {
-              return this->__ptr != __o.__ptr ||
-                     this->__container_ptr != __o.__container_ptr;
-            }
-        };
-
-        template
-        <
-          typename __Key,
-          typename __Value,
-          typename __Key_Value_Container,
-          typename __Container
-        >
-        class __hash_table_local_iterator
-        {
-          private:
-            template<typename, typename, typename, typename, typename, typename>
-            friend class hash_table;
-            template<typename, typename, typename, typename>
-            friend class __hash_table_const_local_iterator;
-
-          public:
-            typedef helper::forward_iterator_tag
-              iterator_category;
-            typedef __Key                             key_type;
-            typedef __Value                           mapped_type;
-            typedef __Key_Value_Container             value_type;
-            typedef __Container                       container_type;
-            typedef typename __Container::size_type   size_type;
-            typedef value_type&                       reference;
-            typedef typename
-              trait::miscellaneous::pointer_traits<value_type*>::pointer
-              pointer;
-            typedef typename
-              trait::miscellaneous::pointer_traits<value_type*>::difference_type
-              difference_type;
-
-          public:
-            typedef __hash_table_local_iterator<__Key, __Value, __Key_Value_Container, __Container> self;
-
-          private:
-            typedef __hash_table_node<__Key, __Value, __Key_Value_Container> __node_type;
-            typedef __hash_table_node<__Key, __Value, __Key_Value_Container>* __link_type;
-            typedef __Container*    __container_link;
-
-          private:
-            __link_type      __ptr;
-            size_type        __bucket_num;
-            __container_link __container_ptr;
-
-          public:
-            inline __hash_table_local_iterator() noexcept:
-              __ptr(nullptr)
-            { }
-            inline explicit __hash_table_local_iterator(
-              __link_type __link, size_type __num,
-              __container_link __con_link
-            ) noexcept:
-              __ptr(__link), __bucket_num(__num),
-              __container_ptr(__con_link)
-            { }
-
-          public:
-            self& operator=(const self& __oit) noexcept
-            {
-              if(&__oit != this)
-              {
-                this->__ptr = __oit.__ptr;
-                this->__bucket_num = __oit.__bucket_num;
-                this->__container_ptr = __oit.__container_ptr;
-              }
-              return *this;
-            }
-
-          public:
-            reference operator*() const noexcept
-            { return *(this->__ptr->__data);}
-            pointer operator->() const noexcept
-            { return this->__ptr->__data;}
-
-          public:
-            self& operator++() noexcept
-            {
-              this->__ptr = this->__ptr->__next;
-              return *this;
-            }
-            self operator++(int) noexcept
-            {
-              self __tmp(*this);
-              this->operator++();
-              return __tmp;
-            }
-
-          public:
-            bool operator==(const self& __o) const noexcept
-            {
-              return this->__ptr == __o.__ptr &&
-                     this->__bucket_num == __o.__bucket_num &&
-                     this->__container_ptr == __o.__container_ptr;
-            }
-            bool operator!=(const self& __o) const noexcept
-            {
-              return this->__ptr != __o.__ptr ||
-                     this->__bucket_num != __o.__bucket_num ||
-                     this->__container_ptr != __o.__container_ptr;
-            }
-
-        };
-
-        template
-        <
-          typename __Key,
-          typename __Value,
-          typename __Key_Value_Container,
-          typename __Container
-        >
-        class __hash_table_const_local_iterator
-        {
-          private:
-            template<typename, typename, typename, typename, typename, typename>
-            friend class hash_table;
-
-          public:
-            typedef helper::forward_iterator_tag
-              iterator_category;
-            typedef __Key                             key_type;
-            typedef __Value                           mapped_type;
-            typedef __Key_Value_Container             value_type;
-            typedef const value_type                  const_value_type;
-            typedef __Container                       container_type;
-            typedef typename __Container::size_type   size_type;
-            typedef const value_type&                 reference;
-            typedef typename
-              trait::miscellaneous::pointer_traits<const_value_type*>::pointer
-              pointer;
-            typedef typename
-              trait::miscellaneous::pointer_traits<const_value_type*>::difference_type
-              difference_type;
-
-          public:
-            typedef __hash_table_const_local_iterator<__Key, __Value, __Key_Value_Container, __Container> self;
-
-          private:
-            typedef __hash_table_node<__Key, __Value, __Key_Value_Container> __node_type;
-            typedef __hash_table_node<__Key, __Value, __Key_Value_Container>* __link_type;
-            typedef __Container*    __container_link;
-
-          private:
-            __link_type      __ptr;
-            size_type        __bucket_num;
-            __container_link __container_ptr;
-
-          public:
-            inline __hash_table_const_local_iterator() noexcept:
-              __ptr(nullptr)
-            { }
-            inline explicit __hash_table_const_local_iterator(
-              __link_type __link, size_type __num,
-              __container_link __con_link
-            ) noexcept:
-              __ptr(__link), __bucket_num(__num),
-              __container_ptr(__con_link)
-            { }
-            inline __hash_table_const_local_iterator(
-              const __hash_table_local_iterator<__Key, __Value, __Key_Value_Container, __Container>& __it
-            ) noexcept:
-              __ptr(__it.__ptr), __bucket_num(__it.__bucket_num),
-              __container_ptr(__it.__container_ptr)
-            { }
-
-          public:
-            self& operator=(const self& __oit) noexcept
-            {
-              if(&__oit != this)
-              {
-                this->__ptr = __oit.__ptr;
-                this->__bucket_num = __oit.__bucket_num;
-                this->__container_ptr = __oit.__container_ptr;
-              }
-              return *this;
-            }
-
-          public:
-            reference operator*() const noexcept
-            { return *(this->__ptr->__data);}
-            pointer operator->() const noexcept
-            { return this->__ptr->__data;}
-
-          public:
-            self& operator++() noexcept
-            {
-              this->__ptr = this->__ptr->__next;
-              return *this;
-            }
-            self operator++(int) noexcept
-            {
-              self __tmp(*this);
-              this->operator++();
-              return __tmp;
-            }
-
-          public:
-            bool operator==(const self& __o) const noexcept
-            {
-              return this->__ptr == __o.__ptr &&
-                     this->__bucket_num == __o.__bucket_num &&
-                     this->__container_ptr == __o.__container_ptr;
-            }
-            bool operator!=(const self& __o) const noexcept
-            {
-              return this->__ptr != __o.__ptr ||
-                     this->__bucket_num != __o.__bucket_num ||
-                     this->__container_ptr != __o.__container_ptr;
-            }
-
-        };
+        template<typename, typename, typename, typename>
+        friend class __detail::__hash_table_iterator;
+        template<typename, typename, typename, typename>
+        friend class __detail::__hash_table_const_iterator;
 
       public:
-        typedef __hash_table_node<_Key, _Value, _Key_Value_Container>
+        typedef __detail::__hash_table_node<_Key, _Value, _Key_Value_Container>
           __node_type;
         typedef __node_type* __link_type;
         typedef memory::allocator<__node_type>
@@ -569,16 +100,16 @@ namespace utility
 
       public:
         typedef
-          __hash_table_iterator<key_type, mapped_type, value_type, __self_type>
+          __detail::__hash_table_iterator<key_type, mapped_type, value_type, __self_type>
           iterator;
         typedef
-          __hash_table_const_iterator<key_type, mapped_type, value_type, __self_type>
+          __detail::__hash_table_const_iterator<key_type, mapped_type, value_type, __self_type>
           const_iterator;
         typedef
-          __hash_table_local_iterator<key_type, mapped_type, value_type, __self_type>
+          __detail::__hash_table_local_iterator<key_type, mapped_type, value_type, __self_type>
           local_iterator;
         typedef
-          __hash_table_const_local_iterator<key_type, mapped_type, value_type, __self_type>
+          __detail::__hash_table_const_local_iterator<key_type, mapped_type, value_type, __self_type>
           const_local_iterator;
 
       public: // assert:
@@ -1752,14 +1283,14 @@ namespace utility
               this->__mis.second(), __root->__data
             );
             allocator_traits_type::deallocate(
-              this->__mis.second(), __root->__data
+              this->__mis.second(), __root->__data, 1
             );
           }
           __node_allocator_traits_type::destroy(
             this->__load_allocator.second(), __root
           );
           __node_allocator_traits_type::deallocate(
-            this->__load_allocator.second(), __root
+            this->__load_allocator.second(), __root, 1
           );
           return;
         }
@@ -1788,14 +1319,14 @@ namespace utility
         UTILITY_ALWAYS_INLINE
         static inline const key_type& __get_key(const value_type& __con)
         {
-          using container::get_key;
-          return get_key(__con);
+          using container::get;
+          return get<0>(__con);
         }
         UTILITY_ALWAYS_INLINE
         static inline const mapped_type& __get_value(const value_type& __con)
         {
-          using container::get_value;
-          return get_value(__con);
+          using container::get;
+          return get<1>(__con);
         }
     };
 
@@ -1827,8 +1358,7 @@ namespace utility
 
   namespace algorithm
   {
-    template
-    <
+    template<
       typename _Key,
       typename _Value,
       typename _Key_Value_Container,
@@ -1843,8 +1373,7 @@ namespace utility
         _Key_Value_Container, _Hash, _Key_eq, _Alloc>& __y
     ) noexcept(noexcept(__x.swap(__y)))
     { __x.swap(__y);}
-    template
-    <
+    template<
       typename _Key,
       typename _Value,
       typename _Key_Value_Container,

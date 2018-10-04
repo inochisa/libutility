@@ -3,22 +3,18 @@
 #define __UTILITY_ALGORITHM_SORT__
 
 #include<utility/config/utility_config.hpp>
-#include<utility/algorithm/impl/select_sort.hpp>
-#include<utility/algorithm/impl/bubble_sort.hpp>
-#include<utility/algorithm/impl/cocktail_shaker_sort.hpp>
-#include<utility/algorithm/impl/odd_even_sort.hpp>
-#include<utility/algorithm/impl/comb_sort.hpp>
-#include<utility/algorithm/impl/gnome_sort.hpp>
-#include<utility/algorithm/impl/insertion_sort.hpp>
-#include<utility/algorithm/impl/shell_sort.hpp>
-#include<utility/algorithm/impl/cycle_sort.hpp>
-#include<utility/algorithm/impl/heap_sort.hpp>
-#include<utility/algorithm/impl/quick_sort.hpp>
-#include<utility/algorithm/impl/introspective_sort.hpp>
-
-#ifdef UTILITY_ALGORITHM_SORT_HAS_EXTRA
-#include<utility/algorithm/experimental/enhanced_merge_sort.hpp>
-#endif // ! UTILITY_ALGORITHM_SORT_HAS_EXTRA
+#include<utility/algorithm/impl/sort/select_sort.hpp>
+#include<utility/algorithm/impl/sort/bubble_sort.hpp>
+#include<utility/algorithm/impl/sort/cocktail_shaker_sort.hpp>
+#include<utility/algorithm/impl/sort/odd_even_sort.hpp>
+#include<utility/algorithm/impl/sort/comb_sort.hpp>
+#include<utility/algorithm/impl/sort/gnome_sort.hpp>
+#include<utility/algorithm/impl/sort/insertion_sort.hpp>
+#include<utility/algorithm/impl/sort/shell_sort.hpp>
+#include<utility/algorithm/impl/sort/cycle_sort.hpp>
+#include<utility/algorithm/impl/sort/heap_sort.hpp>
+#include<utility/algorithm/impl/sort/quick_sort.hpp>
+#include<utility/algorithm/impl/sort/introspective_sort.hpp>
 
 #include<utility/trait/type/transform/add_reference.hpp>
 #include<utility/algorithm/algorithm_auxiliary.hpp>
@@ -196,17 +192,6 @@ namespace utility
      *     <td>\f$logn\f$</td>
      *     <td>No</td>
      *     <td>Partitioning & Selection</td>
-     *   </tr>
-     *   <tr>
-     *     <td>enhanced merge sort(\b experimental)</td>
-     *     <td>enhanced_merge_sort_tag</td>
-     *     <td>RandomAccessIterator</td>
-     *     <td>\f$nlog^{2}n\f$</td>
-     *     <td>\f$n\f$</td>
-     *     <td>\f$nlog^{2}n\f$</td>
-     *     <td>\f$1\f$</td>
-     *     <td>No</td>
-     *     <td>Partitioning & Merging</td>
      *   </tr>
      * </table>
      * the default sort tag is \a introspective_sort_tag.<br/>

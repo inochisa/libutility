@@ -3,6 +3,7 @@
 #define __UTILITY_TRAIT_TYPE_TRANSFORM_IS_REFERENECABLE__
 
 #include<utility/trait/trait_helper.hpp>
+#include<utility/trait/opt/__twochar__.hpp>
 #include<utility/trait/type/releations/is_same.hpp>
 
 namespace utility
@@ -18,7 +19,7 @@ namespace utility
           template<typename _T>
           _T& __is_referenceable_test(int);
           template<typename _T>
-          trait::__impl_helper::__twochar
+          trait::__opt__::__twochar__
             __is_referenceable_test(...);
 
         }
@@ -27,7 +28,7 @@ namespace utility
           public trait::integral_constant<bool,
           !trait::type::releations::is_same<
             decltype(__is_referenceable_impl::__is_referenceable_test<_T>(0)),
-            trait::__impl_helper::__twochar>::value>
+            trait::__opt__::__twochar__>::value>
         { };
 
       }

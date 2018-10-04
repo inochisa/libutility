@@ -38,6 +38,10 @@ namespace utility
 
         template<typename _T>
         using remove_cv_ref = remove_cv_reference<_T>;
+        template<typename _T>
+        using remove_cv_ref_t = typename remove_cv_reference<_T>::type;
+        template<typename _T>
+        using remove_cv_reference_t = typename remove_cv_reference<_T>::type;
       }
     }
   }

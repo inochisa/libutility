@@ -4,21 +4,6 @@
 
 #include<utility/config/utility_config.hpp>
 
-#ifdef ___UTILITY__CHECK__USE__STD___
-
-#include<memory>
-
-namespace utility
-{
-  namespace container
-  {
-    using std::unique_ptr;
-    using std::make_unique;
-  }
-}
-
-#else // ___UTILITY__CHECK__USE__STD___
-
 #include<utility/algorithm/algorithm_auxiliary.hpp>
 #include<utility/algorithm/move.hpp>
 #include<utility/algorithm/swap.hpp>
@@ -27,6 +12,7 @@ namespace utility
 #include<utility/memory/default_delete.hpp>
 
 #include<utility/trait/trait_helper.hpp>
+#include<utility/trait/opt/__twochar__.hpp>
 #include<utility/trait/type/categories/is_null_pointer.hpp>
 #include<utility/trait/type/categories/is_pointer.hpp>
 #include<utility/trait/type/categories/is_reference.hpp>
@@ -56,7 +42,7 @@ namespace utility
   {
     namespace __unique_ptr_impl
     {
-      using __two = trait::__impl_helper::__twochar;
+      using __two = trait::__opt__::__twochar__;
       template<typename _Deleter>
       struct __unique_ptr_pointer_test
       {
@@ -1073,8 +1059,6 @@ namespace utility
     { __x.swap(__y);}
   }
 }
-
-#endif // ! ___UTILITY__CHECK__USE__STD___
 
 namespace utility
 {

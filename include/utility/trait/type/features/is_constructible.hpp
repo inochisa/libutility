@@ -137,7 +137,7 @@ namespace utility
           struct __is_default_constructible_test<_T[], false> : public
             trait::false_type
           { };
-          template<typename _T, trait::size_t _Size>
+          template<typename _T, size_t _Size>
           struct __is_default_constructible_test<_T[_Size], false>: public
             __is_default_constructible_test<typename
               trait::type::transform::remove_all_extents<_T>::type>

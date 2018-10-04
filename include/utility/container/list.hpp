@@ -11,20 +11,6 @@
 #include<utility/config/utility_config.hpp>
 #include<utility/container/container_helper.hpp>
 
-#ifdef ___UTILITY__CHECK__USE__STD___
-
-#include<list>
-
-namespace utility
-{
-  namespace container
-  {
-    using std::list;
-  }
-}
-
-#else // ___UTILITY__CHECK__USE__STD___
-
 #include<utility/algorithm/algorithm_auxiliary.hpp>
 #include<utility/algorithm/swap.hpp>
 #include<utility/algorithm/possible_swap.hpp>
@@ -52,214 +38,18 @@ namespace utility
 #include<utility/iterator/distance.hpp>
 #include<utility/iterator/next.hpp>
 
+#include<utility/container/impl/list_impl.hpp>
+
 namespace utility
 {
   namespace container
   {
-    template
-    <
-      typename _T,
-      typename _Alloc = memory::allocator<_T>
-    >
+    template<typename _T, typename _Alloc>
     class list
     {
       private:
-        template<typename __Value>
-        struct __list_node
-        {
-          typedef __list_node*  __node_link;
-          typedef __Value       __value_type;
-
-          __node_link     __prev;
-          __node_link     __next;
-          __value_type*   __data;
-          __list_node() = default;
-          __list_node(__node_link __p, __node_link __n):
-            __prev(__p), __next(__n), __data(nullptr)
-          { }
-
-          UTILITY_ALWAYS_INLINE
-          inline void reverse()
-          {
-            using algorithm::swap;
-            swap(__prev, __next);
-          }
-        };
-      private:
-        template<typename __Value>
-        class __list_iterator
-        {
-          private:
-            template<typename>
-            friend class __list_const_iterator;
-            template<typename, typename>
-            friend class list;
-          public:
-            typedef helper::bidirectional_iterator_tag
-              iterator_category;
-            typedef __Value value_type;
-            typedef value_type& reference;
-            typedef typename
-              trait::miscellaneous::pointer_traits<__Value*>::pointer pointer;
-            typedef typename
-              trait::miscellaneous::pointer_traits<__Value*>::difference_type difference_type;
-
-          public:
-            typedef __list_iterator<__Value>  self;
-
-          private:
-            typedef __list_node<value_type>* __link_type;
-
-          private:
-            __link_type __ptr;
-
-          public:
-            inline __list_iterator() noexcept:
-              __ptr(nullptr)
-            { }
-            inline explicit __list_iterator(__link_type __link) noexcept:
-              __ptr(__link)
-            { }
-
-          public:
-            self& operator=(const self& __other) noexcept
-            {
-              if(this != &__other)
-              { this->__ptr = __other.__ptr;}
-              return *this;
-            }
-
-          public:
-            reference operator*() const noexcept
-            { return *(this->__ptr->__data);}
-            pointer operator->() const noexcept
-            { return this->__ptr->__data;}
-
-          public:
-            self& operator++() noexcept
-            {
-              this->__ptr = this->__ptr->__next;
-              return *this;
-            }
-            self operator++(int) noexcept
-            {
-              self __it = *this;
-              this->__ptr = this->__ptr->__next;
-              return __it;
-            }
-            self& operator--() noexcept
-            {
-              this->__ptr = this->__ptr->__prev;
-              return *this;
-            }
-            self operator--(int) noexcept
-            {
-              self __it = *this;
-              this->__ptr = this->__ptr->__prev;
-              return __it;
-            }
-
-          public:
-            bool operator==(const self& __other) const noexcept
-            { return this->__ptr == __other.__ptr;}
-            bool operator!=(const self& __other) const noexcept
-            { return !(this->operator==(__other));}
-
-        };
-        template<typename __Value>
-        class __list_const_iterator
-        {
-          private:
-            template<typename, typename>
-            friend class list;
-          public:
-            typedef helper::bidirectional_iterator_tag
-              iterator_category;
-            typedef __Value value_type;
-            typedef const value_type const_value_type;
-            typedef const value_type& reference;
-            typedef typename
-              trait::miscellaneous::pointer_traits<const_value_type*>::pointer
-              pointer;
-            typedef typename
-              trait::miscellaneous::pointer_traits<const_value_type*>::difference_type
-              difference_type;
-
-          public:
-            typedef __list_const_iterator<__Value>  self;
-
-          private:
-            typedef __list_node<value_type>* __link_type;
-
-          private:
-            __link_type __ptr;
-
-          public:
-            inline __list_const_iterator() noexcept:
-              __ptr(nullptr)
-            { }
-            inline explicit __list_const_iterator(__link_type __link) noexcept:
-              __ptr(__link)
-            { }
-            inline __list_const_iterator(const __list_iterator<__Value>& __it) noexcept:
-              __ptr(__it.__ptr)
-            { }
-
-          public:
-            self& operator=(const self& __other) noexcept
-            {
-              if(this != &__other)
-              { this->__ptr = __other.__ptr;}
-              return *this;
-            }
-            self& operator=(
-              const __list_iterator<__Value>& __other
-            ) noexcept
-            {
-              this->__ptr = __other.__ptr;
-              return *this;
-            }
-
-          public:
-            reference operator*() const noexcept
-            { return *(this->__ptr->__data);}
-            pointer operator->() const noexcept
-            { return this->__ptr->__data;}
-
-          public:
-            self& operator++() noexcept
-            {
-              this->__ptr = this->__ptr->__next;
-              return *this;
-            }
-            self operator++(int) noexcept
-            {
-              self __it = *this;
-              this->__ptr = this->__ptr->__next;
-              return __it;
-            }
-            self& operator--() noexcept
-            {
-              this->__ptr = this->__ptr->__prev;
-              return *this;
-            }
-            self operator--(int) noexcept
-            {
-              self __it = *this;
-              this->__ptr = this->__ptr->__prev;
-              return __it;
-            }
-
-          public:
-            bool operator==(const self& __other) const noexcept
-            { return this->__ptr == __other.__ptr;}
-            bool operator!=(const self& __other) const noexcept
-            { return !(this->operator==(__other));}
-        };
-
-      private:
-        typedef __list_node<_T>   __node_type;
-        typedef __node_type*      __link_type;
+        typedef __detail::__list_node<_T>   __node_type;
+        typedef __node_type*                __link_type;
         typedef memory::allocator<__node_type>
           __node_allocator_type;
         typedef memory::allocator_traits<__node_allocator_type>
@@ -268,8 +58,8 @@ namespace utility
       public:
         typedef _T                    value_type;
         typedef _Alloc                allocator_type;
-        typedef size_t     size_type;
-        typedef ptrdiff_t  difference_type;
+        typedef size_t                size_type;
+        typedef ptrdiff_t             difference_type;
         typedef value_type&           reference;
         typedef const value_type&     const_reference;
 
@@ -282,10 +72,10 @@ namespace utility
         typedef typename allocator_traits_type::const_pointer const_pointer;
 
       public:
-        typedef __list_iterator<value_type> iterator;
+        typedef __detail::__list_iterator<value_type> iterator;
         typedef
           helper::reverse_iterator<iterator> reverse_iterator;
-        typedef __list_const_iterator<value_type> const_iterator;
+        typedef __detail::__list_const_iterator<value_type> const_iterator;
         typedef
           helper::reverse_iterator<const_iterator> const_reverse_iterator;
 
@@ -356,33 +146,33 @@ namespace utility
           { this->push_back(*__first);}
         }
 
-        list(const list& __other):
-          __base{nullptr, __other.__base.second()},
-          __mis{0, __other.__mis.second()}
+        list(const list& _other):
+          __base{nullptr, _other.__base.second()},
+          __mis{0, _other.__mis.second()}
         {
           this->init_base();
-          for(const_iterator __it = __other.begin();
-            __it != __other.end(); ++__it)
+          for(const_iterator __it = _other.begin();
+            __it != _other.end(); ++__it)
           { this->push_back(*__it);}
         }
-        list(const list& __other, const allocator_type& __alloc):
-          __base{nullptr, __other.__base.second()},
+        list(const list& _other, const allocator_type& __alloc):
+          __base{nullptr, _other.__base.second()},
           __mis{0U, __alloc}
         {
           this->init_base();
-          for(const_iterator __it = __other.begin();
-            __it != __other.end(); ++__it)
+          for(const_iterator __it = _other.begin();
+            __it != _other.end(); ++__it)
           { this->push_back(*__it);}
         }
 
-        list(list&& __other):
-          __base{algorithm::move(__other.__base)},
-          __mis{algorithm::move(__other.__mis)}
-        { __other.__base.first() = nullptr;}
-        list(list&& __other, const allocator_type& __alloc):
-          __base{algorithm::move(__other.__base)},
-          __mis{__other.__mis.first(), __alloc}
-        { __other.__base.first() = nullptr;}
+        list(list&& _other):
+          __base{algorithm::move(_other.__base)},
+          __mis{algorithm::move(_other.__mis)}
+        { _other.__base.first() = nullptr;}
+        list(list&& _other, const allocator_type& __alloc):
+          __base{algorithm::move(_other.__base)},
+          __mis{_other.__mis.first(), __alloc}
+        { _other.__base.first() = nullptr;}
 
         list(initializer_list<value_type> __initlist,
           const allocator_type& __alloc = allocator_type()
@@ -400,12 +190,12 @@ namespace utility
 
       //!< \todo this part is not well prepared
       public:
-        list& operator=(const list& __other)
+        list& operator=(const list& _other)
         {
-          if(&__other != this)
+          if(&_other != this)
           {
-            this->__mis.second() = __other.__mis.second();
-            this->__base.second() = __other.__base.second();
+            this->__mis.second() = _other.__mis.second();
+            this->__base.second() = _other.__base.second();
             if(this->__base.first() == nullptr)
             {
               this->__base.first() =
@@ -414,20 +204,20 @@ namespace utility
               this->__base.first()->__prev = this->__base.first();
               this->__base.first()->__next = this->__base.first();
             }
-            this->assign(__other.begin(), __other.end());
+            this->assign(_other.begin(), _other.end());
           }
           return *this;
         }
-        list& operator=(list&& __other)
+        list& operator=(list&& _other)
         {
-          if(&__other != this)
+          if(&_other != this)
           {
             this->force_clear();
             this->__mis =
-              algorithm::move(__other.__mis);
+              algorithm::move(_other.__mis);
             this->__base =
-              algorithm::move(__other.__base);
-            __other.__base.first() = nullptr;
+              algorithm::move(_other.__base);
+            _other.__base.first() = nullptr;
           }
           return *this;
         }
@@ -632,7 +422,7 @@ namespace utility
           _Inputiterator __first, _Inputiterator __last)
         {
           if(__first == __last)
-          { return iterator(__pos.__ptr);}
+          { return iterator{__pos.__ptr};}
           container::pair<__link_type, __link_type> __chain =
             this->__allocate_node_chain(__first, __last);
           __link_type __tpos = __pos.__ptr;
@@ -718,21 +508,21 @@ namespace utility
         }
 
       public:
-        void swap(list& __other) noexcept(
+        void swap(list& _other) noexcept(
           trait::type::features::is_nothrow_swappable<allocator_type>::value
         )
         {
           using algorithm::swap;
-          swap(this->__mis,   __other.__mis);
-          swap(this->__base,  __other.__base);
+          swap(this->__mis,   _other.__mis);
+          swap(this->__base,  _other.__base);
         }
-        void possible_swap(list& __other) noexcept(
+        void possible_swap(list& _other) noexcept(
           trait::type::features::is_nothrow_possible_swappable<allocator_type>::value
         )
         {
           using algorithm::possible_swap;
-          possible_swap(this->__mis,  __other.__mis);
-          possible_swap(this->__base, __other.__base);
+          possible_swap(this->__mis,  _other.__mis);
+          possible_swap(this->__base, _other.__base);
         }
 
       public:
@@ -841,22 +631,22 @@ namespace utility
         }
 
       public:
-        inline void merge(list& __other)
-        { this->merge(__other, algorithm::less<value_type>{});}
-        inline void merge(list&& __other)
-        { this->merge(__other, algorithm::less<value_type>{});}
+        inline void merge(list& _other)
+        { this->merge(_other, algorithm::less<value_type>{});}
+        inline void merge(list&& _other)
+        { this->merge(_other, algorithm::less<value_type>{});}
         template<typename _Compare>
-        void merge(list& __other, _Compare __compare)
+        void merge(list& _other, _Compare __compare)
         {
-          if(&__other != this)
+          if(&_other != this)
           {
             __link_type __tlink = this->__base.first();
-            for(iterator __it = __other.begin(); __it != __other.end();)
+            for(iterator __it = _other.begin(); __it != _other.end();)
             {
               __tlink = __tlink->__next;
               if(__tlink == this->__base.first())
               {
-                this->splice(this->end(), __other);
+                this->splice(this->end(), _other);
                 return;
               }
               __link_type __ulink = __it.__ptr;
@@ -866,13 +656,13 @@ namespace utility
                 __node_insert(__ulink, __tlink);
               }
             }
-            this->__mis.first() += __other.__size;
-            __other.__size = 0U;
+            this->__mis.first() += _other.__size;
+            _other.__size = 0U;
           }
         }
         template<typename _Compare>
-        void merge(list&& __other, _Compare __compare)
-        { this->merge(__other, __compare);}
+        void merge(list&& _other, _Compare __compare)
+        { this->merge(_other, __compare);}
 
       public:
         inline void sort()
@@ -925,7 +715,7 @@ namespace utility
 #endif // ! UTILITY_DEALLOCATE_EMPTY
 
             __node_allocator_traits_type::deallocate(
-              this->__base.second(), this->__base.first()
+              this->__base.second(), this->__base.first(), 1
             );
 
             this->__base.first() = nullptr;
@@ -969,10 +759,10 @@ namespace utility
           if(__link->__data != nullptr)
           {
             allocator_traits_type::destroy(this->__mis.second(), __link->__data);
-            allocator_traits_type::deallocate(this->__mis.second(), __link->__data);
+            allocator_traits_type::deallocate(this->__mis.second(), __link->__data, 1);
           }
           __node_allocator_traits_type::destroy(this->__base.second(), __link);
-          __node_allocator_traits_type::deallocate(this->__base.second(), __link);
+          __node_allocator_traits_type::deallocate(this->__base.second(), __link, 1);
         }
         UTILITY_ALWAYS_INLINE
         inline container::pair<__link_type, __link_type>
@@ -1214,7 +1004,5 @@ namespace utility
     }
   }
 }
-
-#endif // ! ___UTILITY__CHECK__USE__STD___
 
 #endif // ! __UTILITY_CONTAINER_LIST__

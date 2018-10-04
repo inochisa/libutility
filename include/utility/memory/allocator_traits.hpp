@@ -3,10 +3,14 @@
 #define __UTILITY_MEMORY_ALLOCATOR_TRAITS__
 
 #include<utility/config/utility_config.hpp>
+
 #include<utility/algorithm/forward.hpp>
+
 #include<utility/memory/basic_allocator.hpp>
-#include<utility/trait/type/type_trait_special.hpp>
+
 #include<utility/trait/trait_helper.hpp>
+#include<utility/trait/opt/__twochar__.hpp>
+#include<utility/trait/type/type_trait_special.hpp>
 #include<utility/trait/type/releations/is_same.hpp>
 #include<utility/trait/type/features/is_constructible.hpp>
 #include<utility/trait/type/features/is_trivially_destructible.hpp>
@@ -21,7 +25,7 @@ namespace utility
   {
     namespace __alloc_traits_impl
     {
-      using __two = trait::__impl_helper::__twochar;
+      using __two = trait::__opt__::__twochar__;
 
       template<typename _T>
       struct __alloc_pointer_test
@@ -604,8 +608,6 @@ namespace utility
               allocator_type, size_type, const_void_pointer>());
         }
 
-        static inline void deallocate(allocator_type& __alloc, pointer __ptr)
-        { __alloc.deallocate(__ptr, 1U);}
         static inline void deallocate(allocator_type& __alloc, pointer __ptr, size_type __size)
         { __alloc.deallocate(__ptr, __size);}
 

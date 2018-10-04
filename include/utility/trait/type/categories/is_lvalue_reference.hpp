@@ -22,6 +22,11 @@ namespace utility
           public trait::true_type
         { };
 
+#if !defined(__UTILITY_NO_CPP14__)
+        template<typename _T>
+        constexpr bool is_lvalue_reference_v = is_lvalue_reference<_T>::value;
+#endif
+
       }
     }
   }

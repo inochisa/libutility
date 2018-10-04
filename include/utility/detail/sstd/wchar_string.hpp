@@ -10,11 +10,9 @@
 
 #include<utility/config/utility_config.hpp>
 
-
 #ifndef __WINT_TYPE__
 # define __WINT_TYPE__ unsigned int
 #endif // ! __WINT_TYPE__
-
 #ifndef WEOF
 # define WEOF (0xffffffffu)
 #endif // ! WEOF
@@ -27,10 +25,20 @@ namespace utility
     {
       namespace charS
       {
+        /** \addtogroup charS
+         *  @{
+         */
+        /** \addtogroup Constant
+         *  @{
+         */
         // Constant
         typedef __WINT_TYPE__ wint_t;
         constexpr wchar_t weof = WEOF;
+        /** @}*/
 
+        /** \addtogroup Type
+         *  @{
+         */
         // Type
         struct mbstate_t
         {
@@ -41,16 +49,167 @@ namespace utility
             char __wchb[4];
           } __value;
         };
+        /** @}*/
 
-        // Helper
 
+
+        /** \addtogroup Helper
+         *  @{
+         */
         /**
          * \brief find the end of a string(help function)
          *
          * the wide character version of \c strend
-         *
-         * \see detail::sstd::charS::strend
          */
+        inline wchar_t* wcsend(wchar_t* __wstr) noexcept;
+        /**
+         * \overload inline const wchar_t* wcsend(const wchar_t* __wstr) noexcept
+         */
+        inline const wchar_t* wcsend(const wchar_t* __wstr) noexcept;
+        /**
+         * \brief find the length of a string(help function)
+         *
+         * the wide character version of \c strlen
+         */
+        inline ptrdiff_t wcslen(const wchar_t* __wstr) noexcept;
+        /** @}*/
+
+        /** \addtogroup Copying
+         *  @{
+         */
+        /**
+         * \brief Copy string
+         *
+         * the wide character version of \c strcpy
+         */
+        inline wchar_t* wcscpy(wchar_t* __wdest, const wchar_t* __wsrc) noexcept;
+        /**
+         * \brief Copy string
+         *
+         * the wide character version of \c stpcpy
+         */
+        inline wchar_t* wcpcpy(wchar_t* __wdest, const wchar_t* __wsrc) noexcept;
+        /**
+         * \brief Copy characters from string
+         *
+         * the wide character version of \c strncpy
+         */
+        inline wchar_t* wcsncpy(wchar_t* __wdest, const wchar_t* __wsrc, size_t __size) noexcept;
+        /**
+         * \brief Copy characters from string
+         *
+         * the wide character version of \c stpncpy
+         */
+        inline wchar_t* wcpncpy(wchar_t* __wdest, const wchar_t* __wsrc, size_t __size) noexcept;
+
+        /** \addtogroup Concatenation
+         *  @{
+         */
+        /**
+         * \brief Concatenate strings
+         *
+         * the wide character version of \c stpcat
+         */
+        inline wchar_t* wcscat(wchar_t* __wdest, const wchar_t* __wsrc) noexcept;
+        /**
+         * \brief Concatenate strings
+         *
+         * the wide character version of \c strcat
+         */
+        inline wchar_t* wcpcat(wchar_t* __wdest, const wchar_t* __wsrc) noexcept;
+        /**
+         * \brief Append characters from string
+         *
+         * the wide character version of \c strncat
+         */
+        inline wchar_t* wcsncat(wchar_t* __wdest, const wchar_t* __wsrc, size_t __size) noexcept;
+        /**
+         * \brief Append characters from string
+         *
+         * the wide character version of \c stpncat
+         */
+        inline wchar_t* wcpncat(wchar_t* __wdest, const wchar_t* __wsrc, size_t __size) noexcept;
+        /** @}*/
+
+        /** \addtogroup Comparison
+         *  @{
+         */
+        /**
+         * \brief Compare characters of two strings
+         *
+         * the wide character version of \c strncmp
+         */
+        inline int wcsncmp(const wchar_t* __comp1, const wchar_t* __comp2, size_t __size) noexcept;
+        /**
+         * \brief Compare two strings
+         *
+         * the wide character version of \c strcmp
+         */
+        inline int wcscmp(const wchar_t* __comp1, const wchar_t* __comp2) noexcept;
+        /** @}*/
+
+        /** \addtogroup Searching
+         *  @{
+         */
+        /**
+         * \brief Locate first occurrence of character in string
+         *
+         * the wide character version of \c strchr
+         */
+        inline wchar_t* wcschr(wchar_t* __wstr, wchar_t __wchar) noexcept;
+        /**
+         * \overload inline const wchar_t* wcschr(const wchar_t* __wstr, wchar_t __wchar) noexcept
+         */
+        inline const wchar_t* wcschr(const wchar_t* __wstr, wchar_t __wchar) noexcept;
+        /**
+         * \brief Locate last occurrence of character in string
+         *
+         * the wide character version of \c strrchr
+         */
+        inline wchar_t* wcsrchr(wchar_t* __wstr, wchar_t __wchar) noexcept;
+        /**
+         * \overload inline const wchar_t* wcsrchr(const wchar_t* __wstr, wchar_t __wchar) noexcept
+         */
+        inline const wchar_t* wcsrchr(const wchar_t* __wstr, wchar_t __wchar) noexcept;
+        /**
+         * \brief Get span until character in string
+         *
+         * the wide character version of \c strcspn
+         */
+        inline size_t wcscspn(const wchar_t* __wsrc, const wchar_t* __wpat) noexcept;
+        /**
+         * \brief Locate characters in string
+         *
+         * the wide character version of \c strpbrk
+         */
+        inline wchar_t* wcspbrk(wchar_t* __wsrc, const wchar_t* __wpat) noexcept;
+        /**
+         * \overload inline const wchar_t* wcspbrk(const wchar_t* __wsrc, const wchar_t* __wpat) noexcept
+         */
+        inline const wchar_t* wcspbrk(const wchar_t* __wsrc, const wchar_t* __wpat) noexcept;
+        /**
+         * \brief Get span of character set in string
+         *
+         * the wide character version of \c strspn
+         */
+        inline size_t wcsspn(const wchar_t* __wsrc, const wchar_t* __wpat) noexcept;
+        /**
+         * \brief Locate substring
+         *
+         * the wide character version of \c strstr
+         */
+        inline wchar_t* wcsstr(wchar_t* __wsrc, const wchar_t* __wpat) noexcept;
+        /**
+         * \overload inline const wchar_t* wcsstr(const wchar_t* __wsrc, const wchar_t* __wpat) noexcept
+         */
+        inline const wchar_t* wcsstr(const wchar_t* __wsrc, const wchar_t* __wpat) noexcept;
+        /** @}*/
+        /** @}*/
+
+      }
+      namespace charS
+      {
+        // Helper
         inline wchar_t* wcsend(wchar_t* __wstr) noexcept
         {
           if(__wstr != nullptr)
@@ -61,12 +220,6 @@ namespace utility
           return __wstr;
         }
 
-        /*!
-        * \overload inline const wchar_t* wcsend(const wchar_t* __wstr) noexcept
-        *
-        * const version of the \c wcsend
-        *
-        */
         inline const wchar_t* wcsend(const wchar_t* __wstr) noexcept
         {
           if(__wstr != nullptr)
@@ -77,13 +230,6 @@ namespace utility
           return __wstr;
         }
 
-        /**
-         * \brief find the length of a string(help function)
-         *
-         * the wide character version of \c strlen
-         *
-         * \see detail::sstd::charS::strlen
-         */
         inline ptrdiff_t wcslen(const wchar_t* __wstr) noexcept
         {
           return __wstr == nullptr ? -1 :
@@ -91,14 +237,6 @@ namespace utility
         }
 
         // Copying
-
-        /**
-         * \brief Copy string
-         *
-         * the wide character version of \c strcpy
-         *
-         * \see detail::sstd::charS::strcpy
-         */
         inline wchar_t* wcscpy(wchar_t* __wdest, const wchar_t* __wsrc) noexcept
         {
           if(__wdest != nullptr && __wsrc != nullptr)
@@ -110,13 +248,6 @@ namespace utility
           }
           return __wdest;
         }
-        /**
-         * \brief Copy string
-         *
-         * the wide character version of \c stpcpy
-         *
-         * \see detail::sstd::charS::stpcpy
-         */
         inline wchar_t* wcpcpy(wchar_t* __wdest, const wchar_t* __wsrc) noexcept
         {
           if(__wdest != nullptr && __wsrc != nullptr)
@@ -127,13 +258,6 @@ namespace utility
           }
           return __wdest;
         }
-        /**
-         * \brief Copy characters from string
-         *
-         * the wide character version of \c strncpy
-         *
-         * \see detail::sstd::charS::strncpy
-         */
         inline wchar_t* wcsncpy(wchar_t* __wdest, const wchar_t* __wsrc,
           size_t __size
         ) noexcept
@@ -147,13 +271,6 @@ namespace utility
           }
           return __wdest;
         }
-        /**
-         * \brief Copy characters from string
-         *
-         * the wide character version of \c stpncpy
-         *
-         * \see detail::sstd::charS::stpncpy
-         */
         inline wchar_t* wcpncpy(wchar_t* __wdest, const wchar_t* __wsrc,
           size_t __size
         ) noexcept
@@ -168,14 +285,6 @@ namespace utility
         }
 
         // Concatenation
-
-        /**
-         * \brief Concatenate strings
-         *
-         * the wide character version of \c stpcat
-         *
-         * \see detail::sstd::charS::stpcat
-         */
         inline wchar_t* wcscat(wchar_t* __wdest, const wchar_t* __wsrc) noexcept
         {
           if(__wdest != nullptr && __wsrc != nullptr)
@@ -188,13 +297,6 @@ namespace utility
           }
           return __wdest;
         }
-        /**
-         * \brief Concatenate strings
-         *
-         * the wide character version of \c strcat
-         *
-         * \see detail::sstd::charS::strcat
-         */
         inline wchar_t* wcpcat(wchar_t* __wdest, const wchar_t* __wsrc) noexcept
         {
           if(__wdest != nullptr && __wsrc != nullptr)
@@ -207,16 +309,9 @@ namespace utility
           }
           return __wdest;
         }
-        /**
-         * \brief Append characters from string
-         *
-         * the wide character version of \c strncat
-         *
-         * \see detail::sstd::charS::strncat
-         */
         inline wchar_t* wcsncat(wchar_t* __wdest, const wchar_t* __wsrc,
           size_t __size
-        )
+        ) noexcept
         {
           if(__size && __wdest != nullptr && __wsrc != nullptr)
           {
@@ -228,13 +323,6 @@ namespace utility
           }
           return __wdest;
         }
-        /**
-         * \brief Append characters from string
-         *
-         * the wide character version of \c stpncat
-         *
-         * \see detail::sstd::charS::stpncat
-         */
         inline wchar_t* wcpncat(wchar_t* __wdest, const wchar_t* __wsrc,
           size_t __size
         ) noexcept
@@ -251,14 +339,6 @@ namespace utility
         }
 
         // Comparison
-
-        /**
-         * \brief Compare characters of two strings
-         *
-         * the wide character version of \c strncmp
-         *
-         * \see detail::sstd::charS::strncmp
-         */
         inline int wcsncmp(const wchar_t* __comp1, const wchar_t* __comp2,
           size_t __size
         ) noexcept
@@ -274,14 +354,7 @@ namespace utility
           }
           return 0;
         }
-        /**
-         * \brief Compare two strings
-         *
-         * the wide character version of \c strcmp
-         *
-         * \see detail::sstd::charS::strcmp
-         */
-        inline int wcscmp(const wchar_t* __comp1, const wchar_t* __comp2)
+        inline int wcscmp(const wchar_t* __comp1, const wchar_t* __comp2) noexcept
         {
           if(__comp1 != nullptr && __comp2 != nullptr)
           {
@@ -299,13 +372,6 @@ namespace utility
 
         // Searching
 
-        /**
-         * \brief Locate first occurrence of character in string
-         *
-         * the wide character version of \c strchr
-         *
-         * \see detail::sstd::charS::strchr
-         */
         inline wchar_t* wcschr(wchar_t* __wstr, wchar_t __wchar) noexcept
         {
           if(__wstr != nullptr)
@@ -320,12 +386,6 @@ namespace utility
           }
           return nullptr;
         }
-        /*!
-        * \overload inline const wchar_t* wcschr(const wchar_t* __wstr, wchar_t __wchar) noexcept
-        *
-        * const version of the \c wcschr
-        *
-        */
         inline const wchar_t* wcschr(const wchar_t* __wstr, wchar_t __wchar) noexcept
         {
           if(__wstr != nullptr)
@@ -340,13 +400,7 @@ namespace utility
           }
           return nullptr;
         }
-        /**
-         * \brief Locate last occurrence of character in string
-         *
-         * the wide character version of \c strrchr
-         *
-         * \see detail::sstd::charS::strrchr
-         */
+
         inline wchar_t* wcsrchr(wchar_t* __wstr, wchar_t __wchar) noexcept
         {
           if(__wstr != nullptr)
@@ -361,13 +415,6 @@ namespace utility
           }
           return nullptr;
         }
-        /*!
-        * \overload inline const wchar_t* wcsrchr(const wchar_t* __wstr, wchar_t __wchar) noexcept
-
-        *
-        * const version of the \c wcsrchr
-        *
-        */
         inline const wchar_t* wcsrchr(const wchar_t* __wstr, wchar_t __wchar) noexcept
         {
           if(__wstr != nullptr)
@@ -382,13 +429,7 @@ namespace utility
           }
           return nullptr;
         }
-        /**
-         * \brief Get span until character in string
-         *
-         * the wide character version of \c strcspn
-         *
-         * \see detail::sstd::charS::strcspn
-         */
+
         inline size_t wcscspn(const wchar_t* __wsrc, const wchar_t* __wpat) noexcept
         {
           if(__wsrc != nullptr && __wpat != nullptr)
@@ -408,13 +449,7 @@ namespace utility
           }
           return 0;
         }
-        /**
-         * \brief Locate characters in string
-         *
-         * the wide character version of \c strpbrk
-         *
-         * \see detail::sstd::charS::strpbrk
-         */
+
         inline wchar_t* wcspbrk(wchar_t* __wsrc, const wchar_t* __wpat) noexcept
         {
           if(__wsrc != nullptr && __wpat != nullptr)
@@ -432,12 +467,6 @@ namespace utility
           }
           return nullptr;
         }
-        /*!
-        * \overload inline const wchar_t* wcspbrk(const wchar_t* __wsrc, const wchar_t* __wpat) noexcept
-        *
-        * const version of the \c wcspbrk
-        *
-        */
         inline const wchar_t* wcspbrk(const wchar_t* __wsrc, const wchar_t* __wpat) noexcept
         {
           if(__wsrc != nullptr && __wpat != nullptr)
@@ -455,13 +484,7 @@ namespace utility
           }
           return nullptr;
         }
-        /**
-         * \brief Get span of character set in string
-         *
-         * the wide character version of \c strspn
-         *
-         * \see detail::sstd::charS::strspn
-         */
+
         inline size_t wcsspn(const wchar_t* __wsrc, const wchar_t* __wpat) noexcept
         {
           size_t __i = 0;
@@ -480,13 +503,6 @@ namespace utility
           }
           return __i;
         }
-        /**
-         * \brief Locate substring
-         *
-         * the wide character version of \c strstr
-         *
-         * \see detail::sstd::charS::strstr
-         */
         inline wchar_t* wcsstr(wchar_t* __wsrc, const wchar_t* __wpat) noexcept
         {
           if(__wsrc != nullptr && __wpat != nullptr)
@@ -510,12 +526,6 @@ namespace utility
           }
           return nullptr;
         }
-        /*!
-        * \overload inline const wchar_t* wcsstr(const wchar_t* __wsrc, const wchar_t* __wpat) noexcept
-        *
-        * const version of the \c wcsstr
-        *
-        */
         inline const wchar_t* wcsstr(const wchar_t* __wsrc, const wchar_t* __wpat) noexcept
         {
           if(__wsrc != nullptr && __wpat != nullptr)

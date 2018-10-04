@@ -42,12 +42,18 @@
 #define UTILITY_RELEASE         0L
 #define UTILITY_VERSION         10101L
 
+#ifdef UTILITY_USE_HEADERS
+#define __utility_inline inline
+#else
+#define __utility_inline
+#endif // ! UTILITY_USE_HEADERS
+
 // select the support compiler
 #include<utility/config/compiler/select.hpp>
 
 #include<utility/config/debug/utility_debug_config.hpp>
 
-#if !defined(__EXCEPTIONS) || defined(__UTILITY_NO_EXCEPTION__)
+#if defined(UTILITY_NO_EXCEPTION)
 # define __UTILITY_NO_EXCEPTION__ true
 #endif
 
@@ -56,7 +62,7 @@
 
 // utility endian config
 #ifdef __BIG_ENDIAN__
-#if __BIG_END_IAN__
+#if __BIG_ENDIAN__
 #define __UTILITY_BIG_ENDIAN__    1
 #define __UTILITY_LITTLE_ENDIAN__ 0
 #endif // ! __BIG_ENDIAN__
@@ -82,8 +88,6 @@
 #include<utility/config/utility_control_config.hpp>
 
 #define utility_null nullptr
-// #define Label(X)  laber_##X
-// #define Jump(X)   goto laber_##X
 
 // utility global type declaration
 #include<utility/config/utility_type.hpp>

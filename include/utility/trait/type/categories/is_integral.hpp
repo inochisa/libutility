@@ -94,6 +94,11 @@ namespace utility
               trait::type::transform::remove_cv<_T>::type>
         { };
 
+#if !defined(__UTILITY_NO_CPP14__)
+        template<typename _T>
+        constexpr bool is_integral_v = is_integral<_T>::value;
+#endif
+
       }
     }
   }

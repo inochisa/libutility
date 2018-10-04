@@ -37,6 +37,13 @@ namespace utility
 
         template<typename _T>
         using remove_all_ptr_ref = remove_all_pointer_reference<_T>;
+        template<typename _T>
+        using remove_all_ptr_ref_t =
+          typename remove_all_pointer_reference<_T>::type;
+        template<typename _T>
+        using remove_all_pointer_reference_t =
+          typename remove_all_pointer_reference<_T>::type;
+
       }
     }
   }

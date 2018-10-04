@@ -3,8 +3,8 @@
 #define __UTILITY_ALGORITHM_SORTIMPL_HEAP_SORT__
 
 #include<utility/algorithm/swap.hpp>
-#include<utility/algorithm/impl/make_heap.hpp>
-#include<utility/algorithm/impl/pop_heap.hpp>
+#include<utility/algorithm/impl/heap/make_heap.hpp>
+#include<utility/algorithm/impl/heap/pop_heap.hpp>
 #include<utility/iterator/iterator_traits.hpp>
 #include<utility/algorithm/partial_sort.hpp>
 

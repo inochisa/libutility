@@ -1,6 +1,6 @@
 
-#ifndef __UTILITY_ALGORITHM_HEAPIMP_MAKE_HEAP__
-#define __UTILITY_ALGORITHM_HEAPIMP_MAKE_HEAP__
+#ifndef __UTILITY_ALGORITHM_IMPL_HEAP_MAKE_HEAP__
+#define __UTILITY_ALGORITHM_IMPL_HEAP_MAKE_HEAP__
 
 #include<utility/config/utility_config.hpp>
 #include<utility/trait/type/transform/add_reference.hpp>
@@ -80,4 +80,4 @@ namespace utility
   }
 }
 
-#endif // ! __UTILITY_ALGORITHM_HEAPIMP_MAKE_HEAP__
+#endif // ! __UTILITY_ALGORITHM_IMPL_HEAP_MAKE_HEAP__

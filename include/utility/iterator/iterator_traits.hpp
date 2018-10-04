@@ -66,14 +66,14 @@ namespace utility
       typedef const _T& reference;
     };
 
-    /*!
-    * \brief Detect whether a type is an iterator type
-    *
-    * This is the \b iterator_traits implementation used.
-    *
-    * \tparam _T the type to detect whether is an iterator type
-    * \see iterator::iterator_traits
-    */
+    /**
+     * \brief Detect whether a type is an iterator type
+     *
+     * This is the \b iterator_traits implementation used.
+     *
+     * \tparam _T the type to detect whether is an iterator type
+     * \see iterator::iterator_traits
+     */
     template<typename _T>
     using is_iterator =
       trait::integral_constant<bool,
@@ -82,15 +82,15 @@ namespace utility
         >::value
       >;
 
-    /*!
-    * \brief Detect whether an iterator is an target iterator type
-    *
-    * \tparam _InputIterator    the input iterator type
-    * \tparam _TargetIteratorTag   the request iterator type tag
-    * \note   Use this when is_iterator is true_type, otherwise the
-    *         behavior is undefined.
-    * \see iterator::is_iterator
-    */
+    /**
+     * \brief Detect whether an iterator is an target iterator type
+     *
+     * \tparam _InputIterator    the input iterator type
+     * \tparam _TargetIteratorTag   the request iterator type tag
+     * \note   Use this when is_iterator is true_type, otherwise the
+     *         behavior is undefined.
+     * \see iterator::is_iterator
+     */
     template<typename _InputIterator, typename _TargetIteratorTag>
     using is_vaild_iterator_type =
       trait::integral_constant<bool,
@@ -101,20 +101,20 @@ namespace utility
         >::value
       >;
 
-    /*!
-    * \brief Detect whether an iterator is a vaild iterator(CT)
-    *
-    * It's a simple using just for judging whether an iterator is
-    * satisfy the request<br/>
-    * It's means the \b is_vaild_iterator_type is true_type and
-    * the \b value_type of the iterators is convertible.
-    *
-    * \tparam _InputIterator    the input iterator
-    * \tparam _TargetIterator   the request iterator
-    * \note   Use this when is_iterator is true_type, otherwise the
-    *         behavior is undefined.
-    * \see iterator::is_iterator
-    * \see iterator::is_vaild_iterator_type
+    /**
+     * \brief Detect whether an iterator is a vaild iterator(CT)
+     *
+     * It's a simple using just for judging whether an iterator is
+     * satisfy the request<br/>
+     * It's means the \b is_vaild_iterator_type is true_type and
+     * the \b value_type of the iterators is convertible.
+     *
+     * \tparam _InputIterator    the input iterator
+     * \tparam _TargetIterator   the request iterator
+     * \note   Use this when is_iterator is true_type, otherwise the
+     *         behavior is undefined.
+     * \see iterator::is_iterator
+     * \see iterator::is_vaild_iterator_type
     */
     template<typename _InputIterator, typename _TargetIterator>
     using is_vaild_iterator =

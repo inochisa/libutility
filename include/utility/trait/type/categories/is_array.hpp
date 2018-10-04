@@ -19,9 +19,14 @@ namespace utility
         template<typename _T>
         struct is_array<_T[]> : public trait::true_type
         { };
-        template<typename _T, trait::size_t size>
+        template<typename _T, size_t size>
         struct is_array<_T[size]> : public trait::true_type
         { };
+
+#if !defined(__UTILITY_NO_CPP14__)
+        template<typename _T>
+        constexpr bool is_array_v = is_array<_T>::value;
+#endif
 
       }
     }

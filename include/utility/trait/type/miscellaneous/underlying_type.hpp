@@ -23,6 +23,9 @@ namespace utility
         {
           typedef __utility_underlying_type(_T) type;
         };
+
+        template<typename _T>
+        using underlying_type_t = typename underlying_type<_T>::type;
       }
     }
   }

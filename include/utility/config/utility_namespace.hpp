@@ -164,7 +164,7 @@ namespace utility
     /*!
     * \brief the traits helper class
     */
-    namespace __impl_helper
+    namespace __opt__
     {
     }
   }

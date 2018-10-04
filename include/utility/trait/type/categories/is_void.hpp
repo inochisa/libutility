@@ -29,6 +29,12 @@ namespace utility
             typename
               trait::type::transform::remove_cv<_T>::type>
         { };
+
+#if !defined(__UTILITY_NO_CPP14__)
+        template<typename _T>
+        constexpr bool is_void_v = is_void<_T>::value;
+#endif
+
       }
     }
   }

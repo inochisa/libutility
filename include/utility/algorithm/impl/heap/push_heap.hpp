@@ -1,6 +1,6 @@
 
-#ifndef __UTILITY_ALGORITHM_HEAPIMP_PUSH_HEAP__
-#define __UTILITY_ALGORITHM_HEAPIMP_PUSH_HEAP__
+#ifndef __UTILITY_ALGORITHM_IMPL_HEAP_PUSH_HEAP__
+#define __UTILITY_ALGORITHM_IMPL_HEAP_PUSH_HEAP__
 
 #include<utility/config/utility_config.hpp>
 #include<utility/algorithm/algorithm_auxiliary.hpp>
@@ -66,4 +66,4 @@ namespace utility
   }
 }
 
-#endif // ! __UTILITY_ALGORITHM_HEAPIMP_PUSH_HEAP__
+#endif // ! __UTILITY_ALGORITHM_IMPL_HEAP_PUSH_HEAP__

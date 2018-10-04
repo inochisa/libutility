@@ -3,6 +3,7 @@
 #define __UTILITY_TRAIT_TYPE_PROPERTY_IS_ABSTRACT__
 
 #include<utility/trait/trait_helper.hpp>
+#include<utility/trait/opt/__twochar__.hpp>
 #include<utility/trait/type/categories/is_class.hpp>
 
 namespace utility
@@ -19,7 +20,7 @@ namespace utility
           template<typename _T>
           char __is_abstract_helper(_T(*)[1]);
           template<typename _T>
-          trait::__impl_helper::__twochar
+          trait::__opt__::__twochar__
             __is_abstract_helper(...);
           template<typename _T, bool =
             trait::type::categories::is_class<_T>::value>

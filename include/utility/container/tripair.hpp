@@ -10,7 +10,7 @@
 #include<utility/algorithm/possible_swap.hpp>
 
 #include<utility/container/detail/tripair_helper.hpp>
-
+#include<utility/trait/opt/__types__.hpp>
 
 namespace utility
 {
@@ -263,6 +263,19 @@ namespace utility
 
   }
 
+  namespace trait
+  {
+    namespace __opt__
+    {
+      template<typename _Fp, typename _Sp, typename _Tp>
+      struct __type_tuple_size__<container::tripair<_Fp, _Sp, _Tp>>
+      { constexpr static size_t value = 3;};
+      template<typename _Fp, typename _Sp, typename _Tp>
+      struct __checkout_type_feature__<container::tripair<_Fp, _Sp, _Tp>>
+      { typedef __type_tripair__<_Fp, _Sp, _Tp> type;};
+    }
+  }
+
   namespace algorithm
   {
     template<typename _T1, typename _T2, typename _T3>
@@ -277,6 +290,151 @@ namespace utility
       container::tripair<_T1, _T2, _T3>& __b
     ) noexcept(noexcept(__a.possible_swap(__b)))
     { __a.possible_swap(__b);}
+  }
+
+  namespace container
+  {
+    namespace __detail
+    {
+      using trait::__opt__::__checkout_type_feature__;
+      using trait::__opt__::__type_tuple_get__;
+      template<size_t _Id>
+      struct __get_tripair;
+
+      template<>
+      struct __get_tripair<0>
+      {
+        template<typename _T1, typename _T2, typename _T3>
+        __UTILITY_CPP14_CONSTEXPR__
+        static _T1& get(tripair<_T1, _T2, _T3>& _pair) noexcept
+        { return _pair.first;}
+        template<typename _T1, typename _T2, typename _T3>
+        __UTILITY_CPP14_CONSTEXPR__
+        static const _T1& get(const tripair<_T1, _T2, _T3>& _pair) noexcept
+        { return _pair.first;}
+        template<typename _T1, typename _T2, typename _T3>
+        __UTILITY_CPP14_CONSTEXPR__
+        static _T1&& get(tripair<_T1, _T2, _T3>&& _pair) noexcept
+        {
+          using algorithm::forward;
+          return forward<_T1>(_pair.first);
+        }
+        template<typename _T1, typename _T2, typename _T3>
+        __UTILITY_CPP14_CONSTEXPR__
+        static const _T1&& get(
+          const tripair<_T1, _T2, _T3>&& _pair
+        ) noexcept
+        {
+          using algorithm::forward;
+          return forward<const _T1>(_pair.first);
+        }
+      };
+
+      template<>
+      struct __get_tripair<1>
+      {
+        template<typename _T1, typename _T2, typename _T3>
+        __UTILITY_CPP14_CONSTEXPR__
+        static _T2& get(tripair<_T1, _T2, _T3>& _pair) noexcept
+        { return _pair.second;}
+        template<typename _T1, typename _T2, typename _T3>
+        __UTILITY_CPP14_CONSTEXPR__
+        static const _T2& get(const tripair<_T1, _T2, _T3>& _pair) noexcept
+        { return _pair.second;}
+        template<typename _T1, typename _T2, typename _T3>
+        __UTILITY_CPP14_CONSTEXPR__
+        static _T2&& get(tripair<_T1, _T2, _T3>&& _pair) noexcept
+        {
+          using algorithm::forward;
+          return forward<_T2>(_pair.second);
+        }
+        template<typename _T1, typename _T2, typename _T3>
+        __UTILITY_CPP14_CONSTEXPR__
+        static const _T2&& get(
+          const tripair<_T1, _T2, _T3>&& _pair
+        ) noexcept
+        {
+          using algorithm::forward;
+          return forward<const _T2>(_pair.second);
+        }
+      };
+
+      template<>
+      struct __get_tripair<2>
+      {
+        template<typename _T1, typename _T2, typename _T3>
+        __UTILITY_CPP14_CONSTEXPR__
+        static _T3& get(tripair<_T1, _T2, _T3>& _pair) noexcept
+        { return _pair.third;}
+        template<typename _T1, typename _T2, typename _T3>
+        __UTILITY_CPP14_CONSTEXPR__
+        static const _T3& get(const tripair<_T1, _T2, _T3>& _pair) noexcept
+        { return _pair.third;}
+        template<typename _T1, typename _T2, typename _T3>
+        __UTILITY_CPP14_CONSTEXPR__
+        static _T3&& get(tripair<_T1, _T2, _T3>&& _pair) noexcept
+        {
+          using algorithm::forward;
+          return forward<_T3>(_pair.third);
+        }
+        template<typename _T1, typename _T2, typename _T3>
+        __UTILITY_CPP14_CONSTEXPR__
+        static const _T3&& get(
+          const tripair<_T1, _T2, _T3>&& _pair
+        ) noexcept
+        {
+          using algorithm::forward;
+          return forward<const _T3>(_pair.third);
+        }
+      };
+    }
+
+    template<size_t _Id, typename _T1, typename _T2, typename _T3>
+    __UTILITY_CPP14_CONSTEXPR__
+    typename __detail::__type_tuple_get__<
+      _Id,
+      typename __detail::__checkout_type_feature__<
+        tripair<_T1, _T2, _T3>
+      >::type
+    >::type&
+    get(tripair<_T1, _T2, _T3>& _pair) noexcept
+    { return __detail::__get_tripair<_Id>::get(_pair);}
+    template<size_t _Id, typename _T1, typename _T2, typename _T3>
+    __UTILITY_CPP14_CONSTEXPR__
+    const typename __detail::__type_tuple_get__<
+      _Id,
+      typename __detail::__checkout_type_feature__<
+        tripair<_T1, _T2, _T3>
+      >::type
+    >::type&
+    get(const tripair<_T1, _T2, _T3>& _pair) noexcept
+    { return __detail::__get_tripair<_Id>::get(_pair);}
+    template<size_t _Id, typename _T1, typename _T2, typename _T3>
+    __UTILITY_CPP14_CONSTEXPR__
+    typename __detail::__type_tuple_get__<
+      _Id,
+      typename __detail::__checkout_type_feature__<
+        tripair<_T1, _T2, _T3>
+      >::type
+    >::type&&
+    get(tripair<_T1, _T2, _T3>&& _pair) noexcept
+    {
+      using algorithm::move;
+      return __detail::__get_tripair<_Id>::get(move(_pair));
+    }
+    template<size_t _Id, typename _T1, typename _T2, typename _T3>
+    __UTILITY_CPP14_CONSTEXPR__
+    const typename __detail::__type_tuple_get__<
+      _Id,
+      typename __detail::__checkout_type_feature__<
+        tripair<_T1, _T2, _T3>
+      >::type
+    >::type&&
+    get(const tripair<_T1, _T2, _T3>&& _pair) noexcept
+    {
+      using algorithm::move;
+      return __detail::__get_tripair<_Id>::get(move(_pair));
+    }
   }
 }
 

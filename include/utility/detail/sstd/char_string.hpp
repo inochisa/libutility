@@ -22,6 +22,62 @@ namespace utility
     {
       namespace charS
       {
+        /** \addtogroup charS
+         *  @{
+         */
+        /** \addtogroup Helper
+         *  @{
+         */
+        inline char* strend(char* __str) noexcept;
+        inline const char* strend(const char* __str) noexcept;
+        inline ptrdiff_t strlen(const char* __str) noexcept;
+        /** @}*/
+
+        /** \addtogroup Copying
+         *  @{
+         */
+        inline char* strcpy(char* __destination, const char* __source) noexcept;
+        inline char* stpcpy(char* __destination, const char* __source) noexcept;
+        inline char* strncpy(char* __destination, const char* __source, size_t __size) noexcept;
+        inline char* stpncpy(char* __destination, const char* __source, size_t __size) noexcept;
+        /** @}*/
+
+        /** \addtogroup Concatenation
+         *  @{
+         */
+        inline char* strcat(char* __destination, const char* __source) noexcept;
+        inline char* stpcat(char* __destination, const char* __source) noexcept;
+        inline char* strncat(char* __destination, const char* __source, size_t __size) noexcept;
+        inline char* stpncat(char* __destination, const char* __source, size_t __size) noexcept;
+        /** @}*/
+
+        /** \addtogroup Comparison
+         *  @{
+         */
+        inline int strncmp(const char* __comp1, const char* __comp2, size_t __size) noexcept;
+        inline int strcmp(const char* __comp1, const char* __comp2) noexcept;
+        /** @}*/
+
+        /** \addtogroup Searching
+         *  @{
+         */
+        inline char* strchr(char* __str, char __char) noexcept;
+        inline const char* strchr(const char* __str, char __char) noexcept;
+        inline char* strrchr(char* __str, char __char) noexcept;
+        inline const char* strrchr(const char* __str, char __char) noexcept;
+        inline size_t strcspn(const char* __source, const char* __pattern) noexcept;
+        inline char* strpbrk(char* __source, const char* __pattern) noexcept;
+        inline const char* strpbrk(const char* __source, const char* __pattern) noexcept;
+        inline size_t strspn(const char* __source, const char* __pattern) noexcept;
+        inline char* strstr(char* __source, const char* __pattern) noexcept;
+        inline const char* strstr(const char* __source, const char* __pattern) noexcept;
+        /** @}*/
+        /** @}*/
+
+      }
+
+      namespace charS
+      {
         // Helper
         /*!
         * \brief find the end of a string(help function)
@@ -64,7 +120,7 @@ namespace utility
         * \param[in] __str the string need to be found
         * \return a pointer to the '\0' of this string is returned
         */
-        inline ptrdiff_t strlen(const char* __str)
+        inline ptrdiff_t strlen(const char* __str) noexcept
         {
           return
             __str == nullptr ? -1 :

@@ -3,6 +3,7 @@
 #define __UTILITY_TRAIT_TYPE_MISCELLANEOUS_INVOKE_RESULT__
 
 #include<utility/trait/trait_helper.hpp>
+#include<utility/trait/opt/__empty__.hpp>
 #include<utility/trait/type/type_trait_special.hpp>
 #include<utility/trait/type/categories/is_member_function_pointer.hpp>
 #include<utility/trait/type/categories/is_member_object_pointer.hpp>
@@ -22,9 +23,9 @@ namespace utility
       {
         namespace __invoke_related
         {
-          using trait::__impl_helper::__wrapper;
+          using trait::__opt__::__wrapper__;
           using trait::good_type;
-          using trait::__impl_helper::__empty;
+          using trait::__opt__::__empty__;
           using trait::__type_or__;
           template<typename _T>
           using __decay = trait::type::transform::decay<_T>;
@@ -67,7 +68,7 @@ namespace utility
               template<typename __Fn, typename __Arg, typename... __Args>
               static __invoke_process<good_type<decltype(((trait::type::special::declval<__Arg>()).*trait::type::special::declval<__Fn>())(trait::type::special::declval<__Args>()...))>, __invoke_member_function_unpacked> __test(int);
               template<typename __Fn, typename __Arg, typename... __Args>
-              static __invoke_process<__empty, __invoke_failed> __test(...);
+              static __invoke_process<__empty__, __invoke_failed> __test(...);
 
             public:
               typedef decltype(__test<_Fn, _Arg, _Args...>(0)) type;
@@ -79,14 +80,14 @@ namespace utility
               template<typename __Fn, typename __Arg, typename... __Args>
               static __invoke_process<good_type<decltype(((*trait::type::special::declval<__Arg>()).*trait::type::special::declval<__Fn>())(trait::type::special::declval<__Args>()...))>, __invoke_member_function_packed> __test(int);
               template<typename __Fn, typename __Arg, typename... __Args>
-              static __invoke_process<__empty, __invoke_failed> __test(...);
+              static __invoke_process<__empty__, __invoke_failed> __test(...);
 
             public:
               typedef decltype(__test<_Fn, _Arg, _Args...>(0)) type;
           };
           template<typename _Fn, typename _Arg, typename... _Args>
           struct __invoke_member_function_helper
-          { typedef __invoke_process<__empty, __invoke_failed> type;};
+          { typedef __invoke_process<__empty__, __invoke_failed> type;};
           template<typename _Res, typename _Class, typename _Arg, typename... _Args>
           struct __invoke_member_function_helper<_Res _Class::*, _Arg, _Args...>
           {
@@ -111,7 +112,7 @@ namespace utility
               template<typename __Fn, typename __Arg>
               static __invoke_process<good_type<decltype(trait::type::special::declval<__Arg>().*trait::type::special::declval<__Fn>())>, __invoke_member_object_unpacked> __test(int);
               template<typename __Fn, typename __Arg>
-              static __invoke_process<__empty, __invoke_failed> __test(...);
+              static __invoke_process<__empty__, __invoke_failed> __test(...);
 
             public:
               typedef decltype(__test<_Fn, _Arg>(0)) type;
@@ -123,14 +124,14 @@ namespace utility
               template<typename __Fn, typename __Arg>
               static __invoke_process<good_type<decltype((*trait::type::special::declval<__Arg>()).*trait::type::special::declval<__Fn>())>, __invoke_member_object_packed> __test(int);
               template<typename __Fn, typename __Arg>
-              static __invoke_process<__empty, __invoke_failed> __test(...);
+              static __invoke_process<__empty__, __invoke_failed> __test(...);
 
             public:
               typedef decltype(__test<_Fn, _Arg>(0)) type;
           };
           template<typename _Fn, typename _Arg>
           struct __invoke_member_object_helper
-          { typedef __invoke_process<__empty, __invoke_failed> type;};
+          { typedef __invoke_process<__empty__, __invoke_failed> type;};
           template<typename _Res, typename _Class, typename _Arg>
           struct __invoke_member_object_helper<_Res _Class::*, _Arg>
           {
@@ -155,7 +156,7 @@ namespace utility
               template<typename __Fn, typename... __Args>
               static __invoke_process<good_type<decltype(trait::type::special::declval<__Fn>()(trait::type::special::declval<__Args>()...))>, __invoke_operators> __test(int);
               template<typename __Fn, typename... __Args>
-              static __invoke_process<__empty, __invoke_failed> __test(...);
+              static __invoke_process<__empty__, __invoke_failed> __test(...);
 
             public:
               typedef decltype(__test<_Fn, _Args...>(0)) type;
@@ -165,30 +166,30 @@ namespace utility
           template<bool/*member_function*/, bool/*member_object*/,
             typename _Fn, typename... _Args>
           struct __invoke_result_helper :
-            public __invoke_process<__empty, __invoke_failed>
+            public __invoke_process<__empty__, __invoke_failed>
           { };
 
           template<typename _Fn, typename... _Args>
           struct __invoke_result_helper<true, false, _Fn, _Args...> :
-            public __invoke_process<__empty, __invoke_failed>
+            public __invoke_process<__empty__, __invoke_failed>
           { };
           template<typename _Fn, typename _Arg, typename... _Args>
           struct __invoke_result_helper<true, false, _Fn, _Arg, _Args...>:
             public __invoke_member_function_helper<
               typename __decay<_Fn>::type,
-              typename __wrapper<_Arg, typename __decay<_Arg>::type>::type,
+              typename __wrapper__<_Arg, typename __decay<_Arg>::type>::type,
               _Args...>::type
           { };
 
           template<typename _Fn, typename... _Args>
           struct __invoke_result_helper<false, true, _Fn, _Args...> :
-            public __invoke_process<__empty, __invoke_failed>
+            public __invoke_process<__empty__, __invoke_failed>
           { };
           template<typename _Fn, typename _Arg, typename... _Args>
           struct __invoke_result_helper<false, true, _Fn, _Arg, _Args...>:
             public __invoke_member_object_helper<
               typename __decay<_Fn>::type,
-              typename __wrapper<_Arg, typename __decay<_Arg>::type>::type
+              typename __wrapper__<_Arg, typename __decay<_Arg>::type>::type
               >::type
           { };
 
@@ -206,7 +207,7 @@ namespace utility
 
         }
         // result_of
-        template<typename _Fn, typename... _ArgTypes>
+        template<typename _T>
         struct result_of;
         template<typename _Fn, typename... _ArgTypes>
         struct result_of<_Fn(_ArgTypes...)> :
@@ -218,6 +219,11 @@ namespace utility
         struct invoke_result :
           public __invoke_related::__invoke_result<_Fn, _ArgTypes...>::type
         { };
+
+        template<typename _Fn, typename... _ArgTypes>
+        using invoke_result_t = typename invoke_result<_Fn, _ArgTypes...>::type;
+        template<typename _T>
+        using result_of_t = typename result_of<_T>::type;
       }
     }
   }

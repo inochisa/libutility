@@ -19,9 +19,12 @@ namespace utility
         template<typename _T>
         struct remove_all_extents<_T[]>
         { typedef typename remove_all_extents<_T>::type type;};
-        template<typename _T, trait::size_t _size>
+        template<typename _T, size_t _size>
         struct remove_all_extents<_T[_size]>
         { typedef typename remove_all_extents<_T>::type type;};
+
+        template<typename _T>
+        using remove_all_extents_t = typename remove_all_extents<_T>::type;
 
       }
     }

@@ -30,6 +30,7 @@ namespace utility
 
 #else
 
+# include<utility/trait/opt/__twochar__.hpp>
 namespace utility
 {
   namespace trait
@@ -44,7 +45,7 @@ namespace utility
           template<typename _T>
           char __is_class_test (int _T::*);
           template<typename _T>
-          trait::__impl_helper::__twochar __is_class_test(...);
+          trait::__opt__::__twochar__ __is_class_test(...);
         }
         template<typename _T>
         struct is_class :
@@ -60,6 +61,23 @@ namespace utility
 
 #endif
 
+namespace utility
+{
+  namespace trait
+  {
+    namespace type
+    {
+      namespace categories
+      {
+#if !defined(__UTILITY_NO_CPP14__)
+        template<typename _T>
+        constexpr bool is_class_v = is_class<_T>::value;
+#endif
+
+      }
+    }
+  }
+}
 #include<utility/trait/config/trait_undef.hpp>
 
 #endif // ! __UTILITY_TRAIT_TYPE_CATEGORIES_IS_CLASS__

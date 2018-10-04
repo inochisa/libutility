@@ -23,6 +23,9 @@ namespace utility
         struct remove_reference<_T&&>
         { typedef _T type;};
 
+        template<typename _T>
+        using remove_reference_t = typename remove_reference<_T>::type;
+
       }
     }
   }

@@ -22,6 +22,12 @@ namespace utility
             !is_member_function_pointer<_T>::value>
         { };
 
+#if !defined(__UTILITY_NO_CPP14__)
+        template<typename _T>
+        constexpr bool is_member_object_pointer_v =
+                      is_member_object_pointer<_T>::value;
+#endif
+
       }
     }
   }

@@ -61,6 +61,26 @@ namespace utility
 
 #endif // __utility_has_is_union
 
+
+namespace utility
+{
+  namespace trait
+  {
+    namespace type
+    {
+      namespace categories
+      {
+#if !defined(__UTILITY_NO_CPP14__)
+        template<typename _T>
+        constexpr bool is_union_v = is_union<_T>::value;
+#endif
+
+      }
+    }
+  }
+}
+
+
 #include<utility/trait/config/trait_undef.hpp>
 
 #endif // ! __UTILITY_TRAIT_TYPE_CATEGORIES_IS_UNION__

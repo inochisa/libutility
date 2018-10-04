@@ -4,9 +4,7 @@
 
 #include<utility/config/utility_config.hpp>
 #include<utility/algorithm/swap.hpp>
-#include<utility/algorithm/impl/make_heap.hpp>
-#include<utility/algorithm/impl/pop_heap.hpp>
-#include<utility/algorithm/impl/sort_heap.hpp>
+#include<utility/algorithm/heap.hpp>
 #include<utility/iterator/iterator_traits.hpp>
 
 namespace utility

@@ -12,25 +12,10 @@
 #include<utility/config/utility_config.hpp>
 #include<utility/container/container_helper.hpp>
 
-#ifdef ___UTILITY__CHECK__USE__STD___
-
-#include<map>
-
-namespace utility
-{
-  namespace container
-  {
-    using std::multimap;
-  }
-}
-
-#else // ___UTILITY__CHECK__USE__STD___
-
 #include<utility/algorithm/move.hpp>
 #include<utility/algorithm/swap.hpp>
 #include<utility/algorithm/possible_swap.hpp>
 
-#include<utility/container/impl/pair_value.hpp>
 #include<utility/container/pair.hpp>
 #include<utility/container/compressed_pair.hpp>
 #include<utility/container/white_black_tree.hpp>
@@ -417,7 +402,5 @@ namespace utility
     }
   }
 }
-
-#endif // ! ___UTILITY__CHECK__USE__STD___
 
 #endif // ! __UTILITY_CONTAINER_MULTIMAP__

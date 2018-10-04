@@ -81,7 +81,7 @@ namespace utility
         typename aligned_storage<sizeof(void*[_L]), alignof(void*)>::type __buffer;
       };
 
-      template<typename _T,unsigned short _L = 1U>
+      template<typename _T, unsigned short _L = 1U>
       class __small_object_manager
       {
         public:
@@ -94,12 +94,12 @@ namespace utility
 
         public:
           static inline void operate(
-            any_op __op, const any* __any, any_args* __args
+            any_op _op, const any* _any, any_args* _args
           );
           template<typename _ValueType>
-          static inline void create(any_storage& __storage, _ValueType&& __val);
+          static inline void create(any_storage& _storage, _ValueType&& _val);
           template<typename... _Args>
-          static inline void create(any_storage& __storage, _Args&&... __args);
+          static inline void create(any_storage& _storage, _Args&&... _args);
       };
       template<typename _T, unsigned short _L = 1U>
       class __large_object_manager
@@ -114,12 +114,12 @@ namespace utility
 
         public:
           static inline void operate(
-            any_op __op, const any* __any, any_args* __args
+            any_op _op, const any* _any, any_args* _args
           );
           template<typename _ValueType>
-          static inline void create(any_storage& __storage, _ValueType&& __val);
+          static inline void create(any_storage& _storage, _ValueType&& _val);
           template<typename... _Args>
-          static inline void create(any_storage& __storage, _Args&&... __args);
+          static inline void create(any_storage& _storage, _Args&&... _args);
       };
 
       template<typename _T, unsigned short _L = 1U>
@@ -136,13 +136,13 @@ namespace utility
     class any
     {
       private:
-        template<typename, typename>
+        template<typename, unsigned short>
         friend class __detail::__small_object_manager;
-        template<typename, typename>
+        template<typename, unsigned short>
         friend class __detail::__large_object_manager;
 
       private:
-        typedef __detail::__any_storage<1U>       any_stroge;
+        typedef __detail::__any_storage<1U>       any_storage;
         typedef __detail::__any_operator          any_op;
         typedef __detail::__any_args              any_args;
 
@@ -151,32 +151,32 @@ namespace utility
 
       private:
         any_manager   __manager;
-        any_stroge    __stroge;
+        any_storage   __storage;
 
       public:
         constexpr any() noexcept:
-          __manager{nullptr}, __stroge{}
+          __manager{nullptr}, __storage{}
         { }
-        any(const any& __other):
-          __manager{nullptr}, __stroge{}
+        any(const any& _other):
+          __manager{nullptr}, __storage{}
         {
-          if(__other.has_value())
+          if(_other.has_value())
           {
             any_args __args;
             __args.__any = this;
-            __other.__manager(any_op::any_copy, &__other, &__args);
+            _other.__manager(any_op::any_copy, &_other, &__args);
           }
         }
 
-        any(any&& __other) noexcept:
-          __manager{nullptr}, __stroge{}
+        any(any&& _other) noexcept:
+          __manager{nullptr}, __storage{}
         {
-          if(__other.has_value())
+          if(_other.has_value())
           {
             any_args __args;
             __args.__any = this;
-            __other.__manager(any_op::any_move, &__other, &__args);
-            __other.__manager = nullptr;
+            _other.__manager(any_op::any_move, &_other, &__args);
+            _other.__manager = nullptr;
           }
         }
 
@@ -192,11 +192,11 @@ namespace utility
             __detail::is_copy_constructible<_T>::value>::value,
           bool>::type = true
         >
-        any(_ValueType&& __val):
-          __manager{&_Manager::operate}, __stroge{}
+        any(_ValueType&& _val):
+          __manager{&_Manager::operate}, __storage{}
         {
           _Manager::create(
-            this->__stroge, algorithm::forward<_ValueType>(__val)
+            this->__storage, algorithm::forward<_ValueType>(_val)
           );
         }
 
@@ -212,15 +212,15 @@ namespace utility
             __detail::is_copy_constructible<_T>::value>::value,
           bool>::type = true
         >
-        any(_ValueType&& __val):
-          __manager{&_Manager::operate}, __stroge{}
-        { _Manager::create(this->__stroge, __val);}
+        any(_ValueType&& _val):
+          __manager{&_Manager::operate}, __storage{}
+        { _Manager::create(this->__storage, _val);}
 
 
         template<
           typename _ValueType,
           typename... _Args,
-          typename _T = __detail::decay<_ValueType>::type,
+          typename _T = typename __detail::decay<_ValueType>::type,
           typename _Manager =
             typename __detail::__object_manager<_T, 1U>::type,
           typename __detail::enable_if<trait::__and__<
@@ -228,18 +228,18 @@ namespace utility
             __detail::is_copy_constructible<_T>::value>::value,
           bool>::type = true
         >
-        explicit any(__detail::in_place_type_t<_ValueType>, _Args&&... __args):
-          __manager{&_Manager::operate}, __stroge{}
+        explicit any(__detail::in_place_type_t<_ValueType>, _Args&&... _args):
+          __manager{&_Manager::operate}, __storage{}
         {
           _Manager::create(
-            this->__stroge, algorithm::forward<_ValueType>(__args)
+            this->__storage, algorithm::forward<_ValueType>(_args)...
           );
         }
         template<
           typename _ValueType,
           typename _U,
           typename... _Args,
-          typename _T = __detail::decay<_ValueType>::type,
+          typename _T = typename __detail::decay<_ValueType>::type,
           typename _Manager =
             typename __detail::__object_manager<_T, 1U>::type,
           typename __detail::enable_if<trait::__and__<
@@ -249,46 +249,46 @@ namespace utility
         >
         explicit any(
           __detail::in_place_type_t<_ValueType>,
-          initializer_list<_U> __init, _Args&&... __args
-        ):__manager{&_Manager::operate}, __stroge{}
+          initializer_list<_U> __init, _Args&&... _args
+        ):__manager{&_Manager::operate}, __storage{}
         {
           _Manager::create(
-            this->__stroge, __init, algorithm::forward<_ValueType>(__args)
+            this->__storage, __init, algorithm::forward<_ValueType>(_args)...
           );
         }
 
       public:
-        any& operator=(const any& __other)
+        any& operator=(const any& _other)
         {
-          if(&__other != this)
+          if(&_other != this)
           {
             this->reset();
             any_args __args;
             __args.__any = this;
-            if(__other.has_value())
-            { __other.__manager(any_op::any_move, &__other, &__args);}
+            if(_other.has_value())
+            { _other.__manager(any_op::any_copy, &_other, &__args);}
           }
           return *this;
         }
-        any& operator=(any&& __other) noexcept
+        any& operator=(any&& _other) noexcept
         {
-          if(&__other != this)
+          if(&_other != this)
           {
             this->reset();
             any_args __args;
             __args.__any = this;
-            if(__other.has_value())
+            if(_other.has_value())
             {
-              __other.__manager(any_op::any_move, &__other, &__args);
-              __other.__manager = nullptr;
+              _other.__manager(any_op::any_move, &_other, &__args);
+              _other.__manager = nullptr;
             }
           }
           return *this;
         }
         template<typename _ValueType>
-        any& operator=(_ValueType&& __val)
+        any& operator=(_ValueType&& _val)
         {
-          this->operator=(any{algorithm::forward<_ValueType&&>(__val)});
+          this->operator=(any{algorithm::forward<_ValueType&&>(_val)});
           return *this;
         }
 
@@ -305,21 +305,21 @@ namespace utility
             this->__manager = nullptr;
           }
         }
-        void swap(any& __any) noexcept
+        void swap(any& _any) noexcept
         {
-          if(this->empty() && __any.empty())
+          if(this->empty() && _any.empty())
           { return;}
           if(this->empty())
           {
             any_args __args;
             __args.__any = this;
-            __any.__manager(any_op::any_move, &__any, &__args);
-            __any.__manager = nullptr;
+            _any.__manager(any_op::any_move, &_any, &__args);
+            _any.__manager = nullptr;
           }
-          else if(__any.empty())
+          else if(_any.empty())
           {
             any_args __args;
-            __args.__any = &__any;
+            __args.__any = &_any;
             this->__manager(any_op::any_move, this, &__args);
             this->__manager = nullptr;
           }
@@ -328,16 +328,16 @@ namespace utility
             any_args __args;
             any __tmp;
             __args.__any = &__tmp;
-            __any.__manager(any_op::any_move, &__any, &__args);
-            __args.__any = &__any;
+            _any.__manager(any_op::any_move, &_any, &__args);
+            __args.__any = &_any;
             this->__manager(any_op::any_move, this, &__args);
             __args.__any = this;
             __tmp.__manager(any_op::any_move, &__tmp, &__args);
             __tmp.__manager = nullptr;
           }
         }
-        void possible_swap(any& __any) noexcept
-        { this->swap(__any);}
+        void possible_swap(any& _any) noexcept
+        { this->swap(_any);}
 
       public:
         bool has_value() const noexcept
@@ -380,8 +380,8 @@ namespace utility
             __detail::is_copy_constructible<_U>::value,
             bool>::type = true
         >
-        static inline const void* caster(const any* __any) noexcept
-        { return __any->_get<_T>();}
+        static inline const void* caster(const any* _any) noexcept
+        { return _any->_get<_T>();}
         template<
           typename _T,
           typename _U = typename __detail::decay<_T>::type,
@@ -389,8 +389,8 @@ namespace utility
             __detail::is_copy_constructible<_U>::value,
             bool>::type = true
         >
-        static inline void* caster(any* __any) noexcept
-        { return __any->_get<_T>();}
+        static inline void* caster(any* _any) noexcept
+        { return _any->_get<_T>();}
 
       private:
         template<typename _T>
@@ -434,48 +434,51 @@ namespace utility
     }
 
     template<typename _ValueType, typename... _Args>
-    any make_any(_Args&&... __args)
+    any make_any(_Args&&... _args)
     {
       return any{
         __detail::in_place_type_t<_ValueType>{},
-        algorithm::forward<_Args>(__args)...
-      }
+        algorithm::forward<_Args>(_args)...
+      };
     }
     template<typename _ValueType, typename _U, typename... _Args>
-    any make_any(initializer_list<_U> __init, _Args&&... __args)
+    any make_any(initializer_list<_U> __init, _Args&&... _args)
     {
       return any{
-        __detail::in_place_type_t<_ValueType>{}, __init
-        algorithm::forward<_Args>(__args)...
-      }
+        __detail::in_place_type_t<_ValueType>{}, __init,
+        algorithm::forward<_Args>(_args)...
+      };
     }
 
     namespace __detail
     {
       template<typename _T, unsigned short _L>
       void __large_object_manager<_T, _L>::operate(
-        any_op __op, const any* __any, any_args* __args
+        any_op _op, const any* _any, any_args* _args
       )
       {
-        switch(__op)
+        switch(_op)
         {
           case any_op::any_access:
-            __args->__ptr = const_cast<cast_type*>(
-              static_cast<const cast_type*>(__any->__stroge.__ptr)
+            _args->__ptr = const_cast<cast_type*>(
+              static_cast<const cast_type*>(_any->__storage.__ptr)
             );
             break;
           case any_op::any_copy:
-            __args->__any->__stroge.__ptr = new _T(
-              *static_cast<const cast_type*>(__any->__stroge.__ptr)
+            _args->__any->__storage.__ptr = new _T(
+              *static_cast<const cast_type*>(_any->__storage.__ptr)
             );
-            __args->__any->__manager = __any->__manager;
+            _args->__any->__manager = _any->__manager;
             break;
           case any_op::any_destroy:
-            delete static_cast<const cast_type*>(__any->__stroge.__ptr);
+            // memory::destroy_at(
+            //   static_cast<cast_type*>(_any->__storage.__ptr)
+            // );
+            delete static_cast<const cast_type*>(_any->__storage.__ptr);
             break;
           case any_op::any_move:
-            __args->__any->__stroge.__ptr = __any->__stroge.__ptr;
-            __args->__any->__manager = __any->__manager;
+            _args->__any->__storage.__ptr = _any->__storage.__ptr;
+            _args->__any->__manager = _any->__manager;
             break;
           case any_op::any_info:
             break;
@@ -487,54 +490,56 @@ namespace utility
       template<typename _T, unsigned short _L>
       template<typename _ValueType>
       inline void __large_object_manager<_T, _L>::create(
-        any_storage& __storage, _ValueType&& __val
+        any_storage& _storage, _ValueType&& _val
       )
       {
-        __storage.__ptr =
-          new _T(algorithm::forward<_ValueType>(__val));
+        _storage.__ptr =
+          new _T(algorithm::forward<_ValueType>(_val));
       }
       template<typename _T, unsigned short _L>
       template<typename... _Args>
       inline void __large_object_manager<_T, _L>::create(
-        any_storage& __storage, _Args&&... __args
+        any_storage& _storage, _Args&&... _args
       )
       {
-        __storage.__ptr =
-          new _T(algorithm::forward<_Args>(__args)...);
+        _storage.__ptr =
+          new _T(algorithm::forward<_Args>(_args)...);
       }
 
 
       template<typename _T, unsigned short _L>
       inline void __small_object_manager<_T, _L>::operate(
-        any_op __op, const any* __any, any_args* __args
+        any_op _op, const any* _any, any_args* _args
       )
       {
-        switch(__op)
+        using algorithm::move;
+
+        switch(_op)
         {
           case any_op::any_access:
-            __args->__ptr = const_cast<cast_type*>(
-              reinterpret_cast<const cast_type*>(&__any->__stroge.__buffer)
+            _args->__ptr = const_cast<cast_type*>(
+              reinterpret_cast<const cast_type*>(&_any->__storage.__buffer)
             );
             break;
           case any_op::any_copy:
-            ::new(&__args->__any->__stroge.__buffer) _T(
-              *reinterpret_cast<const cast_type*>(&__any->__stroge.__buffer)
+            ::new(&_args->__any->__storage.__buffer) _T(
+              *reinterpret_cast<const cast_type*>(&_any->__storage.__buffer)
             );
-            __args->__any->__manager = __any->__manager;
+            _args->__any->__manager = _any->__manager;
             break;
           case any_op::any_destroy:
             memory::destroy_at(
               const_cast<_T*>(reinterpret_cast<const cast_type*>(
-                &__any->__stroge.__buffer
+                &_any->__storage.__buffer
               ))
             );
             break;
           case any_op::any_move:
-            ::new(&__args->__any->__stroge.__buffer) _T(
-              *std::move(const_cast<_T*>(
+            ::new(&_args->__any->__storage.__buffer) _T(
+              move(*const_cast<_T*>(
                 reinterpret_cast<const cast_type*>(
-                  &__any->__stroge.__buffer))));
-            __args->__any->__manager = __any->__manager;
+                  &_any->__storage.__buffer))));
+            _args->__any->__manager = _any->__manager;
             break;
           case any_op::any_info:
             break;
@@ -545,21 +550,21 @@ namespace utility
       template<typename _T, unsigned short _L>
       template<typename _ValueType>
       inline void __small_object_manager<_T, _L>::create(
-        any_storage& __storage, _ValueType&& __val
+        any_storage& _storage, _ValueType&& _val
       )
       {
-        ::new (static_cast<void*>(&__storage.__buffer)) _T(
-          algorithm::forward<_ValueType>(__val)
+        ::new (static_cast<void*>(&_storage.__buffer)) _T(
+          algorithm::forward<_ValueType>(_val)
         );
       }
       template<typename _T, unsigned short _L>
       template<typename... _Args>
       inline void __small_object_manager<_T, _L>::create(
-        any_storage& __storage, _Args&&... __args
+        any_storage& _storage, _Args&&... _args
       )
       {
-        ::new (static_cast<void*>(&__storage.__buffer)) _T(
-          algorithm::forward<_Args>(__args)...
+        ::new (static_cast<void*>(&_storage.__buffer)) _T(
+          algorithm::forward<_Args>(_args)...
         );
       }
 

@@ -18,6 +18,46 @@ namespace utility
     {
       namespace memory
       {
+        /** \addtogroup memory
+         *  @{
+         */
+        /** \addtogroup Copying
+         *  @{
+         */
+        void* memcpy(void* __destination, const void* __source, size_t __size) noexcept;
+        void* memrcpy(void* __destination, const void* __source, size_t __size) noexcept;
+        void* memccpy(void* __destination, const void* __source, unsigned char __val, size_t __size) noexcept;
+        void* mempcpy(void* __destination, const void* __source, size_t __size) noexcept;
+        void* memmove(void* __destination, const void* __source, size_t __size) noexcept;
+        /** @}*/
+
+        /** \addtogroup Comparison
+         *  @{
+         */
+        int memcmp(const void* __comp1, const void* __comp2, size_t __size) noexcept;
+        /** @}*/
+
+        /** \addtogroup Fill
+         *  @{
+         */
+        void* memchr(void* __source, unsigned char __val, size_t __size) noexcept;
+        const void* memchr(const void* __source, unsigned char __val, size_t __size) noexcept;
+        void* memrchr(void* __source, unsigned char __val, size_t __size) noexcept;
+        const void* memrchr(const void* __source, unsigned char __val, size_t __size) noexcept;
+        void* memmem(void* __source, size_t __srclen, const void* __tag, size_t __taglen) noexcept;
+        const void* memmem(const void* __source, size_t __srclen, const void* __tag, size_t __taglen) noexcept;
+        /** @}*/
+
+        /** \addtogroup Searching
+         *  @{
+         */
+        void* memset(void* __ptr, unsigned char __val, size_t __size) noexcept;
+        /** @}*/
+        /** @}*/
+
+      }
+      namespace memory
+      {
 
         // Copying
         /*!

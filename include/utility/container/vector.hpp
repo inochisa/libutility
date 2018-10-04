@@ -11,20 +11,6 @@
 #include<utility/config/utility_config.hpp>
 #include<utility/container/container_helper.hpp>
 
-#ifdef ___UTILITY__CHECK__USE__STD___
-
-#include<vector>
-
-namespace utility
-{
-  namespace container
-  {
-    using std::vector;
-  }
-}
-
-#else // ___UTILITY__CHECK__USE__STD___
-
 #include<utility/algorithm/swap.hpp>
 #include<utility/algorithm/possible_swap.hpp>
 #include<utility/algorithm/move.hpp>
@@ -45,12 +31,11 @@ namespace utility
 #include<utility/trait/type/features/is_default_constructible.hpp>
 #include<utility/trait/type/features/is_nothrow_swappable.hpp>
 #include<utility/trait/type/features/is_nothrow_possible_swappable.hpp>
-#include<utility/trait/type/miscellaneous/enable_if.hpp>
-#include<utility/trait/miscellaneous/pointer_traits.hpp>
 
-#include<utility/iterator/reverse_iterator.hpp>
 #include<utility/iterator/iterator_tag.hpp>
 #include<utility/iterator/iterator_traits.hpp>
+#include<utility/iterator/reverse_iterator.hpp>
+#include<utility/iterator/raw_pointer_iterator.hpp>
 #include<utility/iterator/distance.hpp>
 
 namespace utility
@@ -64,240 +49,11 @@ namespace utility
     >
     class vector
     {
-      private:
-        template<typename __Value>
-        class __vector_iterator
-        {
-          private:
-            template<typename, typename>
-            friend class vector;
-            template<typename>
-            friend class __vector_const_iterator;
-
-          public:
-            typedef helper::contiguous_iterator_tag
-              iterator_category;
-            typedef __Value value_type;
-            typedef value_type& reference;
-            typedef typename
-              trait::miscellaneous::pointer_traits<__Value*>::pointer pointer;
-            typedef typename
-              trait::miscellaneous::pointer_traits<__Value*>::difference_type difference_type;
-
-          public:
-            typedef __vector_iterator<value_type> self;
-
-          private:
-            pointer __ptr;
-
-          public:
-            inline __vector_iterator() noexcept:
-              __ptr(nullptr)
-            { }
-            inline explicit __vector_iterator(pointer __tptr) noexcept:
-              __ptr(__tptr)
-            { }
-
-          public:
-            inline self& operator=(const self& __other) noexcept
-            {
-              if(this != &__other)
-              { this->__ptr = __other.__ptr;}
-              return *this;
-            }
-
-          public:
-            reference operator*() const noexcept
-            { return *(this->__ptr);}
-            pointer operator->() const noexcept
-            { return (this->__ptr);}
-
-          public:
-            self& operator++() noexcept
-            {
-              ++(this->__ptr);
-              return *this;
-            }
-            self operator++(int) noexcept
-            {
-              self __it = *this;
-              ++(this->__ptr);
-              return __it;
-            }
-            self& operator--() noexcept
-            {
-              --(this->__ptr);
-              return *this;
-            }
-            self operator--(int) noexcept
-            {
-              self __it = *this;
-              --(this->__ptr);
-              return __it;
-            }
-
-          public:
-            self& operator+=(difference_type __len) noexcept
-            {
-              this->__ptr += __len;
-              return *this;
-            }
-            self& operator-=(difference_type __len) noexcept
-            {
-              this->__ptr -= __len;
-              return *this;
-            }
-            self operator+(difference_type __len) const noexcept
-            { return self(this->__ptr + __len);}
-            self operator-(difference_type __len) const noexcept
-            { return self(this->__ptr - __len);}
-
-          public:
-            friend bool operator==(const self& __x, const self& __y) noexcept
-            { return __x.__ptr == __y.__ptr;}
-            friend bool operator!=(const self& __x, const self& __y) noexcept
-            { return __x.__ptr != __y.__ptr;}
-
-          public:
-            friend bool operator<(const self& __x, const self& __y) noexcept
-            { return __x.__ptr < __y.__ptr;}
-            friend bool operator>(const self& __x, const self& __y) noexcept
-            { return __x.__ptr > __y.__ptr;}
-            friend bool operator<=(const self& __x, const self& __y) noexcept
-            { return __x.__ptr <= __y.__ptr;}
-            friend bool operator>=(const self& __x, const self& __y) noexcept
-            { return __x.__ptr >= __y.__ptr;}
-
-          public:
-            friend difference_type operator-(const self& __x, const self __y) noexcept
-            { return __x.__ptr - __y.__ptr;}
-
-        };
-        template<typename __Value>
-        class __vector_const_iterator
-        {
-          private:
-            template<typename, typename>
-            friend class vector;
-
-          public:
-            typedef helper::contiguous_iterator_tag
-            iterator_category;
-            typedef __Value value_type;
-            typedef const __Value const_value_type;
-            typedef const value_type& reference;
-            typedef typename
-              trait::miscellaneous::pointer_traits<const_value_type*>::pointer pointer;
-            typedef typename
-              trait::miscellaneous::pointer_traits<const_value_type*>::difference_type difference_type;
-
-          public:
-            typedef __vector_const_iterator<value_type> self;
-
-          private:
-            pointer __ptr;
-
-          public:
-            inline __vector_const_iterator() noexcept:
-              __ptr(nullptr)
-            { }
-            inline explicit __vector_const_iterator(pointer __tptr) noexcept:
-              __ptr(__tptr)
-            { }
-            inline __vector_const_iterator(
-              const __vector_iterator<value_type>& __other
-            ) noexcept:
-              __ptr(__other.__ptr)
-            { }
-
-          public:
-            inline self& operator=(const self& __other) noexcept
-            {
-              if(this != &__other)
-              { this->__ptr = __other.__ptr;}
-              return *this;
-            }
-            inline self& operator=(
-              const __vector_iterator<value_type>& __other
-            ) noexcept
-            {
-              this->__ptr = __other.__ptr;
-              return *this;
-            }
-
-          public:
-            reference operator*() const noexcept
-            { return *(this->__ptr);}
-            pointer operator->() const noexcept
-            { return (this->__ptr);}
-
-          public:
-            self& operator++() noexcept
-            {
-              ++(this->__ptr);
-              return *this;
-            }
-            self operator++(int) noexcept
-            {
-              self __it = *this;
-              ++(this->__ptr);
-              return __it;
-            }
-            self& operator--() noexcept
-            {
-              --(this->__ptr);
-              return *this;
-            }
-            self operator--(int) noexcept
-            {
-              self __it = *this;
-              --(this->__ptr);
-              return __it;
-            }
-
-          public:
-            self& operator+=(difference_type __len) noexcept
-            {
-              this->__ptr += __len;
-              return *this;
-            }
-            self& operator-=(difference_type __len) noexcept
-            {
-              this->__ptr -= __len;
-              return *this;
-            }
-            self operator+(difference_type __len) const noexcept
-            { return self(this->__ptr + __len);}
-            self operator-(difference_type __len) const noexcept
-            { return self(this->__ptr - __len);}
-
-          public:
-            friend bool operator==(const self& __x, const self& __y) noexcept
-            { return __x.__ptr == __y.__ptr;}
-            friend bool operator!=(const self& __x, const self& __y) noexcept
-            { return __x.__ptr != __y.__ptr;}
-
-          public:
-            friend bool operator<(const self& __x, const self& __y) noexcept
-            { return __x.__ptr < __y.__ptr;}
-            friend bool operator>(const self& __x, const self& __y) noexcept
-            { return __x.__ptr > __y.__ptr;}
-            friend bool operator<=(const self& __x, const self& __y) noexcept
-            { return __x.__ptr <= __y.__ptr;}
-            friend bool operator>=(const self& __x, const self& __y) noexcept
-            { return __x.__ptr >= __y.__ptr;}
-
-          public:
-            friend difference_type operator-(const self& __x, const self __y) noexcept
-            { return __x.__ptr - __y.__ptr;}
-
-        };
-
       public:
         typedef _T                    value_type;
         typedef _Allocator            allocator_type;
-        typedef size_t     size_type;
-        typedef ptrdiff_t  difference_type;
+        typedef size_t                size_type;
+        typedef ptrdiff_t             difference_type;
         typedef value_type&           reference;
         typedef const value_type&     const_reference;
 
@@ -310,8 +66,8 @@ namespace utility
         typedef typename allocator_traits_type::const_pointer const_pointer;
 
       public:
-        typedef __vector_iterator<_T>         iterator;
-        typedef __vector_const_iterator<_T>   const_iterator;
+        typedef helper::raw_pointer_iterator<_T>        iterator;
+        typedef helper::raw_pointer_iterator<const _T>  const_iterator;
         typedef
           helper::reverse_iterator<iterator>
           reverse_iterator;
@@ -600,17 +356,17 @@ namespace utility
 
       public:
         reverse_iterator rbegin() noexcept
-        { return iterator(this->__end());}
+        { return iterator{end()};}
         const_reverse_iterator rbegin() const noexcept
-        { return const_reverse_iterator(this->__end());}
+        { return const_reverse_iterator{end()};}
         const_reverse_iterator crbegin() const noexcept
-        { return const_reverse_iterator(this->__end());}
+        { return const_reverse_iterator{cend()};}
         reverse_iterator rend() noexcept
-        { return iterator(this->__begin());}
+        { return iterator{begin()};}
         const_reverse_iterator rend() const noexcept
-        { return const_reverse_iterator(this->__begin());}
+        { return const_reverse_iterator{begin()};}
         const_reverse_iterator crend() const noexcept
-        { return const_reverse_iterator(this->__begin());}
+        { return const_reverse_iterator{cbegin()};}
 
       public:
         void push_back(const value_type& __val)
@@ -868,7 +624,7 @@ namespace utility
         {
           this->clear();
           allocator_traits_type::deallocate(
-            this->__allocator, this->__begin, this->capacity()
+            this->__allocator, this->__begin, capacity()
           );
           this->__begin = this->__end = this->__mend = nullptr;
         }
@@ -883,7 +639,7 @@ namespace utility
             this->__begin, this->__end, __new_begin
           );
           allocator_traits_type::deallocate(
-            this->__allocator, this->__begin, this->capacity()
+            this->__allocator, this->__begin, capacity()
           );
           this->__begin = __new_begin;
           this->__end = this->__begin + __old_size;
@@ -939,7 +695,5 @@ namespace utility
     }
   }
 }
-
-#endif // ! ___UTILITY__CHECK__USE__STD___
 
 #endif // ! __UTILITY_CONTAINER_VECTOR__

@@ -420,6 +420,22 @@ namespace utility
     }
   }
 
+  namespace algorithm
+  {
+    template<typename _T1, typename _T2>
+    void swap(
+      container::compressed_pair<_T1, _T2>& _x,
+      container::compressed_pair<_T1, _T2>& _y
+    ) noexcept(noexcept(_x.swap(_y)))
+    { _x.swap(_y);}
+    template<typename _T1, typename _T2>
+    void possible_swap(
+      container::compressed_pair<_T1, _T2>& _x,
+      container::compressed_pair<_T1, _T2>& _y
+    ) noexcept(noexcept(_x.possible_swap(_y)))
+    { _x.possible_swap(_y);}
+  }
+
   namespace container
   {
     namespace __detail

@@ -30,12 +30,10 @@ namespace utility
         if(_ffirst == _flast)
         { return _last;}
         _ForwardIterator1 __it;
-        for(; ;)
+        for(;;)
         {
           _ForwardIterator1 __tit =
-            algorithm::search(
-              _first, _last, _ffirst, _flast, __pred
-            );
+            search(_first, _last, _ffirst, _flast, __pred);
           if(__tit == _last)
           { return __it;}
           _first = __it = __tit;
@@ -47,7 +45,7 @@ namespace utility
         typename _BidirectionalIterator2,
         typename _BinaryPredicate
       >
-      _ForwardIterator1 __find_end(
+      _BidirectionalIterator1 __find_end(
         _BidirectionalIterator1 _first, _BidirectionalIterator1 _last,
         _BidirectionalIterator2 _ffirst, _BidirectionalIterator2 _flast,
         _BinaryPredicate _pred,
@@ -61,22 +59,22 @@ namespace utility
         _BidirectionalIterator1 __end1 = _last;
         _BidirectionalIterator2 __end2 = _flast;
         --__end2;
-        for(; ;)
+        for(;;)
         {
-          for(; ;)
+          for(;;)
           {
             if(_first == __end1)
             { return _last;}
-            if(_pred(*--__end1, __end2))
+            if(_pred(*--__end1, *__end2))
             { break;}
           }
 
           _BidirectionalIterator1 __pos1 = __end1;
           _BidirectionalIterator2 __pos2 = __end2;
 
-          for(; ;)
+          for(;;)
           {
-            if(__pos2 == __end2)
+            if(__pos2 == _ffirst)
             { return __pos1;}
             if(__pos1 == _first)
             { return _last;}
@@ -90,7 +88,7 @@ namespace utility
         typename _RandomAccessIterator2,
         typename _BinaryPredicate
       >
-      _ForwardIterator1 __find_end(
+      _RandomAccessIterator1 __find_end(
         _RandomAccessIterator1 _first, _RandomAccessIterator1 _last,
         _RandomAccessIterator2 _ffirst, _RandomAccessIterator2 _flast,
         _BinaryPredicate _pred,
@@ -116,22 +114,22 @@ namespace utility
         _RandomAccessIterator1 __end1 = _last;
         _RandomAccessIterator2 __end2 = _flast;
         --__end2;
-        for(; ;)
+        for(;;)
         {
-          for(; ;)
+          for(;;)
           {
-            if(_first == __end)
+            if(__end1 == __end)
             { return _last;}
-            if(_pred(*--__end1, __end2))
+            if(_pred(*--__end1, *__end2))
             { break;}
           }
 
           _RandomAccessIterator1 __pos1 = __end1;
           _RandomAccessIterator1 __pos2 = __end2;
 
-          for(; ;)
+          for(;;)
           {
-            if(__pos2 == __end2)
+            if(__pos2 == _ffirst)
             { return __pos1;}
             if(!_pred(*--__pos1, *--__pos2))
             { break;}

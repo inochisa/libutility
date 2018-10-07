@@ -3,19 +3,18 @@
 #define __UTILITY_CHARS_BASIC_STRING__
 
 #include<utility/config/utility_config.hpp>
+#include<utility/charS/impl/string_find.hpp>
 
 #include<utility/algorithm/swap.hpp>
 #include<utility/algorithm/possible_swap.hpp>
 #include<utility/algorithm/move.hpp>
-#include<utility/algorithm/max.hpp>
 #include<utility/algorithm/min.hpp>
-#include<utility/algorithm/find.hpp>
-#include<utility/algorithm/find_first_of.hpp>
 
 #include<utility/container/pair.hpp>
 #include<utility/container/compressed_pair.hpp>
 #include<utility/container/initializer_list.hpp>
 
+#include<utility/trait/type/categories/is_array.hpp>
 #include<utility/trait/type/releations/is_same.hpp>
 #include<utility/trait/type/property/is_pod.hpp>
 #include<utility/trait/type/miscellaneous/enable_if.hpp>
@@ -28,19 +27,28 @@
 #include<utility/memory/uninitialized_possible_move.hpp>
 
 #include<utility/charS/char_traits.hpp>
+#include<utility/charS/basic_string_view.hpp>
 
-#include<utility/iterator/iterator_tag.hpp>
 #include<utility/iterator/iterator_traits.hpp>
 #include<utility/iterator/reverse_iterator.hpp>
+#include<utility/iterator/raw_pointer_iterator.hpp>
 #include<utility/iterator/distance.hpp>
 
 namespace utility
 {
   namespace charS
   {
+    template<
+      typename _CharT,
+      typename _Traits = charS::char_traits<_CharT>,
+      typename _Alloc = memory::allocator<_CharT>
+    >
+    class basic_string;
+
     namespace __detail
     {
       using namespace iterator;
+      using trait::type::categories::is_array;
       using trait::type::property::is_pod;
       using trait::type::releations::is_same;
 
@@ -70,249 +78,19 @@ namespace utility
           _CharT array[string_union_traits<_CharT, _ST>::length];
         } shorts;
       };
+
     }
 
-    template<
-      typename _CharT,
-      typename _Char_Traits = charS::char_traits<_CharT>,
-      typename _Alloc = memory::allocator<_CharT>
-    >
+    template<typename _CharT, typename _Traits, typename _Alloc>
     class basic_string
     {
-      private:
-        template<typename __CharT>
-        class __basic_string_iterator
-        {
-          private:
-            template<typename, typename, typename>
-            friend class basic_string;
-            template<typename>
-            friend class __basic_string_const_iterator;
-
-          public:
-            typedef __detail::contiguous_iterator_tag
-              iterator_category;
-            typedef __CharT value_type;
-            typedef value_type& reference;
-            typedef typename
-              trait::miscellaneous::pointer_traits<__CharT*>::pointer pointer;
-            typedef typename
-              trait::miscellaneous::pointer_traits<__CharT*>::difference_type difference_type;
-
-          public:
-            typedef __basic_string_iterator<__CharT> self;
-
-          private:
-            pointer __ptr;
-
-          public:
-            inline __basic_string_iterator() noexcept:
-              __ptr(nullptr)
-            { }
-            inline explicit __basic_string_iterator(pointer _tptr) noexcept:
-              __ptr(_tptr)
-            { }
-
-            inline ~__basic_string_iterator()
-            { }
-
-          public:
-            inline self& operator=(const self& _other)
-            {
-              if(this != &_other)
-              { this->__ptr = _other.__ptr;}
-              return *this;
-            }
-
-          public:
-            reference operator*() const
-            { return *(this->__ptr);}
-            pointer operator->() const
-            { return (this->__ptr);}
-
-          public:
-            self& operator++()
-            {
-              ++(this->__ptr);
-              return *this;
-            }
-            self operator++(int)
-            {
-              self __it = *this;
-              ++(this->__ptr);
-              return __it;
-            }
-            self& operator--()
-            {
-              --(this->__ptr);
-              return *this;
-            }
-            self operator--(int)
-            {
-              self __it = *this;
-              --(this->__ptr);
-              return __it;
-            }
-
-          public:
-            self& operator+=(difference_type _len)
-            {
-              this->__ptr += _len;
-              return *this;
-            }
-            self& operator-=(difference_type _len)
-            {
-              this->__ptr -= _len;
-              return *this;
-            }
-            self operator+(difference_type _len) const
-            { return self(this->__ptr + _len);}
-            self operator-(difference_type _len) const
-            { return self(this->__ptr - _len);}
-
-          public:
-            friend bool operator==(const self& _x, const self& _y)
-            { return _x.__ptr == _y.__ptr;}
-            friend bool operator!=(const self& _x, const self& _y)
-            { return _x.__ptr != _y.__ptr;}
-
-          public:
-            friend bool operator<(const self& _x, const self& _y)
-            { return _x.__ptr < _y.__ptr;}
-            friend bool operator>(const self& _x, const self& _y)
-            { return _x.__ptr > _y.__ptr;}
-            friend bool operator<=(const self& _x, const self& _y)
-            { return _x.__ptr <= _y.__ptr;}
-            friend bool operator>=(const self& _x, const self& _y)
-            { return _x.__ptr >= _y.__ptr;}
-
-          public:
-            friend difference_type operator-(const self& _x, const self _y)
-            { return _x.__ptr - _y.__ptr;}
-
-        };
-        template<typename __CharT>
-        class __basic_string_const_iterator
-        {
-          private:
-            template<typename, typename, typename>
-            friend class basic_string;
-
-          public:
-            typedef __detail::contiguous_iterator_tag
-              iterator_category;
-            typedef __CharT value_type;
-            typedef const __CharT const_value_type;
-            typedef const value_type& reference;
-            typedef typename
-              trait::miscellaneous::pointer_traits<const_value_type*>::pointer pointer;
-            typedef typename
-              trait::miscellaneous::pointer_traits<const_value_type*>::difference_type difference_type;
-
-          public:
-            typedef __basic_string_const_iterator<__CharT> self;
-
-          private:
-            pointer __ptr;
-
-          public:
-            inline __basic_string_const_iterator() noexcept:
-             __ptr(nullptr)
-            { }
-            inline __basic_string_const_iterator(pointer _tptr) noexcept:
-             __ptr(_tptr)
-            { }
-            inline __basic_string_const_iterator(
-              const __basic_string_iterator<__CharT>& _other
-            ) noexcept:
-              __ptr(_other.__ptr)
-            { }
-            ~__basic_string_const_iterator()
-            { }
-
-          public:
-            inline self& operator=(const self& _other)
-            {
-              if(this != &_other)
-              { this->__ptr = _other.__ptr;}
-              return *this;
-            }
-
-          public:
-            reference operator*() const
-            { return *(this->__ptr);}
-            pointer operator->() const
-            { return (this->__ptr);}
-
-          public:
-            self& operator++()
-            {
-              ++(this->__ptr);
-              return *this;
-            }
-            self operator++(int)
-            {
-              self __it = *this;
-              ++(this->__ptr);
-              return __it;
-            }
-            self& operator--()
-            {
-              --(this->__ptr);
-              return *this;
-            }
-            self operator--(int)
-            {
-              self __it = *this;
-              --(this->__ptr);
-              return __it;
-            }
-
-          public:
-            self& operator+=(difference_type _len)
-            {
-              this->__ptr += _len;
-              return *this;
-            }
-            self& operator-=(difference_type _len)
-            {
-              this->__ptr -= _len;
-              return *this;
-            }
-            self operator+(difference_type _len) const
-            { return self(this->__ptr + _len);}
-            self operator-(difference_type _len) const
-            { return self(this->__ptr - _len);}
-
-          public:
-            friend bool operator==(const self& _x, const self& _y)
-            { return _x.__ptr == _y.__ptr;}
-            friend bool operator!=(const self& _x, const self& _y)
-            { return _x.__ptr != _y.__ptr;}
-
-          public:
-            friend bool operator<(const self& _x, const self& _y)
-            { return _x.__ptr < _y.__ptr;}
-            friend bool operator>(const self& _x, const self& _y)
-            { return _x.__ptr > _y.__ptr;}
-            friend bool operator<=(const self& _x, const self& _y)
-            { return _x.__ptr <= _y.__ptr;}
-            friend bool operator>=(const self& _x, const self& _y)
-            { return _x.__ptr >= _y.__ptr;}
-
-          public:
-            friend difference_type operator-(const self& _x, const self _y)
-            { return _x.__ptr - _y.__ptr;}
-
-        };
-
       public:
         typedef _CharT                                  value_type;
         typedef _CharT                                  char_type;
         typedef value_type&                             reference;
         typedef const value_type                        const_value_type;
         typedef const value_type&                       const_reference;
-        typedef _Char_Traits                            traits_type;
+        typedef _Traits                                 traits_type;
         typedef _Alloc                                  allocator_type;
         typedef memory::allocator_traits<_Alloc>        allocator_traits_type;
 
@@ -323,8 +101,8 @@ namespace utility
         typedef typename allocator_traits_type::const_pointer   const_pointer;
 
       public:
-        typedef __basic_string_iterator<value_type>         iterator;
-        typedef __basic_string_const_iterator<value_type>   const_iterator;
+        typedef __detail::raw_pointer_iterator<value_type>         iterator;
+        typedef __detail::raw_pointer_iterator<const value_type>   const_iterator;
         typedef __detail::reverse_iterator<iterator>        reverse_iterator;
         typedef __detail::reverse_iterator<const_iterator>  const_reverse_iterator;
 
@@ -345,6 +123,10 @@ namespace utility
 
       public:
         static_assert(
+          !__detail::is_array<value_type>::value,
+          "The char type of the basic_string can't be an array."
+        );
+        static_assert(
           __detail::is_pod<value_type>::value,
           "The char type of the basic_string must be pod."
         );
@@ -356,7 +138,6 @@ namespace utility
           __detail::is_same<typename allocator_type::value_type, value_type>::value,
           "the allocator's alloc type must be the same as value_type(_CharT)."
         );
-
 
       private:
         string_union  __un;
@@ -408,6 +189,7 @@ namespace utility
             bool
           >::type = true
         >
+
         basic_string(
           _Iterator _first, _Iterator _last,
           const allocator_type _alloc = allocator_type{}
@@ -453,6 +235,12 @@ namespace utility
           }
         }
 
+        explicit basic_string(
+          basic_string_view<_CharT, _Traits> _sv,
+          const allocator_type& _alloc = allocator_type{}
+        ):__un{}, __mis{short_tag, _alloc}
+        { this->append(_sv.begin(), _sv.end());}
+
         basic_string(
           container::initializer_list<char_type> _init,
           const allocator_type& _alloc = allocator_type{}
@@ -468,8 +256,8 @@ namespace utility
         {
           if(&_other != this)
           {
-            this->clear();
-            this->append(_other);
+            clear();
+            append(_other);
           }
           return *this;
         }
@@ -479,17 +267,17 @@ namespace utility
 
           if(&_other != this)
           {
-            this->give_up();
+            give_up();
             if(_other._is_short_string())
             {
-              this->__un = _other.__un;
-              this->__mis = move(_other.__mis);
+              __un = _other.__un;
+              __mis = move(_other.__mis);
             }
             else
             {
-              this->__un.longs.capacity = _other.__un.longs.capacity;
-              this->__un.longs.ptr = _other.__un.longs.ptr;
-              this->__mis = move(_other.__mis);
+              __un.longs.capacity = _other.__un.longs.capacity;
+              __un.longs.ptr = _other.__un.longs.ptr;
+              __mis = move(_other.__mis);
               _other.__mis.first() = short_tag;
             }
           }
@@ -497,25 +285,31 @@ namespace utility
         }
         basic_string& operator=(const char_type* _str)
         {
-          if(this->data() != _str)
+          if(data() != _str)
           {
-            this->clear();
-            this->append(_str);
+            clear();
+            append(_str);
           }
           return *this;
         }
         basic_string& operator=(char_type _ch) noexcept
         {
-          this->clear();
-          this->append(_ch);
+          clear();
+          append(_ch);
+          return *this;
+        }
+        basic_string& operator=(basic_string_view<_CharT, _Traits> _sv)
+        {
+          clear();
+          append(_sv.begin(), _sv.end());
           return *this;
         }
         basic_string& operator=(
           container::initializer_list<char_type> _init
         )
         {
-          this->clear();
-          this->append(_init.begin(), _init.end());
+          clear();
+          append(_init.begin(), _init.end());
           return *this;
         }
 
@@ -524,13 +318,13 @@ namespace utility
         {
           if(!check_reallocate(_count))
           { return *this;}
-          if(_count >= this->capacity())
-          { this->reallocate(__fix_capacity(capacity(), _count));}
-          char_type* __ptr = this->data();
+          if(_count >= capacity())
+          { reallocate(__fix_capacity(capacity(), _count));}
+          char_type* __ptr = data();
           for(; _count; --_count)
           { *__ptr++ = _ch;}
           *__ptr = char_type{};
-          __length(this->__mis, _count);
+          __length(__mis, _count);
           return *this;
         }
         template<
@@ -548,14 +342,14 @@ namespace utility
             static_cast<size_type>(__detail::distance(_first, _last));
           if(!check_reallocate(__ns))
           { return *this;}
-          if(__ns >= this->capacity())
-          { this->reallocate(__fix_capacity(capacity(), __ns));}
-          *uninitialized_copy(_first, _last, this->data()) = char_type{};
-          __length(this->__mis, __ns);
+          if(__ns >= capacity())
+          { reallocate(__fix_capacity(capacity(), __ns));}
+          *uninitialized_copy(_first, _last, data()) = char_type{};
+          __length(__mis, __ns);
           return *this;
         }
         basic_string& assign(const basic_string& _str)
-        { return this->assign(_str.data(), _str.data_end());}
+        { return assign(_str.data(), _str.data_end());}
         basic_string& assign(
           const basic_string& _str,
           size_type _pos, size_type _count = npos
@@ -565,7 +359,7 @@ namespace utility
           { return *this;}
           container::pair<const char_type*, const char_type*> __sp =
             _str.substr_ptr(_pos, _count);
-          return this->assign(__sp.first, __sp.second);
+          return assign(__sp.first, __sp.second);
         }
         basic_string& assign(basic_string&& _str) noexcept
         {
@@ -573,22 +367,22 @@ namespace utility
           return *this = move(_str);
         }
         basic_string& assign(const char_type* _str, size_type _count)
-        { return this->assign(_str, _str+_count);}
+        { return assign(_str, _str+_count);}
         basic_string& assign(const char_type* _str)
         {
           const char_type* __send = _str;
           for(; *__send; ++__send)
           { }
-          return this->assign(_str, __send);
+          return assign(_str, __send);
         }
-        basic_string& assign(
-          container::initializer_list<char_type> _init
-        )
-        { return this->assign(_init.begin(), _init.end());}
+        basic_string& assign(basic_string_view<char_type, traits_type> _sv)
+        { return assign(_sv.begin(), _sv.end());}
+        basic_string& assign(container::initializer_list<char_type> _init)
+        { return assign(_init.begin(), _init.end());}
 
       public:
         allocator_type get_allocator() const
-        { return this->__mis.second();}
+        { return __mis.second();}
 
       public:
         reference operator[](size_type _pos)
@@ -598,7 +392,7 @@ namespace utility
         reference at(size_type _pos)
         {
 #ifdef __UTILITY_USE_EXCEPTION
-          if(_pos > this->size())
+          if(_pos > size())
           { }
 #endif
           return data()[_pos];
@@ -606,7 +400,7 @@ namespace utility
         const_reference at(size_type _pos) const
         {
 #ifdef __UTILITY_USE_EXCEPTION
-          if(_pos > this->size())
+          if(_pos > size())
           { }
 #endif
           return data()[_pos];
@@ -614,17 +408,17 @@ namespace utility
 
       public:
         bool empty() const noexcept
-        { return this->size() == 0U;}
+        { return size() == 0U;}
         inline size_type size() const noexcept
-        { return __length(this->__mis);}
+        { return __length(__mis);}
         inline size_type length() const noexcept
-        { return __length(this->__mis);}
+        { return __length(__mis);}
         inline size_type capacity() const noexcept
-        { return _is_short_string() ? pod_length-1 : this->__un.longs.capacity;}
+        { return _is_short_string() ? pod_length-1 : __un.longs.capacity;}
         inline size_type max_size() const noexcept
         { return short_mask;}
         bool _is_short_string() const noexcept
-        { return this->__mis.first() & short_tag;}
+        { return __mis.first() & short_tag;}
 
       public:
         char_type& front() noexcept
@@ -632,85 +426,89 @@ namespace utility
         const char_type& front() const noexcept
         { return *data();}
         char_type& back() noexcept
-        { return data()[this->size()-1];}
+        { return data()[size()-1];}
         const char_type& back() const noexcept
-        { return data()[this->size()-1];}
-
+        { return data()[size()-1];}
 
       public:
         inline pointer data() noexcept
-        { return char_pointer(this->__mis, this->__un);}
+        { return char_pointer(__mis, __un);}
         inline const_pointer data() const noexcept
-        { return char_pointer(this->__mis, this->__un);}
+        { return char_pointer(__mis, __un);}
         inline const_pointer c_str() const noexcept
-        { return char_pointer(this->__mis, this->__un);}
+        { return char_pointer(__mis, __un);}
       private:
         inline pointer data_end() noexcept
-        { return char_pointer(this->__mis, this->__un) + this->size();}
+        { return char_pointer(__mis, __un) + size();}
         inline const_pointer data_end() const noexcept
-        { return char_pointer(this->__mis, this->__un) + this->size();}
-
+        { return char_pointer(__mis, __un) + size();}
 
       public:
         iterator begin() noexcept
-        { return iterator{this->data()};}
+        { return iterator{data()};}
         const_iterator begin() const noexcept
-        { return const_iterator{this->data()};}
+        { return const_iterator{data()};}
         const_iterator cbegin() const noexcept
-        { return const_iterator{this->data()};}
+        { return const_iterator{data()};}
         iterator end() noexcept
-        { return iterator{this->data() + this->size()};}
+        { return iterator{data() + size()};}
         const_iterator end() const noexcept
-        { return const_iterator{this->data() + this->size()};}
+        { return const_iterator{data() + size()};}
         const_iterator cend() const noexcept
-        { return const_iterator{this->data() + this->size()};}
+        { return const_iterator{data() + size()};}
 
       public:
         reverse_iterator rbegin() noexcept
-        { return reverse_iterator{this->end()};}
+        { return reverse_iterator{end()};}
         const_reverse_iterator rbegin() const noexcept
-        { return const_reverse_iterator{this->end()};}
+        { return const_reverse_iterator{end()};}
         const_reverse_iterator crbegin() const noexcept
-        { return const_reverse_iterator{this->end()};}
+        { return const_reverse_iterator{end()};}
         reverse_iterator rend() noexcept
-        { return reverse_iterator{this->begin()};}
+        { return reverse_iterator{begin()};}
         const_reverse_iterator rend() const noexcept
-        { return const_reverse_iterator{this->begin()};}
+        { return const_reverse_iterator{begin()};}
         const_reverse_iterator crend() const noexcept
-        { return const_reverse_iterator{this->begin()};}
+        { return const_reverse_iterator{begin()};}
 
       public:
         inline size_type iterator_index(const_iterator __it) const noexcept
-        { return static_cast<size_type>(__it.__ptr - this->data());}
+        { return static_cast<size_type>(__it.__ptr - data());}
         inline iterator _where(size_type _idx) const noexcept
-        { return iterator{this->data()+_idx};}
+        { return iterator{data()+_idx};}
+
+      public:
+        operator basic_string_view<char_type, traits_type>() const noexcept
+        {
+          return basic_string_view<char_type, traits_type>{data(), size()};
+        }
 
       public:
         inline void reserve(size_type __cap = 0U)
-        { this->reallocate(__cap);}
+        { reallocate(__cap);}
         inline void shrink_to_fit()
-        { this->reallocate(0);}
+        { reallocate(0);}
+
       public:
         void resize(size_type _count, char_type _ch = char_type{})
         {
           if(check_reallocate(_count))
           { return;}
-          if(_count > this->capacity())
-          { this->reallocate(__fix_capacity(capacity(), _count));}
-          if(_count < this->size())
+          if(_count > capacity())
+          { reallocate(__fix_capacity(capacity(), _count));}
+          if(_count < size())
           {
-            this->data()[_count] = char_type{};
-            __length(this->__mis, _count);
+            data()[_count] = char_type{};
+            __length(__mis, _count);
           }
           else
           {
-            size_type __sfill = _count - this->size();
-            *traits_type::assign(this->data_end(), __sfill, _ch) = char_type{};
-            __length(this->__mis, _count);
+            size_type __sfill = _count - size();
+            *traits_type::assign(data_end(), __sfill, _ch) = char_type{};
+            __length(__mis, _count);
           }
           return;
         }
-
 
       public:
         void clear() noexcept
@@ -719,23 +517,14 @@ namespace utility
           if(!_is_short_string())
           {
             allocator_traits_type::deallocate(
-              __mis.second(), __un.longs.ptr, capacity()
+              __mis.second(), __un.longs.ptr
             );
           }
           __un.shorts.array[0] = char_type{0};
-          __mis.first() = short_tag;
 #else
-          if(_is_short_string())
-          {
-            __un.shorts.array[0] = char_type{0};
-            __mis.first() = short_tag;
-          }
-          else
-          {
-            *data() = char_type{0};
-            __mis.first() = 0;
-          }
+          *data() = char_type{0};
 #endif
+          __length(__mis, 0U);
         }
         void reset() noexcept
         {
@@ -746,11 +535,11 @@ namespace utility
 
       public:
         inline void push_back(char_type _ch)
-        { this->append(1U, _ch);}
+        { append(1U, _ch);}
         inline void pop_back() noexcept
         {
-          *this->data_end() = char_type{0};
-          --this->__mis.first();
+          *data_end() = char_type{0};
+          --__mis.first();
         }
 
       public:
@@ -758,14 +547,14 @@ namespace utility
         {
           if(_count == 0)
           { return *this;}
-          size_type __ns = this->size() + _count;
+          size_type __ns = size() + _count;
           if(__ns > capacity())
-          { this->reallocate(__fix_capacity(capacity(), __ns));}
-          char_type* __pos = this->data_end();
+          { reallocate(__fix_capacity(capacity(), __ns));}
+          char_type* __pos = data_end();
           for(; _count; --_count)
           { *__pos++ = _ch;}
           *__pos = char_type{0};
-          __length(this->__mis, __ns);
+          __length(__mis, __ns);
           return *this;
         }
         template<
@@ -781,19 +570,19 @@ namespace utility
 
           if(_first != _last)
           {
-            size_type __ns = this->size() +
+            size_type __ns = size() +
               static_cast<size_type>(__detail::distance(_first, _last));
             if(__ns > capacity())
-            { this->reallocate(__fix_capacity(capacity(), __ns));}
+            { reallocate(__fix_capacity(capacity(), __ns));}
             char_type* __ptr =
-              uninitialized_copy(_first, _last, this->data_end());
+              uninitialized_copy(_first, _last, data_end());
             *__ptr = char_type{0};
-            __length(this->__mis, __ns);
+            __length(__mis, __ns);
           }
           return *this;
         }
         inline basic_string& append(const basic_string& _str)
-        { return this->append(_str.data(), _str.data_end());}
+        { return append(_str.data(), _str.data_end());}
         inline basic_string& append(
           const basic_string& _str,
           size_type _pos, size_type _count = npos
@@ -809,21 +598,27 @@ namespace utility
           { _count = _str.size();}
           else
           { _count += _pos;}
-          return this->append(this->data()+_pos, this->data()+_count);
+          return append(data()+_pos, data()+_count);
         }
         inline basic_string& append(const char_type* _str, size_type _count)
-        { return this->append(_str, _str+_count);}
+        { return append(_str, _str+_count);}
         inline basic_string& append(const char_type* _str)
         {
           const char_type* __send = _str;
           for(; *__send; ++__send)
           { }
-          return this->append(_str, __send);
+          return append(_str, __send);
         }
-        inline basic_string& append(container::initializer_list<char_type> _init)
-        { return this->append(_init.first(), _init.end());}
+        inline basic_string& append(
+          container::initializer_list<char_type> _init
+        )
+        { return append(_init.first(), _init.end());}
+        inline basic_string& append(
+          basic_string_view<char_type, traits_type> _sv
+        )
+        { return append(_sv.first(), _sv.end());}
         inline basic_string& append(char_type _ch)
-        { return this->append(1, _ch);}
+        { return append(1, _ch);}
 
       private:
         iterator __insert(size_type _pos, size_type _count, char_type _ch)
@@ -831,22 +626,22 @@ namespace utility
           using memory::uninitialized_possible_move_backward;
 
           if(!check_pos(_pos))
-          { return this->end();}
+          { return end();}
 
-          size_type __ns = this->size() + _count;
+          size_type __ns = size() + _count;
           if(!check_reallocate(__ns))
-          { return iterator{this->data()+_pos};}
+          { return iterator{data()+_pos};}
 
           if(__ns > capacity())
-          { this->reallocate(__fix_capacity(capacity(), __ns));}
+          { reallocate(__fix_capacity(capacity(), __ns));}
 
-          char_type* __ptr= this->data()+_pos;
+          char_type* __ptr= data()+_pos;
           uninitialized_possible_move_backward(
-            __ptr, this->data_end()+1,
-            this->data_end()+1+_count
+            __ptr, data_end()+1,
+            data_end()+1+_count
           );
           traits_type::assign(__ptr, _count, _ch);
-          __length(this->__mis, __ns);
+          __length(__mis, __ns);
 
           return iterator{__ptr};
         }
@@ -863,26 +658,26 @@ namespace utility
           using memory::uninitialized_copy;
 
           if(!check_pos(_pos))
-          { return this->end();}
+          { return end();}
 
           size_type _count =
             static_cast<size_type>(__detail::distance(_first, _last));
-          size_type __ns = this->size() + _count;
+          size_type __ns = size() + _count;
 
           if(!check_reallocate(__ns) || _first == _last)
-          { return iterator{this->data()+_pos};}
+          { return iterator{data()+_pos};}
 
           if(__ns > capacity())
-          { this->reallocate(__fix_capacity(capacity(), __ns));}
+          { reallocate(__fix_capacity(capacity(), __ns));}
 
-          char_type* __ptr= this->data()+_pos;
+          char_type* __ptr= data()+_pos;
 
           uninitialized_possible_move_backward(
-            __ptr, this->data_end()+1,
-            this->data_end()+1+_count
+            __ptr, data_end()+1,
+            data_end()+1+_count
           );
           uninitialized_copy(_first, _last, __ptr);
-          __length(this->__mis, __ns);
+          __length(__mis, __ns);
 
           return iterator{__ptr};
         }
@@ -890,7 +685,7 @@ namespace utility
       public:
         inline basic_string& insert(size_type _pos, size_type _count, char_type _ch)
         {
-          this->__insert(_pos, _count, _ch);
+          __insert(_pos, _count, _ch);
           return *this;
         }
         inline basic_string& insert(size_type _pos, const char_type* _str)
@@ -898,19 +693,19 @@ namespace utility
           char_type* __send = _str;
           for(; *__send; ++__send)
           { }
-          this->__insert(_pos, _str, __send);
+          __insert(_pos, _str, __send);
           return *this;
         }
         inline basic_string& insert(
           size_type _pos, const char_type* _str, size_type _count
         )
         {
-          this->__insert(_pos, _str, _str+_count);
+          __insert(_pos, _str, _str+_count);
           return *this;
         }
         inline basic_string& insert(size_type _pos, const basic_string& _str)
         {
-          this->__insert(_pos, _str.data(), _str.data_end());
+          __insert(_pos, _str.data(), _str.data_end());
           return *this;
         }
         inline basic_string& insert(
@@ -920,13 +715,13 @@ namespace utility
         {
           container::pair<const char_type*, const char_type*> __sp =
             _str.substr_ptr(_idx, _count);
-          this->__insert(_pos, __sp.first, __sp.second);
+          __insert(_pos, __sp.first, __sp.second);
           return *this;
         }
         inline iterator insert(const_iterator _pos, char_type _ch)
-        { return this->__insert(iterator_index(_pos), 1U, _ch);}
+        { return __insert(iterator_index(_pos), 1U, _ch);}
         inline iterator insert(const_iterator _pos, size_type _count, char_type _ch)
-        { return this->__insert(iterator_index(_pos), _count, _ch);}
+        { return __insert(iterator_index(_pos), _count, _ch);}
         template<
           typename _Iterator,
           typename trait::type::miscellaneous::enable_if<
@@ -938,14 +733,23 @@ namespace utility
           const_iterator _pos,
           _Iterator _first, _Iterator _last
         )
-        { return this->__insert(iterator_index(_pos), _first, _last);}
+        { return __insert(iterator_index(_pos), _first, _last);}
         inline iterator insert(
           const_iterator _pos,
           container::initializer_list<char_type> _init
         )
         {
-          return this->__insert(
+          return __insert(
             iterator_index(_pos), _init.first(), _init.end()
+          );
+        }
+        inline iterator insert(
+          const_iterator _pos,
+          basic_string_view<char_type, traits_type> _sv
+        )
+        {
+          return __insert(
+            iterator_index(_pos), _sv.first(), _sv.end()
           );
         }
 
@@ -960,25 +764,25 @@ namespace utility
           if(!check_pos(_idx))
           { return *this;}
           _count = min(_count, size()-_idx);
-          char_type* __ebegin = this->data() + _idx;
+          char_type* __ebegin = data() + _idx;
           char_type* __eend = __ebegin + _count;
           *uninitialized_possible_move(
-            __eend, this->data_end(), __ebegin
+            __eend, data_end(), __ebegin
           ) = char_type{0};
-          this->__mis.first() -= _count;
+          __mis.first() -= _count;
           return *this;
         }
         inline iterator erase(const_iterator _pos) noexcept
         {
-          size_type __where = this->iterator_index(_pos);
-          this->erase(__where, 1U);
-          return this->_where(__where);
+          size_type __where = iterator_index(_pos);
+          erase(__where, 1U);
+          return _where(__where);
         }
         inline iterator erase(const_iterator _first, const_iterator _last) noexcept
         {
-          size_type __where = this->iterator_index(_first);
-          this->erase(__where, static_cast<size_type>(_last-_first));
-          return this->_where(__where);
+          size_type __where = iterator_index(_first);
+          erase(__where, static_cast<size_type>(_last-_first));
+          return _where(__where);
         }
 
       public:
@@ -987,6 +791,8 @@ namespace utility
           size_type _slen, char_type _ch
         )
         {
+          using algorithm::min;
+
           if(!check_pos(_pos))
           { return *this;}
           _count = min(size()-_pos, _count);
@@ -995,16 +801,16 @@ namespace utility
           { return *this;}
 
           if(__ns > capacity())
-          { this->reallocate(__fix_capacity(capacity(), __ns));}
+          { reallocate(__fix_capacity(capacity(), __ns));}
 
           traits_type::move(
-            this->data()+_pos+_slen, this->data()+_pos+_count,
+            data()+_pos+_slen, data()+_pos+_count,
             __ns-_pos-_count+1
           );
-          char_type* __ptr = this->data()+_pos;
+          char_type* __ptr = data()+_pos;
           for( ; _slen; --_slen)
           { *__ptr++ = _ch;}
-          __length(this->__mis, __ns);
+          __length(__mis, __ns);
 
           return *this;
         }
@@ -1020,6 +826,8 @@ namespace utility
           _Iterator _first, _Iterator _last
         )
         {
+          using algorithm::min;
+
           if(!check_pos(_pos))
           { return *this;}
           _count = min(size()-_pos, _count);
@@ -1030,18 +838,18 @@ namespace utility
           { return *this;}
 
           if(__ns > capacity())
-          { this->reallocate(__fix_capacity(capacity(), __ns));}
+          { reallocate(__fix_capacity(capacity(), __ns));}
 
           traits_type::move(
-            this->data()+_pos+__slen, this->data()+_pos+_count,
+            data()+_pos+__slen, data()+_pos+_count,
             __ns-_pos-_count+1
           );
-          char_type* __ptr = this->data()+_pos;
+          char_type* __ptr = data()+_pos;
 
           for(; _first != _last;)
           { *__ptr++ = *_first++;}
 
-          __length(this->__mis, __ns);
+          __length(__mis, __ns);
 
           return *this;
         }
@@ -1050,8 +858,8 @@ namespace utility
           size_type _slen, char_type _ch
         )
         {
-          return this->replace(
-            this->iterator_index(_first),
+          return replace(
+            iterator_index(_first),
             static_cast<size_type>(_last-_first),
             _slen, _ch
           );
@@ -1060,16 +868,32 @@ namespace utility
           size_type _pos, size_type _count,
           const basic_string& _str
         )
-        { return this->replace(_pos, _count, _str.data(), _str.data_end());}
+        { return replace(_pos, _count, _str.data(), _str.data_end());}
         basic_string& replace(
           const_iterator _first, const_iterator _last,
           const basic_string& _str
         )
         {
-          return this->replace(
-            this->iterator_index(_first),
+          return replace(
+            iterator_index(_first),
             static_cast<size_type>(_last-_first),
             _str.data(), _str.data_end()
+          );
+        }
+        basic_string& replace(
+          size_type _pos, size_type _count,
+          basic_string_view<char_type, traits_type> _sv
+        )
+        { return replace(_pos, _count, _sv.begin(), _sv.end());}
+        basic_string& replace(
+          const_iterator _first, const_iterator _last,
+          basic_string_view<char_type, traits_type> _sv
+        )
+        {
+          return replace(
+            iterator_index(_first),
+            static_cast<size_type>(_last-_first),
+            _sv.begin(), _sv.end()
           );
         }
         basic_string& replace(
@@ -1080,7 +904,7 @@ namespace utility
         {
           container::pair<const char_type*, const char_type*> __sp =
             _str.substr_ptr(_idx, _slen);
-          return this->replace(_pos, _count, __sp.first, __sp.second);
+          return replace(_pos, _count, __sp.first, __sp.second);
         }
         template<
           typename _Iterator,
@@ -1094,8 +918,8 @@ namespace utility
           _Iterator _sfirst, _Iterator _slast
         )
         {
-          return this->replace(
-            this->iterator_index(_first),
+          return replace(
+            iterator_index(_first),
             static_cast<size_type>(_last-_first),
             _sfirst, _slast
           );
@@ -1104,14 +928,14 @@ namespace utility
           size_type _pos, size_type _count,
           const char_type* _str, size_type _slen
         )
-        { return this->replace(_pos, _count, _str, _str+_slen);}
+        { return replace(_pos, _count, _str, _str+_slen);}
         basic_string& replace(
           const_iterator _first, const_iterator _last,
           const char_type* _str, size_type _slen
         )
         {
-          return this->replace(
-            this->iterator_index(_first),
+          return replace(
+            iterator_index(_first),
             static_cast<size_type>(_last-_first),
             _str, _str+_slen
           );
@@ -1124,7 +948,7 @@ namespace utility
           const char_type* __send = _str;
           for(; *__send; ++__send)
           { }
-          return this->replace(_pos, _count, _str, __send);
+          return replace(_pos, _count, _str, __send);
         }
         basic_string& replace(
           const_iterator _first, const_iterator _last,
@@ -1134,8 +958,8 @@ namespace utility
           const char_type* __send = _str;
           for(; *__send; ++__send)
           { }
-          return this->replace(
-            this->iterator_index(_first),
+          return replace(
+            iterator_index(_first),
             static_cast<size_type>(_last-_first),
             _str, __send
           );
@@ -1147,22 +971,23 @@ namespace utility
           const char_type* _str, size_type _clen
         ) const noexcept
         {
+          using algorithm::min;
           container::pair<const char_type*, const char_type*> __sp =
-            this->substr_ptr(_pos, _count);
+            substr_ptr(_pos, _count);
           _count = static_cast<size_type>(__sp.second-__sp.first);
-          size_type __len = algorithm::min(_count, _clen);
+          size_type __len = min(_count, _clen);
           int __res = traits_type::compare(__sp.first, _str, __len);
           if(__res)
           { return __res;}
           return _count == _clen ? 0 : (_count < _clen ? -1 : 1);
         }
         int compare(const basic_string& _str) const noexcept
-        { return this->compare(0U, npos, _str.data(), _str.size());}
+        { return compare(0U, npos, _str.data(), _str.size());}
         int compare(
           size_type _pos, size_type _count,
           const basic_string& _str
         ) const noexcept
-        { return this->compare(_pos, _count, _str.data(), _str.size());}
+        { return compare(_pos, _count, _str.data(), _str.size());}
         int compare(
           size_type _pos, size_type _count,
           const basic_string& _str,
@@ -1171,7 +996,7 @@ namespace utility
         {
           container::pair<const char_type*, const char_type*> __sp =
             _str.substr_ptr(_idx, _clen);
-          return this->compare(
+          return compare(
             _pos, _count, __sp.first,
             static_cast<size_type>(__sp.second-__sp.first)
           );
@@ -1181,7 +1006,7 @@ namespace utility
           size_type __clen = 0U;
           for(; *_str; ++_str, ++__clen)
           { }
-          return this->compare(0U, npos, _str, __clen);
+          return compare(0U, npos, _str-__clen, __clen);
         }
         int compare(
           size_type _pos, size_type _count,
@@ -1191,8 +1016,17 @@ namespace utility
           size_type __clen = 0U;
           for(; *_str; ++_str, ++__clen)
           { }
-          return this->compare(_pos, _count, _str, __clen);
+          return compare(_pos, _count, _str-__clen, __clen);
         }
+        int compare(
+          basic_string_view<char_type, traits_type> _sv
+        ) const noexcept
+        { return compare(0U, npos, _sv.data(), _sv.size());}
+        int compare(
+          size_type _pos, size_type _count,
+          basic_string_view<char_type, traits_type> _sv
+        ) const noexcept
+        { return compare(_pos, _count, _sv.data(), _sv.size());}
 
       public:
         size_type copy(
@@ -1200,7 +1034,7 @@ namespace utility
         ) const
         {
           container::pair<const char_type*, const char_type*> __sp =
-            this->substr_ptr(_pos, _count);
+            substr_ptr(_pos, _count);
           size_type __ns = static_cast<size_type>(__sp.second-__sp.first);
           traits_type::assign(_dest, __sp.first, __ns);
           return __ns;
@@ -1208,8 +1042,247 @@ namespace utility
         basic_string substr(size_type _pos = 0U, size_type _count = npos) const
         {
           container::pair<const char_type*, const char_type*> __sp =
-            this->substr_ptr(_pos, _count);
+            substr_ptr(_pos, _count);
           return basic_string{__sp.first, __sp.second};
+        }
+
+      public:
+        size_type find(
+          const basic_string& _str, size_type _pos = 0
+        ) const noexcept
+        {
+          return impl::__find<char_type, traits_type, size_type, npos>(
+            data(), size(), _str.data(), _str.size(), _pos
+          );
+        }
+        size_type find(
+          const char_type* _str, size_type _pos = 0
+        ) const noexcept
+        {
+          return impl::__find<char_type, traits_type, size_type, npos>(
+            data(), size(), _str, traits_type::length(_str), _pos
+          );
+        }
+        size_type find(
+          const char_type* _str, size_type _pos, size_type _count
+        ) const noexcept
+        {
+          return impl::__find<char_type, traits_type, size_type, npos>(
+            data(), size(), _str, _count, _pos
+          );
+        }
+        size_type find(char_type _ch, size_type _pos = 0) const noexcept
+        {
+          return impl::__find<char_type, traits_type, size_type, npos>(
+            data(), size(), _ch, _pos
+          );
+        }
+        size_type find(
+          const basic_string_view<char_type, traits_type> _sv,
+          size_type _pos = 0
+        ) const noexcept
+        {
+          return impl::__find<char_type, traits_type, size_type, npos>(
+            data(), size(), _sv.data(), _sv.size(), _pos
+          );
+        }
+        size_type rfind(
+          const basic_string& _str, size_type _pos = npos
+        ) const noexcept
+        {
+          return impl::__rfind<char_type, traits_type, size_type, npos>(
+            data(), size(), _str.data(), _str.size(), _pos
+          );
+        }
+        size_type rfind(
+          const char_type* _str, size_type _pos = npos
+        ) const noexcept
+        {
+          return impl::__rfind<char_type, traits_type, size_type, npos>(
+            data(), size(), _str, traits_type::length(_str), _pos
+          );
+        }
+        size_type rfind(
+          const char_type* _str, size_type _pos, size_type _count
+        ) const noexcept
+        {
+          return impl::__rfind<char_type, traits_type, size_type, npos>(
+            data(), size(), _str, _count, _pos
+          );
+        }
+        size_type rfind(char_type _ch, size_type _pos = npos) const noexcept
+        {
+          return impl::__rfind<char_type, traits_type, size_type, npos>(
+            data(), size(), _ch, _pos
+          );
+        }
+        size_type rfind(
+          const basic_string_view<char_type, traits_type> _sv,
+          size_type _pos = npos
+        ) const noexcept
+        {
+          return impl::__rfind<char_type, traits_type, size_type, npos>(
+            data(), size(), _sv.data(), _sv.size(), _pos
+          );
+        }
+
+      public:
+        size_type find_first_of(
+          const basic_string& _str, size_type _pos = 0
+        ) const noexcept
+        {
+          return impl::__find_first_of<char_type, traits_type, size_type, npos>(
+            data(), size(), _str.data(), _str.size(), _pos
+          );
+        }
+        size_type find_first_of(
+          const char_type* _str, size_type _pos = 0
+        ) const noexcept
+        {
+          return impl::__find_first_of<char_type, traits_type, size_type, npos>(
+            data(), size(), _str, traits_type::length(_str), _pos
+          );
+        }
+        size_type find_first_of(
+          const char_type* _str, size_type _pos, size_type _count
+        ) const noexcept
+        {
+          return impl::__find_first_of<char_type, traits_type, size_type, npos>(
+            data(), size(), _str, _count, _pos
+          );
+        }
+        size_type find_first_of(char_type _ch, size_type _pos = 0) const noexcept
+        {
+          return impl::__find_first_of<char_type, traits_type, size_type, npos>(
+            data(), size(), _ch, _pos
+          );
+        }
+        size_type find_first_of(
+          const basic_string_view<char_type, traits_type> _sv,
+          size_type _pos = 0
+        ) const noexcept
+        {
+          return impl::__find_first_of<char_type, traits_type, size_type, npos>(
+            data(), size(), _sv.data(), _sv.size(), _pos
+          );
+        }
+        size_type find_last_of(
+          const basic_string& _str, size_type _pos = npos
+        ) const noexcept
+        {
+          return impl::__find_last_of<char_type, traits_type, size_type, npos>(
+            data(), size(), _str.data(), _str.size(), _pos
+          );
+        }
+        size_type find_last_of(
+          const char_type* _str, size_type _pos = npos
+        ) const noexcept
+        {
+          return impl::__find_last_of<char_type, traits_type, size_type, npos>(
+            data(), size(), _str, traits_type::length(_str), _pos
+          );
+        }
+        size_type find_last_of(
+          const char_type* _str, size_type _pos, size_type _count
+        ) const noexcept
+        {
+          return impl::__find_last_of<char_type, traits_type, size_type, npos>(
+            data(), size(), _str, _count, _pos
+          );
+        }
+        size_type find_last_of(char_type _ch, size_type _pos = npos) const noexcept
+        {
+          return impl::__find_last_of<char_type, traits_type, size_type, npos>(
+            data(), size(), _ch, _pos
+          );
+        }
+        size_type find_last_of(
+          const basic_string_view<char_type, traits_type> _sv, size_type _pos = npos
+        ) const noexcept
+        {
+          return impl::__find_last_of<char_type, traits_type, size_type, npos>(
+            data(), size(), _sv.data(), _sv.size(), _pos
+          );
+        }
+        size_type find_first_not_of(
+          const basic_string& _str, size_type _pos = 0
+        ) const noexcept
+        {
+          return impl::__find_first_not_of<char_type, traits_type, size_type, npos>(
+            data(), size(), _str.data(), _str.size(), _pos
+          );
+        }
+        size_type find_first_not_of(
+          const char_type* _str, size_type _pos = 0
+        ) const noexcept
+        {
+          return impl::__find_first_not_of<char_type, traits_type, size_type, npos>(
+            data(), size(), _str, traits_type::length(_str), _pos
+          );
+        }
+        size_type find_first_not_of(
+          const char_type* _str, size_type _pos, size_type _count
+        ) const noexcept
+        {
+          return impl::__find_first_not_of<char_type, traits_type, size_type, npos>(
+            data(), size(), _str, _count, _pos
+          );
+        }
+        size_type find_first_not_of(char_type _ch, size_type _pos = 0) const noexcept
+        {
+          return impl::__find_first_not_of<char_type, traits_type, size_type, npos>(
+            data(), size(), _ch, _pos
+          );
+        }
+        size_type find_first_not_of(
+          const basic_string_view<char_type, traits_type> _sv,
+          size_type _pos = 0
+        ) const noexcept
+        {
+          return impl::__find_first_not_of<char_type, traits_type, size_type, npos>(
+            data(), size(), _sv.data(), _sv.size(), _pos
+          );
+        }
+        size_type find_last_not_of(
+          const basic_string& _str, size_type _pos = npos
+        ) const noexcept
+        {
+          return impl::__find_last_not_of<char_type, traits_type, size_type, npos>(
+            data(), size(), _str.data(), _str.size(), _pos
+          );
+        }
+        size_type find_last_not_of(
+          const char_type* _str, size_type _pos = npos
+        ) const noexcept
+        {
+          return impl::__find_last_not_of<char_type, traits_type, size_type, npos>(
+            data(), size(), _str, traits_type::length(_str), _pos
+          );
+        }
+        size_type find_last_not_of(
+          const char_type* _str, size_type _pos, size_type _count
+        ) const noexcept
+        {
+          return impl::__find_last_not_of<char_type, traits_type, size_type, npos>(
+            data(), size(), _str, _count, _pos
+          );
+        }
+        size_type find_last_not_of(
+          char_type _ch, size_type _pos = npos
+        ) const noexcept
+        {
+          return impl::__find_last_not_of<char_type, traits_type, size_type, npos>(
+            data(), size(), _ch, _pos
+          );
+        }
+        size_type find_last_not_of(
+          const basic_string_view<char_type, traits_type> _sv,
+          size_type _pos = npos
+        ) const noexcept
+        {
+          return impl::__find_last_not_of<char_type, traits_type, size_type, npos>(
+            data(), size(), _sv.data(), _sv.size(), _pos
+          );
         }
 
       public:
@@ -1218,8 +1291,8 @@ namespace utility
         )
         {
           using utility::algorithm::swap;
-          swap(this->__mis, _other.__mis);
-          swap(this->__un,  _other.__un);
+          swap(__mis, _other.__mis);
+          swap(__un,  _other.__un);
         }
 
         void possible_swap(basic_string& _other) noexcept(
@@ -1227,26 +1300,28 @@ namespace utility
         )
         {
           using utility::algorithm::possible_swap;
-          possible_swap(this->__mis, _other.__mis);
-          possible_swap(this->__un,  _other.__un);
+          possible_swap(__mis, _other.__mis);
+          possible_swap(__un,  _other.__un);
         }
 
       public:
         inline basic_string operator+=(const basic_string& _str)
-        { return this->append(_str);}
+        { return append(_str);}
         inline basic_string operator+=(char_type _ch)
-        { return this->append(_ch);}
+        { return append(_ch);}
         inline basic_string operator+=(const char_type* _str)
-        { return this->append(_str);}
+        { return append(_str);}
+        inline basic_string operator+=(basic_string_view<char_type, traits_type> _sv)
+        { return append(_sv);}
         inline basic_string operator+=(container::initializer_list<char_type> _init)
-        { return this->append(_init);}
+        { return append(_init);}
 
       private:
         bool check_pos(size_type& _pos) const
         {
-          if(_pos > this->size())
+          if(_pos > size())
 #ifdef UTILITY_BASIC_STRING_CORRECT_OUTRANGE_POS
-          { _pos = this->size();}
+          { _pos = size();}
 #elif defined(__UTILITY_USE_EXCEPTION)
           { ;}
 #else
@@ -1271,22 +1346,21 @@ namespace utility
         {
           typedef container::pair<const char_type*, const char_type*> __result;
           if(!check_pos(_idx))
-          { return __result{this->data_end(), this->data_end()};}
-          if(_idx+_count > this->size())
-          { _count = this->size();}
+          { return __result{data_end(), data_end()};}
+          if(_idx+_count > size() || _count == npos)
+          { _count = size();}
           else
           { _count += _idx;}
-          return __result{this->data()+_idx, this->data()+_count};
+          return __result{data()+_idx, data()+_count};
         }
 
       private:
         void reallocate(size_type _new)
         {
-          using algorithm::max;
           using algorithm::min;
           using memory::uninitialized_possible_move;
 
-          size_type __alloc = min(this->max_size(), _new)+1;
+          size_type __alloc = min(max_size(), _new)+1;
           if(_is_short_string())
           {
             // not need reallocate
@@ -1295,40 +1369,40 @@ namespace utility
 
             // allocate length > pod length
             char_type* __ptr =
-              allocator_traits_type::allocate(this->__mis.second(), __alloc);
+              allocator_traits_type::allocate(__mis.second(), __alloc);
             uninitialized_possible_move(data(), data_end()+1, __ptr);
-            this->__un.longs.capacity = __alloc-1;
-            this->__un.longs.ptr = __ptr;
-            this->__mis.first() &= short_mask;
+            __un.longs.capacity = __alloc-1;
+            __un.longs.ptr = __ptr;
+            __mis.first() &= short_mask;
           }
           else
           {
             // need reallocate storage
-            if(this->size() < pod_length && __alloc <= pod_length)
+            if(size() < pod_length && __alloc <= pod_length)
             {
               // use pod storage
               char_type __tmp[pod_length];
               uninitialized_possible_move(data(), data_end()+1, __tmp);
               allocator_traits_type::deallocate(
-                this->__mis.second(), this->__un.longs.ptr, capacity()
+                __mis.second(), __un.longs.ptr, capacity()
               );
               uninitialized_possible_move(
-                __tmp, __tmp + this->__mis.first()+1,
-                this->__un.shorts.array
+                __tmp, __tmp + __mis.first()+1,
+                __un.shorts.array
               );
-              this->__mis.first() |= short_tag;
+              __mis.first() |= short_tag;
             }
             else
             {
               char_type* __ptr =
-                allocator_traits_type::allocate(this->__mis.second(), __alloc);
+                allocator_traits_type::allocate(__mis.second(), __alloc);
               uninitialized_possible_move(data(), data_end()+1, __ptr);
               allocator_traits_type::deallocate(
-                this->__mis.second(), this->__un.longs.ptr, capacity()
+                __mis.second(), __un.longs.ptr, capacity()
               );
-              this->__un.longs.capacity = __alloc-1;
-              this->__un.longs.ptr = __ptr;
-              this->__mis.first() &= short_mask;
+              __un.longs.capacity = __alloc-1;
+              __un.longs.ptr = __ptr;
+              __mis.first() &= short_mask;
             }
           }
 
@@ -1341,7 +1415,9 @@ namespace utility
           if(!_is_short_string())
           {
             allocator_traits_type::deallocate(
-              __mis.second(), __un.longs.ptr, capacity()
+              __mis.second(),
+              __un.longs.ptr,
+              capacity()
             );
           }
         }
@@ -1394,128 +1470,123 @@ namespace utility
         { return _tag.first() & short_mask;}
     };
 
-    template<
-      typename _CharT,
-      typename _Char_Traits,
-      typename _Alloc
-    >
-    constexpr typename basic_string<_CharT, _Char_Traits,_Alloc>::size_type
-      basic_string<_CharT, _Char_Traits,_Alloc>::short_tag;
-    template<
-      typename _CharT,
-      typename _Char_Traits,
-      typename _Alloc
-    >
-    constexpr typename basic_string<_CharT, _Char_Traits,_Alloc>::size_type
-      basic_string<_CharT, _Char_Traits,_Alloc>::short_mask;
+    template<typename _CharT, typename _Traits,typename _Alloc>
+    constexpr typename basic_string<_CharT, _Traits,_Alloc>::size_type
+      basic_string<_CharT, _Traits, _Alloc>::short_tag;
+    template<typename _CharT, typename _Traits,typename _Alloc>
+    constexpr typename basic_string<_CharT, _Traits,_Alloc>::size_type
+      basic_string<_CharT, _Traits, _Alloc>::npos;
+    template<typename _CharT, typename _Traits,typename _Alloc>
+    constexpr typename basic_string<_CharT, _Traits,_Alloc>::size_type
+      basic_string<_CharT, _Traits, _Alloc>::short_mask;
 
-    template<typename _CharT, typename _Char_Traits, typename _Alloc>
+    template<typename _CharT, typename _Traits, typename _Alloc>
     bool operator==(
-      const basic_string<_CharT, _Char_Traits, _Alloc>& _x,
-      const basic_string<_CharT, _Char_Traits, _Alloc>& _y
+      const basic_string<_CharT, _Traits, _Alloc>& _x,
+      const basic_string<_CharT, _Traits, _Alloc>& _y
     ) noexcept
     { return _x.compare(_y) == 0;}
-    template<typename _CharT, typename _Char_Traits, typename _Alloc>
+    template<typename _CharT, typename _Traits, typename _Alloc>
     bool operator!=(
-      const basic_string<_CharT, _Char_Traits, _Alloc>& _x,
-      const basic_string<_CharT, _Char_Traits, _Alloc>& _y
+      const basic_string<_CharT, _Traits, _Alloc>& _x,
+      const basic_string<_CharT, _Traits, _Alloc>& _y
     ) noexcept
     { return _x.compare(_y) != 0;}
-    template<typename _CharT, typename _Char_Traits, typename _Alloc>
+    template<typename _CharT, typename _Traits, typename _Alloc>
     bool operator<(
-      const basic_string<_CharT, _Char_Traits, _Alloc>& _x,
-      const basic_string<_CharT, _Char_Traits, _Alloc>& _y
+      const basic_string<_CharT, _Traits, _Alloc>& _x,
+      const basic_string<_CharT, _Traits, _Alloc>& _y
     ) noexcept
     { return _x.compare(_y) < 0;}
-    template<typename _CharT, typename _Char_Traits, typename _Alloc>
+    template<typename _CharT, typename _Traits, typename _Alloc>
     bool operator>(
-      const basic_string<_CharT, _Char_Traits, _Alloc>& _x,
-      const basic_string<_CharT, _Char_Traits, _Alloc>& _y
+      const basic_string<_CharT, _Traits, _Alloc>& _x,
+      const basic_string<_CharT, _Traits, _Alloc>& _y
     ) noexcept
     { return _x.compare(_y) > 0;}
-    template<typename _CharT, typename _Char_Traits, typename _Alloc>
+    template<typename _CharT, typename _Traits, typename _Alloc>
     bool operator<=(
-      const basic_string<_CharT, _Char_Traits, _Alloc>& _x,
-      const basic_string<_CharT, _Char_Traits, _Alloc>& _y
+      const basic_string<_CharT, _Traits, _Alloc>& _x,
+      const basic_string<_CharT, _Traits, _Alloc>& _y
     ) noexcept
     { return _x.compare(_y) <= 0;}
-    template<typename _CharT, typename _Char_Traits, typename _Alloc>
+    template<typename _CharT, typename _Traits, typename _Alloc>
     bool operator>=(
-      const basic_string<_CharT, _Char_Traits, _Alloc>& _x,
-      const basic_string<_CharT, _Char_Traits, _Alloc>& _y
+      const basic_string<_CharT, _Traits, _Alloc>& _x,
+      const basic_string<_CharT, _Traits, _Alloc>& _y
     ) noexcept
     { return _x.compare(_y) >= 0;}
 
-    template<typename _CharT, typename _Char_Traits, typename _Alloc>
-    basic_string<_CharT, _Char_Traits, _Alloc> operator+(
-      const basic_string<_CharT, _Char_Traits, _Alloc>& _x,
-      const basic_string<_CharT, _Char_Traits, _Alloc>& _y
+    template<typename _CharT, typename _Traits, typename _Alloc>
+    basic_string<_CharT, _Traits, _Alloc> operator+(
+      const basic_string<_CharT, _Traits, _Alloc>& _x,
+      const basic_string<_CharT, _Traits, _Alloc>& _y
     )
-    { return basic_string<_CharT, _Char_Traits, _Alloc>{_x}.append(_y);}
-    template<typename _CharT, typename _Char_Traits, typename _Alloc>
-    basic_string<_CharT, _Char_Traits, _Alloc> operator+(
+    { return basic_string<_CharT, _Traits, _Alloc>{_x}.append(_y);}
+    template<typename _CharT, typename _Traits, typename _Alloc>
+    basic_string<_CharT, _Traits, _Alloc> operator+(
       const _CharT* _x,
-      const basic_string<_CharT, _Char_Traits, _Alloc>& _y
+      const basic_string<_CharT, _Traits, _Alloc>& _y
     )
-    { return basic_string<_CharT, _Char_Traits, _Alloc>{_x}.append(_y);}
-    template<typename _CharT, typename _Char_Traits, typename _Alloc>
-    basic_string<_CharT, _Char_Traits, _Alloc> operator+(
+    { return basic_string<_CharT, _Traits, _Alloc>{_x}.append(_y);}
+    template<typename _CharT, typename _Traits, typename _Alloc>
+    basic_string<_CharT, _Traits, _Alloc> operator+(
       _CharT _x,
-      const basic_string<_CharT, _Char_Traits, _Alloc>& _y
+      const basic_string<_CharT, _Traits, _Alloc>& _y
     )
-    { return basic_string<_CharT, _Char_Traits, _Alloc>{1, _x}.append(_y);}
-    template<typename _CharT, typename _Char_Traits, typename _Alloc>
-    basic_string<_CharT, _Char_Traits, _Alloc> operator+(
-      const basic_string<_CharT, _Char_Traits, _Alloc>& _x,
+    { return basic_string<_CharT, _Traits, _Alloc>{1, _x}.append(_y);}
+    template<typename _CharT, typename _Traits, typename _Alloc>
+    basic_string<_CharT, _Traits, _Alloc> operator+(
+      const basic_string<_CharT, _Traits, _Alloc>& _x,
       const _CharT* _y
     )
-    { return basic_string<_CharT, _Char_Traits, _Alloc>{_x}.append(_y);}
-    template<typename _CharT, typename _Char_Traits, typename _Alloc>
-    basic_string<_CharT, _Char_Traits, _Alloc> operator+(
-      const basic_string<_CharT, _Char_Traits, _Alloc>& _x,
+    { return basic_string<_CharT, _Traits, _Alloc>{_x}.append(_y);}
+    template<typename _CharT, typename _Traits, typename _Alloc>
+    basic_string<_CharT, _Traits, _Alloc> operator+(
+      const basic_string<_CharT, _Traits, _Alloc>& _x,
       _CharT _y
     )
-    { return basic_string<_CharT, _Char_Traits, _Alloc>{_x}.append(_y);}
-    template<typename _CharT, typename _Char_Traits, typename _Alloc>
-    basic_string<_CharT, _Char_Traits, _Alloc> operator+(
-      basic_string<_CharT, _Char_Traits, _Alloc>&& _x,
-      const basic_string<_CharT, _Char_Traits, _Alloc>& _y
+    { return basic_string<_CharT, _Traits, _Alloc>{_x}.append(_y);}
+    template<typename _CharT, typename _Traits, typename _Alloc>
+    basic_string<_CharT, _Traits, _Alloc> operator+(
+      basic_string<_CharT, _Traits, _Alloc>&& _x,
+      const basic_string<_CharT, _Traits, _Alloc>& _y
     ) noexcept
     { return algorithm::move(_x.append(_y));}
-    template<typename _CharT, typename _Char_Traits, typename _Alloc>
-    basic_string<_CharT, _Char_Traits, _Alloc> operator+(
-      basic_string<_CharT, _Char_Traits, _Alloc>&& _x,
+    template<typename _CharT, typename _Traits, typename _Alloc>
+    basic_string<_CharT, _Traits, _Alloc> operator+(
+      basic_string<_CharT, _Traits, _Alloc>&& _x,
       const _CharT* _y
     ) noexcept
     { return algorithm::move(_x.append(_y));}
-    template<typename _CharT, typename _Char_Traits, typename _Alloc>
-    basic_string<_CharT, _Char_Traits, _Alloc> operator+(
-      basic_string<_CharT, _Char_Traits, _Alloc>&& _x,
+    template<typename _CharT, typename _Traits, typename _Alloc>
+    basic_string<_CharT, _Traits, _Alloc> operator+(
+      basic_string<_CharT, _Traits, _Alloc>&& _x,
       _CharT _y
     ) noexcept
     { return algorithm::move(_x.append(_y));}
-    template<typename _CharT, typename _Char_Traits, typename _Alloc>
-    basic_string<_CharT, _Char_Traits, _Alloc> operator+(
-      const basic_string<_CharT, _Char_Traits, _Alloc>& _x,
-      basic_string<_CharT, _Char_Traits, _Alloc>&& _y
+    template<typename _CharT, typename _Traits, typename _Alloc>
+    basic_string<_CharT, _Traits, _Alloc> operator+(
+      const basic_string<_CharT, _Traits, _Alloc>& _x,
+      basic_string<_CharT, _Traits, _Alloc>&& _y
     ) noexcept
     { return algorithm::move(_y.insert(0U, _x));}
-    template<typename _CharT, typename _Char_Traits, typename _Alloc>
-    basic_string<_CharT, _Char_Traits, _Alloc> operator+(
+    template<typename _CharT, typename _Traits, typename _Alloc>
+    basic_string<_CharT, _Traits, _Alloc> operator+(
       const _CharT* _x,
-      basic_string<_CharT, _Char_Traits, _Alloc>&& _y
+      basic_string<_CharT, _Traits, _Alloc>&& _y
     ) noexcept
     { return algorithm::move(_y.insert(0U, _x));}
-    template<typename _CharT, typename _Char_Traits, typename _Alloc>
-    basic_string<_CharT, _Char_Traits, _Alloc> operator+(
+    template<typename _CharT, typename _Traits, typename _Alloc>
+    basic_string<_CharT, _Traits, _Alloc> operator+(
       _CharT _x,
-      basic_string<_CharT, _Char_Traits, _Alloc>&& _y
+      basic_string<_CharT, _Traits, _Alloc>&& _y
     ) noexcept
     { return algorithm::move(_y.insert(0U, _x));}
-    template<typename _CharT, typename _Char_Traits, typename _Alloc>
-    basic_string<_CharT, _Char_Traits, _Alloc> operator+(
-      basic_string<_CharT, _Char_Traits, _Alloc>&& _x,
-      basic_string<_CharT, _Char_Traits, _Alloc>&& _y
+    template<typename _CharT, typename _Traits, typename _Alloc>
+    basic_string<_CharT, _Traits, _Alloc> operator+(
+      basic_string<_CharT, _Traits, _Alloc>&& _x,
+      basic_string<_CharT, _Traits, _Alloc>&& _y
     ) noexcept
     { return algorithm::move(_x.append(_y));}
 

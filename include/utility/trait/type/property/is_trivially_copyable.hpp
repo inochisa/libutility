@@ -18,8 +18,7 @@ namespace utility
         // is_trivially_copyable
         template<typename _T>
         struct is_trivially_copyable : public
-          trait::integral_constant<bool,
-            __utility_is_trivially_copyable(_T)>
+          trait::integral_constant<bool, __utility_is_trivially_copyable(_T)>
         { };
 
       }
@@ -44,8 +43,8 @@ namespace utility
         template<typename _T>
         struct is_trivially_copyable : public
           trait::integral_constant<bool,
-            trait::type::categories::is_scalar<typename
-              trait::type::transform::remove_all_extents<_T>::type>::value>
+            categories::is_scalar<typename
+              transform::remove_all_extents<_T>::type>::value>
         { };
 
       }

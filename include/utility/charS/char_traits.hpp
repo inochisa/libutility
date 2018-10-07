@@ -27,10 +27,10 @@ namespace utility
       typedef stream::streampos               pos_type;
       typedef sstd::mbstate_t                 state_type;
 
-      __UTILITY_CPP17_CONSTEXPR__
+      __UTILITY_CPP14_CONSTEXPR__
       static inline void assign(char_type& __c, const char_type& __a) noexcept
       { __c = __a;}
-      __UTILITY_CPP17_CONSTEXPR__
+      __UTILITY_CPP14_CONSTEXPR__
       static inline char_type* assign(
         char_type* __cptr, size_t __count,
         char_type __a
@@ -79,7 +79,7 @@ namespace utility
         return __tmp;
       }
 
-      __UTILITY_CPP17_CONSTEXPR__
+      __UTILITY_CPP14_CONSTEXPR__
       static inline int compare(
         const char_type* __comp1, const char_type* __comp2,
         size_t __count
@@ -95,7 +95,7 @@ namespace utility
         return 0;
       }
 
-      __UTILITY_CPP17_CONSTEXPR__
+      __UTILITY_CPP14_CONSTEXPR__
       static inline size_t length(const char_type* __str) noexcept
       {
         size_t __len = 0;
@@ -104,7 +104,7 @@ namespace utility
         return __len;
       }
 
-      __UTILITY_CPP17_CONSTEXPR__
+      __UTILITY_CPP14_CONSTEXPR__
       static inline const char_type* find(
         const char_type* __str, size_t __count,
         const char_type& __pat
@@ -139,10 +139,10 @@ namespace utility
       typedef stream::streampos               pos_type;
       typedef sstd::mbstate_t                 state_type;
 
-      __UTILITY_CPP17_CONSTEXPR__
+      __UTILITY_CPP14_CONSTEXPR__
       static inline void assign(char_type& __c, const char_type& __a) noexcept
       { __c = __a;}
-      __UTILITY_CPP17_CONSTEXPR__
+      __UTILITY_CPP14_CONSTEXPR__
       static inline char_type* assign(
         char_type* __cptr, size_t __count,
         char_type __a
@@ -191,7 +191,7 @@ namespace utility
         return __tmp;
       }
 
-      __UTILITY_CPP17_CONSTEXPR__
+      __UTILITY_CPP14_CONSTEXPR__
       static inline int compare(
         const char_type* __comp1, const char_type* __comp2,
         size_t __count
@@ -207,7 +207,7 @@ namespace utility
         return 0;
       }
 
-      __UTILITY_CPP17_CONSTEXPR__
+      __UTILITY_CPP14_CONSTEXPR__
       static inline size_t length(const char_type* __str) noexcept
       {
         size_t __len = 0;
@@ -216,7 +216,7 @@ namespace utility
         return __len;
       }
 
-      __UTILITY_CPP17_CONSTEXPR__
+      __UTILITY_CPP14_CONSTEXPR__
       static inline const char_type* find(
         const char_type* __str, size_t __count,
         const char_type& __pat
@@ -252,10 +252,10 @@ namespace utility
       typedef stream::streampos               pos_type;
       typedef sstd::mbstate_t                 state_type;
 
-      __UTILITY_CPP17_CONSTEXPR__
+      __UTILITY_CPP14_CONSTEXPR__
       static inline void assign(char_type& __c, const char_type& __a) noexcept
       { __c = __a;}
-      __UTILITY_CPP17_CONSTEXPR__
+      __UTILITY_CPP14_CONSTEXPR__
       static inline char_type* assign(
         char_type* __cptr, size_t __count,
         char_type __a
@@ -304,7 +304,7 @@ namespace utility
         return __tmp;
       }
 
-      __UTILITY_CPP17_CONSTEXPR__
+      __UTILITY_CPP14_CONSTEXPR__
       static inline int compare(
         const char_type* __comp1, const char_type* __comp2,
         size_t __count
@@ -320,7 +320,7 @@ namespace utility
         return 0;
       }
 
-      __UTILITY_CPP17_CONSTEXPR__
+      __UTILITY_CPP14_CONSTEXPR__
       static inline size_t length(const char_type* __str) noexcept
       {
         size_t __len = 0;
@@ -329,7 +329,7 @@ namespace utility
         return __len;
       }
 
-      __UTILITY_CPP17_CONSTEXPR__
+      __UTILITY_CPP14_CONSTEXPR__
       static inline const char_type* find(
         const char_type* __str, size_t __count,
         const char_type& __pat
@@ -365,10 +365,10 @@ namespace utility
       typedef stream::u16streampos            pos_type;
       typedef sstd::mbstate_t                 state_type;
 
-      __UTILITY_CPP17_CONSTEXPR__
+      __UTILITY_CPP14_CONSTEXPR__
       static inline void assign(char_type& __c, const char_type& __a) noexcept
       { __c = __a;}
-      __UTILITY_CPP17_CONSTEXPR__
+      __UTILITY_CPP14_CONSTEXPR__
       static inline char_type* assign(
         char_type* __cptr, size_t __count,
         char_type __a
@@ -417,7 +417,7 @@ namespace utility
         return __tmp;
       }
 
-      __UTILITY_CPP17_CONSTEXPR__
+      __UTILITY_CPP14_CONSTEXPR__
       static inline int compare(
         const char_type* __comp1, const char_type* __comp2,
         size_t __count
@@ -433,7 +433,7 @@ namespace utility
         return 0;
       }
 
-      __UTILITY_CPP17_CONSTEXPR__
+      __UTILITY_CPP14_CONSTEXPR__
       static inline size_t length(const char_type* __str) noexcept
       {
         size_t __len = 0;
@@ -442,7 +442,7 @@ namespace utility
         return __len;
       }
 
-      __UTILITY_CPP17_CONSTEXPR__
+      __UTILITY_CPP14_CONSTEXPR__
       static inline const char_type* find(
         const char_type* __str, size_t __count,
         const char_type& __pat
@@ -477,10 +477,10 @@ namespace utility
       typedef stream::u32streampos            pos_type;
       typedef sstd::mbstate_t                 state_type;
 
-      __UTILITY_CPP17_CONSTEXPR__
+      __UTILITY_CPP14_CONSTEXPR__
       static inline void assign(char_type& __c, const char_type& __a) noexcept
       { __c = __a;}
-      __UTILITY_CPP17_CONSTEXPR__
+      __UTILITY_CPP14_CONSTEXPR__
       static inline char_type* assign(
         char_type* __cptr, size_t __count,
         char_type __a
@@ -529,7 +529,7 @@ namespace utility
         return __tmp;
       }
 
-      __UTILITY_CPP17_CONSTEXPR__
+      __UTILITY_CPP14_CONSTEXPR__
       static inline int compare(
         const char_type* __comp1, const char_type* __comp2,
         size_t __count
@@ -545,7 +545,7 @@ namespace utility
         return 0;
       }
 
-      __UTILITY_CPP17_CONSTEXPR__
+      __UTILITY_CPP14_CONSTEXPR__
       static inline size_t length(const char_type* __str) noexcept
       {
         size_t __len = 0;
@@ -554,7 +554,7 @@ namespace utility
         return __len;
       }
 
-      __UTILITY_CPP17_CONSTEXPR__
+      __UTILITY_CPP14_CONSTEXPR__
       static inline const char_type* find(
         const char_type* __str, size_t __count,
         const char_type& __pat
